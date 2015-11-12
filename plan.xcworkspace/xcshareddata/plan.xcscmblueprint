@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "1C37C442E59783C6C60F00B1BF8BC2981B745DF2",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "1C37C442E59783C6C60F00B1BF8BC2981B745DF2" : 0,
+    "A76628FC2976BA59461A3E21DCCC9531A9238534" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "6A94966A-3BD5-4946-8951-57B2A11EF94D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "1C37C442E59783C6C60F00B1BF8BC2981B745DF2" : "MyPlanSideslip\/",
+    "A76628FC2976BA59461A3E21DCCC9531A9238534" : "MyPlan"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "plan",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "plan.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/JimmyFung\/MyPlanSideslip.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "1C37C442E59783C6C60F00B1BF8BC2981B745DF2"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/JimmyFung\/MyPlan.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "A76628FC2976BA59461A3E21DCCC9531A9238534"
+    }
+  ]
+}

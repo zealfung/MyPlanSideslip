@@ -1,0 +1,23 @@
+PODS:
+  - BmobSDK (1.6.4)
+  - FMDB (2.5):
+    - FMDB/standard (= 2.5)
+  - FMDB/common (2.5)
+  - FMDB/standard (2.5):
+    - FMDB/common
+  - MBProgressHUD (0.9.1)
+  - RESideMenu (4.0.7)
+
+DEPENDENCIES:
+  - BmobSDK
+  - FMDB
+  - MBProgressHUD
+  - RESideMenu
+
+SPEC CHECKSUMS:
+  BmobSDK: 50aad04eae8c81ccdea6d6125c97e8cec49d8869
+  FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
+  MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  RESideMenu: f24c508404b49c667344c54aba7e590883533958
+
+COCOAPODS: 0.38.2

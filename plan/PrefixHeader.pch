@@ -1,0 +1,28 @@
+//
+//  PrefixHeader.pch
+//  plan
+//
+//  Created by Fengzy on 15/8/28.
+//  Copyright (c) 2015年 Fengzy. All rights reserved.
+//
+
+#ifndef plan_PrefixHeader_pch
+#define plan_PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+
+#import "Macro.h"
+#import "Function.h"
+#import "Catagory.h"
+#import "PlanCache.h"
+
+#ifndef __OPTIMIZE__
+# define NSLog(...) NSLog(__VA_ARGS__)
+#else
+# define NSLog(...)
+#endif
+
+#endif
