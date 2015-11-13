@@ -19,6 +19,7 @@
 #define png_Btn_Delete @"Btn_Delete"
 #define png_Btn_Settings @"Btn_Settings"
 #define png_Btn_AddPhoto @"Btn_AddPhoto"
+#define png_Btn_LeftMenu @"Btn_LeftMenu"
 
 #define png_Bg_NavigationBar @"Bg_NavigationBar"
 #define png_Bg_Cell_White @"Bg_Cell_White"
@@ -44,6 +45,7 @@
 #define png_Icon_Plan_Long @"Icon_Plan_Long"
 #define png_Icon_Plan_Day @"Icon_Plan_Day"
 #define png_Icon_Photo @"Icon_Photo"
+#define png_Icon_Feedback @"Icon_Feedback"
 
 #define png_Btn_LogIn_QQ @"Btn_LogIn_QQ"
 #define png_Btn_LogIn_Wechat @"Btn_LogIn_Wechat"
