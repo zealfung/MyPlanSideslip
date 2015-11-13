@@ -13,6 +13,8 @@
 		131D6A211BF47FE4009FDD72 /* UIView+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A201BF47FE4009FDD72 /* UIView+Util.m */; };
 		131D6A231BF4D6CC009FDD72 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 131D6A221BF4D6CC009FDD72 /* libPods.a */; };
 		131D6A261BF4D95F009FDD72 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A251BF4D95F009FDD72 /* RootViewController.m */; };
+		131D6A281BF58C81009FDD72 /* Btn_LeftMenu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A271BF58C81009FDD72 /* Btn_LeftMenu@2x.png */; };
+		131D6A2A1BF5B0D4009FDD72 /* Icon_Feedback@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A291BF5B0D3009FDD72 /* Icon_Feedback@2x.png */; };
 		132263781B9825D400D21637 /* UIDevice+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263771B9825D400D21637 /* UIDevice+Util.m */; };
 		132263A21B9C7DC200D21637 /* LocalNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A11B9C7DC200D21637 /* LocalNotificationManager.m */; };
 		132263A81B9C809400D21637 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A51B9C809400D21637 /* FirstViewController.m */; };
@@ -167,6 +169,8 @@
 		131D6A221BF4D6CC009FDD72 /* libPods.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libPods.a; path = "Pods/../build/Release-iphoneos/libPods.a"; sourceTree = "<group>"; };
 		131D6A241BF4D95F009FDD72 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		131D6A251BF4D95F009FDD72 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
+		131D6A271BF58C81009FDD72 /* Btn_LeftMenu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_LeftMenu@2x.png"; sourceTree = "<group>"; };
+		131D6A291BF5B0D3009FDD72 /* Icon_Feedback@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Feedback@2x.png"; sourceTree = "<group>"; };
 		132263761B9825D400D21637 /* UIDevice+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Util.h"; sourceTree = "<group>"; };
 		132263771B9825D400D21637 /* UIDevice+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Util.m"; sourceTree = "<group>"; };
 		132263A01B9C7DC200D21637 /* LocalNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalNotificationManager.h; sourceTree = "<group>"; };
@@ -683,6 +687,7 @@
 		135B220B1B92B2B5005CE84A /* Button */ = {
 			isa = PBXGroup;
 			children = (
+				131D6A271BF58C81009FDD72 /* Btn_LeftMenu@2x.png */,
 				135B220C1B92B2B5005CE84A /* Btn_Add@2x.png */,
 				1385B47F1BC9EF9900CB208C /* Btn_AddPhoto@2x.png */,
 				1385B4811BCA712400CB208C /* Btn_Delete@2x.png */,
@@ -878,6 +883,7 @@
 			children = (
 				13A6ACAE1BC55B9D005A02F9 /* Icon_Alarm@2x.png */,
 				137700DD1B953226008C83FD /* Icon_Arrow_Right@2x.png */,
+				131D6A291BF5B0D3009FDD72 /* Icon_Feedback@2x.png */,
 				137701021B95DF67008C83FD /* Icon_Gender_F_Normal@2x.png */,
 				137701031B95DF67008C83FD /* Icon_Gender_F_Selected@2x.png */,
 				137701041B95DF67008C83FD /* Icon_Gender_M_Normal@2x.png */,
@@ -1119,6 +1125,7 @@
 				135B220D1B92B2B5005CE84A /* Btn_Add@2x.png in Resources */,
 				136DF5D81BEDE87D001D6496 /* ShareSDK.bundle in Resources */,
 				13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */,
+				131D6A281BF58C81009FDD72 /* Btn_LeftMenu@2x.png in Resources */,
 				1368F97D1BB6538F00CC7E63 /* Btn_LogIn_QQ@2x.png in Resources */,
 				137701101B9680AC008C83FD /* Bg_Input_Gray@2x.png in Resources */,
 				1361AFD21BCBB54800DD5FFB /* Btn_Down.png in Resources */,
@@ -1128,6 +1135,7 @@
 				136DF5891BEC76D9001D6496 /* Icon_Plan_Day@2x.png in Resources */,
 				135B21971B900394005CE84A /* Images.xcassets in Resources */,
 				1368F97F1BB6538F00CC7E63 /* Btn_LogIn_Wechat@2x.png in Resources */,
+				131D6A2A1BF5B0D4009FDD72 /* Icon_Feedback@2x.png in Resources */,
 				1361AFC91BCBA5E700DD5FFB /* DoPhotoCell.xib in Resources */,
 				13A6ACAD1BC551EE005A02F9 /* Btn_Photo_Delete@2x.png in Resources */,
 				135B21CE1B909644005CE84A /* avatarDefault@2x.png in Resources */,
