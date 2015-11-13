@@ -10,6 +10,7 @@
 #import "PhotoCell.h"
 #import "ThreeViewController.h"
 #import "AddPhotoViewController.h"
+#import <RESideMenu/RESideMenu.h>
 #import "PhotoDetailViewController.h"
 
 @interface ThreeViewController ()
@@ -21,13 +22,11 @@
 @implementation ThreeViewController
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
     
     self.title = str_ViewTitle_3;
     self.tabBarItem.title = str_ViewTitle_3;
-    
-    [self createRightBarButton];
+    [self createNavBarButton];
     
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
@@ -40,36 +39,36 @@
     [NotificationCenter addObserver:self selector:@selector(refreshTable) name:Notify_Photo_RefreshOnly object:nil];
     
     [self reloadPhotoData];
-    
 }
 
 - (void)didReceiveMemoryWarning {
     
     [super didReceiveMemoryWarning];
-    
 }
 
 - (void)dealloc {
     
     [NotificationCenter removeObserver:self];
-    
 }
 
-#pragma mark -添加导航栏按钮
-- (void)createRightBarButton {
+- (void)createNavBarButton {
     
+    self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction:)];
     self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
-    
 }
 
 #pragma mark - action
+- (void)leftMenuAction:(UIButton *)button {
+    
+    [self.sideMenuViewController presentLeftMenuViewController];
+}
+
 - (void)addAction:(UIButton *)button {
     
     AddPhotoViewController *controller = [[AddPhotoViewController alloc] init];
     controller.operationType = Add;
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
-    
 }
 
 - (void)reloadPhotoData {
@@ -78,13 +77,11 @@
     self.photoArray = [NSArray arrayWithArray:[PlanCache getPhoto]];
     [self.tableView reloadData];
     [self hideHUD];
-    
 }
 
 - (void)refreshTable {
     
     [self.tableView reloadData];
-    
 }
 
 #pragma mark - Table view data source
@@ -102,9 +99,7 @@
     } else {
         
         return 5;
-        
     }
-    
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -117,7 +112,6 @@
         
         return 44.f;
     }
-    
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -167,9 +161,7 @@
         controller.photo = self.photoArray[indexPath.row];
         controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
-        
     }
-    
 }
 
 @end

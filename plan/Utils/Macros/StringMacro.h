@@ -17,6 +17,7 @@
 #define str_ViewTitle_1 @"我的"
 #define str_ViewTitle_2 @"计划"
 #define str_ViewTitle_3 @"影像"
+#define str_ViewTitle_4 @"任务"
 #define str_NickName @"昵称"
 #define str_FirstView_1 @"假如你可以活到"
 #define str_FirstView_2 @"岁"

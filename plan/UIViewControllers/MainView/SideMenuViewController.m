@@ -6,9 +6,18 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
+#import <RESideMenu.h>
+#import "HelpViewController.h"
+#import "AboutViewController.h"
+#import "SettingsViewController.h"
 #import "SideMenuViewController.h"
+#import "PersonalCenterViewController.h"
+#import <MessageUI/MFMailComposeViewController.h>
 
-@interface SideMenuViewController ()
+@interface SideMenuViewController () <MFMailComposeViewControllerDelegate> {
+    NSMutableArray *menuImgArray;
+    NSMutableArray *menuArray;
+}
 
 @end
 
@@ -18,13 +27,27 @@
     [super viewDidLoad];
     
     self.tableView.bounces = NO;
-    self.tableView.backgroundColor = [UIColor whiteColor];
+    self.tableView.backgroundColor = color_GrayDark;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    
+    [NotificationCenter addObserver:self selector:@selector(reload) name:Notify_Settings_Save object:nil];
+    
+    [self setMenuArray];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)dealloc {
+    [NotificationCenter removeObserver:self];
+}
+
+- (void)setMenuArray {
+    
+    menuImgArray = [NSMutableArray arrayWithObjects:png_Icon_Feedback, png_Icon_Feedback, png_Icon_Feedback, png_Icon_Feedback, png_Icon_Feedback, png_Icon_Feedback, nil];
+    menuArray = [NSMutableArray arrayWithObjects:str_More_PersonalCenter, str_ViewTitle_4, str_More_Help, str_More_Like, str_More_Feedback, str_More_About, nil];
 }
 
 #pragma mark - Table view data source
@@ -35,7 +58,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 
     UIView *headerView = [UIView new];
-    headerView.backgroundColor = [UIColor clearColor];
+    headerView.backgroundColor = color_GrayDark;
     
     UIImageView *avatar = [UIImageView new];
     avatar.contentMode = UIViewContentModeScaleAspectFit;
@@ -43,7 +66,7 @@
     avatar.userInteractionEnabled = YES;
     avatar.translatesAutoresizingMaskIntoConstraints = NO;
     [headerView addSubview:avatar];
-    UIImage *image = [UIImage imageNamed:png_AvatarDefault];
+    UIImage *image = [UIImage imageNamed:png_AvatarBg];
     if ([Config shareInstance].settings.avatar) {
         
         image = [Config shareInstance].settings.avatar;
@@ -81,143 +104,141 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 5;
+    return menuArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 50;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell *cell = [UITableViewCell new];
-    
     cell.backgroundColor = [UIColor clearColor];
+    if (menuArray.count == 0) {
+        return cell;
+    }
     
     UIView *selectedBackground = [UIView new];
     selectedBackground.backgroundColor = color_Blue;
     [cell setSelectedBackgroundView:selectedBackground];
-    
-    cell.imageView.image = [UIImage imageNamed:@[@"sidemenu_QA", @"sidemenu-software", @"sidemenu_blog", @"sidemenu_setting", @"sidemenu-night"][indexPath.row]];
-    cell.textLabel.text = @[@"技术问答", @"开源软件", @"博客区", @"设置", @"夜间模式", @"注销"][indexPath.row];
-    
-//    if (((AppDelegate *)[UIApplication sharedApplication].delegate).inNightMode){
-//        cell.textLabel.textColor = [UIColor colorWithRed:0.8 green:0.8 blue:0.8 alpha:1.0];
-//        if (indexPath.row == 4) {
-//            cell.textLabel.text = @"日间模式";
-//            cell.imageView.image = [UIImage imageNamed:@"sidemenu-day"];
-//        }
-//    } else {
-//        cell.textLabel.textColor = [UIColor colorWithHex:0x555555];
-//        if (indexPath.row == 4) {
-//            cell.textLabel.text = @"夜间模式";
-//            cell.imageView.image = [UIImage imageNamed:@"sidemenu-night"];
-//        }
-//    }
-    cell.textLabel.font = [UIFont systemFontOfSize:19];
-    cell.selectedBackgroundView = [[UIView alloc] initWithFrame:cell.frame];
-    cell.selectedBackgroundView.backgroundColor = [UIColor whiteColor];
+    cell.imageView.image = [UIImage imageNamed:menuImgArray[indexPath.row]];
+    cell.textLabel.text = menuArray[indexPath.row];
+    cell.textLabel.font = font_Normal_16;
+    cell.textLabel.textColor = [UIColor whiteColor];
     
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     switch (indexPath.row) {
         case 0: {
-//            SwipableViewController *newsSVC = [[SwipableViewController alloc] initWithTitle:@"技术问答"
-//                                                                               andSubTitles:@[@"提问", @"分享", @"综合", @"职业", @"站务"]
-//                                                                             andControllers:@[
-//                                                                                              [[PostsViewController alloc] initWithPostsType:PostsTypeQA],
-//                                                                                              [[PostsViewController alloc] initWithPostsType:PostsTypeShare],
-//                                                                                              [[PostsViewController alloc] initWithPostsType:PostsTypeSynthesis],
-//                                                                                              [[PostsViewController alloc] initWithPostsType:PostsTypeCaree],
-//                                                                                              [[PostsViewController alloc] initWithPostsType:PostsTypeSiteManager]
-//                                                                                              ]];
-//            
-//            [self setContentViewController:newsSVC];
-            
+            PersonalCenterViewController *controller = [[PersonalCenterViewController alloc] init];
+            [self setContentViewController:controller];
             break;
         }
         case 1: {
-//            SwipableViewController *softwaresSVC = [[SwipableViewController alloc] initWithTitle:@"开源软件"
-//                                                                                    andSubTitles:@[@"分类", @"推荐", @"最新", @"热门", @"国产"]
-//                                                                                  andControllers:@[
-//                                                                                                   [[SoftwareCatalogVC alloc] initWithTag:0],
-//                                                                                                   [[SoftwareListVC alloc] initWithSoftwaresType:SoftwaresTypeRecommended],
-//                                                                                                   [[SoftwareListVC alloc] initWithSoftwaresType:SoftwaresTypeNewest],
-//                                                                                                   [[SoftwareListVC alloc] initWithSoftwaresType:SoftwaresTypeHottest],
-//                                                                                                   [[SoftwareListVC alloc] initWithSoftwaresType:SoftwaresTypeCN]
-//                                                                                                   ]];
-//            
-//            [self setContentViewController:softwaresSVC];
             
             break;
         }
-        case 2: {
-//            SwipableViewController *blogsSVC = [[SwipableViewController alloc] initWithTitle:@"博客区"
-//                                                                                andSubTitles:@[@"最新博客", @"推荐阅读"]
-//                                                                              andControllers:@[
-//                                                                                               [[BlogsViewController alloc] initWithBlogsType:BlogTypeLatest],
-//                                                                                               [[BlogsViewController alloc] initWithBlogsType:BlogTypeRecommended]
-//                                                                                               ]];
-//            
-//            [self setContentViewController:blogsSVC];
-            
+        case 2: {//常见问题
+            HelpViewController *controller = [[HelpViewController alloc] init];
+            [self setContentViewController:controller];
             break;
         }
-        case 3: {
-//            SettingsPage *settingPage = [SettingsPage new];
-//            [self setContentViewController:settingPage];
-            
+        case 3: {//五星鼓励
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/app/id983206049?mt=8"]];
+            [self.sideMenuViewController hideMenuViewController];
             break;
         }
-        case 4: {
-//            isNight = [Config getMode];
-//            if (isNight) {
-//                ((AppDelegate *)[UIApplication sharedApplication].delegate).inNightMode = NO;
-//            } else {
-//                ((AppDelegate *)[UIApplication sharedApplication].delegate).inNightMode = YES;
-//            }
-//            self.tableView.backgroundColor = [UIColor titleBarColor];
-//            [Config saveWhetherNightMode:!isNight];
-//            [[NSNotificationCenter defaultCenter] postNotificationName:@"dawnAndNight" object:nil];
-            //            isNight = !isNight;
+        case 4: {//建议反馈
+            Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
+            if (!mailClass) {
+                [self alertButtonMessage:str_More_Feedback_Tips1];
+                return;
+            }
+            if (![mailClass canSendMail]) {
+                [self alertButtonMessage:str_More_Feedback_Tips2];
+                return;
+            }
+            [self displayMailPicker];
+            break;
+        }
+        case 5: {//关于我们
+            AboutViewController *controller = [[AboutViewController alloc]init];
+            [self setContentViewController:controller];
         }
         default: break;
     }
 }
 
-
-- (void)setContentViewController:(UIViewController *)viewController
-{
-//    viewController.hidesBottomBarWhenPushed = YES;
-//    UINavigationController *nav = (UINavigationController *)((UITabBarController *)self.sideMenuViewController.contentViewController).selectedViewController;
-//    //UIViewController *vc = nav.viewControllers[0];
-//    //vc.navigationItem.backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStyleBordered target:nil action:nil];
-//    [nav pushViewController:viewController animated:NO];
-//    
-//    [self.sideMenuViewController hideMenuViewController];
+- (void)setContentViewController:(UIViewController *)viewController {
+    viewController.hidesBottomBarWhenPushed = YES;
+    UINavigationController *navController = (UINavigationController *)((UITabBarController *)self.sideMenuViewController.contentViewController).selectedViewController;
+    [navController pushViewController:viewController animated:NO];
+    
+    [self.sideMenuViewController hideMenuViewController];
 }
 
-#pragma mark - 点击登录
 - (void)pushLoginPage {
-//    if ([Config getOwnID] == 0) {
-//        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
-//        LoginViewController *loginVC = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
-//        [self setContentViewController:loginVC];
-//    } else {
-//        return;
-//    }
+    UINavigationController *navController = (UINavigationController *)((UITabBarController *)self.sideMenuViewController.contentViewController).selectedViewController;
+    SettingsViewController *controller = [[SettingsViewController alloc] init];
+    controller.hidesBottomBarWhenPushed = YES;
+    [navController pushViewController:controller animated:YES];
+    
+    [self.sideMenuViewController hideMenuViewController];
 }
 
-- (void)reload
-{
+- (void)reload {
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
+}
+
+
+//调出邮件发送窗口
+- (void)displayMailPicker {
+    
+    MFMailComposeViewController *mailPicker = [[MFMailComposeViewController alloc] init];
+    mailPicker.mailComposeDelegate = self;
+    
+    //设置主题
+    NSString *device = [NSString stringWithFormat:@"（%@，iOS%@）", [CommonFunction getDeviceType], [CommonFunction getiOSVersion]];
+    NSString *subject = [NSString stringWithFormat:@"%@ V%@%@", str_More_Feedback_Tips8, [CommonFunction getAppVersion], device];
+    [mailPicker setSubject:subject];
+    //添加收件人
+    NSArray *toRecipients = [NSArray arrayWithObject:str_Feedback_Email];
+    [mailPicker setToRecipients: toRecipients];
+    
+    [mailPicker setMessageBody:str_More_Feedback_Tips3 isHTML:YES];
+    [self presentViewController:mailPicker animated:YES completion:nil];
+    
+}
+
+#pragma mark - 实现 MFMailComposeViewControllerDelegate
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+    
+    //关闭邮件发送窗口
+    [controller dismissViewControllerAnimated:YES completion:nil];
+    NSString *msg;
+    switch (result) {
+        case MFMailComposeResultCancelled:
+            msg = str_More_Feedback_Tips4;
+            break;
+        case MFMailComposeResultSaved:
+            [self alertToastMessage:str_More_Feedback_Tips5];
+            break;
+        case MFMailComposeResultSent:
+            [self alertToastMessage:str_More_Feedback_Tips6];
+            break;
+        case MFMailComposeResultFailed:
+            [self alertButtonMessage:str_More_Feedback_Tips7];
+            break;
+        default:
+            msg = @"";
+            break;
+    }
 }
 
 @end

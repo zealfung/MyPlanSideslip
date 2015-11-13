@@ -9,9 +9,9 @@
 #import "PlanCache.h"
 #import "ThreeSubView.h"
 #import "UIButton+Util.h"
-#import "MoreViewController.h"
 #import "FirstViewController.h"
 #import "AddPlanViewController.h"
+#import "SettingsViewController.h"
 #import "SideMenuViewController.h"
 #import <RESideMenu/RESideMenu.h>
 
@@ -35,7 +35,6 @@ NSUInteger const kSecondsPerDay = 86400;
     NSUInteger xMiddle;
     NSUInteger yOffset;
     NSUInteger ySpace;
-    
 }
 
 @end
@@ -71,16 +70,14 @@ NSUInteger const kSecondsPerDay = 86400;
 - (void)dealloc {
     
     [NotificationCenter removeObserver:self];
-    
 }
 
 - (void)createNavBarButton {
     
-    self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
-    
+    self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction:)];
 }
 
-- (void)addAction:(UIButton *)button {
+- (void)leftMenuAction:(UIButton *)button {
     
     [self.sideMenuViewController presentLeftMenuViewController];
 }
@@ -109,13 +106,11 @@ NSUInteger const kSecondsPerDay = 86400;
     controller.plan = plan;
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
-    
 }
 
 - (void)refreshView:(NSNotification*)notification {
     
     [self loadCustomView];
-    
 }
 
 - (void)loadCustomView {
@@ -126,11 +121,9 @@ NSUInteger const kSecondsPerDay = 86400;
     [self createAvatar];
     [self createLabelText];
     [self createStatisticsView];
-    
 }
 
 - (void)createAvatar {
-    
     [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     NSUInteger avatarBgSize = WIDTH_FULL_SCREEN / 3;
@@ -140,7 +133,6 @@ NSUInteger const kSecondsPerDay = 86400;
     ySpace = HEIGHT_FULL_SCREEN / 25;
     
     UIImage *bgImage = [UIImage imageNamed:png_AvatarBg];
-    
     UIImageView *avatarBg = [[UIImageView alloc] initWithFrame:CGRectMake(xMiddle - avatarBgSize / 2, yOffset, avatarBgSize, avatarBgSize)];
     avatarBg.backgroundColor = [UIColor clearColor];
     avatarBg.image = bgImage;
@@ -148,7 +140,7 @@ NSUInteger const kSecondsPerDay = 86400;
     avatarBg.clipsToBounds = YES;
     avatarBg.userInteractionEnabled = YES;
     avatarBg.contentMode = UIViewContentModeScaleAspectFit;
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toMoreViewController)];
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toSettingsViewController)];
     [avatarBg addGestureRecognizer:singleTap];
     [self.view addSubview:avatarBg];
     {
@@ -170,7 +162,6 @@ NSUInteger const kSecondsPerDay = 86400;
     yOffset += avatarBgSize + ySpace;
 }
 
-
 - (void)createLabelText {
     
     NSString *nickname = str_NickName;
@@ -189,7 +180,7 @@ NSUInteger const kSecondsPerDay = 86400;
     __weak typeof(self) weakSelf = self;
     ThreeSubView *nickNameSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(xMiddle, yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:^{
         
-        [weakSelf toMoreViewController];
+        [weakSelf toSettingsViewController];
         
     } rightButtonSelectBlock:nil];
     
@@ -222,16 +213,13 @@ NSUInteger const kSecondsPerDay = 86400;
     [liftetimeSubView.leftButton.titleLabel setFont:font_Normal_16];
     [liftetimeSubView.leftButton setAllTitleColor:color_Black];
     [liftetimeSubView.leftButton setAllTitle:str_FirstView_1];
-    
     [liftetimeSubView.centerButton.titleLabel setFont:font_Normal_24];
     [liftetimeSubView.centerButton setAllTitleColor:color_Red];
     [liftetimeSubView.centerButton setAllTitle:[NSString stringWithFormat:@"%zd",lifetime]];
-    
     [liftetimeSubView.rightButton.titleLabel setFont:font_Normal_16];
     [liftetimeSubView.rightButton setAllTitleColor:color_Black];
     [liftetimeSubView.rightButton setAllTitle:str_FirstView_2];
     [liftetimeSubView autoLayout];
-    
     [self.view addSubview:liftetimeSubView];
     
     liftetimeView = liftetimeSubView;
@@ -278,7 +266,6 @@ NSUInteger const kSecondsPerDay = 86400;
     [daysLeftSubView.rightButton setAllTitleColor:color_Black];
     [daysLeftSubView.rightButton setAllTitle:str_FirstView_4];
     [daysLeftSubView autoLayout];
-    
     [self.view addSubview:daysLeftSubView];
     
     daysLeftView = daysLeftSubView;
@@ -293,21 +280,16 @@ NSUInteger const kSecondsPerDay = 86400;
     yOffset += daysLeftView.frame.size.height + ySpace;
     
     ThreeSubView *secondsLeftSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(xMiddle, yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
-    
     [secondsLeftSubView.leftButton.titleLabel setFont:font_Normal_16];
     [secondsLeftSubView.leftButton setAllTitleColor:color_Black];
     [secondsLeftSubView.leftButton setAllTitle:str_FirstView_5];
-    
     [secondsLeftSubView.centerButton.titleLabel setFont:font_Normal_24];
     [secondsLeftSubView.centerButton setAllTitleColor:color_Red];
     [secondsLeftSubView.centerButton setAllTitle:[NSString stringWithFormat:@"%zd",kSecondsPerDay]];
-    
     [secondsLeftSubView.rightButton.titleLabel setFont:font_Normal_16];
     [secondsLeftSubView.rightButton setAllTitleColor:color_Black];
     [secondsLeftSubView.rightButton setAllTitle:str_FirstView_6];
-    
     [secondsLeftSubView autoLayout];
-    
     [self.view addSubview:secondsLeftSubView];
     
     secondsLeftView = secondsLeftSubView;
@@ -320,7 +302,6 @@ NSUInteger const kSecondsPerDay = 86400;
     
     secondsLeftView.frame = secondsFrame;
     timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(secondsCountdown) userInfo:nil repeats:YES];
-    
 }
 
 - (void)createStatisticsView {
@@ -344,58 +325,47 @@ NSUInteger const kSecondsPerDay = 86400;
     statisticsView = statisticsBgView;
     
     ThreeSubView *topTitleView = [[ThreeSubView alloc] initWithFrame:CGRectMake(subviewWidth, 0, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
-    
     [topTitleView.leftButton.titleLabel setFont:font_Normal_16];
     [topTitleView.leftButton setAllTitleColor:color_Black];
     [topTitleView.leftButton setAllTitle:str_FirstView_7];
     topTitleView.fixLeftWidth = subviewWidth;
-    
     [topTitleView.centerButton.titleLabel setFont:font_Normal_16];
     [topTitleView.centerButton setAllTitleColor:color_Black];
     [topTitleView.centerButton setAllTitle:str_FirstView_8];
     topTitleView.fixCenterWidth = subviewWidth;
-    
     [topTitleView.rightButton.titleLabel setFont:font_Normal_16];
     [topTitleView.rightButton setAllTitleColor:color_Black];
     [topTitleView.rightButton setAllTitle:str_FirstView_9];
     topTitleView.fixRightWidth = subviewWidth;
-    
     [self addSeparatorForBottom:topTitleView];
     [topTitleView autoLayout];
     [statisticsView addSubview:topTitleView];
     
-    
     ThreeSubView *topTitleView1 = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, 0, subviewWidth, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
-    
     [topTitleView1.leftButton.titleLabel setFont:font_Normal_16];
     [topTitleView1.leftButton setAllTitleColor:color_Black];
     [topTitleView1.leftButton setAllTitle:str_FirstView_10];
     topTitleView1.fixLeftWidth = subviewWidth;
-    
     [self addSeparatorForRight:topTitleView1];
     [self addSeparatorForBottom:topTitleView1];
     [topTitleView1 autoLayout];
     [statisticsView addSubview:topTitleView1];
     
     ThreeSubView *topTitleView2 = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight, subviewWidth, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
-    
     [topTitleView2.leftButton.titleLabel setFont:font_Normal_16];
     [topTitleView2.leftButton setAllTitleColor:color_Blue];
     [topTitleView2.leftButton setAllTitle:str_FirstView_11];
     topTitleView2.fixLeftWidth = subviewWidth;
-    
     [self addSeparatorForRight:topTitleView2];
     [self addSeparatorForBottom:topTitleView2];
     [topTitleView2 autoLayout];
     [statisticsView addSubview:topTitleView2];
     
     ThreeSubView *topTitleView3 = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight * 2, subviewWidth, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
-    
     [topTitleView3.leftButton.titleLabel setFont:font_Normal_16];
     [topTitleView3.leftButton setAllTitleColor:color_Blue];
     [topTitleView3.leftButton setAllTitle:str_FirstView_12];
     topTitleView3.fixLeftWidth = subviewWidth;
-    
     [self addSeparatorForRight:topTitleView3];
     [topTitleView3 autoLayout];
     [statisticsView addSubview:topTitleView3];
@@ -457,7 +427,6 @@ NSUInteger const kSecondsPerDay = 86400;
         [longtermStatisticsView autoLayout];
         [statisticsView addSubview:longtermStatisticsView];
     }
-    
 }
 
 - (void)addSeparatorForTop:(UIView *)view {
@@ -465,7 +434,6 @@ NSUInteger const kSecondsPerDay = 86400;
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(view.bounds) - 1, 1)];
     separator.backgroundColor = color_GrayLight;
     [view addSubview:separator];
-    
 }
 
 - (void)addSeparatorForBottom:(UIView *)view {
@@ -473,7 +441,6 @@ NSUInteger const kSecondsPerDay = 86400;
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(view.bounds) - 1, CGRectGetWidth(view.bounds) - 1, 1)];
     separator.backgroundColor = color_GrayLight;
     [view addSubview:separator];
-    
 }
 
 - (void)addSeparatorForLeft:(UIView *)view {
@@ -481,7 +448,6 @@ NSUInteger const kSecondsPerDay = 86400;
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, CGRectGetHeight(view.bounds))];
     separator.backgroundColor = color_GrayLight;
     [view addSubview:separator];
-    
 }
 
 - (void)addSeparatorForRight:(UIView *)view {
@@ -489,7 +455,6 @@ NSUInteger const kSecondsPerDay = 86400;
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(view.bounds) - 1, 0, 1, CGRectGetHeight(view.bounds))];
     separator.backgroundColor = color_GrayLight;
     [view addSubview:separator];
-    
 }
 
 - (void)secondsCountdown {
@@ -522,18 +487,14 @@ NSUInteger const kSecondsPerDay = 86400;
         CGRect frame = daysLeftView.frame;
         frame.origin.x = self.view.frame.size.width / 2 - daysLeftView.frame.size.width / 2;
         daysLeftView.frame = frame;
-        
     }
-    
 }
 
-#pragma mark －进入更多
--(void)toMoreViewController {
-    
-    MoreViewController *controller = [[MoreViewController alloc]init];
+-(void)toSettingsViewController {
+
+    SettingsViewController *controller = [[SettingsViewController alloc]init];
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
-    
 }
 
 @end
