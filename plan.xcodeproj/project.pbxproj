@@ -14,7 +14,12 @@
 		131D6A231BF4D6CC009FDD72 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 131D6A221BF4D6CC009FDD72 /* libPods.a */; };
 		131D6A261BF4D95F009FDD72 /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A251BF4D95F009FDD72 /* RootViewController.m */; };
 		131D6A281BF58C81009FDD72 /* Btn_LeftMenu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A271BF58C81009FDD72 /* Btn_LeftMenu@2x.png */; };
-		131D6A2A1BF5B0D4009FDD72 /* Icon_Feedback@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A291BF5B0D3009FDD72 /* Icon_Feedback@2x.png */; };
+		131D6A2A1BF5B0D4009FDD72 /* Icon_Menu_Feedback@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A291BF5B0D3009FDD72 /* Icon_Menu_Feedback@2x.png */; };
+		131D6A401BF6CFAA009FDD72 /* Icon_Menu_About@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A3B1BF6CFAA009FDD72 /* Icon_Menu_About@2x.png */; };
+		131D6A411BF6CFAA009FDD72 /* Icon_Menu_FiveStar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A3C1BF6CFAA009FDD72 /* Icon_Menu_FiveStar@2x.png */; };
+		131D6A421BF6CFAA009FDD72 /* Icon_Menu_Help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A3D1BF6CFAA009FDD72 /* Icon_Menu_Help@2x.png */; };
+		131D6A431BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A3E1BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png */; };
+		131D6A441BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A3F1BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png */; };
 		132263781B9825D400D21637 /* UIDevice+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263771B9825D400D21637 /* UIDevice+Util.m */; };
 		132263A21B9C7DC200D21637 /* LocalNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A11B9C7DC200D21637 /* LocalNotificationManager.m */; };
 		132263A81B9C809400D21637 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A51B9C809400D21637 /* FirstViewController.m */; };
@@ -170,7 +175,12 @@
 		131D6A241BF4D95F009FDD72 /* RootViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		131D6A251BF4D95F009FDD72 /* RootViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		131D6A271BF58C81009FDD72 /* Btn_LeftMenu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_LeftMenu@2x.png"; sourceTree = "<group>"; };
-		131D6A291BF5B0D3009FDD72 /* Icon_Feedback@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Feedback@2x.png"; sourceTree = "<group>"; };
+		131D6A291BF5B0D3009FDD72 /* Icon_Menu_Feedback@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Menu_Feedback@2x.png"; sourceTree = "<group>"; };
+		131D6A3B1BF6CFAA009FDD72 /* Icon_Menu_About@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Menu_About@2x.png"; sourceTree = "<group>"; };
+		131D6A3C1BF6CFAA009FDD72 /* Icon_Menu_FiveStar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Menu_FiveStar@2x.png"; sourceTree = "<group>"; };
+		131D6A3D1BF6CFAA009FDD72 /* Icon_Menu_Help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Menu_Help@2x.png"; sourceTree = "<group>"; };
+		131D6A3E1BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Menu_PersonalCenter@2x.png"; sourceTree = "<group>"; };
+		131D6A3F1BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Menu_PhotoLine@2x.png"; sourceTree = "<group>"; };
 		132263761B9825D400D21637 /* UIDevice+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Util.h"; sourceTree = "<group>"; };
 		132263771B9825D400D21637 /* UIDevice+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Util.m"; sourceTree = "<group>"; };
 		132263A01B9C7DC200D21637 /* LocalNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalNotificationManager.h; sourceTree = "<group>"; };
@@ -883,12 +893,17 @@
 			children = (
 				13A6ACAE1BC55B9D005A02F9 /* Icon_Alarm@2x.png */,
 				137700DD1B953226008C83FD /* Icon_Arrow_Right@2x.png */,
-				131D6A291BF5B0D3009FDD72 /* Icon_Feedback@2x.png */,
 				137701021B95DF67008C83FD /* Icon_Gender_F_Normal@2x.png */,
 				137701031B95DF67008C83FD /* Icon_Gender_F_Selected@2x.png */,
 				137701041B95DF67008C83FD /* Icon_Gender_M_Normal@2x.png */,
 				137701051B95DF67008C83FD /* Icon_Gender_M_Selected@2x.png */,
 				137700EA1B953915008C83FD /* Icon_Logo_512@2x.png */,
+				131D6A3B1BF6CFAA009FDD72 /* Icon_Menu_About@2x.png */,
+				131D6A291BF5B0D3009FDD72 /* Icon_Menu_Feedback@2x.png */,
+				131D6A3C1BF6CFAA009FDD72 /* Icon_Menu_FiveStar@2x.png */,
+				131D6A3D1BF6CFAA009FDD72 /* Icon_Menu_Help@2x.png */,
+				131D6A3E1BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png */,
+				131D6A3F1BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png */,
 				136DF5821BEC76D9001D6496 /* Icon_Percent_Day@2x.png */,
 				136DF5831BEC76D9001D6496 /* Icon_Percent_Long@2x.png */,
 				136DF5841BEC76D9001D6496 /* Icon_Photo@2x.png */,
@@ -1098,6 +1113,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1361AFD31BCBB54800DD5FFB /* Btn_Down@2x.png in Resources */,
+				131D6A421BF6CFAA009FDD72 /* Icon_Menu_Help@2x.png in Resources */,
 				137700BB1B93E56A008C83FD /* Main.storyboard in Resources */,
 				137700EB1B953915008C83FD /* Icon_Logo_512@2x.png in Resources */,
 				1361AFC71BCBA5E700DD5FFB /* DoImagePickerController.xib in Resources */,
@@ -1110,9 +1126,12 @@
 				137700BC1B93E56A008C83FD /* LaunchScreen.xib in Resources */,
 				1385B47C1BC9E50D00CB208C /* Btn_Edit@2x.png in Resources */,
 				1361AFD51BCBB54800DD5FFB /* Btn_Show@2x.png in Resources */,
+				131D6A441BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png in Resources */,
+				131D6A401BF6CFAA009FDD72 /* Icon_Menu_About@2x.png in Resources */,
 				136DF5861BEC76D9001D6496 /* Icon_Percent_Day@2x.png in Resources */,
 				135B21CD1B909644005CE84A /* avatarBg@2x.png in Resources */,
 				135B22301B9301C9005CE84A /* Btn_Plan_Delete@2x.png in Resources */,
+				131D6A431BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png in Resources */,
 				133B08441BA458610015E752 /* PlanCell.xib in Resources */,
 				135B22361B932C45005CE84A /* Btn_Save@2x.png in Resources */,
 				1361AFCB1BCBB52E00DD5FFB /* Bg_Line@2x.png in Resources */,
@@ -1133,9 +1152,10 @@
 				137700C31B9429FD008C83FD /* LaunchImage@2x.png in Resources */,
 				13A6ACAF1BC55B9D005A02F9 /* Icon_Alarm@2x.png in Resources */,
 				136DF5891BEC76D9001D6496 /* Icon_Plan_Day@2x.png in Resources */,
+				131D6A411BF6CFAA009FDD72 /* Icon_Menu_FiveStar@2x.png in Resources */,
 				135B21971B900394005CE84A /* Images.xcassets in Resources */,
 				1368F97F1BB6538F00CC7E63 /* Btn_LogIn_Wechat@2x.png in Resources */,
-				131D6A2A1BF5B0D4009FDD72 /* Icon_Feedback@2x.png in Resources */,
+				131D6A2A1BF5B0D4009FDD72 /* Icon_Menu_Feedback@2x.png in Resources */,
 				1361AFC91BCBA5E700DD5FFB /* DoPhotoCell.xib in Resources */,
 				13A6ACAD1BC551EE005A02F9 /* Btn_Photo_Delete@2x.png in Resources */,
 				135B21CE1B909644005CE84A /* avatarDefault@2x.png in Resources */,

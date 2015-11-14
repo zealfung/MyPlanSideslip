@@ -46,7 +46,7 @@
 
 - (void)setMenuArray {
     
-    menuImgArray = [NSMutableArray arrayWithObjects:png_Icon_Feedback, png_Icon_Feedback, png_Icon_Feedback, png_Icon_Feedback, png_Icon_Feedback, png_Icon_Feedback, nil];
+    menuImgArray = [NSMutableArray arrayWithObjects:png_Icon_Menu_PersonalCenter, png_Icon_Menu_PhotoLine, png_Icon_Menu_Help, png_Icon_Menu_FiveStar, png_Icon_Menu_Feedback, png_Icon_Menu_About, nil];
     menuArray = [NSMutableArray arrayWithObjects:str_More_PersonalCenter, str_ViewTitle_4, str_More_Help, str_More_Like, str_More_Feedback, str_More_About, nil];
 }
 

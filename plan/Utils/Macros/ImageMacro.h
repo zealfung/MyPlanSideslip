@@ -45,7 +45,12 @@
 #define png_Icon_Plan_Long @"Icon_Plan_Long"
 #define png_Icon_Plan_Day @"Icon_Plan_Day"
 #define png_Icon_Photo @"Icon_Photo"
-#define png_Icon_Feedback @"Icon_Feedback"
+#define png_Icon_Menu_About @"Icon_Menu_About"
+#define png_Icon_Menu_Feedback @"Icon_Menu_Feedback"
+#define png_Icon_Menu_FiveStar @"Icon_Menu_FiveStar"
+#define png_Icon_Menu_Help @"Icon_Menu_Help"
+#define png_Icon_Menu_PersonalCenter @"Icon_Menu_PersonalCenter"
+#define png_Icon_Menu_PhotoLine @"Icon_Menu_PhotoLine"
 
 #define png_Btn_LogIn_QQ @"Btn_LogIn_QQ"
 #define png_Btn_LogIn_Wechat @"Btn_LogIn_Wechat"
