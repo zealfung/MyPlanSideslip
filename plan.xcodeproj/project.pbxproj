@@ -20,6 +20,9 @@
 		131D6A421BF6CFAA009FDD72 /* Icon_Menu_Help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A3D1BF6CFAA009FDD72 /* Icon_Menu_Help@2x.png */; };
 		131D6A431BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A3E1BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png */; };
 		131D6A441BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A3F1BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png */; };
+		131D6A6B1BFB5D9D009FDD72 /* PersonalCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A681BFB5D9D009FDD72 /* PersonalCenterViewController.m */; };
+		131D6A6C1BFB5D9D009FDD72 /* PieceButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A6A1BFB5D9D009FDD72 /* PieceButton.m */; };
+		131D6A6F1BFB5DDE009FDD72 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A6E1BFB5DDE009FDD72 /* PhotoViewController.m */; };
 		132263781B9825D400D21637 /* UIDevice+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263771B9825D400D21637 /* UIDevice+Util.m */; };
 		132263A21B9C7DC200D21637 /* LocalNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A11B9C7DC200D21637 /* LocalNotificationManager.m */; };
 		132263A81B9C809400D21637 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A51B9C809400D21637 /* FirstViewController.m */; };
@@ -146,9 +149,7 @@
 		13A6ACB11BC5F83A005A02F9 /* ImageDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13A6ACB01BC5F83A005A02F9 /* ImageDefault@2x.png */; };
 		13A6ACC71BC69E61005A02F9 /* PhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A6ACC61BC69E61005A02F9 /* PhotoDetailViewController.m */; };
 		13A6ACCD1BC6A82C005A02F9 /* FullScreenImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A6ACCC1BC6A82C005A02F9 /* FullScreenImageViewController.m */; };
-		13BB1C751BE63F5500412D6D /* PersonalCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BB1C741BE63F5500412D6D /* PersonalCenterViewController.m */; };
 		13BB1C771BE70F6200412D6D /* test@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BB1C761BE70F6200412D6D /* test@2x.png */; };
-		13BB1C7A1BE73D4B00412D6D /* PieceButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 13BB1C791BE73D4B00412D6D /* PieceButton.m */; };
 		13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -181,6 +182,12 @@
 		131D6A3D1BF6CFAA009FDD72 /* Icon_Menu_Help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Menu_Help@2x.png"; sourceTree = "<group>"; };
 		131D6A3E1BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Menu_PersonalCenter@2x.png"; sourceTree = "<group>"; };
 		131D6A3F1BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Menu_PhotoLine@2x.png"; sourceTree = "<group>"; };
+		131D6A671BFB5D9D009FDD72 /* PersonalCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterViewController.h; sourceTree = "<group>"; };
+		131D6A681BFB5D9D009FDD72 /* PersonalCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterViewController.m; sourceTree = "<group>"; };
+		131D6A691BFB5D9D009FDD72 /* PieceButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieceButton.h; sourceTree = "<group>"; };
+		131D6A6A1BFB5D9D009FDD72 /* PieceButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieceButton.m; sourceTree = "<group>"; };
+		131D6A6D1BFB5DDE009FDD72 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
+		131D6A6E1BFB5DDE009FDD72 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		132263761B9825D400D21637 /* UIDevice+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Util.h"; sourceTree = "<group>"; };
 		132263771B9825D400D21637 /* UIDevice+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Util.m"; sourceTree = "<group>"; };
 		132263A01B9C7DC200D21637 /* LocalNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalNotificationManager.h; sourceTree = "<group>"; };
@@ -386,11 +393,7 @@
 		13A6ACC61BC69E61005A02F9 /* PhotoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoDetailViewController.m; sourceTree = "<group>"; };
 		13A6ACCB1BC6A82C005A02F9 /* FullScreenImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenImageViewController.h; sourceTree = "<group>"; };
 		13A6ACCC1BC6A82C005A02F9 /* FullScreenImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenImageViewController.m; sourceTree = "<group>"; };
-		13BB1C731BE63F5500412D6D /* PersonalCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterViewController.h; sourceTree = "<group>"; };
-		13BB1C741BE63F5500412D6D /* PersonalCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterViewController.m; sourceTree = "<group>"; };
 		13BB1C761BE70F6200412D6D /* test@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "test@2x.png"; sourceTree = "<group>"; };
-		13BB1C781BE73D4B00412D6D /* PieceButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieceButton.h; sourceTree = "<group>"; };
-		13BB1C791BE73D4B00412D6D /* PieceButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieceButton.m; sourceTree = "<group>"; };
 		13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Settings@2x.png"; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -447,6 +450,17 @@
 				131D69F41BF466D2009FDD72 /* StatisticsCenter.m */,
 			);
 			path = StatisticsCenter;
+			sourceTree = "<group>";
+		};
+		131D6A661BFB5D9C009FDD72 /* PersonalCenter */ = {
+			isa = PBXGroup;
+			children = (
+				131D6A671BFB5D9D009FDD72 /* PersonalCenterViewController.h */,
+				131D6A681BFB5D9D009FDD72 /* PersonalCenterViewController.m */,
+				131D6A691BFB5D9D009FDD72 /* PieceButton.h */,
+				131D6A6A1BFB5D9D009FDD72 /* PieceButton.m */,
+			);
+			path = PersonalCenter;
 			sourceTree = "<group>";
 		};
 		1322639E1B9C7C7C00D21637 /* NotifyCenter */ = {
@@ -737,6 +751,7 @@
 		135B22111B92C070005CE84A /* UIViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				131D6A661BFB5D9C009FDD72 /* PersonalCenter */,
 				135B22121B92C0AC005CE84A /* FatherController */,
 				132263A31B9C805700D21637 /* MainView */,
 				137700D81B952DA1008C83FD /* More */,
@@ -878,7 +893,6 @@
 			isa = PBXGroup;
 			children = (
 				13BB1C721BE63F0200412D6D /* Share */,
-				13BB1C711BE63EF400412D6D /* PersonalCenter */,
 				137700E61B953501008C83FD /* About */,
 				133B079B1B9FBC620015E752 /* Help */,
 				137700D91B952EE5008C83FD /* MoreViewController.h */,
@@ -960,6 +974,8 @@
 				13A6AC991BC347D6005A02F9 /* PhotoCell.m */,
 				13A6ACC51BC69E61005A02F9 /* PhotoDetailViewController.h */,
 				13A6ACC61BC69E61005A02F9 /* PhotoDetailViewController.m */,
+				131D6A6D1BFB5DDE009FDD72 /* PhotoViewController.h */,
+				131D6A6E1BFB5DDE009FDD72 /* PhotoViewController.m */,
 			);
 			path = Photo;
 			sourceTree = "<group>";
@@ -971,17 +987,6 @@
 				13A6ACCC1BC6A82C005A02F9 /* FullScreenImageViewController.m */,
 			);
 			path = ViewController;
-			sourceTree = "<group>";
-		};
-		13BB1C711BE63EF400412D6D /* PersonalCenter */ = {
-			isa = PBXGroup;
-			children = (
-				13BB1C731BE63F5500412D6D /* PersonalCenterViewController.h */,
-				13BB1C741BE63F5500412D6D /* PersonalCenterViewController.m */,
-				13BB1C781BE73D4B00412D6D /* PieceButton.h */,
-				13BB1C791BE73D4B00412D6D /* PieceButton.m */,
-			);
-			path = PersonalCenter;
 			sourceTree = "<group>";
 		};
 		13BB1C721BE63F0200412D6D /* Share */ = {
@@ -1234,6 +1239,7 @@
 				135B221F1B92E74C005CE84A /* PromptMessage.m in Sources */,
 				132263781B9825D400D21637 /* UIDevice+Util.m in Sources */,
 				1361AFC61BCBA5E700DD5FFB /* DoImagePickerController.m in Sources */,
+				131D6A6F1BFB5DDE009FDD72 /* PhotoViewController.m in Sources */,
 				135B21D21B909955005CE84A /* Config.m in Sources */,
 				133B07A21B9FBCA30015E752 /* HelpViewController.m in Sources */,
 				135B22091B92B126005CE84A /* UIViewController+Util.m in Sources */,
@@ -1255,14 +1261,15 @@
 				137701131B9683E3008C83FD /* CommonFunction.m in Sources */,
 				135B21DC1B90A145005CE84A /* UIButton+Util.m in Sources */,
 				13A6ACA81BC3FBF1005A02F9 /* PagedFlowView.m in Sources */,
-				13BB1C751BE63F5500412D6D /* PersonalCenterViewController.m in Sources */,
 				135B221C1B92E72A005CE84A /* AlertCenter.m in Sources */,
 				131D6A261BF4D95F009FDD72 /* RootViewController.m in Sources */,
 				13A6AC9A1BC347D6005A02F9 /* PhotoCell.m in Sources */,
 				13A6AC9D1BC38849005A02F9 /* Photo.m in Sources */,
 				135B22151B92C0D4005CE84A /* FatherViewController.m in Sources */,
 				135B21E01B9136A4005CE84A /* PlanCache.m in Sources */,
+				131D6A6C1BFB5D9D009FDD72 /* PieceButton.m in Sources */,
 				137700E91B953521008C83FD /* AboutViewController.m in Sources */,
+				131D6A6B1BFB5D9D009FDD72 /* PersonalCenterViewController.m in Sources */,
 				132263A21B9C7DC200D21637 /* LocalNotificationManager.m in Sources */,
 				13A6AC931BC344A2005A02F9 /* FatherTableViewController.m in Sources */,
 				13A6AC8D1BBFDDD6005A02F9 /* DataCenter.m in Sources */,
@@ -1273,7 +1280,6 @@
 				131D6A211BF47FE4009FDD72 /* UIView+Util.m in Sources */,
 				135B22341B932A4F005CE84A /* AddPlanViewController.m in Sources */,
 				1368F9791BB6498300CC7E63 /* LogIn.m in Sources */,
-				13BB1C7A1BE73D4B00412D6D /* PieceButton.m in Sources */,
 				137700DB1B952EE5008C83FD /* MoreViewController.m in Sources */,
 				1361AFC41BCBA5E700DD5FFB /* DoAlbumCell.m in Sources */,
 				1368F9631BB623E100CC7E63 /* RegisterSDK.m in Sources */,

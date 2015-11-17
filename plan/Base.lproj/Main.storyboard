@@ -84,11 +84,11 @@
             </objects>
             <point key="canvasLocation" x="289" y="570"/>
         </scene>
-        <!--影像-->
+        <!--任务-->
         <scene sceneID="Nel-be-SHx">
             <objects>
                 <navigationController id="oI1-IL-nW5" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="影像" image="photo" id="bKl-rg-0eF"/>
+                    <tabBarItem key="tabBarItem" title="任务" image="task" id="bKl-rg-0eF"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="sum-bo-bu7">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -186,8 +186,8 @@
         </scene>
     </scenes>
     <resources>
-        <image name="photo" width="14" height="16"/>
         <image name="plan" width="16" height="16"/>
+        <image name="task" width="16" height="16"/>
         <image name="time" width="16" height="16"/>
     </resources>
 </document>
