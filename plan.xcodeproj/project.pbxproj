@@ -463,6 +463,13 @@
 			path = PersonalCenter;
 			sourceTree = "<group>";
 		};
+		131D6A701BFB68A8009FDD72 /* Task */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Task;
+			sourceTree = "<group>";
+		};
 		1322639E1B9C7C7C00D21637 /* NotifyCenter */ = {
 			isa = PBXGroup;
 			children = (
@@ -751,12 +758,13 @@
 		135B22111B92C070005CE84A /* UIViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				131D6A661BFB5D9C009FDD72 /* PersonalCenter */,
 				135B22121B92C0AC005CE84A /* FatherController */,
 				132263A31B9C805700D21637 /* MainView */,
 				137700D81B952DA1008C83FD /* More */,
+				131D6A661BFB5D9C009FDD72 /* PersonalCenter */,
 				13A6AC941BC3473E005A02F9 /* Photo */,
 				135B22231B92EC69005CE84A /* Plan */,
+				131D6A701BFB68A8009FDD72 /* Task */,
 			);
 			path = UIViewControllers;
 			sourceTree = "<group>";
