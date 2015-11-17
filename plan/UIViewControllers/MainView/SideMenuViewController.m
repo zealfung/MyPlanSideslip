@@ -9,6 +9,7 @@
 #import <RESideMenu.h>
 #import "HelpViewController.h"
 #import "AboutViewController.h"
+#import "PhotoViewController.h"
 #import "SettingsViewController.h"
 #import "SideMenuViewController.h"
 #import "PersonalCenterViewController.h"
@@ -29,7 +30,7 @@
     self.tableView.bounces = NO;
     self.tableView.backgroundColor = color_GrayDark;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.tableView.tableFooterView = [[UIView alloc] initWithFrame:CGRectZero];
+    self.tableView.tableFooterView = [[UIView alloc] init];
     
     [NotificationCenter addObserver:self selector:@selector(reload) name:Notify_Settings_Save object:nil];
     
@@ -47,7 +48,7 @@
 - (void)setMenuArray {
     
     menuImgArray = [NSMutableArray arrayWithObjects:png_Icon_Menu_PersonalCenter, png_Icon_Menu_PhotoLine, png_Icon_Menu_Help, png_Icon_Menu_FiveStar, png_Icon_Menu_Feedback, png_Icon_Menu_About, nil];
-    menuArray = [NSMutableArray arrayWithObjects:str_More_PersonalCenter, str_ViewTitle_4, str_More_Help, str_More_Like, str_More_Feedback, str_More_About, nil];
+    menuArray = [NSMutableArray arrayWithObjects:str_ViewTitle_4, str_ViewTitle_5, str_ViewTitle_6, str_ViewTitle_7, str_ViewTitle_8, str_ViewTitle_9, nil];
 }
 
 #pragma mark - Table view data source
@@ -133,13 +134,14 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     switch (indexPath.row) {
-        case 0: {
+        case 0: {//个人中心
             PersonalCenterViewController *controller = [[PersonalCenterViewController alloc] init];
             [self setContentViewController:controller];
             break;
         }
-        case 1: {
-            
+        case 1: {//岁月影像
+            PhotoViewController *controller = [[PhotoViewController alloc] init];
+            [self setContentViewController:controller];
             break;
         }
         case 2: {//常见问题
@@ -195,7 +197,6 @@
         [self.tableView reloadData];
     });
 }
-
 
 //调出邮件发送窗口
 - (void)displayMailPicker {
