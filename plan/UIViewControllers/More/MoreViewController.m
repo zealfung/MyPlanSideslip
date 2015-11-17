@@ -26,7 +26,7 @@
     UIView *footer = [[UIView alloc] init];
     self.tableView.tableFooterView = footer;
     
-    rowTitles = @[str_More_PersonalCenter, str_More_Settings, str_More_Help, str_More_Like, str_More_Feedback, str_More_About];
+    rowTitles = @[str_ViewTitle_4, str_More_Settings, str_ViewTitle_6, str_ViewTitle_7, str_ViewTitle_8, str_ViewTitle_9];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

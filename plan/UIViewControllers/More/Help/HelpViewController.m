@@ -21,7 +21,7 @@
     
     [super viewDidLoad];
 
-    self.title = str_More_Help;
+    self.title = str_ViewTitle_6;
 
 }
 

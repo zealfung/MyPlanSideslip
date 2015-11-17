@@ -24,7 +24,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = str_More_About;
+    self.title = str_ViewTitle_9;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

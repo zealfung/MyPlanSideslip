@@ -16,8 +16,13 @@
 
 #define str_ViewTitle_1 @"我的"
 #define str_ViewTitle_2 @"计划"
-#define str_ViewTitle_3 @"影像"
-#define str_ViewTitle_4 @"任务"
+#define str_ViewTitle_3 @"任务"
+#define str_ViewTitle_4 @"个人中心"
+#define str_ViewTitle_5 @"岁月影像"
+#define str_ViewTitle_6 @"常见问题"
+#define str_ViewTitle_7 @"五星鼓励"
+#define str_ViewTitle_8 @"建议反馈"
+#define str_ViewTitle_9 @"关于我们"
 #define str_NickName @"昵称"
 #define str_FirstView_1 @"假如你可以活到"
 #define str_FirstView_2 @"岁"
@@ -69,12 +74,7 @@
 #define str_Photo_Delete_Tips @"删除该影像"
 
 #define str_More @"更多"
-#define str_More_PersonalCenter @"个人中心"
 #define str_More_Settings @"通用设置"
-#define str_More_Help @"常见问题"
-#define str_More_Like @"五星鼓励"
-#define str_More_Feedback @"建议反馈"
-#define str_More_About @"关于我们"
 #define str_More_Welcome @"去欢迎页"
 
 #define str_More_Feedback_Tips1 @"当前系统版本不支持应用内发送邮件功能"

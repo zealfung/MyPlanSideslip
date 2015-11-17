@@ -40,7 +40,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = str_More_PersonalCenter;
+    self.title = str_ViewTitle_4;
     [self createRightBarButton];
     
     [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_Settings_Save object:nil];
