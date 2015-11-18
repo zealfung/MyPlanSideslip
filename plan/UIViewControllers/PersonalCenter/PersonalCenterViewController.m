@@ -62,14 +62,16 @@
 - (void)loadCustomView {
     
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, HEIGHT_FULL_SCREEN)];
-    scrollView.backgroundColor = [UIColor whiteColor];//color_e9eff1;
+    scrollView.showsVerticalScrollIndicator = NO;
+    scrollView.showsHorizontalScrollIndicator = NO;
+    scrollView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:scrollView];
     
     CGFloat yOffset = 0;
 
     {
         CGFloat imgSize = WIDTH_FULL_SCREEN * 0.618;
-        UIImage *image = [UIImage imageNamed:@"test"];
+        UIImage *image = [UIImage imageNamed:png_Bg_SideTop];
         if ([Config shareInstance].settings.centerTop) {
             
             image = [Config shareInstance].settings.centerTop;
