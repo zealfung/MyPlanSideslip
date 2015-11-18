@@ -59,7 +59,8 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
 
     UIView *headerView = [UIView new];
-    headerView.backgroundColor = color_GrayDark;
+    UIColor *bgColor = [UIColor colorWithPatternImage: [UIImage imageNamed:png_Bg_SideTop]];
+    headerView.backgroundColor = bgColor;
     
     UIImageView *avatar = [UIImageView new];
     avatar.contentMode = UIViewContentModeScaleAspectFit;
