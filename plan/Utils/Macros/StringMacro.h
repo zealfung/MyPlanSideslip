@@ -124,6 +124,12 @@
 #define str_About_Name @"MyPlan"
 #define str_About_Content @"对于世界上大多数人，生命的长度最多不过30000来天。所以，时间对于每一个人都是奢侈品。人生苦短，时间有限，想要成功就得对自己狠一点，从坚持每天给自己定一些计划开始，然后逐个完成它们，让生活更有意义，让生命更有价值。乔布斯说过：活着就是为了改变世界！就算不能改变世界，理想还是要有的，只要坚持不懈，万一哪天就实现了呢？"
 
+#define str_Share_Success @"分享成功"
+#define str_Share_Fail @"分享失败"
+#define str_Share_Cancel @"取消分享"
+#define str_Share_Content @"推荐一个好玩的应用，你也安装试试啊~可惜目前只有iOS版ToT"
+#define str_Share_URL @"http://www.fengziyi.com/andwho-plan/"
+
 #define str_Avatar @"kAvatar"
 #define str_LogInPlatform @"kLogInPlatform"
 #define str_TableName_Settings @"t_settings"
