@@ -88,7 +88,7 @@
     imageView.backgroundColor = [UIColor clearColor];
     imageView.image = image;
     imageView.clipsToBounds = YES;
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:imageView];
     
     self.bgImageView = imageView;
