@@ -32,23 +32,7 @@
 #define color_1dadfc RGBColor(29, 173, 252, 1) //蓝色
 #define color_75aff4 RGBColor(117, 175, 244, 1) //灰蓝色
 #define color_708cb0 RGBColor(112, 140, 176, 1) //深灰蓝色
-
-#define color_1B2E47 RGBColor(27, 46, 71, 1) //
-#define color_172A42 RGBColor(23, 42, 66, 1) //
-
-
-#define color_BCD3E5 RGBColor(188, 211, 229, 1) //
-#define color_7BB8E7 RGBColor(123, 184, 231, 1) //
-#define color_6CA0DC RGBColor(108, 160, 220, 1) //
-
-#define color_EFF7FE RGBColor(239, 247, 254, 1) //
-#define color_ABCCEE RGBColor(171, 204, 238, 1) //
-#define color_EEFAFF RGBColor(238, 250, 255, 1) //
-
-#define color_68B2F5 RGBColor(104, 178, 245, 1) //
-#define color_4DA6F4 RGBColor(77, 166, 244, 1) //
-#define color_2C94F0 RGBColor(44, 148, 240, 1) //
-#define color_248FF0 RGBColor(36, 143, 240, 1) //
-#define color_3F9EF1 RGBColor(63, 158, 241, 1) //
+#define color_F9F2EA RGBColor(249, 242, 234, 1) //淡黄色
+#define color_F2F3F5 RGBColor(242, 243, 245, 1) //淡灰色
 
 #endif

@@ -6,12 +6,11 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
-#import "PlanCache.h"
+#import "ShareCenter.h"
 #import "PieceButton.h"
 #import "ThreeSubView.h"
 #import "SettingsViewController.h"
 #import "PersonalCenterViewController.h"
-#import "FullScreenImageViewController.h"
 
 @interface PersonalCenterViewController () <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
     
@@ -28,9 +27,11 @@
     PieceButton *pbTotalEverydayPlanDone;//每日计划完成总数
     PieceButton *pbTotalLongtermPlan;//长远计划总数
     PieceButton *pbTotalLongtermPlanDone;//长远计划完成总数
+    PieceButton *pbTotalTask;//任务总数
     PieceButton *pbTotalPhoto;//影像总数
     
     UIView *viewLogo;
+    UILabel *labelUpdateTime;
 }
 
 @end
@@ -187,13 +188,14 @@
         
         viewPieces = [[UIView alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, kPieceButtonHeight * 4)];
         
-        pbRecentlyConsecutiveDates = [[PieceButton alloc] initWithTitle:@"最近连续计划天数" content:@"8" icon:[UIImage imageNamed:png_Icon_Percent_Day] bgColor:color_3F9EF1];
-        pbMaxConsecutiveDates = [[PieceButton alloc] initWithTitle:@"最大连续计划天数" content:@"15" icon:[UIImage imageNamed:png_Icon_Percent_Long] bgColor:color_ABCCEE];
-        pbTotalEverydayPlan = [[PieceButton alloc] initWithTitle:@"每日计划总数" content:dayPlanTotalCount icon:[UIImage imageNamed:png_Icon_Plan_Day] bgColor:color_ABCCEE];
-        pbTotalEverydayPlanDone = [[PieceButton alloc] initWithTitle:@"每日计划完成总数" content:doneDayPlanTotalCount icon:[UIImage imageNamed:png_Icon_Plan_Day] bgColor:color_3F9EF1];
-        pbTotalLongtermPlan = [[PieceButton alloc] initWithTitle:@"长远计划总数" content:longPlanTotalCount icon:[UIImage imageNamed:png_Icon_Plan_Long] bgColor:color_3F9EF1];
-        pbTotalLongtermPlanDone = [[PieceButton alloc] initWithTitle:@"长远计划完成总数" content:doneLongPlanTotalCount icon:[UIImage imageNamed:png_Icon_Plan_Long] bgColor:color_ABCCEE];
-        pbTotalPhoto = [[PieceButton alloc] initWithTitle:@"影像总数" content:photoTotalCount icon:[UIImage imageNamed:png_Icon_Photo] bgColor:color_ABCCEE];
+        pbRecentlyConsecutiveDates = [[PieceButton alloc] initWithTitle:@"最近连续计划天数" content:@"8" icon:[UIImage imageNamed:png_Icon_Percent_Day] bgColor:color_F9F2EA];
+        pbMaxConsecutiveDates = [[PieceButton alloc] initWithTitle:@"最大连续计划天数" content:@"15" icon:[UIImage imageNamed:png_Icon_Percent_Long] bgColor:color_F2F3F5];
+        pbTotalEverydayPlan = [[PieceButton alloc] initWithTitle:@"每日计划总数" content:dayPlanTotalCount icon:[UIImage imageNamed:png_Icon_Plan_Day] bgColor:color_F2F3F5];
+        pbTotalEverydayPlanDone = [[PieceButton alloc] initWithTitle:@"每日计划完成总数" content:doneDayPlanTotalCount icon:[UIImage imageNamed:png_Icon_Plan_Day] bgColor:color_F9F2EA];
+        pbTotalLongtermPlan = [[PieceButton alloc] initWithTitle:@"长远计划总数" content:longPlanTotalCount icon:[UIImage imageNamed:png_Icon_Plan_Long] bgColor:color_F9F2EA];
+        pbTotalLongtermPlanDone = [[PieceButton alloc] initWithTitle:@"长远计划完成总数" content:doneLongPlanTotalCount icon:[UIImage imageNamed:png_Icon_Plan_Long] bgColor:color_F2F3F5];
+        pbTotalTask = [[PieceButton alloc] initWithTitle:@"任务总数" content:photoTotalCount icon:[UIImage imageNamed:png_Icon_Photo] bgColor:color_F2F3F5];
+        pbTotalPhoto = [[PieceButton alloc] initWithTitle:@"影像总数" content:photoTotalCount icon:[UIImage imageNamed:png_Icon_Photo] bgColor:color_F9F2EA];
         
         NSMutableArray *array = [NSMutableArray array];
         [array addObject:pbRecentlyConsecutiveDates];
@@ -202,6 +204,7 @@
         [array addObject:pbTotalEverydayPlanDone];
         [array addObject:pbTotalLongtermPlan];
         [array addObject:pbTotalLongtermPlanDone];
+        [array addObject:pbTotalTask];
         [array addObject:pbTotalPhoto];
         
         for (int i = 0; i < array.count; i++) {
@@ -216,15 +219,27 @@
         yOffset = CGRectGetMaxY(viewPieces.frame) + 10;
     }
     {
-        CGFloat viewWidth = WIDTH_FULL_SCREEN / 2;
+        CGFloat height = 20;
+        UILabel *labelUpdate = [[UILabel alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, height)];
+        labelUpdate.font = font_Normal_10;
+        labelUpdate.textAlignment = NSTextAlignmentCenter;
+        labelUpdate.textColor = color_ff9900;
+        labelUpdate.text = @"数据更新时间：1分钟前";
+        labelUpdateTime = labelUpdate;
+        [scrollView addSubview:labelUpdate];
+        
+        yOffset = CGRectGetMaxY(labelUpdate.frame) + 15;
+    }
+    {
+        CGFloat viewWidth = 110;
         CGFloat viewHeight = 20;
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - viewWidth, yOffset + 15, viewWidth, viewHeight)];
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - viewWidth - 5, yOffset, viewWidth, viewHeight)];
         UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, viewHeight, viewHeight)];
         logo.image = [UIImage imageNamed:png_Icon_Logo_512];
         [view addSubview:logo];
-        UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(viewHeight + 5, 0, viewWidth-viewHeight, viewHeight)];
+        UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(viewHeight + 2, 0, viewWidth - viewHeight - 2, viewHeight)];
         labelName.text = @"来自我有计划iOS版";
-        labelName.font = font_Normal_15;
+        labelName.font = font_Normal_10;
         labelName.textColor = color_Blue;
         [view addSubview:labelName];
         view.hidden = YES;
@@ -233,17 +248,17 @@
         
         CGFloat btnWidth = WIDTH_FULL_SCREEN / 3;
         CGFloat btnHeight = 30;
-        UIButton *btnUpdatedTime = [[UIButton alloc] initWithFrame:CGRectMake(btnWidth, yOffset, btnWidth, btnHeight)];
-        btnUpdatedTime.backgroundColor = color_ff9900;
-        btnUpdatedTime.layer.cornerRadius = btnHeight / 2;
-        [btnUpdatedTime.titleLabel setFont:font_Normal_14];
-        [btnUpdatedTime setAllTitle:@"晒数据"];
-        [btnUpdatedTime setAllTitleColor:[UIColor whiteColor]];
-        [btnUpdatedTime addTarget:self action:@selector(shareData:) forControlEvents:UIControlEventTouchUpInside];
-        btnShareData = btnUpdatedTime;
-        [scrollView addSubview:btnUpdatedTime];
+        UIButton *btnShare = [[UIButton alloc] initWithFrame:CGRectMake(btnWidth, yOffset, btnWidth, btnHeight)];
+        btnShare.backgroundColor = color_ff9900;
+        btnShare.layer.cornerRadius = btnHeight / 2;
+        [btnShare.titleLabel setFont:font_Normal_14];
+        [btnShare setAllTitle:@"晒数据"];
+        [btnShare setAllTitleColor:[UIColor whiteColor]];
+        [btnShare addTarget:self action:@selector(shareData:) forControlEvents:UIControlEventTouchUpInside];
+        btnShareData = btnShare;
+        [scrollView addSubview:btnShare];
         
-        yOffset =  CGRectGetMaxY(btnUpdatedTime.frame) + 74;
+        yOffset =  CGRectGetMaxY(btnShare.frame) + 74;
     }
     
     scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, yOffset);
@@ -258,6 +273,7 @@
 - (void)shareData:(UIButton *)button {
     
     viewLogo.hidden = NO;
+    labelUpdateTime.hidden = YES;
     btnShareData.hidden = YES;
 
     UIImage* image = [UIImage imageNamed:png_ImageDefault];
@@ -277,11 +293,10 @@
     UIGraphicsEndImageContext();
 
     viewLogo.hidden = YES;
+    labelUpdateTime.hidden = NO;
     btnShareData.hidden = NO;
     
-    FullScreenImageViewController *controller = [[FullScreenImageViewController alloc] init];
-    controller.image = image;
-    [self.navigationController pushViewController:controller animated:YES];
+    [ShareCenter showShareActionSheet:self.view image:image];
 }
 
 - (void)changeTopImage {
