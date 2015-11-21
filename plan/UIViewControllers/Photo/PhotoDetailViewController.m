@@ -11,6 +11,8 @@
 #import "PagedFlowView.h"
 #import "AddPhotoViewController.h"
 #import "PhotoDetailViewController.h"
+#import "UINavigationController+Util.h"
+#import "FullScreenImageArrayViewController.h"
 
 NSUInteger const kPhotoDeleteTag = 20151011;
 
@@ -246,10 +248,15 @@ NSUInteger const kPhotoDeleteTag = 20151011;
 
 - (void)flowView:(PagedFlowView *)flowView didTapPageAtIndex:(NSInteger)index {
     
-    UIImageView *tapImageView = [[UIImageView alloc] init];
-    tapImageView.contentMode = UIViewContentModeScaleAspectFit;
-    tapImageView.image = self.photo.photoArray[index];
-    [ImageBrowser showFullScreen:tapImageView];
+//    UIImageView *tapImageView = [[UIImageView alloc] init];
+//    tapImageView.contentMode = UIViewContentModeScaleAspectFit;
+//    tapImageView.image = self.photo.photoArray[index];
+//    [ImageBrowser showFullScreen:tapImageView];
+    
+    FullScreenImageArrayViewController *controller = [[FullScreenImageArrayViewController alloc] init];
+    controller.imgArray = self.photo.photoArray;
+    controller.defaultIndex = index;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end

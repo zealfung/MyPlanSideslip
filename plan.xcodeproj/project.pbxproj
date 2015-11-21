@@ -25,6 +25,9 @@
 		131D6A6F1BFB5DDE009FDD72 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A6E1BFB5DDE009FDD72 /* PhotoViewController.m */; };
 		131D6A721BFC0994009FDD72 /* Bg_SideTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A711BFC0994009FDD72 /* Bg_SideTop@2x.png */; };
 		131D6A8E1BFD9660009FDD72 /* ShareCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A8D1BFD9660009FDD72 /* ShareCenter.m */; };
+		131D6AC01C00769A009FDD72 /* FullScreenImageArrayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6ABF1C00769A009FDD72 /* FullScreenImageArrayViewController.m */; };
+		131D6AC41C007BF3009FDD72 /* ImageScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6AC31C007BF3009FDD72 /* ImageScrollView.m */; };
+		131D6AC71C00AEB0009FDD72 /* UINavigationController+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6AC61C00AEB0009FDD72 /* UINavigationController+Util.m */; };
 		132263781B9825D400D21637 /* UIDevice+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263771B9825D400D21637 /* UIDevice+Util.m */; };
 		132263A21B9C7DC200D21637 /* LocalNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A11B9C7DC200D21637 /* LocalNotificationManager.m */; };
 		132263A81B9C809400D21637 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A51B9C809400D21637 /* FirstViewController.m */; };
@@ -192,6 +195,12 @@
 		131D6A711BFC0994009FDD72 /* Bg_SideTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bg_SideTop@2x.png"; sourceTree = "<group>"; };
 		131D6A8C1BFD9660009FDD72 /* ShareCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShareCenter.h; sourceTree = "<group>"; };
 		131D6A8D1BFD9660009FDD72 /* ShareCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShareCenter.m; sourceTree = "<group>"; };
+		131D6ABE1C00769A009FDD72 /* FullScreenImageArrayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenImageArrayViewController.h; sourceTree = "<group>"; };
+		131D6ABF1C00769A009FDD72 /* FullScreenImageArrayViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenImageArrayViewController.m; sourceTree = "<group>"; };
+		131D6AC21C007BF3009FDD72 /* ImageScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageScrollView.h; sourceTree = "<group>"; };
+		131D6AC31C007BF3009FDD72 /* ImageScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageScrollView.m; sourceTree = "<group>"; };
+		131D6AC51C00AEB0009FDD72 /* UINavigationController+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationController+Util.h"; sourceTree = "<group>"; };
+		131D6AC61C00AEB0009FDD72 /* UINavigationController+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationController+Util.m"; sourceTree = "<group>"; };
 		132263761B9825D400D21637 /* UIDevice+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIDevice+Util.h"; sourceTree = "<group>"; };
 		132263771B9825D400D21637 /* UIDevice+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIDevice+Util.m"; sourceTree = "<group>"; };
 		132263A01B9C7DC200D21637 /* LocalNotificationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocalNotificationManager.h; sourceTree = "<group>"; };
@@ -482,6 +491,15 @@
 			path = ShareCenter;
 			sourceTree = "<group>";
 		};
+		131D6AC11C007B57009FDD72 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				131D6AC21C007BF3009FDD72 /* ImageScrollView.h */,
+				131D6AC31C007BF3009FDD72 /* ImageScrollView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		1322639E1B9C7C7C00D21637 /* NotifyCenter */ = {
 			isa = PBXGroup;
 			children = (
@@ -605,6 +623,7 @@
 				1368F9601BB617D800CC7E63 /* SDKCenter */,
 				131D6A8B1BFD9660009FDD72 /* ShareCenter */,
 				131D69F21BF466B3009FDD72 /* StatisticsCenter */,
+				131D6AC11C007B57009FDD72 /* View */,
 				13A6ACCA1BC6A7D3005A02F9 /* ViewController */,
 			);
 			path = Utils;
@@ -697,6 +716,8 @@
 				131D6A201BF47FE4009FDD72 /* UIView+Util.m */,
 				135B22071B92B126005CE84A /* UIViewController+Util.h */,
 				135B22081B92B126005CE84A /* UIViewController+Util.m */,
+				131D6AC51C00AEB0009FDD72 /* UINavigationController+Util.h */,
+				131D6AC61C00AEB0009FDD72 /* UINavigationController+Util.m */,
 			);
 			path = Catagory;
 			sourceTree = "<group>";
@@ -1004,6 +1025,8 @@
 		13A6ACCA1BC6A7D3005A02F9 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				131D6ABE1C00769A009FDD72 /* FullScreenImageArrayViewController.h */,
+				131D6ABF1C00769A009FDD72 /* FullScreenImageArrayViewController.m */,
 				13A6ACCB1BC6A82C005A02F9 /* FullScreenImageViewController.h */,
 				13A6ACCC1BC6A82C005A02F9 /* FullScreenImageViewController.m */,
 			);
@@ -1265,8 +1288,10 @@
 				133B07A21B9FBCA30015E752 /* HelpViewController.m in Sources */,
 				135B22091B92B126005CE84A /* UIViewController+Util.m in Sources */,
 				1361AFC81BCBA5E700DD5FFB /* DoPhotoCell.m in Sources */,
+				131D6AC01C00769A009FDD72 /* FullScreenImageArrayViewController.m in Sources */,
 				1361AFC31BCBA5E700DD5FFB /* AssetHelper.m in Sources */,
 				135B21EA1B913F77005CE84A /* NSString+Util.m in Sources */,
+				131D6AC41C007BF3009FDD72 /* ImageScrollView.m in Sources */,
 				135B21ED1B9142BE005CE84A /* Plan.m in Sources */,
 				135B21E41B913E46005CE84A /* Settings.m in Sources */,
 				13A6ACA11BC3AAA3005A02F9 /* AddPhotoViewController.m in Sources */,
@@ -1290,6 +1315,7 @@
 				135B22151B92C0D4005CE84A /* FatherViewController.m in Sources */,
 				135B21E01B9136A4005CE84A /* PlanCache.m in Sources */,
 				131D6A6C1BFB5D9D009FDD72 /* PieceButton.m in Sources */,
+				131D6AC71C00AEB0009FDD72 /* UINavigationController+Util.m in Sources */,
 				137700E91B953521008C83FD /* AboutViewController.m in Sources */,
 				131D6A6B1BFB5D9D009FDD72 /* PersonalCenterViewController.m in Sources */,
 				132263A21B9C7DC200D21637 /* LocalNotificationManager.m in Sources */,
