@@ -108,4 +108,15 @@
     }
 }
 
++ (BOOL)validateNumber:(NSString *)textString {
+    NSString *number = @"^[0-9]+$";
+    NSPredicate *numberPre = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", number];
+    return [numberPre evaluateWithObject:textString];
+}
+
++ (BOOL)validateEmail:(NSString *)textString {
+    NSString *email = @"[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}";
+    NSPredicate *emailPre = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", email];
+    return [emailPre evaluateWithObject:textString];
+}
 @end

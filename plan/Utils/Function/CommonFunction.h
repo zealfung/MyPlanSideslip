@@ -42,4 +42,9 @@
 //计算date1和date2的时间差 calendarUnit:NSDayCalendarUnit相差天数、NSMonthCalendarUnit相差月数、NSYearCalendarUnit相差年数
 + (NSInteger)calculateDateInterval:(NSDate *)date1 toDate:(NSDate *)date2 calendarUnit:(int)calendarUnit;
 
+//过滤纯数字
++ (BOOL)validateNumber:(NSString *)textString;
+
+//校验邮箱地址格式
++ (BOOL)validateEmail:(NSString *)textString;
 @end
