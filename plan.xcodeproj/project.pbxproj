@@ -115,6 +115,12 @@
 		136DF5DB1BEDE87D001D6496 /* ShareSDKExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 136DF5CE1BEDE87D001D6496 /* ShareSDKExtension.framework */; };
 		136DF5DC1BEDE87D001D6496 /* ShareSDKUI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 136DF5CF1BEDE87D001D6496 /* ShareSDKUI.bundle */; };
 		136DF5DD1BEDE87D001D6496 /* ShareSDKUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 136DF5D01BEDE87D001D6496 /* ShareSDKUI.framework */; };
+		1374704F1C03ED1200B7822A /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1374704D1C03ED1200B7822A /* RegisterViewController.m */; };
+		137470501C03ED1200B7822A /* RegisterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1374704E1C03ED1200B7822A /* RegisterViewController.xib */; };
+		137470591C04202700B7822A /* ForgotPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470571C04202700B7822A /* ForgotPasswordViewController.m */; };
+		1374705A1C04202700B7822A /* ForgotPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 137470581C04202700B7822A /* ForgotPasswordViewController.xib */; };
+		137470711C05F1DC00B7822A /* Icon_AutoSync_Normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1374706F1C05F1DC00B7822A /* Icon_AutoSync_Normal@2x.png */; };
+		137470721C05F1DC00B7822A /* Icon_AutoSync_Selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 137470701C05F1DC00B7822A /* Icon_AutoSync_Selected@2x.png */; };
 		137700BA1B93E290008C83FD /* PlanSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B22251B92EE1A005CE84A /* PlanSectionView.m */; };
 		137700BB1B93E56A008C83FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 135B21931B900394005CE84A /* Main.storyboard */; };
 		137700BC1B93E56A008C83FD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 135B21981B900394005CE84A /* LaunchScreen.xib */; };
@@ -355,6 +361,14 @@
 		136DF5CE1BEDE87D001D6496 /* ShareSDKExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKExtension.framework; sourceTree = "<group>"; };
 		136DF5CF1BEDE87D001D6496 /* ShareSDKUI.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDKUI.bundle; sourceTree = "<group>"; };
 		136DF5D01BEDE87D001D6496 /* ShareSDKUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKUI.framework; sourceTree = "<group>"; };
+		1374704C1C03ED1200B7822A /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisterViewController.h; sourceTree = "<group>"; };
+		1374704D1C03ED1200B7822A /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisterViewController.m; sourceTree = "<group>"; };
+		1374704E1C03ED1200B7822A /* RegisterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterViewController.xib; sourceTree = "<group>"; };
+		137470561C04202700B7822A /* ForgotPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ForgotPasswordViewController.h; sourceTree = "<group>"; };
+		137470571C04202700B7822A /* ForgotPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ForgotPasswordViewController.m; sourceTree = "<group>"; };
+		137470581C04202700B7822A /* ForgotPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordViewController.xib; sourceTree = "<group>"; };
+		1374706F1C05F1DC00B7822A /* Icon_AutoSync_Normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_AutoSync_Normal@2x.png"; sourceTree = "<group>"; };
+		137470701C05F1DC00B7822A /* Icon_AutoSync_Selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_AutoSync_Selected@2x.png"; sourceTree = "<group>"; };
 		137700C01B9428B1008C83FD /* Bg_NavigationBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bg_NavigationBar@2x.png"; sourceTree = "<group>"; };
 		137700C21B9429FD008C83FD /* LaunchImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchImage@2x.png"; sourceTree = "<group>"; };
 		137700D91B952EE5008C83FD /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
@@ -931,15 +945,37 @@
 			path = WeChatSDK;
 			sourceTree = "<group>";
 		};
+		1374704A1C03ECF100B7822A /* ForgotPassword */ = {
+			isa = PBXGroup;
+			children = (
+				137470561C04202700B7822A /* ForgotPasswordViewController.h */,
+				137470571C04202700B7822A /* ForgotPasswordViewController.m */,
+				137470581C04202700B7822A /* ForgotPasswordViewController.xib */,
+			);
+			path = ForgotPassword;
+			sourceTree = "<group>";
+		};
+		1374704B1C03ECF100B7822A /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				1374704C1C03ED1200B7822A /* RegisterViewController.h */,
+				1374704D1C03ED1200B7822A /* RegisterViewController.m */,
+				1374704E1C03ED1200B7822A /* RegisterViewController.xib */,
+			);
+			path = Register;
+			sourceTree = "<group>";
+		};
 		137700D81B952DA1008C83FD /* More */ = {
 			isa = PBXGroup;
 			children = (
-				13BB1C721BE63F0200412D6D /* Share */,
 				137700E61B953501008C83FD /* About */,
+				1374704A1C03ECF100B7822A /* ForgotPassword */,
 				133B079B1B9FBC620015E752 /* Help */,
 				137700D91B952EE5008C83FD /* MoreViewController.h */,
 				137700DA1B952EE5008C83FD /* MoreViewController.m */,
+				1374704B1C03ECF100B7822A /* Register */,
 				137700E21B953490008C83FD /* Settings */,
+				13BB1C721BE63F0200412D6D /* Share */,
 			);
 			path = More;
 			sourceTree = "<group>";
@@ -949,6 +985,8 @@
 			children = (
 				13A6ACAE1BC55B9D005A02F9 /* Icon_Alarm@2x.png */,
 				137700DD1B953226008C83FD /* Icon_Arrow_Right@2x.png */,
+				1374706F1C05F1DC00B7822A /* Icon_AutoSync_Normal@2x.png */,
+				137470701C05F1DC00B7822A /* Icon_AutoSync_Selected@2x.png */,
 				137701021B95DF67008C83FD /* Icon_Gender_F_Normal@2x.png */,
 				137701031B95DF67008C83FD /* Icon_Gender_F_Selected@2x.png */,
 				137701041B95DF67008C83FD /* Icon_Gender_M_Normal@2x.png */,
@@ -1176,10 +1214,12 @@
 				1361AFD51BCBB54800DD5FFB /* Btn_Show@2x.png in Resources */,
 				131D6A441BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png in Resources */,
 				131D6A401BF6CFAA009FDD72 /* Icon_Menu_About@2x.png in Resources */,
+				137470501C03ED1200B7822A /* RegisterViewController.xib in Resources */,
 				136DF5861BEC76D9001D6496 /* Icon_Percent_Day@2x.png in Resources */,
 				135B21CD1B909644005CE84A /* avatarBg@2x.png in Resources */,
 				135B22301B9301C9005CE84A /* Btn_Plan_Delete@2x.png in Resources */,
 				131D6A431BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png in Resources */,
+				137470711C05F1DC00B7822A /* Icon_AutoSync_Normal@2x.png in Resources */,
 				133B08441BA458610015E752 /* PlanCell.xib in Resources */,
 				135B22361B932C45005CE84A /* Btn_Save@2x.png in Resources */,
 				1361AFCB1BCBB52E00DD5FFB /* Bg_Line@2x.png in Resources */,
@@ -1199,6 +1239,7 @@
 				1361AFC51BCBA5E700DD5FFB /* DoAlbumCell.xib in Resources */,
 				137700C31B9429FD008C83FD /* LaunchImage@2x.png in Resources */,
 				13A6ACAF1BC55B9D005A02F9 /* Icon_Alarm@2x.png in Resources */,
+				1374705A1C04202700B7822A /* ForgotPasswordViewController.xib in Resources */,
 				136DF5891BEC76D9001D6496 /* Icon_Plan_Day@2x.png in Resources */,
 				131D6A411BF6CFAA009FDD72 /* Icon_Menu_FiveStar@2x.png in Resources */,
 				135B21971B900394005CE84A /* Images.xcassets in Resources */,
@@ -1209,6 +1250,7 @@
 				131D6A721BFC0994009FDD72 /* Bg_SideTop@2x.png in Resources */,
 				135B21CE1B909644005CE84A /* avatarDefault@2x.png in Resources */,
 				1377010F1B9680AC008C83FD /* Bg_Input_Blue@2x.png in Resources */,
+				137470721C05F1DC00B7822A /* Icon_AutoSync_Selected@2x.png in Resources */,
 				1385B4821BCA712400CB208C /* Btn_Delete@2x.png in Resources */,
 				135B22281B92F4C1005CE84A /* Btn_SectionUp@2x.png in Resources */,
 				1368F97E1BB6538F00CC7E63 /* Btn_LogIn_SinaWeibo@2x.png in Resources */,
@@ -1297,6 +1339,7 @@
 				13A6ACA11BC3AAA3005A02F9 /* AddPhotoViewController.m in Sources */,
 				13A6ACA51BC3E282005A02F9 /* PageScrollView.m in Sources */,
 				131D6A8E1BFD9660009FDD72 /* ShareCenter.m in Sources */,
+				137470591C04202700B7822A /* ForgotPasswordViewController.m in Sources */,
 				136DF57E1BEC2F7D001D6496 /* ImageBrowser.m in Sources */,
 				13A6ACCD1BC6A82C005A02F9 /* FullScreenImageViewController.m in Sources */,
 				135B218C1B900394005CE84A /* AppDelegate.m in Sources */,
@@ -1329,6 +1372,7 @@
 				135B22341B932A4F005CE84A /* AddPlanViewController.m in Sources */,
 				1368F9791BB6498300CC7E63 /* LogIn.m in Sources */,
 				137700DB1B952EE5008C83FD /* MoreViewController.m in Sources */,
+				1374704F1C03ED1200B7822A /* RegisterViewController.m in Sources */,
 				1361AFC41BCBA5E700DD5FFB /* DoAlbumCell.m in Sources */,
 				1368F9631BB623E100CC7E63 /* RegisterSDK.m in Sources */,
 				132263A81B9C809400D21637 /* FirstViewController.m in Sources */,
