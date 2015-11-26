@@ -53,5 +53,4 @@
 
 //time:yyyy-MM-dd HH:mm:ss
 + (NSArray *)getPlanDateForStatisticsByTime:(NSString *)time;
-
 @end

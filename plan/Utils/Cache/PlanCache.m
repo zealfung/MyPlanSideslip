@@ -108,14 +108,23 @@ static NSMutableDictionary * __contactsOnlineState;
     // 个人设置
     if (![__db tableExists:str_TableName_Settings]) {
         //在做头像同步的时候，先判断本地avatarURL与服务器上的时候一样，如果不一样，则以updatetime最新的为准
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, nickname TEXT, birthday TEXT, email TEXT, gender TEXT, lifespan TEXT, syntime TEXT, avatar BLOB, avatarURL TEXT, centerTop BLOB, centerTopURL TEXT, updatetime TEXT)", str_TableName_Settings];
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, nickname TEXT, birthday TEXT, email TEXT, gender TEXT, lifespan TEXT, syntime TEXT, avatar BLOB, avatarURL TEXT, centerTop BLOB, centerTopURL TEXT, isAutoSync TEXT, updatetime TEXT)", str_TableName_Settings];
         
         BOOL b = [__db executeUpdate:sqlString];
         
         FMDBQuickCheck(b, sqlString, __db);
         
     } else {//新增字段
-        
+        //是否自动同步字段2015-11-25
+        NSString *isAutoSync = @"isAutoSync";
+        if (![__db columnExists:isAutoSync inTableWithName:str_TableName_Settings]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, isAutoSync];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
         //中心顶部图片字段2015-11-3
         NSString *centerTop = @"centerTop";
         if (![__db columnExists:centerTop inTableWithName:str_TableName_Settings]) {
@@ -197,11 +206,21 @@ static NSMutableDictionary * __contactsOnlineState;
     //统计
     if (![__db tableExists:str_TableName_Statistics]) {
         
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, recentMax TEXT, recentMaxBeginDate TEXT, recentMaxEndDate TEXT, recordMax TEXT, recordMaxBeginDate TEXT, recordMaxEndDate TEXT)", str_TableName_Statistics];
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, recentMax TEXT, recentMaxBeginDate TEXT, recentMaxEndDate TEXT, recordMax TEXT, recordMaxBeginDate TEXT, recordMaxEndDate TEXT, updatetime TEXT)", str_TableName_Statistics];
         
         BOOL b = [__db executeUpdate:sqlString];
         
         FMDBQuickCheck(b, sqlString, __db);
+    } else { //新增字段
+        NSString *updateTime = @"updatetime";
+        if (![__db columnExists:updateTime inTableWithName:str_TableName_Statistics]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Statistics, updateTime];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
     }
 }
 
@@ -245,6 +264,9 @@ static NSMutableDictionary * __contactsOnlineState;
         if (!settings.centerTopURL) {
             settings.centerTopURL = @"";
         }
+        if (!settings.isAutoSync) {
+            settings.isAutoSync = @"0";
+        }
         if (!settings.syntime) {
             settings.syntime = @"";
         }
@@ -275,17 +297,17 @@ static NSMutableDictionary * __contactsOnlineState;
         [rs close];
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET nickname=?, birthday=?, email=?, gender=?, lifespan=?, avatar=?, avatarURL=?, centerTop=?, centerTopURL=?, updatetime=?, syntime=? WHERE account=?", str_TableName_Settings];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET nickname=?, birthday=?, email=?, gender=?, lifespan=?, avatar=?, avatarURL=?, centerTop=?, centerTopURL=?, isAutoSync=?, updatetime=?, syntime=? WHERE account=?", str_TableName_Settings];
             
-            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, avatarData, settings.avatarURL, centerTopData, settings.centerTopURL, settings.updatetime, settings.syntime, settings.account]];
+            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, avatarData, settings.avatarURL, centerTopData, settings.centerTopURL, settings.isAutoSync, settings.updatetime, settings.syntime, settings.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
         } else {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, updatetime, syntime) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Settings];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, updatetime, syntime) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Settings];
             
-            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.account, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, avatarData, settings.avatarURL, centerTopData, settings.centerTopURL, settings.updatetime, settings.syntime]];
+            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.account, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, avatarData, settings.avatarURL, centerTopData, settings.centerTopURL, settings.isAutoSync, settings.updatetime, settings.syntime]];
 
             FMDBQuickCheck(b, sqlString, __db);
         }
@@ -490,6 +512,9 @@ static NSMutableDictionary * __contactsOnlineState;
         if (!statistics.recordMaxEndDate) {
             statistics.recordMaxEndDate = @"";
         }
+        if (!statistics.updatetime) {
+            statistics.updatetime = @"";
+        }
         
         BOOL hasRec = NO;
         NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", str_TableName_Statistics];
@@ -499,17 +524,17 @@ static NSMutableDictionary * __contactsOnlineState;
         BOOL b = NO;
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET recentMax=?, recentMaxBeginDate=?, recentMaxEndDate=?, recordMax=?, recordMaxBeginDate=?, recordMaxEndDate=? WHERE account=?", str_TableName_Statistics];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET recentMax=?, recentMaxBeginDate=?, recentMaxEndDate=?, recordMax=?, recordMaxBeginDate=?, recordMaxEndDate=?, updatetime=? WHERE account=?", str_TableName_Statistics];
             
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[statistics.recentMax, statistics.recentMaxBeginDate, statistics.recentMaxEndDate, statistics.recordMax, statistics.recordMaxBeginDate, statistics.recordMaxEndDate, statistics.account]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[statistics.recentMax, statistics.recentMaxBeginDate, statistics.recentMaxEndDate, statistics.recordMax, statistics.recordMaxBeginDate, statistics.recordMaxEndDate, statistics.updatetime, statistics.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
         } else {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, recentMax, recentMaxBeginDate, recentMaxEndDate, recordMax, recordMaxBeginDate, recordMaxEndDate) values(?, ?, ?, ?, ?, ?, ?)", str_TableName_Statistics];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, recentMax, recentMaxBeginDate, recentMaxEndDate, recordMax, recordMaxBeginDate, recordMaxEndDate, updatetime) values(?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Statistics];
             
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[statistics.account, statistics.recentMax, statistics.recentMaxBeginDate, statistics.recentMaxEndDate, statistics.recordMax, statistics.recordMaxBeginDate, statistics.recordMaxEndDate]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[statistics.account, statistics.recentMax, statistics.recentMaxBeginDate, statistics.recentMaxEndDate, statistics.recordMax, statistics.recordMaxBeginDate, statistics.recordMaxEndDate, statistics.updatetime]];
             
             FMDBQuickCheck(b, sqlString, __db);
         }
@@ -619,7 +644,7 @@ static NSMutableDictionary * __contactsOnlineState;
             settings.account = @"";
         }
         
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, updatetime, syntime FROM %@ WHERE account=?", str_TableName_Settings];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, updatetime, syntime FROM %@ WHERE account=?", str_TableName_Settings];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[settings.account]];
         while ([rs next]) {
@@ -641,6 +666,7 @@ static NSMutableDictionary * __contactsOnlineState;
                 settings.centerTop = [UIImage imageWithData:imageData];
             }
             settings.centerTopURL = [rs stringForColumn:@"centerTopURL"];
+            settings.isAutoSync = [rs stringForColumn:@"isAutoSync"];
             settings.updatetime = [rs stringForColumn:@"updatetime"];
             settings.syntime = [rs stringForColumn:@"syntime"];
             
@@ -893,7 +919,7 @@ static NSMutableDictionary * __contactsOnlineState;
             statistics.account = @"";
         }
         
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT recentMax, recentMaxBeginDate, recentMaxEndDate, recordMax, recordMaxBeginDate, recordMaxEndDate FROM %@ WHERE account=?", str_TableName_Statistics];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT recentMax, recentMaxBeginDate, recentMaxEndDate, recordMax, recordMaxBeginDate, recordMaxEndDate, updatetime FROM %@ WHERE account=?", str_TableName_Statistics];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[statistics.account]];
         while ([rs next]) {
@@ -904,6 +930,7 @@ static NSMutableDictionary * __contactsOnlineState;
             statistics.recordMax = [rs stringForColumn:@"recordMax"];
             statistics.recordMaxBeginDate = [rs stringForColumn:@"recordMaxBeginDate"];
             statistics.recordMaxEndDate = [rs stringForColumn:@"recordMaxEndDate"];
+            statistics.updatetime = [rs stringForColumn:@"updatetime"];
         }
         [rs close];
         return statistics;
@@ -1239,12 +1266,12 @@ static NSMutableDictionary * __contactsOnlineState;
         FMResultSet *rs;
         if (time) {
             
-            sqlString = [NSString stringWithFormat:@"SELECT createtime FROM %@ WHERE account=? AND createtime >? ORDER BY createtime DESC", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"SELECT createtime FROM %@ WHERE account=? AND createtime >? ORDER BY createtime", str_TableName_Plan];
             rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, time]];
             
         } else {
             
-            sqlString = [NSString stringWithFormat:@"SELECT createtime FROM %@ WHERE account=? ORDER BY createtime DESC", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"SELECT createtime FROM %@ WHERE account=? ORDER BY createtime", str_TableName_Plan];
             rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         }
 
