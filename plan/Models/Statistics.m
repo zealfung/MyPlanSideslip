@@ -15,6 +15,7 @@ NSString *const kStatistics_RecentMaxEndDate = @"recentMaxEndDate";
 NSString *const kStatistics_RecordMax = @"recordMax";
 NSString *const kStatistics_RecordMaxBeginDate = @"recordMaxBeginDate";
 NSString *const kStatistics_RecordMaxEndDate = @"recordMaxEndDate";
+NSString *const kStatistics_Updatetime = @"updatetime";
 
 @implementation Statistics
 
@@ -37,6 +38,7 @@ NSString *const kStatistics_RecordMaxEndDate = @"recordMaxEndDate";
         self.recordMax = [dict objectOrNilForKey:kStatistics_RecordMax];
         self.recordMaxBeginDate = [dict objectOrNilForKey:kStatistics_RecordMaxBeginDate];
         self.recordMaxEndDate = [dict objectOrNilForKey:kStatistics_RecordMaxEndDate];
+        self.updatetime = [dict objectOrNilForKey:kStatistics_Updatetime];
     }
     return self;
 }
@@ -51,6 +53,7 @@ NSString *const kStatistics_RecordMaxEndDate = @"recordMaxEndDate";
     self.recordMax = [aDecoder decodeObjectForKey:kStatistics_RecordMax];
     self.recordMaxBeginDate = [aDecoder decodeObjectForKey:kStatistics_RecordMaxBeginDate];
     self.recordMaxEndDate = [aDecoder decodeObjectForKey:kStatistics_RecordMaxEndDate];
+    self.updatetime = [aDecoder decodeObjectForKey:kStatistics_Updatetime];
     return self;
 }
 
@@ -62,6 +65,7 @@ NSString *const kStatistics_RecordMaxEndDate = @"recordMaxEndDate";
     [aCoder encodeObject:_recordMax forKey:kStatistics_RecordMax];
     [aCoder encodeObject:_recordMaxBeginDate forKey:kStatistics_RecordMaxBeginDate];
     [aCoder encodeObject:_recordMaxEndDate forKey:kStatistics_RecordMaxEndDate];
+    [aCoder encodeObject:_updatetime forKey:kStatistics_Updatetime];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -73,6 +77,7 @@ NSString *const kStatistics_RecordMaxEndDate = @"recordMaxEndDate";
     copy.recordMax = [self.recordMax copyWithZone:zone];
     copy.recordMaxBeginDate = [self.recordMaxBeginDate copyWithZone:zone];
     copy.recordMaxEndDate = [self.recordMaxEndDate copyWithZone:zone];
+    copy.updatetime = [self.updatetime copyWithZone:zone];
     return copy;
 }
 
