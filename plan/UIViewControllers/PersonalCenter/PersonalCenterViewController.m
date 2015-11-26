@@ -188,13 +188,13 @@
         
         viewPieces = [[UIView alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, kPieceButtonHeight * 4)];
         
-        pbRecentlyConsecutiveDates = [[PieceButton alloc] initWithTitle:@"最近连续计划天数" content:@"8" icon:[UIImage imageNamed:png_Icon_Percent_Day] bgColor:color_F9F2EA];
-        pbMaxConsecutiveDates = [[PieceButton alloc] initWithTitle:@"最大连续计划天数" content:@"15" icon:[UIImage imageNamed:png_Icon_Percent_Long] bgColor:color_F2F3F5];
+        pbRecentlyConsecutiveDates = [[PieceButton alloc] initWithTitle:@"最近连续计划天数" content:@"78" icon:[UIImage imageNamed:png_Icon_Percent_Day] bgColor:color_F9F2EA];
+        pbMaxConsecutiveDates = [[PieceButton alloc] initWithTitle:@"最大连续计划天数" content:@"78" icon:[UIImage imageNamed:png_Icon_Percent_Long] bgColor:color_F2F3F5];
         pbTotalEverydayPlan = [[PieceButton alloc] initWithTitle:@"每日计划总数" content:dayPlanTotalCount icon:[UIImage imageNamed:png_Icon_Plan_Day] bgColor:color_F2F3F5];
         pbTotalEverydayPlanDone = [[PieceButton alloc] initWithTitle:@"每日计划完成总数" content:doneDayPlanTotalCount icon:[UIImage imageNamed:png_Icon_Plan_Day] bgColor:color_F9F2EA];
         pbTotalLongtermPlan = [[PieceButton alloc] initWithTitle:@"长远计划总数" content:longPlanTotalCount icon:[UIImage imageNamed:png_Icon_Plan_Long] bgColor:color_F9F2EA];
         pbTotalLongtermPlanDone = [[PieceButton alloc] initWithTitle:@"长远计划完成总数" content:doneLongPlanTotalCount icon:[UIImage imageNamed:png_Icon_Plan_Long] bgColor:color_F2F3F5];
-        pbTotalTask = [[PieceButton alloc] initWithTitle:@"任务总数" content:photoTotalCount icon:[UIImage imageNamed:png_Icon_Photo] bgColor:color_F2F3F5];
+        pbTotalTask = [[PieceButton alloc] initWithTitle:@"任务总数" content:@"3" icon:[UIImage imageNamed:png_Icon_Photo] bgColor:color_F2F3F5];
         pbTotalPhoto = [[PieceButton alloc] initWithTitle:@"影像总数" content:photoTotalCount icon:[UIImage imageNamed:png_Icon_Photo] bgColor:color_F9F2EA];
         
         NSMutableArray *array = [NSMutableArray array];
@@ -277,7 +277,8 @@
     btnShareData.hidden = YES;
 
     UIImage* image = [UIImage imageNamed:png_ImageDefault];
-    UIGraphicsBeginImageContext(scrollView.contentSize);
+    UIGraphicsBeginImageContextWithOptions(scrollView.contentSize, NO , 0.0f);//高清，效率比较慢
+//    UIGraphicsBeginImageContext(scrollView.contentSize);//模糊
     {
         CGPoint savedContentOffset = scrollView.contentOffset;
         CGRect savedFrame = scrollView.frame;
@@ -377,6 +378,7 @@
     [picker dismissViewControllerAnimated:YES completion:nil];
     UIImage *img = [CommonFunction compressImage:image];
     [Config shareInstance].settings.centerTop = img;
+    [Config shareInstance].settings.centerTopURL = @"";
     [PlanCache storePersonalSettings:[Config shareInstance].settings];
 }
 

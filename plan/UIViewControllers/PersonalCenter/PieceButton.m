@@ -50,18 +50,20 @@
     CGFloat titleHeight = 20;
     CGFloat iconSize = kPieceButtonHeight / 2;
     self.backgroundColor = [UIColor whiteColor];
-    imgViewIcon = [[UIImageView alloc] initWithFrame:CGRectMake(12, iconSize / 2, iconSize, iconSize)];
-    labelTitle = [[UILabel alloc] initWithFrame:CGRectMake(12 + iconSize, iconSize / 2 - titleHeight, kPieceButtonWidth - iconSize - 24, titleHeight)];
+//    imgViewIcon = [[UIImageView alloc] initWithFrame:CGRectMake(12, iconSize / 2, iconSize, iconSize)];
+//    labelTitle = [[UILabel alloc] initWithFrame:CGRectMake(12 + iconSize, iconSize / 2 - titleHeight, kPieceButtonWidth - iconSize - 24, titleHeight)];
+    labelTitle = [[UILabel alloc] initWithFrame:CGRectMake(12, kPieceButtonHeight / 4, kPieceButtonWidth - 24, titleHeight)];
     labelTitle.textAlignment = NSTextAlignmentCenter;
-    labelTitle.font = font_Normal_10;
+    labelTitle.font = font_Normal_16;
     labelTitle.textColor = color_708cb0;
     
-    labelContent = [[UILabel alloc] initWithFrame:CGRectMake(12 + iconSize, iconSize / 2, kPieceButtonWidth - iconSize - 24, iconSize)];
+//    labelContent = [[UILabel alloc] initWithFrame:CGRectMake(12 + iconSize, iconSize / 2, kPieceButtonWidth - iconSize - 24, iconSize)];
+    labelContent = [[UILabel alloc] initWithFrame:CGRectMake(12, iconSize, kPieceButtonWidth - 24, iconSize)];
     labelContent.textAlignment = NSTextAlignmentCenter;
     labelContent.font = font_Normal_32;
-    labelContent.textColor = color_75aff4;
+    labelContent.textColor = color_ff9900;//color_75aff4;
     
-    [self addSubview:imgViewIcon];
+//    [self addSubview:imgViewIcon];
     [self addSubview:labelTitle];
     [self addSubview:labelContent];
 }
