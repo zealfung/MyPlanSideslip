@@ -18,6 +18,7 @@
 #import "Function.h"
 #import "Catagory.h"
 #import "PlanCache.h"
+#import "AlertCenter.h"
 
 #ifndef __OPTIMIZE__
 # define NSLog(...) NSLog(__VA_ARGS__)
