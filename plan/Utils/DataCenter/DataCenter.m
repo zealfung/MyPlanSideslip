@@ -7,12 +7,16 @@
 //
 
 #import "LogIn.h"
+#import "BmobFile.h"
 #import "BmobQuery.h"
 #import "PlanCache.h"
 #import "DataCenter.h"
-#import <BmobSDK/BmobProFile.h>
 #import "BmobObjectsBatch.h"
+#import <BmobSDK/BmobProFile.h>
 
+
+static BOOL finishUploadAvatar;
+static BOOL finishUploadCenterTop;
 
 @implementation DataCenter
 
@@ -37,8 +41,19 @@
     //更新本地同步时间
 }
 
++ (void)resetUploadFlag {
+    finishUploadAvatar = NO;
+    finishUploadCenterTop = NO;
+}
+
++ (BOOL)IsAllUploadFinished {
+    
+    return finishUploadAvatar && finishUploadCenterTop;
+}
+
 + (void)startSyncSettings {
     
+    [self resetUploadFlag];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
     [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
@@ -47,9 +62,9 @@
             
             BmobObject *obj = array[0];
             
-            if ([Config shareInstance].settings.syntime) {
+            if ([Config shareInstance].settings.updatetime) {
                 //本地有上次同步时间记录，对比服务器的更新时间与本地同步记录时间
-                NSDate *syntime = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.syntime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                NSDate *updateTime = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
                 NSDate *updateAt = [obj updatedAt];
                 
                 /*
@@ -58,11 +73,11 @@
                 . 当实例保存的日期值晚于anotherDate时返回NSOrderedDescending
                 . 当实例保存的日期值早于anotherDate时返回NSOrderedAscending
                  */
-                if ([syntime compare:updateAt] == NSOrderedAscending) {
+                if ([updateTime compare:updateAt] == NSOrderedAscending) {
                     //服务器的设置较新
                     [self syncServerToLocalForSettings:obj];
                     
-                } else if ([syntime compare:updateAt] == NSOrderedDescending) {
+                } else if ([updateTime compare:updateAt] == NSOrderedDescending) {
                     //本地的设置较新
                     [self syncLocalToServerForSettings];
                 }
@@ -77,7 +92,6 @@
             [self addSettingsToServer];
         }
     }];
-    
 }
 
 + (void)syncServerToLocalForSettings:(BmobObject *)obj {
@@ -86,41 +100,65 @@
     [Config shareInstance].settings.birthday = [obj objectForKey:@"birthday"];
     [Config shareInstance].settings.gender = [obj objectForKey:@"gender"];
     [Config shareInstance].settings.lifespan = [obj objectForKey:@"lifespan"];
+    [Config shareInstance].settings.avatarURL = [obj objectForKey:@"avatarURL"];
+    [Config shareInstance].settings.centerTopURL = [obj objectForKey:@"centerTopURL"];
+    [Config shareInstance].settings.isAutoSync = [obj objectForKey:@"isAutoSync"];
+    [Config shareInstance].settings.updatetime = [CommonFunction NSDateToNSString:[obj updatedAt] formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
     
     NSData *avatarData = [obj objectForKey:@"avatar"];
     if (avatarData) {
         UIImage *image = [UIImage imageWithData:avatarData];
         [Config shareInstance].settings.avatar = image;
     }
-    [Config shareInstance].settings.syntime = [CommonFunction getTimeNowString];
+    NSData *centerTopData = [obj objectForKey:@"centerTop"];
+    if (centerTopData) {
+        UIImage *image = [UIImage imageWithData:centerTopData];
+        [Config shareInstance].settings.centerTop = image;
+    }
     
     [PlanCache storePersonalSettings:[Config shareInstance].settings];
-    
 }
 
 + (void)syncLocalToServerForSettings {
     
-    BmobObject *userSettings = [BmobObject objectWithoutDatatWithClassName:@"UserSettings"  objectId:[Config shareInstance].settings.account];
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+    [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        
+        if (array.count > 0) {
+            BmobObject *obj = array[0];
+            [weakSelf updateSettings:obj];
+        } else {
+            [weakSelf addSettingsToServer];
+        }
+    }];
+}
+
++ (void)updateSettings:(BmobObject *)settingsObject {
     
     if ([Config shareInstance].settings.nickname) {
-        [userSettings setObject:[Config shareInstance].settings.nickname forKey:@"nickName"];
+        [settingsObject setObject:[Config shareInstance].settings.nickname forKey:@"nickName"];
     }
     if ([Config shareInstance].settings.birthday) {
-        [userSettings setObject:[Config shareInstance].settings.birthday forKey:@"birthday"];
+        [settingsObject setObject:[Config shareInstance].settings.birthday forKey:@"birthday"];
     }
     if ([Config shareInstance].settings.gender) {
-        [userSettings setObject:[Config shareInstance].settings.gender forKey:@"gender"];
+        [settingsObject setObject:[Config shareInstance].settings.gender forKey:@"gender"];
     }
     if ([Config shareInstance].settings.lifespan) {
-        [userSettings setObject:[Config shareInstance].settings.lifespan forKey:@"lifespan"];
+        [settingsObject setObject:[Config shareInstance].settings.lifespan forKey:@"lifespan"];
+    }
+    if ([Config shareInstance].settings.isAutoSync) {
+        [settingsObject setObject:[Config shareInstance].settings.isAutoSync forKey:@"isAutoSync"];
     }
     
-    [userSettings updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+    [settingsObject updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
             //修改成功后的动作
-//            //更新本地syntime
-//            [Config shareInstance].settings.syntime = [CommonFunction getTimeNowString];
-//            [PlanCache storePersonalSettings:[Config shareInstance].settings];
+            //            //更新本地syntime
+            //            [Config shareInstance].settings.syntime = [CommonFunction getTimeNowString];
+            //            [PlanCache storePersonalSettings:[Config shareInstance].settings];
             
         } else if (error){
             NSLog(@"%@",error);
@@ -130,7 +168,14 @@
     }];
     
     //上传头像
-    [self uploadAvatar:userSettings];
+    NSString *avatarUrl = [settingsObject objectForKey:@"avatarURL"];
+    NSString *centerTopUrl = [settingsObject objectForKey:@"centerTopURL"];
+    if (![[Config shareInstance].settings.avatarURL isEqualToString:avatarUrl]) {
+        [self uploadAvatar:settingsObject];
+    }
+    if (![[Config shareInstance].settings.centerTopURL isEqualToString:centerTopUrl]) {
+        [self uploadCenterTop:settingsObject];
+    }
 }
 
 + (void)addSettingsToServer {
@@ -151,6 +196,9 @@
     }
     if ([Config shareInstance].settings.lifespan) {
         [userSettings setObject:[Config shareInstance].settings.lifespan forKey:@"lifespan"];
+    }
+    if ([Config shareInstance].settings.isAutoSync) {
+        [userSettings setObject:[Config shareInstance].settings.isAutoSync forKey:@"isAutoSync"];
     }
     //异步保存
     [userSettings saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
@@ -175,24 +223,68 @@
     
     //上传头像
     [self uploadAvatar:userSettings];
+    [self uploadCenterTop:userSettings];
 }
 
 + (void)uploadAvatar:(BmobObject *)obj {
     //上传头像
-    NSData *avatarData = [UserDefaults objectForKey:str_Avatar];
+    NSData *avatarData = UIImageJPEGRepresentation([Config shareInstance].settings.avatar, 1.0);
     if (avatarData) {
         //上传文件
         [BmobProFile uploadFileWithFilename:@"avatar.png" fileData:avatarData block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
             if (isSuccessful) {
-                
+
                 //把上传完的文件保存到“头像”字段
                 [obj setObject:bmobFile forKey:@"avatar"];
-                [obj setObject:url forKey:@"avatarURL"];
-                [obj saveInBackground];
+                [obj setObject:bmobFile.url forKey:@"avatarURL"];
+                [obj updateInBackground];
                 
+                //把avatarUrl保存到本地
+                [Config shareInstance].settings.avatarURL = bmobFile.url;
+                [PlanCache storePersonalSettings:[Config shareInstance].settings];
 //                //更新本地syntime
 //                [Config shareInstance].settings.syntime = [CommonFunction getTimeNowString];
 //                [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                
+                //打印文件名
+                NSLog(@"filename %@",filename);
+                //打印url
+                NSLog(@"url %@",url);
+                NSLog(@"bmobFile:%@\n",bmobFile);
+                
+            } else if (error) {
+                
+                NSLog(@"error %@",error);
+                
+            }
+            
+        } progress:^(CGFloat progress) {
+            //上传进度
+            NSLog(@"progress %f",progress);
+        }];
+    }
+}
+
++ (void)uploadCenterTop:(BmobObject *)obj {
+    
+    NSData *centerTopData = UIImageJPEGRepresentation([Config shareInstance].settings.centerTop, 1.0);
+    if (centerTopData) {
+        //上传文件
+        [BmobProFile uploadFileWithFilename:@"centerTop.png" fileData:centerTopData block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
+            if (isSuccessful) {
+                
+                //把上传完的文件保存到“头像”字段
+                [obj setObject:bmobFile forKey:@"centerTop"];
+                [obj setObject:bmobFile.url forKey:@"centerTopURL"];
+                [obj updateInBackground];
+                
+                //把centerTopURL保存到本地
+                [Config shareInstance].settings.centerTopURL = bmobFile.url;
+                [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                
+                //                //更新本地syntime
+//                                [Config shareInstance].settings.syntime = [CommonFunction getTimeNowString];
+//                                [PlanCache storePersonalSettings:[Config shareInstance].settings];
                 
                 //打印文件名
                 NSLog(@"filename %@",filename);
