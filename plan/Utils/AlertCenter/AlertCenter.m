@@ -6,6 +6,7 @@
 //  Copyright (c) 2015年 Fengzy. All rights reserved.
 //
 
+#import "CRToast.h"
 #import "AlertCenter.h"
 #import "PromptMessage.h"
 
@@ -19,7 +20,24 @@
 + (void)alertToastMessage:(NSString *)message {
     PromptMessage *pbMessage = [[PromptMessage alloc] init];
     [pbMessage  showMessage:message];
-    return;
 }
 
++ (void)alertNavBarMessage:(NSString *)message {
+    NSDictionary *options = @{
+                              kCRToastNotificationTypeKey : @(CRToastTypeNavigationBar),
+                              kCRToastNotificationPresentationTypeKey : @(CRToastPresentationTypeCover),
+                              kCRToastUnderStatusBarKey : @(YES),
+                              kCRToastTextKey : message,
+                              kCRToastTextAlignmentKey : @(NSTextAlignmentCenter),
+                              kCRToastBackgroundColorKey : color_0BA32A,
+                              kCRToastAnimationInTypeKey : @(CRToastAnimationTypeGravity),
+                              kCRToastAnimationOutTypeKey : @(CRToastAnimationTypeGravity),
+                              kCRToastAnimationInDirectionKey : @(CRToastAnimationDirectionTop),
+                              kCRToastAnimationOutDirectionKey : @(CRToastAnimationDirectionTop)
+                              };
+    [CRToastManager showNotificationWithOptions:options
+                                completionBlock:^{
+                                    NSLog(@"AlertNavBarMessage completed");
+                                }];
+}
 @end

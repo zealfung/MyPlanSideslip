@@ -42,9 +42,7 @@
 }
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
-    
     if (iOS7_LATER) {
         
         self.edgesForExtendedLayout = UIRectEdgeNone;
@@ -66,26 +64,19 @@
                           [UIColor whiteColor] ,UITextAttributeTextShadowColor ,
                           nil];
     [self.navigationController.navigationBar setTitleTextAttributes:dict];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    
     [super viewWillAppear:animated];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    
     [super viewWillDisappear:animated];
     [self.view endEditing:YES];
-    
 }
 
 - (void)dealloc {
-    
     [NotificationCenter removeObserver:self];
-    
 }
 
 - (UIBarButtonItem *)createBarButtonItemWithTitle:(NSString *)title titleColor:(UIColor *)color font:(UIFont *)font selector:(SEL)selector {
@@ -98,7 +89,6 @@
     button.frame = CGRectMake(0, 0, btnWidth, btnHeight);
     [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
     return [[UIBarButtonItem alloc] initWithCustomView:button];
-    
 }
 
 - (UIBarButtonItem *)createBarButtonItemWithNormalImageName:(NSString *)normalImageName selectedImageName:(NSString*)selectedImageName selector:(SEL)selector {
@@ -109,7 +99,6 @@
     [button setAllImage:imageNormal];
     [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
     return [[UIBarButtonItem alloc] initWithCustomView:button];
-    
 }
 
 - (UIView *)getInputAccessoryView {
@@ -136,7 +125,6 @@
 - (void)endInputAction:(UIBarButtonItem *)barButtonItem {
     
     [self.view endEditing:YES];
-    
 }
 
 - (void)willBack {
@@ -150,13 +138,10 @@
         if (self.navigationController) {
             
             [self.navigationController popViewControllerAnimated:YES];
-            
         }
-        
     } else {
         
         [self dismissViewControllerAnimated:YES completion:nil];
-        
     }
 }
 
@@ -166,14 +151,11 @@
 @implementation FatherTableViewController (HUDControl)
 
 - (void)showHUD {
-    
     if (!self.hud) {
-        
         MBProgressHUD *hud = [[MBProgressHUD alloc] initWithFrame:self.view.bounds];
         hud.backgroundColor = [UIColor colorWithWhite:1 alpha:0.4];
         [self.view addSubview:hud];
         self.hud = hud;
-        
     }
     self.hud.frame = self.view.bounds;
     [self.view bringSubviewToFront:self.hud];
@@ -181,9 +163,7 @@
 }
 
 - (void)hideHUD {
-    
     [self.hud hide:YES];
-    
 }
 
 @end
@@ -194,15 +174,15 @@
 @implementation FatherTableViewController (alert)
 
 - (void)alertButtonMessage:(NSString *)message {
-    
     [AlertCenter alertButtonMessage:message];
-    
 }
 
 - (void)alertToastMessage:(NSString *)message {
-    
     [AlertCenter alertToastMessage:message];
-    
+}
+
+- (void)alertNavBarMessage:(NSString *)message {
+    [AlertCenter alertNavBarMessage:message];
 }
 
 @end

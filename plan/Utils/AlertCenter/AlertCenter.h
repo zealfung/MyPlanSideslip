@@ -14,4 +14,6 @@
 
 + (void)alertToastMessage:(NSString *)message;
 
++ (void)alertNavBarMessage:(NSString *)message;
+
 @end

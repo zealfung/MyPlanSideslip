@@ -21,18 +21,15 @@
 @synthesize isPush;
 
 - (id)init {
-    
     self = [super init];
     if (self) {
         
         self.isPush = YES;
-        
     }
     return self;
 }
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         
@@ -42,9 +39,7 @@
 }
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
-    
     if (iOS7_LATER) {
         
         self.edgesForExtendedLayout = UIRectEdgeBottom | UIRectEdgeLeft | UIRectEdgeRight;
@@ -67,26 +62,19 @@
                           [UIColor whiteColor] ,UITextAttributeTextShadowColor ,
                           nil];
     [self.navigationController.navigationBar setTitleTextAttributes:dict];
-    
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    
     [super viewWillAppear:animated];
-    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
-    
     [super viewWillDisappear:animated];
     [self.view endEditing:YES];
-    
 }
 
 - (void)dealloc {
-    
     [NotificationCenter removeObserver:self];
-    
 }
 
 - (UIBarButtonItem *)createBarButtonItemWithTitle:(NSString *)title titleColor:(UIColor *)color font:(UIFont *)font selector:(SEL)selector {
@@ -99,7 +87,6 @@
     button.frame = CGRectMake(0, 0, btnWidth, btnHeight);
     [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
     return [[UIBarButtonItem alloc] initWithCustomView:button];
-    
 }
 
 - (UIBarButtonItem *)createBarButtonItemWithNormalImageName:(NSString *)normalImageName selectedImageName:(NSString*)selectedImageName selector:(SEL)selector {
@@ -110,7 +97,6 @@
     [button setAllImage:imageNormal];
     [button addTarget:self action:selector forControlEvents:UIControlEventTouchUpInside];
     return [[UIBarButtonItem alloc] initWithCustomView:button];
-
 }
 
 - (UIView *)getInputAccessoryView {
@@ -123,7 +109,6 @@
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
         [items addObject:barButtonItem];
     }
-    
     {
         UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(endInputAction:)];
         [items addObject:barButtonItem];
@@ -135,23 +120,19 @@
 }
 
 - (void)endInputAction:(UIBarButtonItem *)barButtonItem {
-    
     [self.view endEditing:YES];
-    
 }
 
 - (void)willBack {
 }
 
 - (void)backAction:(UIButton*)sender {
-    
     [self willBack];
     if(isPush) {
         
         if (self.navigationController) {
             
             [self.navigationController popViewControllerAnimated:YES];
-            
         }
     } else {
         
@@ -165,9 +146,7 @@
 @implementation FatherViewController (HUDControl)
 
 - (void)showHUD {
-    
     if (!self.hud) {
-        
         MBProgressHUD *hud = [[MBProgressHUD alloc] initWithFrame:self.view.bounds];
         hud.backgroundColor = [UIColor colorWithWhite:1 alpha:0.4];
         [self.view addSubview:hud];
@@ -179,9 +158,7 @@
 }
 
 - (void)hideHUD {
-    
     [self.hud hide:YES];
-    
 }
 
 @end
@@ -192,15 +169,15 @@
 @implementation FatherViewController (alert)
 
 - (void)alertButtonMessage:(NSString *)message {
-    
     [AlertCenter alertButtonMessage:message];
-    
 }
 
 - (void)alertToastMessage:(NSString *)message {
-    
     [AlertCenter alertToastMessage:message];
-    
+}
+
+- (void)alertNavBarMessage:(NSString *)message {
+    [AlertCenter alertNavBarMessage:message];
 }
 
 @end

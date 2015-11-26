@@ -8,123 +8,169 @@
 
 /* Begin PBXBuildFile section */
 		0258F988DCEAE63E86607D3EDCD035A0 /* RESideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 072C29BF6FE433D7F58008180E0390F0 /* RESideMenu.m */; };
-		06D3FD0AB0538B2820761A361F8AE6EF /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 003F939C8DAE441558A4521EFCEF9B6B /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		2161F8F1A83BA0099A27F4D4833675FD /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = 72878CF454D541B77DC44C2235B40643 /* FMDatabase.h */; };
+		04E3A2C124D983716D622D614A28090C /* FMDB-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 52F09F7BBAF5294D748B8FD7F30FE9B4 /* FMDB-dummy.m */; };
+		098CAA2420930E0853D37154BFE716BC /* CRToastLayoutHelpers.h in Headers */ = {isa = PBXBuildFile; fileRef = CFA2D22EC7382762FEC67AE89C006D99 /* CRToastLayoutHelpers.h */; };
+		0D49C7F3A289C2CA1D832E222D3FDD7D /* CRToastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 74DB564CCDBEE45D303137347581FD31 /* CRToastViewController.m */; };
+		0E4AEC4700D5700EA20E410EB836B0E3 /* CRToastConfig.h in Headers */ = {isa = PBXBuildFile; fileRef = 5BB0FE19431DEDED2C77ADCC0B9C9017 /* CRToastConfig.h */; };
+		0EA9B4E4C01924999C89CDD120878AED /* CRToastView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4625F27B767025A928834A175E8A0A4A /* CRToastView.m */; };
+		1687CA1E2C8F165D74EAB9D84C50BBC3 /* FMDatabaseQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 269D169B71D50BF8C600A420FF2FA53B /* FMDatabaseQueue.h */; };
+		1851D1FB8DDB3749BE1B381B811F0C97 /* FMDB.h in Headers */ = {isa = PBXBuildFile; fileRef = A4D51F4AD0F7B1E0458744F5A5356321 /* FMDB.h */; };
+		1AE183C3FFB50F0BF50A20DFCE7955FA /* CRToastView.h in Headers */ = {isa = PBXBuildFile; fileRef = EA5D9E28BD45984BC0934F3894F651D0 /* CRToastView.h */; };
+		26EBBB1C4C5AA79774C391A89CA4E01A /* CRToast.h in Headers */ = {isa = PBXBuildFile; fileRef = 826BCA35B8400AD233BD589FAF7BCD3E /* CRToast.h */; };
+		2846E026F15E5F5F887592D2048E0C97 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = 8B01B7A6037AC1D555D24547530D5957 /* FMResultSet.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		2C6486491399ADE1773843D0A64FC434 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3668FDF91B11058707A743B7DB87F2D9 /* Foundation.framework */; };
+		2D758E299E43D79A52ED45D5DFABF8A8 /* CRToast-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = ED89E36824E67652F7D923545DB162EF /* CRToast-dummy.m */; };
+		2F9B2F5248817243762D8588215C3E2F /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3668FDF91B11058707A743B7DB87F2D9 /* Foundation.framework */; };
+		32314549633C68A052AD8F88330D5431 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3668FDF91B11058707A743B7DB87F2D9 /* Foundation.framework */; };
+		3AB37D1990920961688DC8A3894726F7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 10E8755CCBDA2174A986F5D18C1E08C4 /* CoreGraphics.framework */; };
 		3FFDCFB3C8A609DE9D0D559FC421C4AA /* RECommonFunctions.m in Sources */ = {isa = PBXBuildFile; fileRef = EDF667CE8E2F91CBEFD040DEA590CDFA /* RECommonFunctions.m */; };
-		47374853A818EAEBDFC5EE449D24E8BA /* MBProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 52E6E06A257E4C34E5A4ADBECD514312 /* MBProgressHUD.h */; };
-		4B83162712A99EE3C6F900AA3EC0A90D /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 45ED659A6376AB207BC888C86287F9AD /* FMDatabaseQueue.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		4D3564EF51699D9B6C7D369703C1D2B1 /* MBProgressHUD-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B2C70B01AFECFF8CFB69F899DA8055 /* MBProgressHUD-dummy.m */; };
-		52EF49D24AD043FEAB10E23CDDF0C484 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3668FDF91B11058707A743B7DB87F2D9 /* Foundation.framework */; };
+		475E71088DC02C745E4B801BACD77CAB /* CRToastViewController.h in Headers */ = {isa = PBXBuildFile; fileRef = 411A1FB93E8C4AC4B37486EE6FAD27C8 /* CRToastViewController.h */; };
 		5E11C1F50CEA66D031AAFCBE9B5067E1 /* RESideMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = 0AABEEE264148FE05BE2498794AFE8B4 /* RESideMenu.h */; };
 		5E33A7B300BD5360F2FBD7C40E4A70D4 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C61C5499546060C2CC17F5ED369E6290 /* QuartzCore.framework */; };
+		61B1EE90D3743CB6C7157E533D453D79 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 23AE0FC596619540C6C4560239C0607A /* FMDatabaseAdditions.h */; };
+		6611D610F230626396ED1AB853FE5403 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = AB98B1C0195363CCE17C081122AD43B1 /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		6687190B9596729991E4DC1DA923F441 /* UIViewController+RESideMenu.h in Headers */ = {isa = PBXBuildFile; fileRef = DDBC168D42434B76E804AA26F855D2B1 /* UIViewController+RESideMenu.h */; };
-		7F460E586960C58D57DB3C19296047E2 /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 33435DE669F7315B0EC25E486E9B29EC /* FMResultSet.h */; };
-		8999F1A4F9BF4BA13143459A0DB1056C /* FMDB.h in Headers */ = {isa = PBXBuildFile; fileRef = 92CD92EAB83C8E558BE51D70EEDACF97 /* FMDB.h */; };
-		951BC59F3DA33DDF322FF6C5B1154A12 /* FMDB-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 6491F8E7DC36A04F4D98EFC56F822461 /* FMDB-dummy.m */; };
+		6BF4EB990E48B59B7C79F935DE408D7F /* CRToastWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 1F9EEB6F33E0838A5943E458891F6D06 /* CRToastWindow.m */; };
+		768EA96C7A352BDBB36C14FED2CD27C4 /* MBProgressHUD-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 406F8208D185824931D0C84263D5F02C /* MBProgressHUD-dummy.m */; };
+		77C1AB82DF44D9E8DE2AE4496A2752BD /* CRToastWindow.h in Headers */ = {isa = PBXBuildFile; fileRef = 454E08E80BB1A64ECE71862BF5E93DA2 /* CRToastWindow.h */; };
+		825115B5E5301CC607B33277D74DA2AC /* FMDatabasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = 933ECD030834E339405FEAA2807A3164 /* FMDatabasePool.h */; };
+		902A8900E4E62BCEEE24873B55E02742 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = B9B973053C18CDB18769AFE3D529A93B /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
 		970C3C3869EAD7F42C7143AB1DA6A395 /* RECommonFunctions.h in Headers */ = {isa = PBXBuildFile; fileRef = ABBEFFB8805CD6D0BFF2DA006DE169E5 /* RECommonFunctions.h */; };
-		A1A4823D43FC4464E6A772CD938FFDE7 /* FMDatabasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = 850C47F9B34647E1400FC5DEE0B6F71A /* FMDatabasePool.h */; };
-		A43F8492A1D43592AFCF0666DB21C27C /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = CE68206B8E40838F8C0F919F8C1ED33E /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		AE443F1F42EAEA28291C8FD32CBCABDF /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = A8BFA1638777BE6C3098AAF33D317509 /* FMResultSet.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		BE6EB5D107323446F9DC6F3D10E2B18F /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5B9BE3E5CB5F93DE285CE5CD4E662CDA /* CoreGraphics.framework */; };
-		CB46D5D8DB37F0D701503E58F2CCCD84 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = 083AB48932612044AEA8C37E10169FF2 /* FMDatabaseAdditions.h */; };
-		CD8C10EC606B23748531A4B375207EFD /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 46A6F53BA54C29FF334D0AED199B0790 /* Pods-dummy.m */; };
-		CE0330D2B7E58D081ABE679E2EFB836E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3668FDF91B11058707A743B7DB87F2D9 /* Foundation.framework */; };
-		D1EFCF908AF05065951E9BFB1F173CCD /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 752602D47F04CC80A7EE7B9B49355617 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
-		DF323C438184C902C91BF61A28969384 /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = D0F3558A73F904AF4AD94670BECA0AF2 /* MBProgressHUD.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		97B9B5A59CB66924E0AE17757B1D9891 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3668FDF91B11058707A743B7DB87F2D9 /* Foundation.framework */; };
+		A44C892A4E430D33791A1D96ACBA6E22 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = 717DA279FAEA4AB5A576DE47E3E99A96 /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		A65E91DF3A631F0A2679B68AAA097440 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3668FDF91B11058707A743B7DB87F2D9 /* Foundation.framework */; };
+		AA8CA7246DB042D6BD438DB16B77BB6E /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = DEA48E45F466DEFD0486904D9CD77FB0 /* FMDatabase.h */; };
+		CC4175C45C563E650DB2846A153A9F4F /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = 67FB5D04B02D3D8A271E704783A3773E /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		CCF1CE586232655B6DD5D1442E14397D /* CRToastManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 4B0BBF8FFF14D29599AF570D51591640 /* CRToastManager.m */; };
+		CEA52D4FF548B90CB93A9FCFD5B270AA /* CRToastManager.h in Headers */ = {isa = PBXBuildFile; fileRef = 37483903E0D51414649AE8392D2B0EE6 /* CRToastManager.h */; };
+		DD1C1CDE72A002C1E1FB790F22D6262A /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = 7AC7008187FEFCB0DE47DB8E8EEA069C /* FMResultSet.h */; };
+		DF6BF654A218F8E0A6252B73FF0690BC /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 54E48B8DEA781CD70346B08163DC1C20 /* Pods-dummy.m */; };
+		E002E7402F85D9EAE6535A6F30AB7C8B /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 664837DA80E67627B3A275842B3129ED /* FMDatabaseQueue.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		E057678531BFDDFF1722D8D094F92575 /* CRToastConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 92DC2471F440FC69736A926EB47DEF39 /* CRToastConfig.m */; };
 		E37238211D2BB61C4C20AE033916FFA4 /* RESideMenu-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = 02E75C9C4D4884FE69F710BFFCBCE04E /* RESideMenu-dummy.m */; };
-		EB4FE31FCC2B738A8157BD1747C852F6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3668FDF91B11058707A743B7DB87F2D9 /* Foundation.framework */; };
+		F4BBAC525B1CE11AED752AD40B58C8BA /* MBProgressHUD.h in Headers */ = {isa = PBXBuildFile; fileRef = 1F573E8474E4C5EEAB4183AC33B636E1 /* MBProgressHUD.h */; };
 		FA9A36E554FBA842F73BD79F3C34EA05 /* UIViewController+RESideMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = C4FD963CE2ACAD49AEF28CF4B8BA2116 /* UIViewController+RESideMenu.m */; };
-		FB714D78D0CBB4F955AD79128CA5057E /* FMDatabaseQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 144B628ADF43540912DA876628CB2156 /* FMDatabaseQueue.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		0ACAE0D5B61DE501B28BF2181672AE3A /* PBXContainerItemProxy */ = {
+		00F045D26138488AA1411DDA8BC645B2 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 1E56529DAA275AE3EDFA19F7B6C6D497;
-			remoteInfo = MBProgressHUD;
+			remoteGlobalIDString = 29ACFFF903E257CE490FFB04BA89AE3A;
+			remoteInfo = FMDB;
 		};
-		C470736E80EDFEDFCDECE9121764E70B /* PBXContainerItemProxy */ = {
+		15DC9466BED6CEB0DABE40712E6C4C56 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 2965E38DCEBC6E89D5362BA6561D3FBD;
 			remoteInfo = RESideMenu;
 		};
-		E3D73277CF41922F87BA3C8B486736E9 /* PBXContainerItemProxy */ = {
+		4AB8EBA7F735BC1547E62A38EB43CC42 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
 			proxyType = 1;
-			remoteGlobalIDString = 94866CE48FD87B93E0793B433553FA69;
-			remoteInfo = FMDB;
+			remoteGlobalIDString = 2E8F8E817DE7BE9B1CBA95F1313C109E;
+			remoteInfo = CRToast;
+		};
+		869ED8630C785D24A329C214D2D590B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D41D8CD98F00B204E9800998ECF8427E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 10D9AF6B886EB7E12BCEACEF8D1F8C1A;
+			remoteInfo = MBProgressHUD;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		003F939C8DAE441558A4521EFCEF9B6B /* FMDatabasePool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabasePool.m; path = src/fmdb/FMDatabasePool.m; sourceTree = "<group>"; };
-		012B1E43390AA19811912D49A6C35550 /* RESideMenu.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = RESideMenu.xcconfig; sourceTree = "<group>"; };
 		02E75C9C4D4884FE69F710BFFCBCE04E /* RESideMenu-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "RESideMenu-dummy.m"; sourceTree = "<group>"; };
-		070595D9CA611F7476476F76662157DE /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.release.xcconfig; sourceTree = "<group>"; };
 		072C29BF6FE433D7F58008180E0390F0 /* RESideMenu.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RESideMenu.m; path = RESideMenu/RESideMenu.m; sourceTree = "<group>"; };
-		083AB48932612044AEA8C37E10169FF2 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = src/fmdb/FMDatabaseAdditions.h; sourceTree = "<group>"; };
 		0AABEEE264148FE05BE2498794AFE8B4 /* RESideMenu.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RESideMenu.h; path = RESideMenu/RESideMenu.h; sourceTree = "<group>"; };
-		0ED23D3A8F00BB7A9196437E12FA7A97 /* RESideMenu-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RESideMenu-prefix.pch"; sourceTree = "<group>"; };
-		144B628ADF43540912DA876628CB2156 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabaseQueue.h; path = src/fmdb/FMDatabaseQueue.h; sourceTree = "<group>"; };
+		10E8755CCBDA2174A986F5D18C1E08C4 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
+		11537CC2A4FCBC7ACFF1A0210519C368 /* CRToast.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = CRToast.xcconfig; sourceTree = "<group>"; };
+		1185BE56ED971FF85D5432C1F9CF4B3A /* libFMDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFMDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		15A529C27057E4A57D259CBC6E6CE49C /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
 		1F0F60D6786DFD19D2B1D9A1BE8816C3 /* libRESideMenu.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libRESideMenu.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		33435DE669F7315B0EC25E486E9B29EC /* FMResultSet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = src/fmdb/FMResultSet.h; sourceTree = "<group>"; };
+		1F573E8474E4C5EEAB4183AC33B636E1 /* MBProgressHUD.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
+		1F7E2871677BA21AD0CD23303EAA0608 /* MBProgressHUD-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "MBProgressHUD-Private.xcconfig"; sourceTree = "<group>"; };
+		1F9EEB6F33E0838A5943E458891F6D06 /* CRToastWindow.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = CRToastWindow.m; path = CRToast/CRToastWindow.m; sourceTree = "<group>"; };
+		23AE0FC596619540C6C4560239C0607A /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabaseAdditions.h; path = src/fmdb/FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		269D169B71D50BF8C600A420FF2FA53B /* FMDatabaseQueue.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabaseQueue.h; path = src/fmdb/FMDatabaseQueue.h; sourceTree = "<group>"; };
+		2BBC86EDE16548D1F16EF49B642BB6AC /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.release.xcconfig; sourceTree = "<group>"; };
 		3668FDF91B11058707A743B7DB87F2D9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
-		3875A84823253A59412212DE4C1B9CB4 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.debug.xcconfig; sourceTree = "<group>"; };
-		39AFB9D5EB7C2D9C8A36C53C9D477411 /* MBProgressHUD-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD-prefix.pch"; sourceTree = "<group>"; };
-		45ED659A6376AB207BC888C86287F9AD /* FMDatabaseQueue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseQueue.m; path = src/fmdb/FMDatabaseQueue.m; sourceTree = "<group>"; };
-		46A6F53BA54C29FF334D0AED199B0790 /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
-		52E6E06A257E4C34E5A4ADBECD514312 /* MBProgressHUD.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = MBProgressHUD.h; sourceTree = "<group>"; };
-		5B9BE3E5CB5F93DE285CE5CD4E662CDA /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/CoreGraphics.framework; sourceTree = DEVELOPER_DIR; };
-		637FE5680CB91B7D0E478E814C309E35 /* FMDB-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FMDB-prefix.pch"; sourceTree = "<group>"; };
+		37483903E0D51414649AE8392D2B0EE6 /* CRToastManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CRToastManager.h; path = CRToast/CRToastManager.h; sourceTree = "<group>"; };
+		3E1F0CC2711306D50A7001479EB5D3D5 /* CRToast-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CRToast-prefix.pch"; sourceTree = "<group>"; };
+		406F8208D185824931D0C84263D5F02C /* MBProgressHUD-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD-dummy.m"; sourceTree = "<group>"; };
+		411A1FB93E8C4AC4B37486EE6FAD27C8 /* CRToastViewController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CRToastViewController.h; path = CRToast/CRToastViewController.h; sourceTree = "<group>"; };
+		454E08E80BB1A64ECE71862BF5E93DA2 /* CRToastWindow.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CRToastWindow.h; path = CRToast/CRToastWindow.h; sourceTree = "<group>"; };
+		4625F27B767025A928834A175E8A0A4A /* CRToastView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = CRToastView.m; path = CRToast/CRToastView.m; sourceTree = "<group>"; };
+		4B0BBF8FFF14D29599AF570D51591640 /* CRToastManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = CRToastManager.m; path = CRToast/CRToastManager.m; sourceTree = "<group>"; };
+		52F09F7BBAF5294D748B8FD7F30FE9B4 /* FMDB-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FMDB-dummy.m"; sourceTree = "<group>"; };
+		54E48B8DEA781CD70346B08163DC1C20 /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
+		5ACEA28E92431DE3B6E9CBAFCAA6BBEA /* RESideMenu.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = RESideMenu.xcconfig; sourceTree = "<group>"; };
+		5BB0FE19431DEDED2C77ADCC0B9C9017 /* CRToastConfig.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CRToastConfig.h; path = CRToast/CRToastConfig.h; sourceTree = "<group>"; };
+		5CCC8FE06CF7E5016BEF1E191D3AAC95 /* FMDB.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FMDB.xcconfig; sourceTree = "<group>"; };
+		63152558639DA9470870D7500F81ECE7 /* libCRToast.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libCRToast.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		641AE05DD55E5E6AC1590CD7B4A18F97 /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
-		6491F8E7DC36A04F4D98EFC56F822461 /* FMDB-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FMDB-dummy.m"; sourceTree = "<group>"; };
-		67D6BA0602CF5C5B454A1F2CF102AD08 /* BmobSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BmobSDK.framework; sourceTree = "<group>"; };
-		6E1D0F39151F06EE5DF16A9C87D1CAE1 /* FMDB.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = FMDB.xcconfig; sourceTree = "<group>"; };
-		72878CF454D541B77DC44C2235B40643 /* FMDatabase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = src/fmdb/FMDatabase.h; sourceTree = "<group>"; };
-		752602D47F04CC80A7EE7B9B49355617 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = src/fmdb/FMDatabaseAdditions.m; sourceTree = "<group>"; };
-		850C47F9B34647E1400FC5DEE0B6F71A /* FMDatabasePool.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabasePool.h; path = src/fmdb/FMDatabasePool.h; sourceTree = "<group>"; };
-		92CD92EAB83C8E558BE51D70EEDACF97 /* FMDB.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDB.h; path = src/fmdb/FMDB.h; sourceTree = "<group>"; };
-		A54326BF8D46FFD29A6A2B3079AA7D08 /* MBProgressHUD-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "MBProgressHUD-Private.xcconfig"; sourceTree = "<group>"; };
-		A8BFA1638777BE6C3098AAF33D317509 /* FMResultSet.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = src/fmdb/FMResultSet.m; sourceTree = "<group>"; };
-		A9A1047DF1BDD762AEAE1BF7A74142EF /* MBProgressHUD.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MBProgressHUD.xcconfig; sourceTree = "<group>"; };
+		664837DA80E67627B3A275842B3129ED /* FMDatabaseQueue.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseQueue.m; path = src/fmdb/FMDatabaseQueue.m; sourceTree = "<group>"; };
+		67FB5D04B02D3D8A271E704783A3773E /* FMDatabase.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = src/fmdb/FMDatabase.m; sourceTree = "<group>"; };
+		6B2F8016ECCA03C646C23387FF57DD2D /* FMDB-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "FMDB-Private.xcconfig"; sourceTree = "<group>"; };
+		717DA279FAEA4AB5A576DE47E3E99A96 /* FMDatabasePool.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabasePool.m; path = src/fmdb/FMDatabasePool.m; sourceTree = "<group>"; };
+		725FCD46E286C118E24E0F0DE3A0CEF6 /* FMDB-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "FMDB-prefix.pch"; sourceTree = "<group>"; };
+		74DB564CCDBEE45D303137347581FD31 /* CRToastViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = CRToastViewController.m; path = CRToast/CRToastViewController.m; sourceTree = "<group>"; };
+		7AC7008187FEFCB0DE47DB8E8EEA069C /* FMResultSet.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMResultSet.h; path = src/fmdb/FMResultSet.h; sourceTree = "<group>"; };
+		826BCA35B8400AD233BD589FAF7BCD3E /* CRToast.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CRToast.h; path = CRToast/CRToast.h; sourceTree = "<group>"; };
+		8B01B7A6037AC1D555D24547530D5957 /* FMResultSet.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMResultSet.m; path = src/fmdb/FMResultSet.m; sourceTree = "<group>"; };
+		8D74AA9A0C8F3771BE00706168AC4CF2 /* CRToast-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "CRToast-Private.xcconfig"; sourceTree = "<group>"; };
+		8DAA2B255C55933E1A0A93C15D567ABB /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		92DC2471F440FC69736A926EB47DEF39 /* CRToastConfig.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = CRToastConfig.m; path = CRToast/CRToastConfig.m; sourceTree = "<group>"; };
+		933ECD030834E339405FEAA2807A3164 /* FMDatabasePool.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabasePool.h; path = src/fmdb/FMDatabasePool.h; sourceTree = "<group>"; };
+		A4D51F4AD0F7B1E0458744F5A5356321 /* FMDB.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDB.h; path = src/fmdb/FMDB.h; sourceTree = "<group>"; };
+		AB98B1C0195363CCE17C081122AD43B1 /* MBProgressHUD.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
 		ABBEFFB8805CD6D0BFF2DA006DE169E5 /* RECommonFunctions.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = RECommonFunctions.h; path = RESideMenu/RECommonFunctions.h; sourceTree = "<group>"; };
+		AF76AE385B39079BCD421991F4C65495 /* libMBProgressHUD.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMBProgressHUD.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		B7C05E87EE67197E0D0F665E4B14EE0C /* MBProgressHUD-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "MBProgressHUD-prefix.pch"; sourceTree = "<group>"; };
+		B9B973053C18CDB18769AFE3D529A93B /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = src/fmdb/FMDatabaseAdditions.m; sourceTree = "<group>"; };
 		BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		BBDC34FEFC68BE348A29EDA29BA047C2 /* FMDB-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "FMDB-Private.xcconfig"; sourceTree = "<group>"; };
 		BF59BC15D23E1E1912C8F334E7236813 /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
 		C4FD963CE2ACAD49AEF28CF4B8BA2116 /* UIViewController+RESideMenu.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIViewController+RESideMenu.m"; path = "RESideMenu/UIViewController+RESideMenu.m"; sourceTree = "<group>"; };
+		C5ACEBAD156CA023E89C2027855A1DE0 /* RESideMenu-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RESideMenu-prefix.pch"; sourceTree = "<group>"; };
 		C61C5499546060C2CC17F5ED369E6290 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS8.3.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
-		CE68206B8E40838F8C0F919F8C1ED33E /* FMDatabase.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabase.m; path = src/fmdb/FMDatabase.m; sourceTree = "<group>"; };
-		D0F3558A73F904AF4AD94670BECA0AF2 /* MBProgressHUD.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = MBProgressHUD.m; sourceTree = "<group>"; };
+		CFA2D22EC7382762FEC67AE89C006D99 /* CRToastLayoutHelpers.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CRToastLayoutHelpers.h; path = CRToast/CRToastLayoutHelpers.h; sourceTree = "<group>"; };
 		DDBC168D42434B76E804AA26F855D2B1 /* UIViewController+RESideMenu.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIViewController+RESideMenu.h"; path = "RESideMenu/UIViewController+RESideMenu.h"; sourceTree = "<group>"; };
-		DF081FE4EC44BA5645EBD6DB675F42C0 /* libFMDB.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libFMDB.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		E8B2C70B01AFECFF8CFB69F899DA8055 /* MBProgressHUD-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "MBProgressHUD-dummy.m"; sourceTree = "<group>"; };
+		DEA48E45F466DEFD0486904D9CD77FB0 /* FMDatabase.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = FMDatabase.h; path = src/fmdb/FMDatabase.h; sourceTree = "<group>"; };
+		EA5D9E28BD45984BC0934F3894F651D0 /* CRToastView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = CRToastView.h; path = CRToast/CRToastView.h; sourceTree = "<group>"; };
+		ED89E36824E67652F7D923545DB162EF /* CRToast-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "CRToast-dummy.m"; sourceTree = "<group>"; };
 		EDF667CE8E2F91CBEFD040DEA590CDFA /* RECommonFunctions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = RECommonFunctions.m; path = RESideMenu/RECommonFunctions.m; sourceTree = "<group>"; };
+		EF241751581742262916E453B5C0A5C2 /* BmobSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BmobSDK.framework; sourceTree = "<group>"; };
+		F400BFA958752F7C8C8F1FE8A07F2BEF /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.debug.xcconfig; sourceTree = "<group>"; };
 		F615EFB803B24E50E2F99357EA063BE4 /* RESideMenu-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "RESideMenu-Private.xcconfig"; sourceTree = "<group>"; };
-		F87D68A851D42418BAC6AED2860F038B /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
-		FCD89FBDF8F85A22E40B7C0D56AC01CA /* libMBProgressHUD.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libMBProgressHUD.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		F623E09451B522F9612CB01235B80775 /* MBProgressHUD.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = MBProgressHUD.xcconfig; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		15FA755C4CB124A9A6EBD27A6F1FF7A5 /* Frameworks */ = {
+		29B275E268D9226119EB7F2DC7C13848 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB4FE31FCC2B738A8157BD1747C852F6 /* Foundation.framework in Frameworks */,
+				A65E91DF3A631F0A2679B68AAA097440 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		296A2CEA45DF8A868D3ED9727C1D2650 /* Frameworks */ = {
+		544BBA9B9E858BCF27007DD771E87B23 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE0330D2B7E58D081ABE679E2EFB836E /* Foundation.framework in Frameworks */,
+				32314549633C68A052AD8F88330D5431 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		578B1E8AD2BBD0E165A953D32A3779C6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2F9B2F5248817243762D8588215C3E2F /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -137,60 +183,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		7169D5F0FF41BC4C3724AB8BA5AA1F65 /* Frameworks */ = {
+		6862261DA0B4E5757C7591F49E876CB9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BE6EB5D107323446F9DC6F3D10E2B18F /* CoreGraphics.framework in Frameworks */,
-				52EF49D24AD043FEAB10E23CDDF0C484 /* Foundation.framework in Frameworks */,
+				3AB37D1990920961688DC8A3894726F7 /* CoreGraphics.framework in Frameworks */,
+				97B9B5A59CB66924E0AE17757B1D9891 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		0668175E91CAEAC336F70A5EF9F60B2E /* RESideMenu */ = {
+		0773BC970D3F37D78650E5CD3A04C1A5 /* BmobSDK */ = {
 			isa = PBXGroup;
 			children = (
-				ABBEFFB8805CD6D0BFF2DA006DE169E5 /* RECommonFunctions.h */,
-				EDF667CE8E2F91CBEFD040DEA590CDFA /* RECommonFunctions.m */,
-				0AABEEE264148FE05BE2498794AFE8B4 /* RESideMenu.h */,
-				072C29BF6FE433D7F58008180E0390F0 /* RESideMenu.m */,
-				DDBC168D42434B76E804AA26F855D2B1 /* UIViewController+RESideMenu.h */,
-				C4FD963CE2ACAD49AEF28CF4B8BA2116 /* UIViewController+RESideMenu.m */,
-				758D59B7BE1C885AB44D7DD2E2FB4530 /* Support Files */,
+				9428784784C5914E3EAEB2BC6EE00A52 /* Frameworks */,
 			);
-			path = RESideMenu;
-			sourceTree = "<group>";
-		};
-		096ACF6A48CB8E9B2C500C014C742016 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				6E1D0F39151F06EE5DF16A9C87D1CAE1 /* FMDB.xcconfig */,
-				BBDC34FEFC68BE348A29EDA29BA047C2 /* FMDB-Private.xcconfig */,
-				6491F8E7DC36A04F4D98EFC56F822461 /* FMDB-dummy.m */,
-				637FE5680CB91B7D0E478E814C309E35 /* FMDB-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/FMDB";
-			sourceTree = "<group>";
-		};
-		0DB0567413E5A94F99EF3587B47C0BE7 /* common */ = {
-			isa = PBXGroup;
-			children = (
-				92CD92EAB83C8E558BE51D70EEDACF97 /* FMDB.h */,
-				72878CF454D541B77DC44C2235B40643 /* FMDatabase.h */,
-				CE68206B8E40838F8C0F919F8C1ED33E /* FMDatabase.m */,
-				083AB48932612044AEA8C37E10169FF2 /* FMDatabaseAdditions.h */,
-				752602D47F04CC80A7EE7B9B49355617 /* FMDatabaseAdditions.m */,
-				850C47F9B34647E1400FC5DEE0B6F71A /* FMDatabasePool.h */,
-				003F939C8DAE441558A4521EFCEF9B6B /* FMDatabasePool.m */,
-				144B628ADF43540912DA876628CB2156 /* FMDatabaseQueue.h */,
-				45ED659A6376AB207BC888C86287F9AD /* FMDatabaseQueue.m */,
-				33435DE669F7315B0EC25E486E9B29EC /* FMResultSet.h */,
-				A8BFA1638777BE6C3098AAF33D317509 /* FMResultSet.m */,
-			);
-			name = common;
+			path = BmobSDK;
 			sourceTree = "<group>";
 		};
 		122DA2E5084A4393C29BE363C764795C /* Frameworks */ = {
@@ -201,22 +211,41 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		13D2B9CBCF86CC3C7BE79AD1773A0FCB /* Pods */ = {
+		3FDEE127FABA1CA5C4AACA509AEB1930 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				B40F4D85084A331AB4E1582B3BACC369 /* BmobSDK */,
-				52207EE1F6A3334366D8D167CCB9A8E5 /* FMDB */,
-				F94BF7B60846CF5DE4316F8605321C00 /* MBProgressHUD */,
-				0668175E91CAEAC336F70A5EF9F60B2E /* RESideMenu */,
+				F623E09451B522F9612CB01235B80775 /* MBProgressHUD.xcconfig */,
+				1F7E2871677BA21AD0CD23303EAA0608 /* MBProgressHUD-Private.xcconfig */,
+				406F8208D185824931D0C84263D5F02C /* MBProgressHUD-dummy.m */,
+				B7C05E87EE67197E0D0F665E4B14EE0C /* MBProgressHUD-prefix.pch */,
 			);
-			name = Pods;
+			name = "Support Files";
+			path = "../Target Support Files/MBProgressHUD";
 			sourceTree = "<group>";
 		};
-		52207EE1F6A3334366D8D167CCB9A8E5 /* FMDB */ = {
+		4C8CDB31B1AC36497262D7D9ED19C826 /* common */ = {
 			isa = PBXGroup;
 			children = (
-				096ACF6A48CB8E9B2C500C014C742016 /* Support Files */,
-				0DB0567413E5A94F99EF3587B47C0BE7 /* common */,
+				A4D51F4AD0F7B1E0458744F5A5356321 /* FMDB.h */,
+				DEA48E45F466DEFD0486904D9CD77FB0 /* FMDatabase.h */,
+				67FB5D04B02D3D8A271E704783A3773E /* FMDatabase.m */,
+				23AE0FC596619540C6C4560239C0607A /* FMDatabaseAdditions.h */,
+				B9B973053C18CDB18769AFE3D529A93B /* FMDatabaseAdditions.m */,
+				933ECD030834E339405FEAA2807A3164 /* FMDatabasePool.h */,
+				717DA279FAEA4AB5A576DE47E3E99A96 /* FMDatabasePool.m */,
+				269D169B71D50BF8C600A420FF2FA53B /* FMDatabaseQueue.h */,
+				664837DA80E67627B3A275842B3129ED /* FMDatabaseQueue.m */,
+				7AC7008187FEFCB0DE47DB8E8EEA069C /* FMResultSet.h */,
+				8B01B7A6037AC1D555D24547530D5957 /* FMResultSet.m */,
+			);
+			name = common;
+			sourceTree = "<group>";
+		};
+		56D3421AC355D35DF512F5D15484B352 /* FMDB */ = {
+			isa = PBXGroup;
+			children = (
+				C9A091FAB85850D8BF62CD318CE0B688 /* Support Files */,
+				4C8CDB31B1AC36497262D7D9ED19C826 /* common */,
 			);
 			path = FMDB;
 			sourceTree = "<group>";
@@ -224,23 +253,11 @@
 		5764799A2697346A2BA53BE1694037F5 /* iOS */ = {
 			isa = PBXGroup;
 			children = (
-				5B9BE3E5CB5F93DE285CE5CD4E662CDA /* CoreGraphics.framework */,
+				10E8755CCBDA2174A986F5D18C1E08C4 /* CoreGraphics.framework */,
 				3668FDF91B11058707A743B7DB87F2D9 /* Foundation.framework */,
 				C61C5499546060C2CC17F5ED369E6290 /* QuartzCore.framework */,
 			);
 			name = iOS;
-			sourceTree = "<group>";
-		};
-		758D59B7BE1C885AB44D7DD2E2FB4530 /* Support Files */ = {
-			isa = PBXGroup;
-			children = (
-				012B1E43390AA19811912D49A6C35550 /* RESideMenu.xcconfig */,
-				F615EFB803B24E50E2F99357EA063BE4 /* RESideMenu-Private.xcconfig */,
-				02E75C9C4D4884FE69F710BFFCBCE04E /* RESideMenu-dummy.m */,
-				0ED23D3A8F00BB7A9196437E12FA7A97 /* RESideMenu-prefix.pch */,
-			);
-			name = "Support Files";
-			path = "../Target Support Files/RESideMenu";
 			sourceTree = "<group>";
 		};
 		7DB346D0F39D3F0E887471402A8071AB = {
@@ -248,10 +265,18 @@
 			children = (
 				BA6428E9F66FD5A23C0A2E06ED26CD2F /* Podfile */,
 				122DA2E5084A4393C29BE363C764795C /* Frameworks */,
-				13D2B9CBCF86CC3C7BE79AD1773A0FCB /* Pods */,
+				DD0172F667A763F002A8CDDF5C44B59F /* Pods */,
 				CCA510CFBEA2D207524CDA0D73C3B561 /* Products */,
 				D2411A5FE7F7A004607BED49990C37F4 /* Targets Support Files */,
 			);
+			sourceTree = "<group>";
+		};
+		9428784784C5914E3EAEB2BC6EE00A52 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				EF241751581742262916E453B5C0A5C2 /* BmobSDK.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		952EEBFAF8F7E620423C9F156F25A506 /* Pods */ = {
@@ -259,41 +284,56 @@
 			children = (
 				15A529C27057E4A57D259CBC6E6CE49C /* Pods-acknowledgements.markdown */,
 				BF59BC15D23E1E1912C8F334E7236813 /* Pods-acknowledgements.plist */,
-				46A6F53BA54C29FF334D0AED199B0790 /* Pods-dummy.m */,
+				54E48B8DEA781CD70346B08163DC1C20 /* Pods-dummy.m */,
 				641AE05DD55E5E6AC1590CD7B4A18F97 /* Pods-resources.sh */,
-				3875A84823253A59412212DE4C1B9CB4 /* Pods.debug.xcconfig */,
-				070595D9CA611F7476476F76662157DE /* Pods.release.xcconfig */,
+				F400BFA958752F7C8C8F1FE8A07F2BEF /* Pods.debug.xcconfig */,
+				2BBC86EDE16548D1F16EF49B642BB6AC /* Pods.release.xcconfig */,
 			);
 			name = Pods;
 			path = "Target Support Files/Pods";
 			sourceTree = "<group>";
 		};
-		B030BAFC7F29C903CB1F8A2BF996311D /* Support Files */ = {
+		A59B174D5869C1856C9B3FAF77F12BB5 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				A9A1047DF1BDD762AEAE1BF7A74142EF /* MBProgressHUD.xcconfig */,
-				A54326BF8D46FFD29A6A2B3079AA7D08 /* MBProgressHUD-Private.xcconfig */,
-				E8B2C70B01AFECFF8CFB69F899DA8055 /* MBProgressHUD-dummy.m */,
-				39AFB9D5EB7C2D9C8A36C53C9D477411 /* MBProgressHUD-prefix.pch */,
+				11537CC2A4FCBC7ACFF1A0210519C368 /* CRToast.xcconfig */,
+				8D74AA9A0C8F3771BE00706168AC4CF2 /* CRToast-Private.xcconfig */,
+				ED89E36824E67652F7D923545DB162EF /* CRToast-dummy.m */,
+				3E1F0CC2711306D50A7001479EB5D3D5 /* CRToast-prefix.pch */,
 			);
 			name = "Support Files";
-			path = "../Target Support Files/MBProgressHUD";
+			path = "../Target Support Files/CRToast";
 			sourceTree = "<group>";
 		};
-		B40F4D85084A331AB4E1582B3BACC369 /* BmobSDK */ = {
+		B14D258B61CE3C23175B6ABC2046BB9D /* MBProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
-				E1D92DAC129668C8C9F188025B56E7D1 /* Frameworks */,
+				1F573E8474E4C5EEAB4183AC33B636E1 /* MBProgressHUD.h */,
+				AB98B1C0195363CCE17C081122AD43B1 /* MBProgressHUD.m */,
+				3FDEE127FABA1CA5C4AACA509AEB1930 /* Support Files */,
 			);
-			path = BmobSDK;
+			path = MBProgressHUD;
+			sourceTree = "<group>";
+		};
+		C9A091FAB85850D8BF62CD318CE0B688 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				5CCC8FE06CF7E5016BEF1E191D3AAC95 /* FMDB.xcconfig */,
+				6B2F8016ECCA03C646C23387FF57DD2D /* FMDB-Private.xcconfig */,
+				52F09F7BBAF5294D748B8FD7F30FE9B4 /* FMDB-dummy.m */,
+				725FCD46E286C118E24E0F0DE3A0CEF6 /* FMDB-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/FMDB";
 			sourceTree = "<group>";
 		};
 		CCA510CFBEA2D207524CDA0D73C3B561 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DF081FE4EC44BA5645EBD6DB675F42C0 /* libFMDB.a */,
-				FCD89FBDF8F85A22E40B7C0D56AC01CA /* libMBProgressHUD.a */,
-				F87D68A851D42418BAC6AED2860F038B /* libPods.a */,
+				63152558639DA9470870D7500F81ECE7 /* libCRToast.a */,
+				1185BE56ED971FF85D5432C1F9CF4B3A /* libFMDB.a */,
+				AF76AE385B39079BCD421991F4C65495 /* libMBProgressHUD.a */,
+				8DAA2B255C55933E1A0A93C15D567ABB /* libPods.a */,
 				1F0F60D6786DFD19D2B1D9A1BE8816C3 /* libRESideMenu.a */,
 			);
 			name = Products;
@@ -307,27 +347,81 @@
 			name = "Targets Support Files";
 			sourceTree = "<group>";
 		};
-		E1D92DAC129668C8C9F188025B56E7D1 /* Frameworks */ = {
+		D40FD8BCE37D4227EE2092012B5B9AD7 /* RESideMenu */ = {
 			isa = PBXGroup;
 			children = (
-				67D6BA0602CF5C5B454A1F2CF102AD08 /* BmobSDK.framework */,
+				ABBEFFB8805CD6D0BFF2DA006DE169E5 /* RECommonFunctions.h */,
+				EDF667CE8E2F91CBEFD040DEA590CDFA /* RECommonFunctions.m */,
+				0AABEEE264148FE05BE2498794AFE8B4 /* RESideMenu.h */,
+				072C29BF6FE433D7F58008180E0390F0 /* RESideMenu.m */,
+				DDBC168D42434B76E804AA26F855D2B1 /* UIViewController+RESideMenu.h */,
+				C4FD963CE2ACAD49AEF28CF4B8BA2116 /* UIViewController+RESideMenu.m */,
+				DD4E0988D772B892178CE24E9F8E6E4F /* Support Files */,
 			);
-			name = Frameworks;
+			path = RESideMenu;
 			sourceTree = "<group>";
 		};
-		F94BF7B60846CF5DE4316F8605321C00 /* MBProgressHUD */ = {
+		DD0172F667A763F002A8CDDF5C44B59F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				52E6E06A257E4C34E5A4ADBECD514312 /* MBProgressHUD.h */,
-				D0F3558A73F904AF4AD94670BECA0AF2 /* MBProgressHUD.m */,
-				B030BAFC7F29C903CB1F8A2BF996311D /* Support Files */,
+				0773BC970D3F37D78650E5CD3A04C1A5 /* BmobSDK */,
+				E9F299D1A15850E64B8299D99308295D /* CRToast */,
+				56D3421AC355D35DF512F5D15484B352 /* FMDB */,
+				B14D258B61CE3C23175B6ABC2046BB9D /* MBProgressHUD */,
+				D40FD8BCE37D4227EE2092012B5B9AD7 /* RESideMenu */,
 			);
-			path = MBProgressHUD;
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		DD4E0988D772B892178CE24E9F8E6E4F /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				5ACEA28E92431DE3B6E9CBAFCAA6BBEA /* RESideMenu.xcconfig */,
+				F615EFB803B24E50E2F99357EA063BE4 /* RESideMenu-Private.xcconfig */,
+				02E75C9C4D4884FE69F710BFFCBCE04E /* RESideMenu-dummy.m */,
+				C5ACEBAD156CA023E89C2027855A1DE0 /* RESideMenu-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "../Target Support Files/RESideMenu";
+			sourceTree = "<group>";
+		};
+		E9F299D1A15850E64B8299D99308295D /* CRToast */ = {
+			isa = PBXGroup;
+			children = (
+				826BCA35B8400AD233BD589FAF7BCD3E /* CRToast.h */,
+				5BB0FE19431DEDED2C77ADCC0B9C9017 /* CRToastConfig.h */,
+				92DC2471F440FC69736A926EB47DEF39 /* CRToastConfig.m */,
+				CFA2D22EC7382762FEC67AE89C006D99 /* CRToastLayoutHelpers.h */,
+				37483903E0D51414649AE8392D2B0EE6 /* CRToastManager.h */,
+				4B0BBF8FFF14D29599AF570D51591640 /* CRToastManager.m */,
+				EA5D9E28BD45984BC0934F3894F651D0 /* CRToastView.h */,
+				4625F27B767025A928834A175E8A0A4A /* CRToastView.m */,
+				411A1FB93E8C4AC4B37486EE6FAD27C8 /* CRToastViewController.h */,
+				74DB564CCDBEE45D303137347581FD31 /* CRToastViewController.m */,
+				454E08E80BB1A64ECE71862BF5E93DA2 /* CRToastWindow.h */,
+				1F9EEB6F33E0838A5943E458891F6D06 /* CRToastWindow.m */,
+				A59B174D5869C1856C9B3FAF77F12BB5 /* Support Files */,
+			);
+			path = CRToast;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
+		6EA86A0E71F7F28A7D5379B384450EFD /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				26EBBB1C4C5AA79774C391A89CA4E01A /* CRToast.h in Headers */,
+				0E4AEC4700D5700EA20E410EB836B0E3 /* CRToastConfig.h in Headers */,
+				098CAA2420930E0853D37154BFE716BC /* CRToastLayoutHelpers.h in Headers */,
+				CEA52D4FF548B90CB93A9FCFD5B270AA /* CRToastManager.h in Headers */,
+				1AE183C3FFB50F0BF50A20DFCE7955FA /* CRToastView.h in Headers */,
+				475E71088DC02C745E4B801BACD77CAB /* CRToastViewController.h in Headers */,
+				77C1AB82DF44D9E8DE2AE4496A2752BD /* CRToastWindow.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		79D05CE75B5A29FB9D30F35ED182D144 /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
@@ -338,37 +432,37 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		9964082D338416B454B2C698E6F51C09 /* Headers */ = {
+		AD0E726AD107225F8BBAFF34139AA7BC /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8999F1A4F9BF4BA13143459A0DB1056C /* FMDB.h in Headers */,
-				2161F8F1A83BA0099A27F4D4833675FD /* FMDatabase.h in Headers */,
-				CB46D5D8DB37F0D701503E58F2CCCD84 /* FMDatabaseAdditions.h in Headers */,
-				A1A4823D43FC4464E6A772CD938FFDE7 /* FMDatabasePool.h in Headers */,
-				FB714D78D0CBB4F955AD79128CA5057E /* FMDatabaseQueue.h in Headers */,
-				7F460E586960C58D57DB3C19296047E2 /* FMResultSet.h in Headers */,
+				F4BBAC525B1CE11AED752AD40B58C8BA /* MBProgressHUD.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		EBD5233FE9FCCB3AF88E686F66B99E92 /* Headers */ = {
+		CE91335A7A055B9262F4BCDA426F3C1D /* Headers */ = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				47374853A818EAEBDFC5EE449D24E8BA /* MBProgressHUD.h in Headers */,
+				1851D1FB8DDB3749BE1B381B811F0C97 /* FMDB.h in Headers */,
+				AA8CA7246DB042D6BD438DB16B77BB6E /* FMDatabase.h in Headers */,
+				61B1EE90D3743CB6C7157E533D453D79 /* FMDatabaseAdditions.h in Headers */,
+				825115B5E5301CC607B33277D74DA2AC /* FMDatabasePool.h in Headers */,
+				1687CA1E2C8F165D74EAB9D84C50BBC3 /* FMDatabaseQueue.h in Headers */,
+				DD1C1CDE72A002C1E1FB790F22D6262A /* FMResultSet.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		1E56529DAA275AE3EDFA19F7B6C6D497 /* MBProgressHUD */ = {
+		10D9AF6B886EB7E12BCEACEF8D1F8C1A /* MBProgressHUD */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = F1C066EF63C7D564B0A97466A9A907AF /* Build configuration list for PBXNativeTarget "MBProgressHUD" */;
+			buildConfigurationList = 28456081450CA5373CB1320005635A54 /* Build configuration list for PBXNativeTarget "MBProgressHUD" */;
 			buildPhases = (
-				CEBE4B5F226CF557104A7B5386D5ABE5 /* Sources */,
-				7169D5F0FF41BC4C3724AB8BA5AA1F65 /* Frameworks */,
-				EBD5233FE9FCCB3AF88E686F66B99E92 /* Headers */,
+				97ABF976C227EA2B2E7310E5DC54F3E5 /* Sources */,
+				6862261DA0B4E5757C7591F49E876CB9 /* Frameworks */,
+				AD0E726AD107225F8BBAFF34139AA7BC /* Headers */,
 			);
 			buildRules = (
 			);
@@ -376,7 +470,7 @@
 			);
 			name = MBProgressHUD;
 			productName = MBProgressHUD;
-			productReference = FCD89FBDF8F85A22E40B7C0D56AC01CA /* libMBProgressHUD.a */;
+			productReference = AF76AE385B39079BCD421991F4C65495 /* libMBProgressHUD.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 		2965E38DCEBC6E89D5362BA6561D3FBD /* RESideMenu */ = {
@@ -396,13 +490,13 @@
 			productReference = 1F0F60D6786DFD19D2B1D9A1BE8816C3 /* libRESideMenu.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		94866CE48FD87B93E0793B433553FA69 /* FMDB */ = {
+		29ACFFF903E257CE490FFB04BA89AE3A /* FMDB */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 206A6401FAC62249AEA0ABC9FF283894 /* Build configuration list for PBXNativeTarget "FMDB" */;
+			buildConfigurationList = 7A48EBC5FAA7D8CABC62E23C3431D871 /* Build configuration list for PBXNativeTarget "FMDB" */;
 			buildPhases = (
-				93FD782555992CF644901C5700B7F2AF /* Sources */,
-				15FA755C4CB124A9A6EBD27A6F1FF7A5 /* Frameworks */,
-				9964082D338416B454B2C698E6F51C09 /* Headers */,
+				385C8CDE9AF38B1A901BE9FCC8A2BE5C /* Sources */,
+				29B275E268D9226119EB7F2DC7C13848 /* Frameworks */,
+				CE91335A7A055B9262F4BCDA426F3C1D /* Headers */,
 			);
 			buildRules = (
 			);
@@ -410,26 +504,44 @@
 			);
 			name = FMDB;
 			productName = FMDB;
-			productReference = DF081FE4EC44BA5645EBD6DB675F42C0 /* libFMDB.a */;
+			productReference = 1185BE56ED971FF85D5432C1F9CF4B3A /* libFMDB.a */;
 			productType = "com.apple.product-type.library.static";
 		};
-		F3E09153298C05F14894126487A5566B /* Pods */ = {
+		2E8F8E817DE7BE9B1CBA95F1313C109E /* CRToast */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 962752DBB13CB5CD3C4E5FED29519812 /* Build configuration list for PBXNativeTarget "Pods" */;
+			buildConfigurationList = 7F92A876B4061A2BC3E45D5AB911F8E6 /* Build configuration list for PBXNativeTarget "CRToast" */;
 			buildPhases = (
-				1A2CA30D4310DEC77DEFB2EF7F6A26FF /* Sources */,
-				296A2CEA45DF8A868D3ED9727C1D2650 /* Frameworks */,
+				AC86504C174A7B782D4FB2ABDE423989 /* Sources */,
+				544BBA9B9E858BCF27007DD771E87B23 /* Frameworks */,
+				6EA86A0E71F7F28A7D5379B384450EFD /* Headers */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				0E7D8605BB5A3BBE28260A79C575C171 /* PBXTargetDependency */,
-				9C920A940E2AFE854890E9EF3F93F89E /* PBXTargetDependency */,
-				38FF8F5C69F50AF71CE7AA3204861697 /* PBXTargetDependency */,
+			);
+			name = CRToast;
+			productName = CRToast;
+			productReference = 63152558639DA9470870D7500F81ECE7 /* libCRToast.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		DE7A7CCEC42E095541EF040B12F8E5CE /* Pods */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7FA2D68B9B2B24C04534BDA3777206C9 /* Build configuration list for PBXNativeTarget "Pods" */;
+			buildPhases = (
+				A7B88AE77D4688CEAF8470C92CB03F56 /* Sources */,
+				578B1E8AD2BBD0E165A953D32A3779C6 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6CB311CD10DCE47DCAFF4A37C2F4AD68 /* PBXTargetDependency */,
+				9A40512833FD571D0F1306D94004FC74 /* PBXTargetDependency */,
+				63D5C936695AD082FBCFA47E5D9E5431 /* PBXTargetDependency */,
+				408C13EFC68A05999CB33824ED5E6233 /* PBXTargetDependency */,
 			);
 			name = Pods;
 			productName = Pods;
-			productReference = F87D68A851D42418BAC6AED2860F038B /* libPods.a */;
+			productReference = 8DAA2B255C55933E1A0A93C15D567ABB /* libPods.a */;
 			productType = "com.apple.product-type.library.static";
 		};
 /* End PBXNativeTarget section */
@@ -453,33 +565,56 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				94866CE48FD87B93E0793B433553FA69 /* FMDB */,
-				1E56529DAA275AE3EDFA19F7B6C6D497 /* MBProgressHUD */,
-				F3E09153298C05F14894126487A5566B /* Pods */,
+				2E8F8E817DE7BE9B1CBA95F1313C109E /* CRToast */,
+				29ACFFF903E257CE490FFB04BA89AE3A /* FMDB */,
+				10D9AF6B886EB7E12BCEACEF8D1F8C1A /* MBProgressHUD */,
+				DE7A7CCEC42E095541EF040B12F8E5CE /* Pods */,
 				2965E38DCEBC6E89D5362BA6561D3FBD /* RESideMenu */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		1A2CA30D4310DEC77DEFB2EF7F6A26FF /* Sources */ = {
+		385C8CDE9AF38B1A901BE9FCC8A2BE5C /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD8C10EC606B23748531A4B375207EFD /* Pods-dummy.m in Sources */,
+				04E3A2C124D983716D622D614A28090C /* FMDB-dummy.m in Sources */,
+				CC4175C45C563E650DB2846A153A9F4F /* FMDatabase.m in Sources */,
+				902A8900E4E62BCEEE24873B55E02742 /* FMDatabaseAdditions.m in Sources */,
+				A44C892A4E430D33791A1D96ACBA6E22 /* FMDatabasePool.m in Sources */,
+				E002E7402F85D9EAE6535A6F30AB7C8B /* FMDatabaseQueue.m in Sources */,
+				2846E026F15E5F5F887592D2048E0C97 /* FMResultSet.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		93FD782555992CF644901C5700B7F2AF /* Sources */ = {
+		97ABF976C227EA2B2E7310E5DC54F3E5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				951BC59F3DA33DDF322FF6C5B1154A12 /* FMDB-dummy.m in Sources */,
-				A43F8492A1D43592AFCF0666DB21C27C /* FMDatabase.m in Sources */,
-				D1EFCF908AF05065951E9BFB1F173CCD /* FMDatabaseAdditions.m in Sources */,
-				06D3FD0AB0538B2820761A361F8AE6EF /* FMDatabasePool.m in Sources */,
-				4B83162712A99EE3C6F900AA3EC0A90D /* FMDatabaseQueue.m in Sources */,
-				AE443F1F42EAEA28291C8FD32CBCABDF /* FMResultSet.m in Sources */,
+				768EA96C7A352BDBB36C14FED2CD27C4 /* MBProgressHUD-dummy.m in Sources */,
+				6611D610F230626396ED1AB853FE5403 /* MBProgressHUD.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7B88AE77D4688CEAF8470C92CB03F56 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DF6BF654A218F8E0A6252B73FF0690BC /* Pods-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AC86504C174A7B782D4FB2ABDE423989 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2D758E299E43D79A52ED45D5DFABF8A8 /* CRToast-dummy.m in Sources */,
+				E057678531BFDDFF1722D8D094F92575 /* CRToastConfig.m in Sources */,
+				CCF1CE586232655B6DD5D1442E14397D /* CRToastManager.m in Sources */,
+				0EA9B4E4C01924999C89CDD120878AED /* CRToastView.m in Sources */,
+				0D49C7F3A289C2CA1D832E222D3FDD7D /* CRToastViewController.m in Sources */,
+				6BF4EB990E48B59B7C79F935DE408D7F /* CRToastWindow.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -494,35 +629,32 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		CEBE4B5F226CF557104A7B5386D5ABE5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				4D3564EF51699D9B6C7D369703C1D2B1 /* MBProgressHUD-dummy.m in Sources */,
-				DF323C438184C902C91BF61A28969384 /* MBProgressHUD.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		0E7D8605BB5A3BBE28260A79C575C171 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			name = FMDB;
-			target = 94866CE48FD87B93E0793B433553FA69 /* FMDB */;
-			targetProxy = E3D73277CF41922F87BA3C8B486736E9 /* PBXContainerItemProxy */;
-		};
-		38FF8F5C69F50AF71CE7AA3204861697 /* PBXTargetDependency */ = {
+		408C13EFC68A05999CB33824ED5E6233 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = RESideMenu;
 			target = 2965E38DCEBC6E89D5362BA6561D3FBD /* RESideMenu */;
-			targetProxy = C470736E80EDFEDFCDECE9121764E70B /* PBXContainerItemProxy */;
+			targetProxy = 15DC9466BED6CEB0DABE40712E6C4C56 /* PBXContainerItemProxy */;
 		};
-		9C920A940E2AFE854890E9EF3F93F89E /* PBXTargetDependency */ = {
+		63D5C936695AD082FBCFA47E5D9E5431 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			name = MBProgressHUD;
-			target = 1E56529DAA275AE3EDFA19F7B6C6D497 /* MBProgressHUD */;
-			targetProxy = 0ACAE0D5B61DE501B28BF2181672AE3A /* PBXContainerItemProxy */;
+			target = 10D9AF6B886EB7E12BCEACEF8D1F8C1A /* MBProgressHUD */;
+			targetProxy = 869ED8630C785D24A329C214D2D590B2 /* PBXContainerItemProxy */;
+		};
+		6CB311CD10DCE47DCAFF4A37C2F4AD68 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = CRToast;
+			target = 2E8F8E817DE7BE9B1CBA95F1313C109E /* CRToast */;
+			targetProxy = 4AB8EBA7F735BC1547E62A38EB43CC42 /* PBXContainerItemProxy */;
+		};
+		9A40512833FD571D0F1306D94004FC74 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = FMDB;
+			target = 29ACFFF903E257CE490FFB04BA89AE3A /* FMDB */;
+			targetProxy = 00F045D26138488AA1411DDA8BC645B2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -555,22 +687,18 @@
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				ONLY_ACTIVE_ARCH = NO;
-				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Release;
 		};
-		1ECF8CE799330642D4F43F37CFD8FFB1 /* Debug */ = {
+		0BCF1D1E9C1D5C6DA8070EF62C2E3AD5 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F615EFB803B24E50E2F99357EA063BE4 /* RESideMenu-Private.xcconfig */;
+			baseConfigurationReference = 6B2F8016ECCA03C646C23387FF57DD2D /* FMDB-Private.xcconfig */;
 			buildSettings = {
-				ENABLE_BITCODE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/RESideMenu/RESideMenu-prefix.pch";
+				GCC_PREFIX_HEADER = "Target Support Files/FMDB/FMDB-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
@@ -581,45 +709,13 @@
 			};
 			name = Debug;
 		};
-		437CE0DB4329B4680022D7199155A27F /* Debug */ = {
+		10E731CFA55194EF53C08027BF1E76B8 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A54326BF8D46FFD29A6A2B3079AA7D08 /* MBProgressHUD-Private.xcconfig */;
+			baseConfigurationReference = 2BBC86EDE16548D1F16EF49B642BB6AC /* Pods.release.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/MBProgressHUD/MBProgressHUD-prefix.pch";
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Debug;
-		};
-		4813A084FAD04950F2FA3A7C5EB521B2 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = A54326BF8D46FFD29A6A2B3079AA7D08 /* MBProgressHUD-Private.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/MBProgressHUD/MBProgressHUD-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
-				OTHER_LDFLAGS = "";
-				OTHER_LIBTOOLFLAGS = "";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SKIP_INSTALL = YES;
-			};
-			name = Release;
-		};
-		6F20723F773AEAA0CEF04B0347BEB466 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3875A84823253A59412212DE4C1B9CB4 /* Pods.debug.xcconfig */;
-			buildSettings = {
-				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -627,13 +723,44 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
+			name = Release;
+		};
+		1ECF8CE799330642D4F43F37CFD8FFB1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = F615EFB803B24E50E2F99357EA063BE4 /* RESideMenu-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/RESideMenu/RESideMenu-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
 			name = Debug;
+		};
+		3D9A83E0892C393C564BEED7E2638D8C /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1F7E2871677BA21AD0CD23303EAA0608 /* MBProgressHUD-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/MBProgressHUD/MBProgressHUD-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
 		};
 		808388FC31374BA1C73C6A08C3318B94 /* Release */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F615EFB803B24E50E2F99357EA063BE4 /* RESideMenu-Private.xcconfig */;
 			buildSettings = {
-				ENABLE_BITCODE = YES;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/RESideMenu/RESideMenu-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
@@ -646,28 +773,28 @@
 			};
 			name = Release;
 		};
-		9D43F620A78C61BA445C30CE552FBE23 /* Debug */ = {
+		88C73578E7DE75742B2D2795AF893253 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BBDC34FEFC68BE348A29EDA29BA047C2 /* FMDB-Private.xcconfig */;
+			baseConfigurationReference = 6B2F8016ECCA03C646C23387FF57DD2D /* FMDB-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_PREFIX_HEADER = "Target Support Files/FMDB/FMDB-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
-			name = Debug;
+			name = Release;
 		};
-		A091C854F95A2C559F45F0B434812822 /* Release */ = {
+		8A329B9876C4DC2D666FD1C16230A38D /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = BBDC34FEFC68BE348A29EDA29BA047C2 /* FMDB-Private.xcconfig */;
+			baseConfigurationReference = 8D74AA9A0C8F3771BE00706168AC4CF2 /* CRToast-Private.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
-				GCC_PREFIX_HEADER = "Target Support Files/FMDB/FMDB-prefix.pch";
+				GCC_PREFIX_HEADER = "Target Support Files/CRToast/CRToast-prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				OTHER_LDFLAGS = "";
@@ -712,20 +839,18 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
 				STRIP_INSTALLED_PRODUCT = NO;
 				SYMROOT = "${SRCROOT}/../build";
-				VALID_ARCHS = "arm64 armv7 armv7s";
 			};
 			name = Debug;
 		};
-		EBE6F9958C4AD17B9848D3494BC907E7 /* Release */ = {
+		C45ACC9BEEA652C2684A6A45D8FD7392 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 070595D9CA611F7476476F76662157DE /* Pods.release.xcconfig */;
+			baseConfigurationReference = F400BFA958752F7C8C8F1FE8A07F2BEF /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
-				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_ENABLE_DEBUG_INFO = YES;
 				OTHER_LDFLAGS = "";
 				OTHER_LIBTOOLFLAGS = "";
 				PODS_ROOT = "$(SRCROOT)";
@@ -733,16 +858,48 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 			};
-			name = Release;
+			name = Debug;
+		};
+		CCF9AA41D040C6FF5129EE311D9DD26B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8D74AA9A0C8F3771BE00706168AC4CF2 /* CRToast-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/CRToast/CRToast-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		EEE5365D266DD8D9DF85C82AC19DBC11 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1F7E2871677BA21AD0CD23303EAA0608 /* MBProgressHUD-Private.xcconfig */;
+			buildSettings = {
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/MBProgressHUD/MBProgressHUD-prefix.pch";
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		206A6401FAC62249AEA0ABC9FF283894 /* Build configuration list for PBXNativeTarget "FMDB" */ = {
+		28456081450CA5373CB1320005635A54 /* Build configuration list for PBXNativeTarget "MBProgressHUD" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				9D43F620A78C61BA445C30CE552FBE23 /* Debug */,
-				A091C854F95A2C559F45F0B434812822 /* Release */,
+				EEE5365D266DD8D9DF85C82AC19DBC11 /* Debug */,
+				3D9A83E0892C393C564BEED7E2638D8C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -756,11 +913,29 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		962752DBB13CB5CD3C4E5FED29519812 /* Build configuration list for PBXNativeTarget "Pods" */ = {
+		7A48EBC5FAA7D8CABC62E23C3431D871 /* Build configuration list for PBXNativeTarget "FMDB" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6F20723F773AEAA0CEF04B0347BEB466 /* Debug */,
-				EBE6F9958C4AD17B9848D3494BC907E7 /* Release */,
+				0BCF1D1E9C1D5C6DA8070EF62C2E3AD5 /* Debug */,
+				88C73578E7DE75742B2D2795AF893253 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7F92A876B4061A2BC3E45D5AB911F8E6 /* Build configuration list for PBXNativeTarget "CRToast" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCF9AA41D040C6FF5129EE311D9DD26B /* Debug */,
+				8A329B9876C4DC2D666FD1C16230A38D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7FA2D68B9B2B24C04534BDA3777206C9 /* Build configuration list for PBXNativeTarget "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				C45ACC9BEEA652C2684A6A45D8FD7392 /* Debug */,
+				10E731CFA55194EF53C08027BF1E76B8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -770,15 +945,6 @@
 			buildConfigurations = (
 				1ECF8CE799330642D4F43F37CFD8FFB1 /* Debug */,
 				808388FC31374BA1C73C6A08C3318B94 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		F1C066EF63C7D564B0A97466A9A907AF /* Build configuration list for PBXNativeTarget "MBProgressHUD" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				437CE0DB4329B4680022D7199155A27F /* Debug */,
-				4813A084FAD04950F2FA3A7C5EB521B2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

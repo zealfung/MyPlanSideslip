@@ -39,10 +39,13 @@
 
 @interface FatherTableViewController (alert)
 
-#pragma mark -显示带有“知道了”按钮的提示框
+//显示带有“知道了”按钮的提示框
 - (void)alertButtonMessage:(NSString *)message;
 
-#pragma mark -显示会自动消失的提示框
+//显示会自动消失的提示框
 - (void)alertToastMessage:(NSString *)message;
+
+//在导航栏显示会自动消失的提示框
+- (void)alertNavBarMessage:(NSString *)message;
 
 @end
