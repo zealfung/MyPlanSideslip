@@ -19,6 +19,7 @@ NSString *const kSettings_Avatar = @"avatar";
 NSString *const kSettings_AvatarURL = @"avatarURL";
 NSString *const kSettings_CenterTop = @"centerTop";
 NSString *const kSettings_CenterTopURL = @"centerTopURL";
+NSString *const kSettings_IsAutoSync = @"isAutoSync";
 NSString *const kSettings_Updatetime = @"updatetime";
 NSString *const kSettings_Syntime = @"syntime";
 
@@ -35,6 +36,7 @@ NSString *const kSettings_Syntime = @"syntime";
 @synthesize avatarURL = _avatarURL;
 @synthesize centerTop = _centerTop;
 @synthesize centerTopURL = _centerTopURL;
+@synthesize isAutoSync = _isAutoSync;
 @synthesize updatetime = _updatetime;
 @synthesize syntime = _syntime;
 
@@ -53,6 +55,7 @@ NSString *const kSettings_Syntime = @"syntime";
         self.avatarURL = [dict objectOrNilForKey:kSettings_AvatarURL];
         self.centerTop = [dict objectOrNilForKey:kSettings_CenterTop];
         self.centerTopURL = [dict objectOrNilForKey:kSettings_CenterTopURL];
+        self.isAutoSync = [dict objectOrNilForKey:kSettings_IsAutoSync];
         self.updatetime = [dict objectOrNilForKey:kSettings_Updatetime];
         self.syntime = [dict objectOrNilForKey:kSettings_Syntime];
     }
@@ -73,6 +76,7 @@ NSString *const kSettings_Syntime = @"syntime";
     self.avatarURL = [aDecoder decodeObjectForKey:kSettings_AvatarURL];
     self.centerTop = [aDecoder decodeObjectForKey:kSettings_CenterTop];
     self.centerTopURL = [aDecoder decodeObjectForKey:kSettings_CenterTopURL];
+    self.isAutoSync = [aDecoder decodeObjectForKey:kSettings_IsAutoSync];
     self.updatetime = [aDecoder decodeObjectForKey:kSettings_Updatetime];
     self.syntime = [aDecoder decodeObjectForKey:kSettings_Syntime];
     return self;
@@ -90,6 +94,7 @@ NSString *const kSettings_Syntime = @"syntime";
     [aCoder encodeObject:_avatarURL forKey:kSettings_AvatarURL];
     [aCoder encodeObject:_centerTop forKey:kSettings_CenterTop];
     [aCoder encodeObject:_centerTopURL forKey:kSettings_CenterTopURL];
+    [aCoder encodeObject:_isAutoSync forKey:kSettings_IsAutoSync];
     [aCoder encodeObject:_updatetime forKey:kSettings_Updatetime];
     [aCoder encodeObject:_syntime forKey:kSettings_Syntime];
 }
@@ -107,6 +112,7 @@ NSString *const kSettings_Syntime = @"syntime";
     copy.avatarURL = [self.avatarURL copyWithZone:zone];
     copy.centerTop = self.centerTop;
     copy.centerTopURL = [self.centerTopURL copyWithZone:zone];
+    copy.isAutoSync = [self.isAutoSync copyWithZone:zone];
     copy.updatetime = [self.updatetime copyWithZone:zone];
     copy.syntime = [self.syntime copyWithZone:zone];
     return copy;

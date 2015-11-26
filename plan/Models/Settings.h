@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSString *avatarURL;
 @property (nonatomic, strong) UIImage *centerTop;
 @property (nonatomic, strong) NSString *centerTopURL;
+@property (nonatomic, strong) NSString *isAutoSync;//是否自动同步数据 0否1是
 @property (nonatomic, strong) NSString *syntime;
 @property (nonatomic, strong) NSString *updatetime;
 
