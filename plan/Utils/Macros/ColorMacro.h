@@ -34,5 +34,6 @@
 #define color_708cb0 RGBColor(112, 140, 176, 1) //深灰蓝色
 #define color_F9F2EA RGBColor(249, 242, 234, 1) //淡黄色
 #define color_F2F3F5 RGBColor(242, 243, 245, 1) //淡灰色
+#define color_0BA32A RGBColor(11, 163, 42, 1) //按钮绿色
 
 #endif
