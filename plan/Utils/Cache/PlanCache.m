@@ -108,13 +108,43 @@ static NSMutableDictionary * __contactsOnlineState;
     // 个人设置
     if (![__db tableExists:str_TableName_Settings]) {
         //在做头像同步的时候，先判断本地avatarURL与服务器上的时候一样，如果不一样，则以updatetime最新的为准
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, nickname TEXT, birthday TEXT, email TEXT, gender TEXT, lifespan TEXT, syntime TEXT, avatar BLOB, avatarURL TEXT, centerTop BLOB, centerTopURL TEXT, isAutoSync TEXT, updatetime TEXT)", str_TableName_Settings];
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, nickname TEXT, birthday TEXT, email TEXT, gender TEXT, lifespan TEXT, syntime TEXT, avatar BLOB, avatarURL TEXT, centerTop BLOB, centerTopURL TEXT, isAutoSync TEXT, isUseGestureLock TEXT, isShowGestureTrack TEXT, gesturePasswod TEXT, updatetime TEXT)", str_TableName_Settings];
         
         BOOL b = [__db executeUpdate:sqlString];
         
         FMDBQuickCheck(b, sqlString, __db);
         
     } else {//新增字段
+        //是否启用手势密码字段2015-11-27
+        NSString *isUseGestureLock = @"isUseGestureLock";
+        if (![__db columnExists:isUseGestureLock inTableWithName:str_TableName_Settings]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, isUseGestureLock];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        //是否显示手势轨迹字段2015-11-27
+        NSString *isShowGestureTrack = @"isShowGestureTrack";
+        if (![__db columnExists:isShowGestureTrack inTableWithName:str_TableName_Settings]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, isShowGestureTrack];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        //手势密码字段2015-11-27
+        NSString *gesturePasswod = @"gesturePasswod";
+        if (![__db columnExists:gesturePasswod inTableWithName:str_TableName_Settings]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, gesturePasswod];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
         //是否自动同步字段2015-11-25
         NSString *isAutoSync = @"isAutoSync";
         if (![__db columnExists:isAutoSync inTableWithName:str_TableName_Settings]) {
@@ -267,6 +297,15 @@ static NSMutableDictionary * __contactsOnlineState;
         if (!settings.isAutoSync) {
             settings.isAutoSync = @"0";
         }
+        if (!settings.isUseGestureLock) {
+            settings.isUseGestureLock = @"0";
+        }
+        if (!settings.isShowGestureTrack) {
+            settings.isShowGestureTrack = @"1";
+        }
+        if (!settings.gesturePasswod) {
+            settings.gesturePasswod = @"";
+        }
         if (!settings.syntime) {
             settings.syntime = @"";
         }
@@ -297,17 +336,17 @@ static NSMutableDictionary * __contactsOnlineState;
         [rs close];
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET nickname=?, birthday=?, email=?, gender=?, lifespan=?, avatar=?, avatarURL=?, centerTop=?, centerTopURL=?, isAutoSync=?, updatetime=?, syntime=? WHERE account=?", str_TableName_Settings];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET nickname=?, birthday=?, email=?, gender=?, lifespan=?, avatar=?, avatarURL=?, centerTop=?, centerTopURL=?, isAutoSync=?, isUseGestureLock=?, isShowGestureTrack=?, gesturePasswod=?, updatetime=?, syntime=? WHERE account=?", str_TableName_Settings];
             
-            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, avatarData, settings.avatarURL, centerTopData, settings.centerTopURL, settings.isAutoSync, settings.updatetime, settings.syntime, settings.account]];
+            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, avatarData, settings.avatarURL, centerTopData, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.updatetime, settings.syntime, settings.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
         } else {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, updatetime, syntime) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Settings];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, isUseGestureLock, isShowGestureTrack, gesturePasswod, updatetime, syntime) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Settings];
             
-            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.account, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, avatarData, settings.avatarURL, centerTopData, settings.centerTopURL, settings.isAutoSync, settings.updatetime, settings.syntime]];
+            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.account, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, avatarData, settings.avatarURL, centerTopData, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.updatetime, settings.syntime]];
 
             FMDBQuickCheck(b, sqlString, __db);
         }
@@ -643,8 +682,8 @@ static NSMutableDictionary * __contactsOnlineState;
         } else {
             settings.account = @"";
         }
-        
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, updatetime, syntime FROM %@ WHERE account=?", str_TableName_Settings];
+
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, isUseGestureLock, isShowGestureTrack, gesturePasswod, updatetime, syntime FROM %@ WHERE account=?", str_TableName_Settings];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[settings.account]];
         while ([rs next]) {
@@ -667,9 +706,20 @@ static NSMutableDictionary * __contactsOnlineState;
             }
             settings.centerTopURL = [rs stringForColumn:@"centerTopURL"];
             settings.isAutoSync = [rs stringForColumn:@"isAutoSync"];
+            settings.isUseGestureLock = [rs stringForColumn:@"isUseGestureLock"];
+            settings.isShowGestureTrack = [rs stringForColumn:@"isShowGestureTrack"];
+            settings.gesturePasswod = [rs stringForColumn:@"gesturePasswod"];
             settings.updatetime = [rs stringForColumn:@"updatetime"];
             settings.syntime = [rs stringForColumn:@"syntime"];
-            
+            if (!settings.isAutoSync) {
+                settings.isAutoSync = @"0";
+            }
+            if (!settings.isUseGestureLock) {
+                settings.isUseGestureLock = @"0";
+            }
+            if (!settings.isShowGestureTrack) {
+                settings.isShowGestureTrack = @"1";
+            }
         }
         [rs close];
         
@@ -681,7 +731,6 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         
         return settings;
-        
     }
 }
 

@@ -121,6 +121,22 @@
 		1374705A1C04202700B7822A /* ForgotPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 137470581C04202700B7822A /* ForgotPasswordViewController.xib */; };
 		137470711C05F1DC00B7822A /* Icon_AutoSync_Normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1374706F1C05F1DC00B7822A /* Icon_AutoSync_Normal@2x.png */; };
 		137470721C05F1DC00B7822A /* Icon_AutoSync_Selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 137470701C05F1DC00B7822A /* Icon_AutoSync_Selected@2x.png */; };
+		1374708E1C07E66B00B7822A /* CLLockVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470771C07E66B00B7822A /* CLLockVC.m */; };
+		1374708F1C07E66B00B7822A /* CLLockVC.xib in Resources */ = {isa = PBXBuildFile; fileRef = 137470781C07E66B00B7822A /* CLLockVC.xib */; };
+		137470901C07E66B00B7822A /* CALayer+Anim.m in Sources */ = {isa = PBXBuildFile; fileRef = 1374707C1C07E66B00B7822A /* CALayer+Anim.m */; };
+		137470911C07E66B00B7822A /* CoreLockConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 1374707F1C07E66B00B7822A /* CoreLockConst.m */; };
+		137470921C07E66B00B7822A /* CLLockNavVC.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470821C07E66B00B7822A /* CLLockNavVC.m */; };
+		137470931C07E66B00B7822A /* CLLockInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470851C07E66B00B7822A /* CLLockInfoView.m */; };
+		137470941C07E66B00B7822A /* CLLockItemView.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470871C07E66B00B7822A /* CLLockItemView.m */; };
+		137470951C07E66B00B7822A /* CLLockLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470891C07E66B00B7822A /* CLLockLabel.m */; };
+		137470961C07E66B00B7822A /* CLLockMainView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1374708B1C07E66B00B7822A /* CLLockMainView.m */; };
+		137470971C07E66B00B7822A /* CLLockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1374708D1C07E66B00B7822A /* CLLockView.m */; };
+		137470A31C0815F100B7822A /* NSString+File.m in Sources */ = {isa = PBXBuildFile; fileRef = 1374709E1C0815F100B7822A /* NSString+File.m */; };
+		137470A41C0815F100B7822A /* CoreArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470A01C0815F100B7822A /* CoreArchive.m */; };
+		137470AB1C0943D700B7822A /* Icon_Gesture_Lock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 137470AA1C0943D700B7822A /* Icon_Gesture_Lock@2x.png */; };
+		137470AD1C0945D000B7822A /* Icon_Gesture_Unlock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 137470AC1C0945D000B7822A /* Icon_Gesture_Unlock@2x.png */; };
+		137470B01C09490B00B7822A /* Icon_GestureTrack_Hide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 137470AE1C09490B00B7822A /* Icon_GestureTrack_Hide@2x.png */; };
+		137470B11C09490B00B7822A /* Icon_GestureTrack_Show@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 137470AF1C09490B00B7822A /* Icon_GestureTrack_Show@2x.png */; };
 		137700BA1B93E290008C83FD /* PlanSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B22251B92EE1A005CE84A /* PlanSectionView.m */; };
 		137700BB1B93E56A008C83FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 135B21931B900394005CE84A /* Main.storyboard */; };
 		137700BC1B93E56A008C83FD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 135B21981B900394005CE84A /* LaunchScreen.xib */; };
@@ -369,6 +385,34 @@
 		137470581C04202700B7822A /* ForgotPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordViewController.xib; sourceTree = "<group>"; };
 		1374706F1C05F1DC00B7822A /* Icon_AutoSync_Normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_AutoSync_Normal@2x.png"; sourceTree = "<group>"; };
 		137470701C05F1DC00B7822A /* Icon_AutoSync_Selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_AutoSync_Selected@2x.png"; sourceTree = "<group>"; };
+		137470761C07E66B00B7822A /* CLLockVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLLockVC.h; sourceTree = "<group>"; };
+		137470771C07E66B00B7822A /* CLLockVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLLockVC.m; sourceTree = "<group>"; };
+		137470781C07E66B00B7822A /* CLLockVC.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CLLockVC.xib; sourceTree = "<group>"; };
+		1374707B1C07E66B00B7822A /* CALayer+Anim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CALayer+Anim.h"; sourceTree = "<group>"; };
+		1374707C1C07E66B00B7822A /* CALayer+Anim.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "CALayer+Anim.m"; sourceTree = "<group>"; };
+		1374707E1C07E66B00B7822A /* CoreLockConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreLockConst.h; sourceTree = "<group>"; };
+		1374707F1C07E66B00B7822A /* CoreLockConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreLockConst.m; sourceTree = "<group>"; };
+		137470811C07E66B00B7822A /* CLLockNavVC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLLockNavVC.h; sourceTree = "<group>"; };
+		137470821C07E66B00B7822A /* CLLockNavVC.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLLockNavVC.m; sourceTree = "<group>"; };
+		137470841C07E66B00B7822A /* CLLockInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLLockInfoView.h; sourceTree = "<group>"; };
+		137470851C07E66B00B7822A /* CLLockInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLLockInfoView.m; sourceTree = "<group>"; };
+		137470861C07E66B00B7822A /* CLLockItemView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLLockItemView.h; sourceTree = "<group>"; };
+		137470871C07E66B00B7822A /* CLLockItemView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLLockItemView.m; sourceTree = "<group>"; };
+		137470881C07E66B00B7822A /* CLLockLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLLockLabel.h; sourceTree = "<group>"; };
+		137470891C07E66B00B7822A /* CLLockLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLLockLabel.m; sourceTree = "<group>"; };
+		1374708A1C07E66B00B7822A /* CLLockMainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLLockMainView.h; sourceTree = "<group>"; };
+		1374708B1C07E66B00B7822A /* CLLockMainView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLLockMainView.m; sourceTree = "<group>"; };
+		1374708C1C07E66B00B7822A /* CLLockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CLLockView.h; sourceTree = "<group>"; };
+		1374708D1C07E66B00B7822A /* CLLockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CLLockView.m; sourceTree = "<group>"; };
+		1374709D1C0815F100B7822A /* NSString+File.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+File.h"; sourceTree = "<group>"; };
+		1374709E1C0815F100B7822A /* NSString+File.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+File.m"; sourceTree = "<group>"; };
+		1374709F1C0815F100B7822A /* CoreArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreArchive.h; sourceTree = "<group>"; };
+		137470A01C0815F100B7822A /* CoreArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreArchive.m; sourceTree = "<group>"; };
+		137470A21C0815F100B7822A /* CoreConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreConst.h; sourceTree = "<group>"; };
+		137470AA1C0943D700B7822A /* Icon_Gesture_Lock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Gesture_Lock@2x.png"; sourceTree = "<group>"; };
+		137470AC1C0945D000B7822A /* Icon_Gesture_Unlock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Gesture_Unlock@2x.png"; sourceTree = "<group>"; };
+		137470AE1C09490B00B7822A /* Icon_GestureTrack_Hide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_GestureTrack_Hide@2x.png"; sourceTree = "<group>"; };
+		137470AF1C09490B00B7822A /* Icon_GestureTrack_Show@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_GestureTrack_Show@2x.png"; sourceTree = "<group>"; };
 		137700C01B9428B1008C83FD /* Bg_NavigationBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bg_NavigationBar@2x.png"; sourceTree = "<group>"; };
 		137700C21B9429FD008C83FD /* LaunchImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchImage@2x.png"; sourceTree = "<group>"; };
 		137700D91B952EE5008C83FD /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
@@ -632,6 +676,7 @@
 				135B21B01B900FD9005CE84A /* Component */,
 				13A6AC8A1BBFDD9D005A02F9 /* DataCenter */,
 				135B21CF1B90991E005CE84A /* Function */,
+				137470751C07E66B00B7822A /* GestureLock */,
 				135B21B41B90111A005CE84A /* Macros */,
 				1322639E1B9C7C7C00D21637 /* NotifyCenter */,
 				1368F9601BB617D800CC7E63 /* SDKCenter */,
@@ -965,6 +1010,101 @@
 			path = Register;
 			sourceTree = "<group>";
 		};
+		137470751C07E66B00B7822A /* GestureLock */ = {
+			isa = PBXGroup;
+			children = (
+				137470761C07E66B00B7822A /* CLLockVC.h */,
+				137470771C07E66B00B7822A /* CLLockVC.m */,
+				137470781C07E66B00B7822A /* CLLockVC.xib */,
+				1374709B1C0815F100B7822A /* CoreArchive */,
+				137470A11C0815F100B7822A /* CoreExtend */,
+				137470791C07E66B00B7822A /* Lib */,
+			);
+			path = GestureLock;
+			sourceTree = "<group>";
+		};
+		137470791C07E66B00B7822A /* Lib */ = {
+			isa = PBXGroup;
+			children = (
+				1374707A1C07E66B00B7822A /* Category */,
+				1374707D1C07E66B00B7822A /* Const */,
+				137470801C07E66B00B7822A /* Controller */,
+				137470831C07E66B00B7822A /* View */,
+			);
+			path = Lib;
+			sourceTree = "<group>";
+		};
+		1374707A1C07E66B00B7822A /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				1374707B1C07E66B00B7822A /* CALayer+Anim.h */,
+				1374707C1C07E66B00B7822A /* CALayer+Anim.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		1374707D1C07E66B00B7822A /* Const */ = {
+			isa = PBXGroup;
+			children = (
+				1374707E1C07E66B00B7822A /* CoreLockConst.h */,
+				1374707F1C07E66B00B7822A /* CoreLockConst.m */,
+			);
+			path = Const;
+			sourceTree = "<group>";
+		};
+		137470801C07E66B00B7822A /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				137470811C07E66B00B7822A /* CLLockNavVC.h */,
+				137470821C07E66B00B7822A /* CLLockNavVC.m */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		137470831C07E66B00B7822A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				137470841C07E66B00B7822A /* CLLockInfoView.h */,
+				137470851C07E66B00B7822A /* CLLockInfoView.m */,
+				137470861C07E66B00B7822A /* CLLockItemView.h */,
+				137470871C07E66B00B7822A /* CLLockItemView.m */,
+				137470881C07E66B00B7822A /* CLLockLabel.h */,
+				137470891C07E66B00B7822A /* CLLockLabel.m */,
+				1374708A1C07E66B00B7822A /* CLLockMainView.h */,
+				1374708B1C07E66B00B7822A /* CLLockMainView.m */,
+				1374708C1C07E66B00B7822A /* CLLockView.h */,
+				1374708D1C07E66B00B7822A /* CLLockView.m */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		1374709B1C0815F100B7822A /* CoreArchive */ = {
+			isa = PBXGroup;
+			children = (
+				1374709C1C0815F100B7822A /* Category */,
+				1374709F1C0815F100B7822A /* CoreArchive.h */,
+				137470A01C0815F100B7822A /* CoreArchive.m */,
+			);
+			path = CoreArchive;
+			sourceTree = "<group>";
+		};
+		1374709C1C0815F100B7822A /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				1374709D1C0815F100B7822A /* NSString+File.h */,
+				1374709E1C0815F100B7822A /* NSString+File.m */,
+			);
+			path = Category;
+			sourceTree = "<group>";
+		};
+		137470A11C0815F100B7822A /* CoreExtend */ = {
+			isa = PBXGroup;
+			children = (
+				137470A21C0815F100B7822A /* CoreConst.h */,
+			);
+			path = CoreExtend;
+			sourceTree = "<group>";
+		};
 		137700D81B952DA1008C83FD /* More */ = {
 			isa = PBXGroup;
 			children = (
@@ -991,6 +1131,10 @@
 				137701031B95DF67008C83FD /* Icon_Gender_F_Selected@2x.png */,
 				137701041B95DF67008C83FD /* Icon_Gender_M_Normal@2x.png */,
 				137701051B95DF67008C83FD /* Icon_Gender_M_Selected@2x.png */,
+				137470AA1C0943D700B7822A /* Icon_Gesture_Lock@2x.png */,
+				137470AC1C0945D000B7822A /* Icon_Gesture_Unlock@2x.png */,
+				137470AE1C09490B00B7822A /* Icon_GestureTrack_Hide@2x.png */,
+				137470AF1C09490B00B7822A /* Icon_GestureTrack_Show@2x.png */,
 				137700EA1B953915008C83FD /* Icon_Logo_512@2x.png */,
 				131D6A3B1BF6CFAA009FDD72 /* Icon_Menu_About@2x.png */,
 				131D6A291BF5B0D3009FDD72 /* Icon_Menu_Feedback@2x.png */,
@@ -1219,7 +1363,9 @@
 				135B21CD1B909644005CE84A /* avatarBg@2x.png in Resources */,
 				135B22301B9301C9005CE84A /* Btn_Plan_Delete@2x.png in Resources */,
 				131D6A431BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png in Resources */,
+				137470AB1C0943D700B7822A /* Icon_Gesture_Lock@2x.png in Resources */,
 				137470711C05F1DC00B7822A /* Icon_AutoSync_Normal@2x.png in Resources */,
+				137470B11C09490B00B7822A /* Icon_GestureTrack_Show@2x.png in Resources */,
 				133B08441BA458610015E752 /* PlanCell.xib in Resources */,
 				135B22361B932C45005CE84A /* Btn_Save@2x.png in Resources */,
 				1361AFCB1BCBB52E00DD5FFB /* Bg_Line@2x.png in Resources */,
@@ -1231,6 +1377,7 @@
 				137700DE1B953226008C83FD /* Icon_Arrow_Right@2x.png in Resources */,
 				135B220D1B92B2B5005CE84A /* Btn_Add@2x.png in Resources */,
 				136DF5D81BEDE87D001D6496 /* ShareSDK.bundle in Resources */,
+				137470AD1C0945D000B7822A /* Icon_Gesture_Unlock@2x.png in Resources */,
 				13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */,
 				131D6A281BF58C81009FDD72 /* Btn_LeftMenu@2x.png in Resources */,
 				1368F97D1BB6538F00CC7E63 /* Btn_LogIn_QQ@2x.png in Resources */,
@@ -1253,6 +1400,7 @@
 				137470721C05F1DC00B7822A /* Icon_AutoSync_Selected@2x.png in Resources */,
 				1385B4821BCA712400CB208C /* Btn_Delete@2x.png in Resources */,
 				135B22281B92F4C1005CE84A /* Btn_SectionUp@2x.png in Resources */,
+				1374708F1C07E66B00B7822A /* CLLockVC.xib in Resources */,
 				1368F97E1BB6538F00CC7E63 /* Btn_LogIn_SinaWeibo@2x.png in Resources */,
 				136DF5DC1BEDE87D001D6496 /* ShareSDKUI.bundle in Resources */,
 				137700C11B9428B1008C83FD /* Bg_NavigationBar@2x.png in Resources */,
@@ -1261,6 +1409,7 @@
 				137701081B95DF67008C83FD /* Icon_Gender_M_Normal@2x.png in Resources */,
 				13A6ACB11BC5F83A005A02F9 /* ImageDefault@2x.png in Resources */,
 				1361AFD41BCBB54800DD5FFB /* Btn_Show.png in Resources */,
+				137470B01C09490B00B7822A /* Icon_GestureTrack_Hide@2x.png in Resources */,
 				137701071B95DF67008C83FD /* Icon_Gender_F_Selected@2x.png in Resources */,
 				13A6ACA21BC3AAA3005A02F9 /* AddPhotoViewController.xib in Resources */,
 				135B22311B9301C9005CE84A /* Btn_Plan_Doing@2x.png in Resources */,
@@ -1316,9 +1465,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				137470971C07E66B00B7822A /* CLLockView.m in Sources */,
 				132263A91B9C809400D21637 /* SecondViewController.m in Sources */,
+				137470941C07E66B00B7822A /* CLLockItemView.m in Sources */,
 				131D69F51BF466D2009FDD72 /* StatisticsCenter.m in Sources */,
 				137700BA1B93E290008C83FD /* PlanSectionView.m in Sources */,
+				137470951C07E66B00B7822A /* CLLockLabel.m in Sources */,
+				137470911C07E66B00B7822A /* CoreLockConst.m in Sources */,
 				137700E11B95335E008C83FD /* UIImage+Util.m in Sources */,
 				135B21E71B913EAF005CE84A /* ModelBase.m in Sources */,
 				133B083D1BA439560015E752 /* HitView.m in Sources */,
@@ -1331,6 +1484,7 @@
 				135B22091B92B126005CE84A /* UIViewController+Util.m in Sources */,
 				1361AFC81BCBA5E700DD5FFB /* DoPhotoCell.m in Sources */,
 				131D6AC01C00769A009FDD72 /* FullScreenImageArrayViewController.m in Sources */,
+				137470A31C0815F100B7822A /* NSString+File.m in Sources */,
 				1361AFC31BCBA5E700DD5FFB /* AssetHelper.m in Sources */,
 				135B21EA1B913F77005CE84A /* NSString+Util.m in Sources */,
 				131D6AC41C007BF3009FDD72 /* ImageScrollView.m in Sources */,
@@ -1339,13 +1493,16 @@
 				13A6ACA11BC3AAA3005A02F9 /* AddPhotoViewController.m in Sources */,
 				13A6ACA51BC3E282005A02F9 /* PageScrollView.m in Sources */,
 				131D6A8E1BFD9660009FDD72 /* ShareCenter.m in Sources */,
+				137470931C07E66B00B7822A /* CLLockInfoView.m in Sources */,
 				137470591C04202700B7822A /* ForgotPasswordViewController.m in Sources */,
 				136DF57E1BEC2F7D001D6496 /* ImageBrowser.m in Sources */,
 				13A6ACCD1BC6A82C005A02F9 /* FullScreenImageViewController.m in Sources */,
 				135B218C1B900394005CE84A /* AppDelegate.m in Sources */,
+				137470921C07E66B00B7822A /* CLLockNavVC.m in Sources */,
 				133B08431BA458610015E752 /* PlanCell.m in Sources */,
 				137700E51B9534A4008C83FD /* SettingsViewController.m in Sources */,
 				131D6A1E1BF478D1009FDD72 /* SideMenuViewController.m in Sources */,
+				1374708E1C07E66B00B7822A /* CLLockVC.m in Sources */,
 				1377010C1B967F31008C83FD /* SettingsSetTextViewController.m in Sources */,
 				135B21B31B900FFE005CE84A /* ThreeSubView.m in Sources */,
 				137701131B9683E3008C83FD /* CommonFunction.m in Sources */,
@@ -1357,6 +1514,7 @@
 				13A6AC9D1BC38849005A02F9 /* Photo.m in Sources */,
 				135B22151B92C0D4005CE84A /* FatherViewController.m in Sources */,
 				135B21E01B9136A4005CE84A /* PlanCache.m in Sources */,
+				137470901C07E66B00B7822A /* CALayer+Anim.m in Sources */,
 				131D6A6C1BFB5D9D009FDD72 /* PieceButton.m in Sources */,
 				131D6AC71C00AEB0009FDD72 /* UINavigationController+Util.m in Sources */,
 				137700E91B953521008C83FD /* AboutViewController.m in Sources */,
@@ -1371,8 +1529,10 @@
 				131D6A211BF47FE4009FDD72 /* UIView+Util.m in Sources */,
 				135B22341B932A4F005CE84A /* AddPlanViewController.m in Sources */,
 				1368F9791BB6498300CC7E63 /* LogIn.m in Sources */,
+				137470961C07E66B00B7822A /* CLLockMainView.m in Sources */,
 				137700DB1B952EE5008C83FD /* MoreViewController.m in Sources */,
 				1374704F1C03ED1200B7822A /* RegisterViewController.m in Sources */,
+				137470A41C0815F100B7822A /* CoreArchive.m in Sources */,
 				1361AFC41BCBA5E700DD5FFB /* DoAlbumCell.m in Sources */,
 				1368F9631BB623E100CC7E63 /* RegisterSDK.m in Sources */,
 				132263A81B9C809400D21637 /* FirstViewController.m in Sources */,

@@ -54,6 +54,10 @@
 #define png_Icon_Menu_PhotoLine @"Icon_Menu_PhotoLine"
 #define png_Icon_AutoSync_Normal @"Icon_AutoSync_Normal"
 #define png_Icon_AutoSync_Selected @"Icon_AutoSync_Selected"
+#define png_Icon_Gesture_Lock @"Icon_Gesture_Lock"
+#define png_Icon_Gesture_Unlock @"Icon_Gesture_Unlock"
+#define png_Icon_GestureTrack_Show @"Icon_GestureTrack_Show"
+#define png_Icon_GestureTrack_Hide @"Icon_GestureTrack_Hide"
 
 #define png_Btn_LogIn_QQ @"Btn_LogIn_QQ"
 #define png_Btn_LogIn_Wechat @"Btn_LogIn_Wechat"

@@ -7,6 +7,7 @@
 //
 
 #import "LogIn.h"
+#import "CLLockVC.h"
 #import "WeiboSDK.h"
 #import "PlanCache.h"
 #import "DataCenter.h"
@@ -38,6 +39,9 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     ThreeSubView *lifeThreeSubView;
     ThreeSubView *emailThreeSubView;
     ThreeSubView *autoSyncThreeSubView;
+    ThreeSubView *isUseGestureLockThreeSubView;//启用手势解锁
+    ThreeSubView *isShowGestureTrackThreeSubView;//显示手势轨迹
+    ThreeSubView *changeGestureThreeSubView;//修改手势
     UIDatePicker *datePicker;
     
     UITextField *txtEmail;
@@ -286,17 +290,43 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         yOffset = CGRectGetMaxY(frame);
     }
     
-//    {
-//        ThreeSubView *threeSubView = [self getEmailView];
-//        [self addSeparatorForView:threeSubView];
-//        [view addSubview:threeSubView];
-//        
-//        CGRect frame = threeSubView.frame;
-//        frame.origin.y = yOffset;
-//        threeSubView.frame = frame;
-//        
-//        yOffset = CGRectGetMaxY(frame);
-//    }
+    {
+        ThreeSubView *threeSubView = [self createGestureLockSwitchView];
+        [self addSeparatorForView:threeSubView];
+        [view addSubview:threeSubView];
+        
+        CGRect frame = threeSubView.frame;
+        frame.origin.y = yOffset;
+        threeSubView.frame = frame;
+        
+        yOffset = CGRectGetMaxY(frame);
+    }
+    
+    BOOL usePwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
+    if (usePwd) {
+        {
+            ThreeSubView *threeSubView = [self createShowGestureTrackView];
+            [self addSeparatorForView:threeSubView];
+            [view addSubview:threeSubView];
+            
+            CGRect frame = threeSubView.frame;
+            frame.origin.y = yOffset;
+            threeSubView.frame = frame;
+            
+            yOffset = CGRectGetMaxY(frame);
+        }
+        {
+            ThreeSubView *threeSubView = [self createChangeGestureView];
+            [self addSeparatorForView:threeSubView];
+            [view addSubview:threeSubView];
+            
+            CGRect frame = threeSubView.frame;
+            frame.origin.y = yOffset;
+            threeSubView.frame = frame;
+            
+            yOffset = CGRectGetMaxY(frame);
+        }
+    }
     
     CGRect frame = view.frame;
     frame.size.height = yOffset;
@@ -493,6 +523,105 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     [threeSubView autoLayout];
     
     autoSyncThreeSubView = threeSubView;
+    
+    return threeSubView;
+}
+
+- (ThreeSubView *)createGestureLockSwitchView {
+    __weak typeof(self) weakSelf = self;
+    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: nil rightBlock: ^{
+        [weakSelf toGestureLockViewController];
+    }];
+    
+    threeSubView.fixRightWidth = 55;
+    [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Gesture_Unlock] forState:UIControlStateNormal];
+    [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Gesture_Lock] forState:UIControlStateSelected];
+    
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:@"手势解锁："]];
+    threeSubView.fixLeftWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixCenterWidth;
+    threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+    
+    NSString *isUseGestureLock = [Config shareInstance].settings.isUseGestureLock;
+    if (isUseGestureLock) {
+        if ([isUseGestureLock intValue] == 0) {
+            
+            threeSubView.rightButton.selected = NO;
+            
+        } else if ([isUseGestureLock intValue] == 1) {
+            
+            threeSubView.rightButton.selected = YES;
+        }
+    } else {
+        
+        threeSubView.rightButton.selected = NO;
+    }
+    [threeSubView autoLayout];
+    
+    isUseGestureLockThreeSubView = threeSubView;
+    
+    return threeSubView;
+}
+
+- (ThreeSubView *)createShowGestureTrackView {
+
+    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: nil rightBlock: ^{
+        
+        isShowGestureTrackThreeSubView.rightButton.selected = !isShowGestureTrackThreeSubView.rightButton.selected;
+        if (isShowGestureTrackThreeSubView.rightButton.selected) {
+            [Config shareInstance].settings.isShowGestureTrack = @"1";
+        } else {
+            [Config shareInstance].settings.isShowGestureTrack = @"0";
+        }
+        [PlanCache storePersonalSettings:[Config shareInstance].settings];
+    }];
+    
+    threeSubView.fixRightWidth = 55;
+    [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_GestureTrack_Hide] forState:UIControlStateNormal];
+    [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_GestureTrack_Show] forState:UIControlStateSelected];
+    
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:@"显示手势："]];
+    threeSubView.fixLeftWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixCenterWidth;
+    threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+    
+    NSString *isShowGestureTrack = [Config shareInstance].settings.isShowGestureTrack;
+    if (isShowGestureTrack) {
+        if ([isShowGestureTrack intValue] == 0) {
+            
+            threeSubView.rightButton.selected = NO;
+            
+        } else if ([isShowGestureTrack intValue] == 1) {
+            
+            threeSubView.rightButton.selected = YES;
+        }
+    } else {
+        
+        threeSubView.rightButton.selected = NO;
+    }
+    [threeSubView autoLayout];
+    
+    isShowGestureTrackThreeSubView = threeSubView;
+    
+    return threeSubView;
+}
+
+- (ThreeSubView *)createChangeGestureView {
+    __weak typeof(self) weakSelf = self;
+    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
+        [weakSelf toChangeGestureViewController];
+    } rightBlock: ^{
+        [weakSelf toChangeGestureViewController];
+    }];
+    
+    threeSubView.fixRightWidth = 55;
+    [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Arrow_Right] forState:UIControlStateNormal];
+
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:@"修改手势："]];
+    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixLeftWidth;
+    threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+
+    [threeSubView autoLayout];
+    
+    changeGestureThreeSubView = threeSubView;
     
     return threeSubView;
 }
@@ -784,6 +913,46 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)toGestureLockViewController {
+    
+    __weak typeof(self) weakSelf = self;
+    BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
+    if (hasPwd) {
+        //关闭手势解锁
+        [CLLockVC showVerifyLockVCInVC:self isLogIn:NO forgetPwdBlock:^{
+            NSLog(@"忘记密码");
+        } successBlock:^(CLLockVC *lockVC, NSString *pwd) {
+            
+            [Config shareInstance].settings.isUseGestureLock = @"0";
+            [Config shareInstance].settings.gesturePasswod = @"";
+            [PlanCache storePersonalSettings:[Config shareInstance].settings];
+            [lockVC dismiss:.5f];
+        }];
+        
+    } else {
+        
+        //打开手势解锁
+        [CLLockVC showSettingLockVCInVC:self successBlock:^(CLLockVC *lockVC, NSString *pwd) {
+            
+            [weakSelf alertToastMessage:@"手势密码设置成功"];
+            [lockVC dismiss:.5f];
+        }];
+    }
+}
+
+- (void)toChangeGestureViewController {
+    
+    __weak typeof(self) weakSelf = self;
+    BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
+    if (hasPwd) {
+        [CLLockVC showModifyLockVCInVC:self successBlock:^(CLLockVC *lockVC, NSString *pwd) {
+            
+            [weakSelf alertToastMessage:@"修改成功"];
+            [lockVC dismiss:.5f];
+        }];
+    }
+}
+
 - (void)setMale {
     
     genderThreeSubView.centerButton.selected = YES;
@@ -921,7 +1090,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 }
 
 - (void)syncDataAction {
-    
     [DataCenter startSyncData];
 }
 
