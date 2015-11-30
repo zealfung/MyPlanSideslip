@@ -96,12 +96,7 @@
 		1368F97D1BB6538F00CC7E63 /* Btn_LogIn_QQ@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1368F97A1BB6538F00CC7E63 /* Btn_LogIn_QQ@2x.png */; };
 		1368F97E1BB6538F00CC7E63 /* Btn_LogIn_SinaWeibo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1368F97B1BB6538F00CC7E63 /* Btn_LogIn_SinaWeibo@2x.png */; };
 		1368F97F1BB6538F00CC7E63 /* Btn_LogIn_Wechat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1368F97C1BB6538F00CC7E63 /* Btn_LogIn_Wechat@2x.png */; };
-		136DF57B1BEB955D001D6496 /* Icon_Plan_Long@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DF57A1BEB955D001D6496 /* Icon_Plan_Long@2x.png */; };
 		136DF57E1BEC2F7D001D6496 /* ImageBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 136DF57D1BEC2F7D001D6496 /* ImageBrowser.m */; };
-		136DF5861BEC76D9001D6496 /* Icon_Percent_Day@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DF5821BEC76D9001D6496 /* Icon_Percent_Day@2x.png */; };
-		136DF5871BEC76D9001D6496 /* Icon_Percent_Long@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DF5831BEC76D9001D6496 /* Icon_Percent_Long@2x.png */; };
-		136DF5881BEC76D9001D6496 /* Icon_Photo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DF5841BEC76D9001D6496 /* Icon_Photo@2x.png */; };
-		136DF5891BEC76D9001D6496 /* Icon_Plan_Day@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DF5851BEC76D9001D6496 /* Icon_Plan_Day@2x.png */; };
 		136DF5D11BEDE87D001D6496 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 136DF5B51BEDE87D001D6496 /* TencentOpenAPI.framework */; };
 		136DF5D21BEDE87D001D6496 /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 136DF5B61BEDE87D001D6496 /* TencentOpenApi_IOS_Bundle.bundle */; };
 		136DF5D31BEDE87D001D6496 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 136DF5B81BEDE87D001D6496 /* libWeiboSDK.a */; };
@@ -137,6 +132,14 @@
 		137470AD1C0945D000B7822A /* Icon_Gesture_Unlock@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 137470AC1C0945D000B7822A /* Icon_Gesture_Unlock@2x.png */; };
 		137470B01C09490B00B7822A /* Icon_GestureTrack_Hide@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 137470AE1C09490B00B7822A /* Icon_GestureTrack_Hide@2x.png */; };
 		137470B11C09490B00B7822A /* Icon_GestureTrack_Show@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 137470AF1C09490B00B7822A /* Icon_GestureTrack_Show@2x.png */; };
+		137470BF1C0ABCFE00B7822A /* AddTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470BD1C0ABCFE00B7822A /* AddTaskViewController.m */; };
+		137470C01C0ABCFE00B7822A /* AddTaskViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 137470BE1C0ABCFE00B7822A /* AddTaskViewController.xib */; };
+		137470C41C0AE72A00B7822A /* TaskCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470C21C0AE72A00B7822A /* TaskCell.m */; };
+		137470C51C0AE72A00B7822A /* TaskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 137470C31C0AE72A00B7822A /* TaskCell.xib */; };
+		137470C81C0AE75900B7822A /* Task.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470C71C0AE75900B7822A /* Task.m */; };
+		137470CB1C0AEB0300B7822A /* TaskRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470CA1C0AEB0300B7822A /* TaskRecord.m */; };
+		137470D21C0BD50400B7822A /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470D01C0BD50400B7822A /* LogInViewController.m */; };
+		137470D31C0BD50400B7822A /* LogInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 137470D11C0BD50400B7822A /* LogInViewController.xib */; };
 		137700BA1B93E290008C83FD /* PlanSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B22251B92EE1A005CE84A /* PlanSectionView.m */; };
 		137700BB1B93E56A008C83FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 135B21931B900394005CE84A /* Main.storyboard */; };
 		137700BC1B93E56A008C83FD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 135B21981B900394005CE84A /* LaunchScreen.xib */; };
@@ -344,13 +347,8 @@
 		1368F97A1BB6538F00CC7E63 /* Btn_LogIn_QQ@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_LogIn_QQ@2x.png"; sourceTree = "<group>"; };
 		1368F97B1BB6538F00CC7E63 /* Btn_LogIn_SinaWeibo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_LogIn_SinaWeibo@2x.png"; sourceTree = "<group>"; };
 		1368F97C1BB6538F00CC7E63 /* Btn_LogIn_Wechat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_LogIn_Wechat@2x.png"; sourceTree = "<group>"; };
-		136DF57A1BEB955D001D6496 /* Icon_Plan_Long@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Plan_Long@2x.png"; sourceTree = "<group>"; };
 		136DF57C1BEC2F7D001D6496 /* ImageBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBrowser.h; sourceTree = "<group>"; };
 		136DF57D1BEC2F7D001D6496 /* ImageBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageBrowser.m; sourceTree = "<group>"; };
-		136DF5821BEC76D9001D6496 /* Icon_Percent_Day@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Percent_Day@2x.png"; sourceTree = "<group>"; };
-		136DF5831BEC76D9001D6496 /* Icon_Percent_Long@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Percent_Long@2x.png"; sourceTree = "<group>"; };
-		136DF5841BEC76D9001D6496 /* Icon_Photo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Photo@2x.png"; sourceTree = "<group>"; };
-		136DF5851BEC76D9001D6496 /* Icon_Plan_Day@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Plan_Day@2x.png"; sourceTree = "<group>"; };
 		136DF5B51BEDE87D001D6496 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		136DF5B61BEDE87D001D6496 /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
 		136DF5B81BEDE87D001D6496 /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
@@ -413,6 +411,19 @@
 		137470AC1C0945D000B7822A /* Icon_Gesture_Unlock@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Gesture_Unlock@2x.png"; sourceTree = "<group>"; };
 		137470AE1C09490B00B7822A /* Icon_GestureTrack_Hide@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_GestureTrack_Hide@2x.png"; sourceTree = "<group>"; };
 		137470AF1C09490B00B7822A /* Icon_GestureTrack_Show@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_GestureTrack_Show@2x.png"; sourceTree = "<group>"; };
+		137470BC1C0ABCFE00B7822A /* AddTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTaskViewController.h; sourceTree = "<group>"; };
+		137470BD1C0ABCFE00B7822A /* AddTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTaskViewController.m; sourceTree = "<group>"; };
+		137470BE1C0ABCFE00B7822A /* AddTaskViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddTaskViewController.xib; sourceTree = "<group>"; };
+		137470C11C0AE72A00B7822A /* TaskCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskCell.h; sourceTree = "<group>"; };
+		137470C21C0AE72A00B7822A /* TaskCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskCell.m; sourceTree = "<group>"; };
+		137470C31C0AE72A00B7822A /* TaskCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskCell.xib; sourceTree = "<group>"; };
+		137470C61C0AE75900B7822A /* Task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Task.h; sourceTree = "<group>"; };
+		137470C71C0AE75900B7822A /* Task.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Task.m; sourceTree = "<group>"; };
+		137470C91C0AEB0300B7822A /* TaskRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskRecord.h; sourceTree = "<group>"; };
+		137470CA1C0AEB0300B7822A /* TaskRecord.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskRecord.m; sourceTree = "<group>"; };
+		137470CF1C0BD50400B7822A /* LogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInViewController.h; sourceTree = "<group>"; };
+		137470D01C0BD50400B7822A /* LogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInViewController.m; sourceTree = "<group>"; };
+		137470D11C0BD50400B7822A /* LogInViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogInViewController.xib; sourceTree = "<group>"; };
 		137700C01B9428B1008C83FD /* Bg_NavigationBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bg_NavigationBar@2x.png"; sourceTree = "<group>"; };
 		137700C21B9429FD008C83FD /* LaunchImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchImage@2x.png"; sourceTree = "<group>"; };
 		137700D91B952EE5008C83FD /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
@@ -536,6 +547,12 @@
 		131D6A701BFB68A8009FDD72 /* Task */ = {
 			isa = PBXGroup;
 			children = (
+				137470BC1C0ABCFE00B7822A /* AddTaskViewController.h */,
+				137470BD1C0ABCFE00B7822A /* AddTaskViewController.m */,
+				137470BE1C0ABCFE00B7822A /* AddTaskViewController.xib */,
+				137470C11C0AE72A00B7822A /* TaskCell.h */,
+				137470C21C0AE72A00B7822A /* TaskCell.m */,
+				137470C31C0AE72A00B7822A /* TaskCell.xib */,
 			);
 			path = Task;
 			sourceTree = "<group>";
@@ -803,6 +820,10 @@
 				135B21E31B913E46005CE84A /* Settings.m */,
 				131D69E61BF37614009FDD72 /* Statistics.h */,
 				131D69E71BF37614009FDD72 /* Statistics.m */,
+				137470C61C0AE75900B7822A /* Task.h */,
+				137470C71C0AE75900B7822A /* Task.m */,
+				137470C91C0AEB0300B7822A /* TaskRecord.h */,
+				137470CA1C0AEB0300B7822A /* TaskRecord.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -810,13 +831,13 @@
 		135B220B1B92B2B5005CE84A /* Button */ = {
 			isa = PBXGroup;
 			children = (
-				131D6A271BF58C81009FDD72 /* Btn_LeftMenu@2x.png */,
 				135B220C1B92B2B5005CE84A /* Btn_Add@2x.png */,
 				1385B47F1BC9EF9900CB208C /* Btn_AddPhoto@2x.png */,
 				1385B4811BCA712400CB208C /* Btn_Delete@2x.png */,
 				1361AFCC1BCBB54800DD5FFB /* Btn_Down.png */,
 				1361AFCD1BCBB54800DD5FFB /* Btn_Down@2x.png */,
 				1385B47B1BC9E50D00CB208C /* Btn_Edit@2x.png */,
+				131D6A271BF58C81009FDD72 /* Btn_LeftMenu@2x.png */,
 				1368F97A1BB6538F00CC7E63 /* Btn_LogIn_QQ@2x.png */,
 				1368F97B1BB6538F00CC7E63 /* Btn_LogIn_SinaWeibo@2x.png */,
 				1368F97C1BB6538F00CC7E63 /* Btn_LogIn_Wechat@2x.png */,
@@ -1105,12 +1126,23 @@
 			path = CoreExtend;
 			sourceTree = "<group>";
 		};
+		137470CE1C0BD4E200B7822A /* LogIn */ = {
+			isa = PBXGroup;
+			children = (
+				137470CF1C0BD50400B7822A /* LogInViewController.h */,
+				137470D01C0BD50400B7822A /* LogInViewController.m */,
+				137470D11C0BD50400B7822A /* LogInViewController.xib */,
+			);
+			path = LogIn;
+			sourceTree = "<group>";
+		};
 		137700D81B952DA1008C83FD /* More */ = {
 			isa = PBXGroup;
 			children = (
 				137700E61B953501008C83FD /* About */,
 				1374704A1C03ECF100B7822A /* ForgotPassword */,
 				133B079B1B9FBC620015E752 /* Help */,
+				137470CE1C0BD4E200B7822A /* LogIn */,
 				137700D91B952EE5008C83FD /* MoreViewController.h */,
 				137700DA1B952EE5008C83FD /* MoreViewController.m */,
 				1374704B1C03ECF100B7822A /* Register */,
@@ -1142,11 +1174,6 @@
 				131D6A3D1BF6CFAA009FDD72 /* Icon_Menu_Help@2x.png */,
 				131D6A3E1BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png */,
 				131D6A3F1BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png */,
-				136DF5821BEC76D9001D6496 /* Icon_Percent_Day@2x.png */,
-				136DF5831BEC76D9001D6496 /* Icon_Percent_Long@2x.png */,
-				136DF5841BEC76D9001D6496 /* Icon_Photo@2x.png */,
-				136DF5851BEC76D9001D6496 /* Icon_Plan_Day@2x.png */,
-				136DF57A1BEB955D001D6496 /* Icon_Plan_Long@2x.png */,
 			);
 			path = Icon;
 			sourceTree = "<group>";
@@ -1349,7 +1376,6 @@
 				137700EB1B953915008C83FD /* Icon_Logo_512@2x.png in Resources */,
 				1361AFC71BCBA5E700DD5FFB /* DoImagePickerController.xib in Resources */,
 				137701061B95DF67008C83FD /* Icon_Gender_F_Normal@2x.png in Resources */,
-				136DF5871BEC76D9001D6496 /* Icon_Percent_Long@2x.png in Resources */,
 				136DF5D41BEDE87D001D6496 /* WeiboSDK.bundle in Resources */,
 				1361AFD61BCBB54800DD5FFB /* Btn_Up.png in Resources */,
 				136DF5D21BEDE87D001D6496 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
@@ -1357,9 +1383,9 @@
 				1385B47C1BC9E50D00CB208C /* Btn_Edit@2x.png in Resources */,
 				1361AFD51BCBB54800DD5FFB /* Btn_Show@2x.png in Resources */,
 				131D6A441BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png in Resources */,
+				137470D31C0BD50400B7822A /* LogInViewController.xib in Resources */,
 				131D6A401BF6CFAA009FDD72 /* Icon_Menu_About@2x.png in Resources */,
 				137470501C03ED1200B7822A /* RegisterViewController.xib in Resources */,
-				136DF5861BEC76D9001D6496 /* Icon_Percent_Day@2x.png in Resources */,
 				135B21CD1B909644005CE84A /* avatarBg@2x.png in Resources */,
 				135B22301B9301C9005CE84A /* Btn_Plan_Delete@2x.png in Resources */,
 				131D6A431BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png in Resources */,
@@ -1370,7 +1396,6 @@
 				135B22361B932C45005CE84A /* Btn_Save@2x.png in Resources */,
 				1361AFCB1BCBB52E00DD5FFB /* Bg_Line@2x.png in Resources */,
 				1361AFD71BCBB54800DD5FFB /* Btn_Up@2x.png in Resources */,
-				136DF57B1BEB955D001D6496 /* Icon_Plan_Long@2x.png in Resources */,
 				137701091B95DF67008C83FD /* Icon_Gender_M_Selected@2x.png in Resources */,
 				135B222F1B9301C9005CE84A /* Btn_Plan_Done@2x.png in Resources */,
 				1385B4801BC9EF9900CB208C /* Btn_AddPhoto@2x.png in Resources */,
@@ -1387,7 +1412,6 @@
 				137700C31B9429FD008C83FD /* LaunchImage@2x.png in Resources */,
 				13A6ACAF1BC55B9D005A02F9 /* Icon_Alarm@2x.png in Resources */,
 				1374705A1C04202700B7822A /* ForgotPasswordViewController.xib in Resources */,
-				136DF5891BEC76D9001D6496 /* Icon_Plan_Day@2x.png in Resources */,
 				131D6A411BF6CFAA009FDD72 /* Icon_Menu_FiveStar@2x.png in Resources */,
 				135B21971B900394005CE84A /* Images.xcassets in Resources */,
 				1368F97F1BB6538F00CC7E63 /* Btn_LogIn_Wechat@2x.png in Resources */,
@@ -1404,8 +1428,9 @@
 				1368F97E1BB6538F00CC7E63 /* Btn_LogIn_SinaWeibo@2x.png in Resources */,
 				136DF5DC1BEDE87D001D6496 /* ShareSDKUI.bundle in Resources */,
 				137700C11B9428B1008C83FD /* Bg_NavigationBar@2x.png in Resources */,
-				136DF5881BEC76D9001D6496 /* Icon_Photo@2x.png in Resources */,
+				137470C01C0ABCFE00B7822A /* AddTaskViewController.xib in Resources */,
 				135B22101B92B417005CE84A /* Bg_Cell_White@2x.png in Resources */,
+				137470C51C0AE72A00B7822A /* TaskCell.xib in Resources */,
 				137701081B95DF67008C83FD /* Icon_Gender_M_Normal@2x.png in Resources */,
 				13A6ACB11BC5F83A005A02F9 /* ImageDefault@2x.png in Resources */,
 				1361AFD41BCBB54800DD5FFB /* Btn_Show.png in Resources */,
@@ -1472,9 +1497,11 @@
 				137700BA1B93E290008C83FD /* PlanSectionView.m in Sources */,
 				137470951C07E66B00B7822A /* CLLockLabel.m in Sources */,
 				137470911C07E66B00B7822A /* CoreLockConst.m in Sources */,
+				137470D21C0BD50400B7822A /* LogInViewController.m in Sources */,
 				137700E11B95335E008C83FD /* UIImage+Util.m in Sources */,
 				135B21E71B913EAF005CE84A /* ModelBase.m in Sources */,
 				133B083D1BA439560015E752 /* HitView.m in Sources */,
+				137470C81C0AE75900B7822A /* Task.m in Sources */,
 				135B221F1B92E74C005CE84A /* PromptMessage.m in Sources */,
 				132263781B9825D400D21637 /* UIDevice+Util.m in Sources */,
 				1361AFC61BCBA5E700DD5FFB /* DoImagePickerController.m in Sources */,
@@ -1493,6 +1520,7 @@
 				13A6ACA11BC3AAA3005A02F9 /* AddPhotoViewController.m in Sources */,
 				13A6ACA51BC3E282005A02F9 /* PageScrollView.m in Sources */,
 				131D6A8E1BFD9660009FDD72 /* ShareCenter.m in Sources */,
+				137470C41C0AE72A00B7822A /* TaskCell.m in Sources */,
 				137470931C07E66B00B7822A /* CLLockInfoView.m in Sources */,
 				137470591C04202700B7822A /* ForgotPasswordViewController.m in Sources */,
 				136DF57E1BEC2F7D001D6496 /* ImageBrowser.m in Sources */,
@@ -1505,6 +1533,7 @@
 				1374708E1C07E66B00B7822A /* CLLockVC.m in Sources */,
 				1377010C1B967F31008C83FD /* SettingsSetTextViewController.m in Sources */,
 				135B21B31B900FFE005CE84A /* ThreeSubView.m in Sources */,
+				137470BF1C0ABCFE00B7822A /* AddTaskViewController.m in Sources */,
 				137701131B9683E3008C83FD /* CommonFunction.m in Sources */,
 				135B21DC1B90A145005CE84A /* UIButton+Util.m in Sources */,
 				13A6ACA81BC3FBF1005A02F9 /* PagedFlowView.m in Sources */,
@@ -1515,6 +1544,7 @@
 				135B22151B92C0D4005CE84A /* FatherViewController.m in Sources */,
 				135B21E01B9136A4005CE84A /* PlanCache.m in Sources */,
 				137470901C07E66B00B7822A /* CALayer+Anim.m in Sources */,
+				137470CB1C0AEB0300B7822A /* TaskRecord.m in Sources */,
 				131D6A6C1BFB5D9D009FDD72 /* PieceButton.m in Sources */,
 				131D6AC71C00AEB0009FDD72 /* UINavigationController+Util.m in Sources */,
 				137700E91B953521008C83FD /* AboutViewController.m in Sources */,
@@ -1621,7 +1651,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "5f92e8cb-5f6c-4ecf-9c1e-890536a7d613";
+				PROVISIONING_PROFILE = "8fbb45b1-e03b-4447-bb67-0d6217497a11";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -1662,7 +1692,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
-				PROVISIONING_PROFILE = "5f92e8cb-5f6c-4ecf-9c1e-890536a7d613";
+				PROVISIONING_PROFILE = "8fbb45b1-e03b-4447-bb67-0d6217497a11";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -1694,7 +1724,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.andwho.plan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5f92e8cb-5f6c-4ecf-9c1e-890536a7d613";
+				PROVISIONING_PROFILE = "8fbb45b1-e03b-4447-bb67-0d6217497a11";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1725,7 +1755,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.andwho.plan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "5f92e8cb-5f6c-4ecf-9c1e-890536a7d613";
+				PROVISIONING_PROFILE = "8fbb45b1-e03b-4447-bb67-0d6217497a11";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

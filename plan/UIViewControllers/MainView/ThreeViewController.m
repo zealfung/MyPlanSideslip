@@ -6,16 +6,16 @@
 //  Copyright (c) 2015年 Fengzy. All rights reserved.
 //
 
-#import "PlanCache.h"
-#import "PhotoCell.h"
+#import "Task.h"
+#import "TaskCell.h"
 #import "ThreeViewController.h"
-#import "AddPhotoViewController.h"
+#import "AddTaskViewController.h"
 #import <RESideMenu/RESideMenu.h>
-#import "PhotoDetailViewController.h"
 
-@interface ThreeViewController ()
-
-@property (nonatomic, strong) NSArray *photoArray;
+@interface ThreeViewController () {
+    
+    NSArray *taskArray;
+}
 
 @end
 
@@ -31,23 +31,21 @@
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    UIView *footer = [[UIView alloc] init];
-    self.tableView.tableFooterView = footer;
+    self.tableView.tableFooterView = [[UIView alloc] init];
     
-    self.photoArray = [NSArray array];
-    [NotificationCenter addObserver:self selector:@selector(reloadPhotoData) name:Notify_Photo_Save object:nil];
-    [NotificationCenter addObserver:self selector:@selector(refreshTable) name:Notify_Photo_RefreshOnly object:nil];
-    
-    [self reloadPhotoData];
+    taskArray = [NSArray array];
+    [NotificationCenter addObserver:self selector:@selector(reloadTaskData) name:Notify_Task_Save object:nil];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [self reloadTaskData];
 }
 
 - (void)didReceiveMemoryWarning {
-    
     [super didReceiveMemoryWarning];
 }
 
 - (void)dealloc {
-    
     [NotificationCenter removeObserver:self];
 }
 
@@ -59,28 +57,19 @@
 
 #pragma mark - action
 - (void)leftMenuAction:(UIButton *)button {
-    
     [self.sideMenuViewController presentLeftMenuViewController];
 }
 
 - (void)addAction:(UIButton *)button {
     
-    AddPhotoViewController *controller = [[AddPhotoViewController alloc] init];
+    AddTaskViewController *controller = [[AddTaskViewController alloc] init];
     controller.operationType = Add;
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)reloadPhotoData {
-    
-    [self showHUD];
-    self.photoArray = [NSArray arrayWithArray:[PlanCache getPhoto]];
-    [self.tableView reloadData];
-    [self hideHUD];
-}
-
-- (void)refreshTable {
-    
+- (void)reloadTaskData {
+    taskArray = [PlanCache getTeask];
     [self.tableView reloadData];
 }
 
@@ -92,9 +81,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
 
-    if (self.photoArray.count > 0) {
+    if (taskArray.count > 0) {
         
-        return self.photoArray.count;
+        return taskArray.count;
         
     } else {
         
@@ -104,9 +93,9 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (self.photoArray.count > 0) {
+    if (taskArray.count > 0) {
         
-        return kPhotoCellHeight;
+        return 60.f;
         
     } else {
         
@@ -116,22 +105,22 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (indexPath.row < self.photoArray.count) {
+    if (indexPath.row < taskArray.count) {
         
         tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        Photo *photo = self.photoArray[indexPath.row];
-        PhotoCell *cell = [PhotoCell cellView:photo];
+        Task *task = taskArray[indexPath.row];
+        TaskCell *cell = [TaskCell cellView:task];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         return cell;
         
     } else {
         
-        static NSString *noticeCellIdentifier = @"noPhotoCellIdentifier";
+        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        static NSString *noTaskCellIdentifier = @"noTaskCellIdentifier";
         
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noticeCellIdentifier];
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noTaskCellIdentifier];
         if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noticeCellIdentifier];
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noTaskCellIdentifier];
             cell.backgroundColor = [UIColor clearColor];
             cell.contentView.backgroundColor = [UIColor clearColor];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -141,10 +130,9 @@
             cell.textLabel.textColor = [UIColor lightGrayColor];
             cell.textLabel.font = font_Bold_16;
         }
-        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         if (indexPath.row == 4) {
-            cell.textLabel.text = str_Photo_Tips1;
+            cell.textLabel.text = str_Task_Tips1;
         } else {
             cell.textLabel.text = nil;
         }
@@ -155,10 +143,11 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    if (indexPath.row < self.photoArray.count) {
+    if (indexPath.row < taskArray.count) {
         
-        PhotoDetailViewController *controller = [[PhotoDetailViewController alloc] init];
-        controller.photo = self.photoArray[indexPath.row];
+        AddTaskViewController *controller = [[AddTaskViewController alloc] init];
+        controller.operationType = View;
+        controller.task = taskArray[indexPath.row];
         controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
     }

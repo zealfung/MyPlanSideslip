@@ -13,8 +13,9 @@
 #import "DataCenter.h"
 #import "BmobObjectsBatch.h"
 #import <BmobSDK/BmobProFile.h>
+#import "SDWebImageDownloader.h"
 
-
+static BOOL finishSettings;
 static BOOL finishUploadAvatar;
 static BOOL finishUploadCenterTop;
 
@@ -27,8 +28,8 @@ static BOOL finishUploadCenterTop;
     //把本地无账号关联的数据与当前登录账号进行关联
     [PlanCache linkedLocalDataToAccount];
     
-    //同步设置
-    [self startSyncSettings];
+    //对比同步时间
+    [self compareSyncTime];
     
     //加载本地同步时间
     
@@ -42,16 +43,22 @@ static BOOL finishUploadCenterTop;
 }
 
 + (void)resetUploadFlag {
+    finishSettings = NO;
     finishUploadAvatar = NO;
     finishUploadCenterTop = NO;
 }
 
-+ (BOOL)IsAllUploadFinished {
++ (void)IsAllUploadFinished {
     
-    return finishUploadAvatar && finishUploadCenterTop;
+    if (finishSettings
+        && finishUploadAvatar
+        && finishUploadCenterTop) {
+        
+        [AlertCenter alertNavBarMessage:@"同步文本完成"];
+    }
 }
 
-+ (void)startSyncSettings {
++ (void)compareSyncTime {
     
     [self resetUploadFlag];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
@@ -62,10 +69,10 @@ static BOOL finishUploadCenterTop;
             
             BmobObject *obj = array[0];
             
-            if ([Config shareInstance].settings.updatetime) {
+            if ([Config shareInstance].settings.syntime) {
                 //本地有上次同步时间记录，对比服务器的更新时间与本地同步记录时间
-                NSDate *updateTime = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                NSDate *updateAt = [obj updatedAt];
+                NSDate *localSyntime = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.syntime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                NSDate *serverSynctime = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"synctime"] formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
                 
                 /*
                 - (NSComparisonResult)compare:(NSDate *)other;
@@ -73,11 +80,11 @@ static BOOL finishUploadCenterTop;
                 . 当实例保存的日期值晚于anotherDate时返回NSOrderedDescending
                 . 当实例保存的日期值早于anotherDate时返回NSOrderedAscending
                  */
-                if ([updateTime compare:updateAt] == NSOrderedAscending) {
+                if ([localSyntime compare:serverSynctime] == NSOrderedAscending) {
                     //服务器的设置较新
                     [self syncServerToLocalForSettings:obj];
                     
-                } else if ([updateTime compare:updateAt] == NSOrderedDescending) {
+                } else if ([localSyntime compare:serverSynctime] == NSOrderedDescending) {
                     //本地的设置较新
                     [self syncLocalToServerForSettings];
                 }
@@ -100,23 +107,47 @@ static BOOL finishUploadCenterTop;
     [Config shareInstance].settings.birthday = [obj objectForKey:@"birthday"];
     [Config shareInstance].settings.gender = [obj objectForKey:@"gender"];
     [Config shareInstance].settings.lifespan = [obj objectForKey:@"lifespan"];
-    [Config shareInstance].settings.avatarURL = [obj objectForKey:@"avatarURL"];
-    [Config shareInstance].settings.centerTopURL = [obj objectForKey:@"centerTopURL"];
     [Config shareInstance].settings.isAutoSync = [obj objectForKey:@"isAutoSync"];
-    [Config shareInstance].settings.updatetime = [CommonFunction NSDateToNSString:[obj updatedAt] formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+    [Config shareInstance].settings.syntime = [obj objectForKey:@"synctime"];
     
-    NSData *avatarData = [obj objectForKey:@"avatar"];
-    if (avatarData) {
-        UIImage *image = [UIImage imageWithData:avatarData];
-        [Config shareInstance].settings.avatar = image;
+    if (![[Config shareInstance].settings.avatarURL isEqualToString:[obj objectForKey:@"avatarURL"]]) {
+        [Config shareInstance].settings.avatarURL = [obj objectForKey:@"avatarURL"];
+        
+        SDWebImageDownloader *imageDownloader = [SDWebImageDownloader sharedDownloader];
+        NSURL *url = [NSURL URLWithString: [Config shareInstance].settings.avatarURL];
+        [imageDownloader downloadImageWithURL:url options:SDWebImageDownloaderLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+            
+        } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
+            
+            if (image) {
+                [Config shareInstance].settings.avatar = image;
+                [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                finishSettings = YES;
+                [DataCenter IsAllUploadFinished];
+            }
+        }];
     }
-    NSData *centerTopData = [obj objectForKey:@"centerTop"];
-    if (centerTopData) {
-        UIImage *image = [UIImage imageWithData:centerTopData];
-        [Config shareInstance].settings.centerTop = image;
+    if (![[Config shareInstance].settings.centerTopURL isEqualToString:[obj objectForKey:@"centerTopURL"]]) {
+        [Config shareInstance].settings.centerTopURL = [obj objectForKey:@"centerTopURL"];
+        
+        SDWebImageDownloader *imageDownloader = [SDWebImageDownloader sharedDownloader];
+        NSURL *url = [NSURL URLWithString: [Config shareInstance].settings.centerTopURL];
+        [imageDownloader downloadImageWithURL:url options:SDWebImageDownloaderLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+            
+        } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
+            
+            if (image) {
+                [Config shareInstance].settings.centerTop = image;
+                [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                finishSettings = YES;
+                [DataCenter IsAllUploadFinished];
+            }
+        }];
     }
     
     [PlanCache storePersonalSettings:[Config shareInstance].settings];
+    finishSettings = YES;
+    [DataCenter IsAllUploadFinished];
 }
 
 + (void)syncLocalToServerForSettings {
@@ -155,15 +186,14 @@ static BOOL finishUploadCenterTop;
     
     [settingsObject updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
-            //修改成功后的动作
-            //            //更新本地syntime
-            //            [Config shareInstance].settings.syntime = [CommonFunction getTimeNowString];
-            //            [PlanCache storePersonalSettings:[Config shareInstance].settings];
+            
+            finishSettings = YES;
+            [DataCenter IsAllUploadFinished];
             
         } else if (error){
-            NSLog(@"%@",error);
+            NSLog(@"更新本地设置到服务器失败：%@",error);
         } else {
-            NSLog(@"UnKnow error");
+            NSLog(@"更新本地设置到服务器遇到未知错误");
         }
     }];
     
@@ -204,20 +234,13 @@ static BOOL finishUploadCenterTop;
     [userSettings saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
             
-            NSLog(@"objectid :%@",userSettings.objectId);
-            
-//            //更新本地syntime
-//            [Config shareInstance].settings.syntime = [CommonFunction getTimeNowString];
-//            [PlanCache storePersonalSettings:[Config shareInstance].settings];
+            finishSettings = YES;
+            [DataCenter IsAllUploadFinished];
             
         } else if (error){
-            
-            NSLog(@"%@",error);
-            
+            NSLog(@"添加本地设置到服务器失败：%@",error);
         } else {
-            
-            NSLog(@"Unknow error");
-            
+            NSLog(@"添加本地设置到服务器遇到未知错误");
         }
     }];
     
@@ -235,32 +258,23 @@ static BOOL finishUploadCenterTop;
             if (isSuccessful) {
 
                 //把上传完的文件保存到“头像”字段
-                [obj setObject:bmobFile forKey:@"avatar"];
                 [obj setObject:bmobFile.url forKey:@"avatarURL"];
                 [obj updateInBackground];
                 
                 //把avatarUrl保存到本地
                 [Config shareInstance].settings.avatarURL = bmobFile.url;
                 [PlanCache storePersonalSettings:[Config shareInstance].settings];
-//                //更新本地syntime
-//                [Config shareInstance].settings.syntime = [CommonFunction getTimeNowString];
-//                [PlanCache storePersonalSettings:[Config shareInstance].settings];
                 
-                //打印文件名
-                NSLog(@"filename %@",filename);
-                //打印url
-                NSLog(@"url %@",url);
-                NSLog(@"bmobFile:%@\n",bmobFile);
-                
+                finishUploadAvatar = YES;
+                [DataCenter IsAllUploadFinished];
+
             } else if (error) {
-                
-                NSLog(@"error %@",error);
-                
+                NSLog(@"上传头像到服务器失败：%@",error);
             }
             
         } progress:^(CGFloat progress) {
             //上传进度
-            NSLog(@"progress %f",progress);
+            NSLog(@"上传头像进度： %f",progress);
         }];
     }
 }
@@ -274,7 +288,6 @@ static BOOL finishUploadCenterTop;
             if (isSuccessful) {
                 
                 //把上传完的文件保存到“头像”字段
-                [obj setObject:bmobFile forKey:@"centerTop"];
                 [obj setObject:bmobFile.url forKey:@"centerTopURL"];
                 [obj updateInBackground];
                 
@@ -282,25 +295,16 @@ static BOOL finishUploadCenterTop;
                 [Config shareInstance].settings.centerTopURL = bmobFile.url;
                 [PlanCache storePersonalSettings:[Config shareInstance].settings];
                 
-                //                //更新本地syntime
-//                                [Config shareInstance].settings.syntime = [CommonFunction getTimeNowString];
-//                                [PlanCache storePersonalSettings:[Config shareInstance].settings];
-                
-                //打印文件名
-                NSLog(@"filename %@",filename);
-                //打印url
-                NSLog(@"url %@",url);
-                NSLog(@"bmobFile:%@\n",bmobFile);
+                finishUploadCenterTop = YES;
+                [DataCenter IsAllUploadFinished];
                 
             } else if (error) {
-                
-                NSLog(@"error %@",error);
-                
+                NSLog(@"上传个人中心图片到服务器失败：%@",error);
             }
             
         } progress:^(CGFloat progress) {
             //上传进度
-            NSLog(@"progress %f",progress);
+            NSLog(@"上传个人中心图片进度： %f",progress);
         }];
     }
 }
@@ -327,12 +331,11 @@ static BOOL finishUploadCenterTop;
     
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
         
-        [DataCenter compareServerNewWithLocalForPlan:array];
-        
         [DataCenter getNewPlanFromLocal:array];
         
+//        [DataCenter compareServerNewWithLocalForPlan:array];
+
     }];
-    
 }
 
 // 加载本地上次同步时间之后的计划数据进行对比
@@ -345,6 +348,17 @@ static BOOL finishUploadCenterTop;
     } else {
         
         localNewArray = [PlanCache getPlanForSync:nil];
+    }
+    
+    //服务器上有新数据，本地没有
+    if (serverNewArray.count > 0 && localNewArray.count == 0) {
+        
+    }//服务器上没有新数据，本地有
+    else if (serverNewArray.count == 0 && localNewArray.count > 0) {
+        
+    }
+    else {
+        
     }
     
     BOOL flag = YES;

@@ -10,4 +10,5 @@ typedef NS_ENUM(NSUInteger, OperationType) {
     Add = 1,
     Edit,
     Delete,
+    View,
 };

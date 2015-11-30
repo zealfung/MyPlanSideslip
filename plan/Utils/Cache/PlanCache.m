@@ -252,6 +252,26 @@ static NSMutableDictionary * __contactsOnlineState;
             FMDBQuickCheck(b, sqlString, __db);
         }
     }
+    
+    //任务
+    if (![__db tableExists:str_TableName_Task]) {
+        
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, taskId TEXT, content TEXT, totalCount TEXT, completionDate TEXT, createTime TEXT, updateTime TEXT, isNotify TEXT, notifyTime TEXT, isDeleted TEXT)", str_TableName_Task];
+        
+        BOOL b = [__db executeUpdate:sqlString];
+        
+        FMDBQuickCheck(b, sqlString, __db);
+    }
+
+    //任务记录
+    if (![__db tableExists:str_TableName_TaskRecord]) {
+        
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (recordId TEXT, createTime TEXT)", str_TableName_TaskRecord];
+        
+        BOOL b = [__db executeUpdate:sqlString];
+        
+        FMDBQuickCheck(b, sqlString, __db);
+    }
 }
 
 + (void)storePersonalSettings:(Settings *)settings {
@@ -581,6 +601,102 @@ static NSMutableDictionary * __contactsOnlineState;
     }
 }
 
++ (BOOL)storeTask:(Task *)task {
+    
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return NO;
+            }
+        }
+        
+        if (!task.taskId || !task.createTime)
+            return NO;
+        
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser getCurrentUser];
+            task.account = user.objectId;
+        } else {
+            task.account = @"";
+        }
+        if (!task.content) {
+            task.content = @"";
+        }
+        if (!task.totalCount) {
+            task.totalCount = @"0";
+        }
+        if (!task.completionDate) {
+            task.completionDate = @"";
+        }
+        if (!task.updateTime) {
+            task.updateTime = @"";
+        }
+        if (!task.isNotify) {
+            task.isNotify = @"0";
+        }
+        if (!task.notifyTime) {
+            task.notifyTime = @"";
+        }
+        if (!task.isDeleted) {
+            task.isDeleted = @"0";
+        }
+        
+        BOOL hasRec = NO;
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", str_TableName_Task];
+        
+        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[task.taskId, task.account]];
+        hasRec = [rs next];
+        [rs close];
+        BOOL b = NO;
+        if (hasRec) {
+            
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, totalCount=?, completionDate=?, updateTime=?, isNotify=?, notifyTime=? WHERE taskId=? AND account=?", str_TableName_Task];
+            
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.content, task.totalCount, task.completionDate, task.updateTime, task.isNotify, task.notifyTime, task.taskId, task.account]];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+            
+        } else {
+            
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Task];
+            
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.account, task.taskId, task.content, task.totalCount, task.completionDate, task.createTime, task.updateTime, task.isNotify, task.notifyTime, @"0"]];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        
+        [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
+        
+        return b;
+    }
+}
+
++ (BOOL)storeTaskRecord:(TaskRecord *)taskRecord {
+    
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return NO;
+            }
+        }
+        
+        if (!taskRecord.recordId || !taskRecord.createTime)
+            return NO;
+
+        NSString *sqlString = [NSString stringWithFormat:@"INSERT INTO %@(recordId, createTime) values(?, ?)", str_TableName_TaskRecord];
+ 
+        BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[taskRecord.recordId, taskRecord.createTime]];
+        
+        FMDBQuickCheck(b, sqlString, __db);
+        
+        [NotificationCenter postNotificationName:Notify_TaskRecord_Save object:nil];
+        
+        return b;
+    }
+}
+
 + (BOOL)deletePlan:(Plan *)plan {
     
     @synchronized(__db) {
@@ -660,6 +776,51 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         
         [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
+        
+        return b;
+    }
+}
+
++ (BOOL)deleteTask:(Task *)task {
+    
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return NO;
+            }
+        }
+        
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser getCurrentUser];
+            task.account = user.objectId;
+        } else {
+            task.account = @"";
+        }
+        
+        BOOL hasRec = NO;
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", str_TableName_Task];
+        
+        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[task.taskId, task.account]];
+        hasRec = [rs next];
+        [rs close];
+        BOOL b = NO;
+        if (hasRec) {
+            
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET isdeleted=1  WHERE taskId=? AND account=?", str_TableName_Task];
+            
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.taskId, task.account]];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+            
+            //取消提醒
+            if (b && [task.isNotify isEqualToString:@"1"]) {
+                
+                [self cancelLocalNotification:task.taskId];
+            }
+        }
+        
+        [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
         
         return b;
     }
@@ -986,6 +1147,78 @@ static NSMutableDictionary * __contactsOnlineState;
     }
 }
 
++ (NSArray *)getTeask {
+    
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return nil ;
+            }
+        }
+        
+        NSString *account = @"";
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser getCurrentUser];
+            account = user.objectId;
+        }
+
+        NSMutableArray *array = [NSMutableArray array];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime FROM %@ WHERE account=? AND isDeleted=0 ORDER BY createTime DESC", str_TableName_Task];
+        
+        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
+        
+        while ([rs next]) {
+            
+            Task *task = [[Task alloc] init];
+            task.account = account;
+            task.taskId = [rs stringForColumn:@"taskId"];
+            task.content = [rs stringForColumn:@"content"];
+            task.totalCount = [rs stringForColumn:@"totalCount"];
+            task.completionDate = [rs stringForColumn:@"completionDate"];
+            task.createTime = [rs stringForColumn:@"createTime"];
+            task.updateTime = [rs stringForColumn:@"updateTime"];
+            task.isNotify = [rs stringForColumn:@"isNotify"];
+            task.notifyTime = [rs stringForColumn:@"notifyTime"];
+            task.isDeleted = @"0";
+            
+            [array addObject:task];
+        }
+        [rs close];
+        
+        return array;
+    }
+}
+
++ (NSArray *)getTeaskRecord:(NSString *)recordId {
+    
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return nil ;
+            }
+        }
+        
+        NSMutableArray *array = [NSMutableArray array];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT recordId, createTime FROM %@ WHERE recordId=? ORDER BY createTime DESC", str_TableName_TaskRecord];
+        
+        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[recordId]];
+        
+        while ([rs next]) {
+            
+            TaskRecord *taskRecord = [[TaskRecord alloc] init];
+            taskRecord.recordId = recordId;
+            taskRecord.createTime = [rs stringForColumn:@"createTime"];
+            
+            [array addObject:taskRecord];
+        }
+        [rs close];
+        
+        return array;
+    }
+}
+
 + (NSString *)getPlanTotalCountByPlantype:(NSString *)plantype {
     
     @synchronized(__db) {
@@ -1065,6 +1298,36 @@ static NSMutableDictionary * __contactsOnlineState;
         
         NSString *total = @"0";
         NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE account=? AND isdeleted=0", str_TableName_Photo];
+        
+        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
+        
+        if([rs next]) {
+            
+            total = [rs stringForColumn:@"total"];
+        }
+        [rs close];
+        
+        return total;
+    }
+}
+
++ (NSString *)getTaskTotalCount {
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return nil ;
+            }
+        }
+        
+        NSString *account = @"";
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser getCurrentUser];
+            account = user.objectId;
+        }
+        
+        NSString *total = @"0";
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE account=? AND isDeleted=0", str_TableName_Task];
         
         FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         

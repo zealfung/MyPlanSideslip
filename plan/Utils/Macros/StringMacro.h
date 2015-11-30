@@ -50,7 +50,7 @@
 #define str_Delete_Plan @"删除该计划"
 #define str_NoPlan_EveryDay @"暂无每日计划内容"
 #define str_NoPlan_LongTerm @"暂无长远计划内容"
-#define str_Alert_GetIt @"知道了"
+#define str_Alert_GetIt @"确定"
 #define str_Plan_Add @"新增计划"
 #define str_Plan_Edit @"编辑计划"
 #define str_Plan_NoContent @"至少写点什么吧"
@@ -74,6 +74,8 @@
 #define str_Photo_Detail_Tips1 @"时间：%@"
 #define str_Photo_Detail_Tips2 @"%@   地点：%@"
 #define str_Photo_Delete_Tips @"删除该影像"
+
+#define str_Task_Tips1 @"暂无任务内容"
 
 #define str_More @"更多"
 #define str_More_Settings @"通用设置"
@@ -138,6 +140,8 @@
 #define str_TableName_Plan @"t_plan"
 #define str_TableName_Photo @"t_photo"
 #define str_TableName_Statistics @"t_statistics"
+#define str_TableName_Task @"t_task"
+#define str_TableName_TaskRecord @"t_taskrecord"
 #define str_Website_URL @"http://www.fengziyi.com"
 #define str_Feedback_Email @"fengziyi@andwho.com"
 

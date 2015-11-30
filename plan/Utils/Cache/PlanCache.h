@@ -7,8 +7,10 @@
 //
 
 #import "Plan.h"
+#import "Task.h"
 #import "Photo.h"
 #import "Settings.h"
+#import "TaskRecord.h"
 #import "Statistics.h"
 
 @interface PlanCache : NSObject
@@ -23,9 +25,15 @@
 
 + (BOOL)storeStatistics:(Statistics *)statistics;
 
++ (BOOL)storeTask:(Task *)task;
+
++ (BOOL)storeTaskRecord:(TaskRecord *)taskRecord;
+
 + (BOOL)deletePlan:(Plan *)plan;
 
 + (BOOL)deletePhoto:(Photo *)photo;
+
++ (BOOL)deleteTask:(Task *)task;
 
 + (Settings *)getPersonalSettings;
 
@@ -37,7 +45,13 @@
 
 + (NSArray *)getPhoto;
 
++ (NSArray *)getTeask;
+
++ (NSArray *)getTeaskRecord:(NSString *)recordId;
+
 + (NSString *)getPhotoTotalCount;
+
++ (NSString *)getTaskTotalCount;
 
 + (Photo *)getPhotoById:(NSString *)photoid;
 
