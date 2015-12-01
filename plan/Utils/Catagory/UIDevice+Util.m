@@ -159,6 +159,8 @@
     if ([platform isEqualToString:@"iPhone6,2"])    return UIDeviceiPhone5SGSMCDMA;
     if ([platform isEqualToString:@"iPhone7,1"])    return UIDeviceiPhone6Plus;
     if ([platform isEqualToString:@"iPhone7,2"])    return UIDeviceiPhone6;
+    if ([platform isEqualToString:@"iPhone8,1"])    return UIDeviceiPhone6S;
+    if ([platform isEqualToString:@"iPhone8,2"])    return UIDeviceiPhone6SPlus;
     
     // iPod
     if ([platform hasPrefix:@"iPod1"])              return UIDeviceiPod1;
@@ -189,7 +191,7 @@
     
     if ([platform isEqualToString:@"iPad4,1"])    return UIDeviceiPadAir;
     if ([platform isEqualToString:@"iPad4,2"])    return UIDeviceiPadAirLTE;
-    
+
     // Apple TV
     if ([platform hasPrefix:@"AppleTV2"])           return UIDeviceAppleTV2;
     if ([platform hasPrefix:@"AppleTV3"])           return UIDeviceAppleTV3;

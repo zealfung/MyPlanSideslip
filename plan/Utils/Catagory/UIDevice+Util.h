@@ -80,6 +80,8 @@ typedef enum {
     UIDeviceiPhone6Plus,
     UIDeviceiPhone6PlusGSM,
     UIDeviceiPhone6PlusGSMCDMA,
+    UIDeviceiPhone6S,
+    UIDeviceiPhone6SPlus,
     
     UIDeviceiPod1,
     UIDeviceiPod2,
