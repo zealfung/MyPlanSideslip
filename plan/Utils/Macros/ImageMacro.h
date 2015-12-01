@@ -20,6 +20,7 @@
 #define png_Btn_Settings @"Btn_Settings"
 #define png_Btn_AddPhoto @"Btn_AddPhoto"
 #define png_Btn_LeftMenu @"Btn_LeftMenu"
+#define png_Btn_Share @"Btn_Share"
 
 #define png_Bg_NavigationBar @"Bg_NavigationBar"
 #define png_Bg_Cell_White @"Bg_Cell_White"

@@ -140,6 +140,7 @@
 		137470CB1C0AEB0300B7822A /* TaskRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470CA1C0AEB0300B7822A /* TaskRecord.m */; };
 		137470D21C0BD50400B7822A /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470D01C0BD50400B7822A /* LogInViewController.m */; };
 		137470D31C0BD50400B7822A /* LogInViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 137470D11C0BD50400B7822A /* LogInViewController.xib */; };
+		137470D51C0BFF0500B7822A /* Btn_Share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 137470D41C0BFF0500B7822A /* Btn_Share@2x.png */; };
 		137700BA1B93E290008C83FD /* PlanSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B22251B92EE1A005CE84A /* PlanSectionView.m */; };
 		137700BB1B93E56A008C83FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 135B21931B900394005CE84A /* Main.storyboard */; };
 		137700BC1B93E56A008C83FD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 135B21981B900394005CE84A /* LaunchScreen.xib */; };
@@ -424,6 +425,7 @@
 		137470CF1C0BD50400B7822A /* LogInViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogInViewController.h; sourceTree = "<group>"; };
 		137470D01C0BD50400B7822A /* LogInViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogInViewController.m; sourceTree = "<group>"; };
 		137470D11C0BD50400B7822A /* LogInViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LogInViewController.xib; sourceTree = "<group>"; };
+		137470D41C0BFF0500B7822A /* Btn_Share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Share@2x.png"; sourceTree = "<group>"; };
 		137700C01B9428B1008C83FD /* Bg_NavigationBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bg_NavigationBar@2x.png"; sourceTree = "<group>"; };
 		137700C21B9429FD008C83FD /* LaunchImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchImage@2x.png"; sourceTree = "<group>"; };
 		137700D91B952EE5008C83FD /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
@@ -848,6 +850,7 @@
 				135B22351B932C45005CE84A /* Btn_Save@2x.png */,
 				135B22271B92F4C1005CE84A /* Btn_SectionUp@2x.png */,
 				13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */,
+				137470D41C0BFF0500B7822A /* Btn_Share@2x.png */,
 				1361AFCE1BCBB54800DD5FFB /* Btn_Show.png */,
 				1361AFCF1BCBB54800DD5FFB /* Btn_Show@2x.png */,
 				1361AFD01BCBB54800DD5FFB /* Btn_Up.png */,
@@ -1380,6 +1383,7 @@
 				1361AFD61BCBB54800DD5FFB /* Btn_Up.png in Resources */,
 				136DF5D21BEDE87D001D6496 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				137700BC1B93E56A008C83FD /* LaunchScreen.xib in Resources */,
+				137470D51C0BFF0500B7822A /* Btn_Share@2x.png in Resources */,
 				1385B47C1BC9E50D00CB208C /* Btn_Edit@2x.png in Resources */,
 				1361AFD51BCBB54800DD5FFB /* Btn_Show@2x.png in Resources */,
 				131D6A441BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png in Resources */,

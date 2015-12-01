@@ -7,6 +7,7 @@
 //
 
 #import "PlanCache.h"
+#import "ShareCenter.h"
 #import "ThreeSubView.h"
 #import "UIButton+Util.h"
 #import "FirstViewController.h"
@@ -27,6 +28,7 @@ NSUInteger const kSecondsPerDay = 86400;
     UIView *statisticsView;
     ThreeSubView *everydayView;
     ThreeSubView *longtermView;
+    UIView *shareLogoView;
     
     NSTimer *timer;
     NSInteger daysLeft;
@@ -75,11 +77,30 @@ NSUInteger const kSecondsPerDay = 86400;
 - (void)createNavBarButton {
     
     self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction:)];
+    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Share selectedImageName:png_Btn_Share selector:@selector(shareAction)];
 }
 
 - (void)leftMenuAction:(UIButton *)button {
     
     [self.sideMenuViewController presentLeftMenuViewController];
+}
+
+- (void)shareAction {
+    shareLogoView.hidden = NO;
+    
+    UIImage* image = [UIImage imageNamed:png_ImageDefault];
+    UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO , 0.0f);//高清，效率比较慢
+    //    UIGraphicsBeginImageContext(scrollView.contentSize);//模糊
+    {
+
+        [self.view.layer renderInContext: UIGraphicsGetCurrentContext()];
+        image = UIGraphicsGetImageFromCurrentImageContext();
+    }
+    UIGraphicsEndImageContext();
+    
+    shareLogoView.hidden = YES;
+    
+    [ShareCenter showShareActionSheet:self.view image:image];
 }
 
 - (void)toPlan:(NSNotification*)notification {
@@ -121,6 +142,7 @@ NSUInteger const kSecondsPerDay = 86400;
     [self createAvatar];
     [self createLabelText];
     [self createStatisticsView];
+    [self createShareLogo];
 }
 
 - (void)createAvatar {
@@ -427,6 +449,25 @@ NSUInteger const kSecondsPerDay = 86400;
         [longtermStatisticsView autoLayout];
         [statisticsView addSubview:longtermStatisticsView];
     }
+    
+    yOffset += viewHeight + 20;
+}
+
+- (void)createShareLogo {
+    CGFloat viewWidth = 110;
+    CGFloat viewHeight = 20;
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - viewWidth - 5, yOffset, viewWidth, viewHeight)];
+    UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, viewHeight, viewHeight)];
+    logo.image = [UIImage imageNamed:png_Icon_Logo_512];
+    [view addSubview:logo];
+    UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(viewHeight + 2, 0, viewWidth - viewHeight - 2, viewHeight)];
+    labelName.text = @"来自我有计划iOS版";
+    labelName.font = font_Normal_10;
+    labelName.textColor = color_Blue;
+    [view addSubview:labelName];
+    view.hidden = YES;
+    shareLogoView = view;
+    [self.view addSubview:view];
 }
 
 - (void)addSeparatorForTop:(UIView *)view {
