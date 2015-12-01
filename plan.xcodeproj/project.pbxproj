@@ -93,9 +93,6 @@
 		1368F9751BB6286E00CC7E63 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1368F9741BB6286E00CC7E63 /* CoreGraphics.framework */; };
 		1368F9761BB6287D00CC7E63 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 133B07ED1BA133290015E752 /* libz.dylib */; };
 		1368F9791BB6498300CC7E63 /* LogIn.m in Sources */ = {isa = PBXBuildFile; fileRef = 1368F9781BB6498300CC7E63 /* LogIn.m */; };
-		1368F97D1BB6538F00CC7E63 /* Btn_LogIn_QQ@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1368F97A1BB6538F00CC7E63 /* Btn_LogIn_QQ@2x.png */; };
-		1368F97E1BB6538F00CC7E63 /* Btn_LogIn_SinaWeibo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1368F97B1BB6538F00CC7E63 /* Btn_LogIn_SinaWeibo@2x.png */; };
-		1368F97F1BB6538F00CC7E63 /* Btn_LogIn_Wechat@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1368F97C1BB6538F00CC7E63 /* Btn_LogIn_Wechat@2x.png */; };
 		136DF57E1BEC2F7D001D6496 /* ImageBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 136DF57D1BEC2F7D001D6496 /* ImageBrowser.m */; };
 		136DF5D11BEDE87D001D6496 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 136DF5B51BEDE87D001D6496 /* TencentOpenAPI.framework */; };
 		136DF5D21BEDE87D001D6496 /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 136DF5B61BEDE87D001D6496 /* TencentOpenApi_IOS_Bundle.bundle */; };
@@ -345,9 +342,6 @@
 		1368F9741BB6286E00CC7E63 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
 		1368F9771BB6498300CC7E63 /* LogIn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LogIn.h; sourceTree = "<group>"; };
 		1368F9781BB6498300CC7E63 /* LogIn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LogIn.m; sourceTree = "<group>"; };
-		1368F97A1BB6538F00CC7E63 /* Btn_LogIn_QQ@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_LogIn_QQ@2x.png"; sourceTree = "<group>"; };
-		1368F97B1BB6538F00CC7E63 /* Btn_LogIn_SinaWeibo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_LogIn_SinaWeibo@2x.png"; sourceTree = "<group>"; };
-		1368F97C1BB6538F00CC7E63 /* Btn_LogIn_Wechat@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_LogIn_Wechat@2x.png"; sourceTree = "<group>"; };
 		136DF57C1BEC2F7D001D6496 /* ImageBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBrowser.h; sourceTree = "<group>"; };
 		136DF57D1BEC2F7D001D6496 /* ImageBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageBrowser.m; sourceTree = "<group>"; };
 		136DF5B51BEDE87D001D6496 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
@@ -840,9 +834,6 @@
 				1361AFCD1BCBB54800DD5FFB /* Btn_Down@2x.png */,
 				1385B47B1BC9E50D00CB208C /* Btn_Edit@2x.png */,
 				131D6A271BF58C81009FDD72 /* Btn_LeftMenu@2x.png */,
-				1368F97A1BB6538F00CC7E63 /* Btn_LogIn_QQ@2x.png */,
-				1368F97B1BB6538F00CC7E63 /* Btn_LogIn_SinaWeibo@2x.png */,
-				1368F97C1BB6538F00CC7E63 /* Btn_LogIn_Wechat@2x.png */,
 				13A6ACAC1BC551EE005A02F9 /* Btn_Photo_Delete@2x.png */,
 				135B222D1B9301C9005CE84A /* Btn_Plan_Delete@2x.png */,
 				135B222E1B9301C9005CE84A /* Btn_Plan_Doing@2x.png */,
@@ -1409,7 +1400,6 @@
 				137470AD1C0945D000B7822A /* Icon_Gesture_Unlock@2x.png in Resources */,
 				13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */,
 				131D6A281BF58C81009FDD72 /* Btn_LeftMenu@2x.png in Resources */,
-				1368F97D1BB6538F00CC7E63 /* Btn_LogIn_QQ@2x.png in Resources */,
 				137701101B9680AC008C83FD /* Bg_Input_Gray@2x.png in Resources */,
 				1361AFD21BCBB54800DD5FFB /* Btn_Down.png in Resources */,
 				1361AFC51BCBA5E700DD5FFB /* DoAlbumCell.xib in Resources */,
@@ -1418,7 +1408,6 @@
 				1374705A1C04202700B7822A /* ForgotPasswordViewController.xib in Resources */,
 				131D6A411BF6CFAA009FDD72 /* Icon_Menu_FiveStar@2x.png in Resources */,
 				135B21971B900394005CE84A /* Images.xcassets in Resources */,
-				1368F97F1BB6538F00CC7E63 /* Btn_LogIn_Wechat@2x.png in Resources */,
 				131D6A2A1BF5B0D4009FDD72 /* Icon_Menu_Feedback@2x.png in Resources */,
 				1361AFC91BCBA5E700DD5FFB /* DoPhotoCell.xib in Resources */,
 				13A6ACAD1BC551EE005A02F9 /* Btn_Photo_Delete@2x.png in Resources */,
@@ -1429,7 +1418,6 @@
 				1385B4821BCA712400CB208C /* Btn_Delete@2x.png in Resources */,
 				135B22281B92F4C1005CE84A /* Btn_SectionUp@2x.png in Resources */,
 				1374708F1C07E66B00B7822A /* CLLockVC.xib in Resources */,
-				1368F97E1BB6538F00CC7E63 /* Btn_LogIn_SinaWeibo@2x.png in Resources */,
 				136DF5DC1BEDE87D001D6496 /* ShareSDKUI.bundle in Resources */,
 				137700C11B9428B1008C83FD /* Bg_NavigationBar@2x.png in Resources */,
 				137470C01C0ABCFE00B7822A /* AddTaskViewController.xib in Resources */,

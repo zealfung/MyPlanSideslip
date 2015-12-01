@@ -56,8 +56,4 @@
 #define png_Icon_GestureTrack_Show @"Icon_GestureTrack_Show"
 #define png_Icon_GestureTrack_Hide @"Icon_GestureTrack_Hide"
 
-#define png_Btn_LogIn_QQ @"Btn_LogIn_QQ"
-#define png_Btn_LogIn_Wechat @"Btn_LogIn_Wechat"
-#define png_Btn_LogIn_SinaWeibo @"Btn_LogIn_SinaWeibo"
-
 #endif
