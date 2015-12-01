@@ -8,11 +8,11 @@
 
 #import "Plan.h"
 #import "LogIn.h"
+//#import "CLLockVC.h"
 #import "PlanCache.h"
 #import "RegisterSDK.h"
 #import "AppDelegate.h"
 #import "LocalNotificationManager.h"
-#import <TencentOpenAPI/TencentOAuth.h>
 
 
 @interface AppDelegate ()
@@ -68,14 +68,41 @@
     // 清除推送图标标记
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     
+//    BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
+//    if (hasPwd) {
+//        //关闭手势解锁
+//        [CLLockVC showVerifyLockVCInVC:self.window.rootViewController forgetPwdBlock:^{
+//            NSLog(@"忘记密码");
+//        } successBlock:^(CLLockVC *lockVC, NSString *pwd) {
+//            
+//            [Config shareInstance].settings.isUseGestureLock = @"0";
+//            [Config shareInstance].settings.gesturePasswod = @"";
+//            [PlanCache storePersonalSettings:[Config shareInstance].settings];
+//            [lockVC dismiss:.5f];
+//        }];
+//    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 
-}
-
-- (void)applicationWillTerminate:(UIApplication *)application {
-
+//    //打开本地数据库
+//    [PlanCache openDBWithAccount:@"unknown"];
+//    //加载个人设置
+//    [Config shareInstance].settings = [PlanCache getPersonalSettings];
+    
+//    BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
+//    if (hasPwd) {
+//        //关闭手势解锁
+//        [CLLockVC showVerifyLockVCInVC:self.window.rootViewController forgetPwdBlock:^{
+//            NSLog(@"忘记密码");
+//        } successBlock:^(CLLockVC *lockVC, NSString *pwd) {
+//            
+//            [Config shareInstance].settings.isUseGestureLock = @"0";
+//            [Config shareInstance].settings.gesturePasswod = @"";
+//            [PlanCache storePersonalSettings:[Config shareInstance].settings];
+//            [lockVC dismiss:.5f];
+//        }];
+//    }
 }
 
 /**
@@ -86,40 +113,6 @@
     lastNotification = notification;
     //重置5天未新建计划提醒时间
     [self checkFiveDayNotification];
-    
-}
-
-- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-    
-    return [TencentOAuth HandleOpenURL:url] || [WeiboSDK handleOpenURL:url delegate:self];
-    
-}
-
-- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-    
-    return [TencentOAuth HandleOpenURL:url] || [WeiboSDK handleOpenURL:url delegate:self];
-    
-}
-
-# pragma mark - 新浪回调
-//收到回复时的回调
-- (void)didReceiveWeiboResponse:(WBBaseResponse *)response {
-
-    if ([response isKindOfClass:WBAuthorizeResponse.class]) {
-        
-        if ((int)response.statusCode == 0) {
-            
-            NSString *accessToken = [(WBAuthorizeResponse *)response accessToken];
-            NSString *uid = [(WBAuthorizeResponse *)response userID];
-            NSDate *expiresDate = [(WBAuthorizeResponse *)response expirationDate];
-            
-            [LogIn bmobLogIn:BmobSNSPlatformSinaWeibo accessToken:accessToken uid:uid expiresDate:expiresDate];
-        }
-    }
-}
-
-//发送请求时的回调
-- (void)didReceiveWeiboRequest:(WBBaseRequest *)request{
 }
 
 #pragma mark - UIAlertViewDelegate
@@ -135,7 +128,6 @@
         //5分钟后提醒
         NSDate *date = [[NSDate date] dateByAddingTimeInterval:5 * 60];
         [LocalNotificationManager updateNotificationWithTag:lastNotification fireDate:date userInfo:lastNotification.userInfo alertBody:lastNotification.alertBody];
-        
     }
 }
 
