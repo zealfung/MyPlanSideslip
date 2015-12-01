@@ -85,8 +85,10 @@
                     [user verifyEmailInBackgroundWithEmailAddress:acountEmail];
                     
                 } else {
-                    
+                    //登录后自动关联本地没有对应账号的数据
+                    [PlanCache linkedLocalDataToAccount];
                     [NotificationCenter postNotificationName:Notify_LogIn object:nil];
+                    [self.navigationController popViewControllerAnimated:YES];
                 }
             }
         }
