@@ -144,7 +144,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
 
 - (void)deleteAction:(UIButton *)button {
     
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Photo_Delete_Tips
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Task_Delete_Tips
                                                     message:nil
                                                    delegate:self
                                           cancelButtonTitle:str_Cancel
