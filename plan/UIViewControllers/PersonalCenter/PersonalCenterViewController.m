@@ -219,18 +219,18 @@
         
         yOffset = CGRectGetMaxY(viewPieces.frame) + 10;
     }
-    {
-        CGFloat height = 20;
-        UILabel *labelUpdate = [[UILabel alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, height)];
-        labelUpdate.font = font_Normal_10;
-        labelUpdate.textAlignment = NSTextAlignmentCenter;
-        labelUpdate.textColor = color_ff9900;
-        labelUpdate.text = @"数据更新时间：1分钟前";
-        labelUpdateTime = labelUpdate;
-        [scrollView addSubview:labelUpdate];
-        
-        yOffset = CGRectGetMaxY(labelUpdate.frame) + 15;
-    }
+//    {
+//        CGFloat height = 20;
+//        UILabel *labelUpdate = [[UILabel alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, height)];
+//        labelUpdate.font = font_Normal_10;
+//        labelUpdate.textAlignment = NSTextAlignmentCenter;
+//        labelUpdate.textColor = color_ff9900;
+//        labelUpdate.text = @"数据更新时间：1分钟前";
+//        labelUpdateTime = labelUpdate;
+//        [scrollView addSubview:labelUpdate];
+//        
+//        yOffset = CGRectGetMaxY(labelUpdate.frame) + 15;
+//    }
     {
         CGFloat viewWidth = 110;
         CGFloat viewHeight = 20;
