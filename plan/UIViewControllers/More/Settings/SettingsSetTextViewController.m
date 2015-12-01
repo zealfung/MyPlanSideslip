@@ -61,6 +61,7 @@ NSUInteger const kSettingsSetTextViewEdgeInset = 10;
     UITextField *textField = [[UITextField alloc] initWithFrame:CGRectMake(kSettingsSetTextViewEdgeInset, yOffset, [self contentWidth], 37)];
     textField.background = [image resizableImageWithCapInsets:UIEdgeInsetsMake(6, 6, 6, 6)];
     textField.backgroundColor = [UIColor clearColor];
+    textField.clearButtonMode = UITextFieldViewModeWhileEditing;
     textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     textField.delegate = self;
     textField.inputAccessoryView = [self getInputAccessoryView];
