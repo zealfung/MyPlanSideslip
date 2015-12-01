@@ -813,11 +813,11 @@ static NSMutableDictionary * __contactsOnlineState;
             
             FMDBQuickCheck(b, sqlString, __db);
             
-            //取消提醒
-            if (b && [task.isNotify isEqualToString:@"1"]) {
-                
-                [self cancelLocalNotification:task.taskId];
-            }
+//            //取消提醒
+//            if (b && [task.isNotify isEqualToString:@"1"]) {
+//                
+//                [self cancelLocalNotification:task.taskId];
+//            }
         }
         
         [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
@@ -1466,6 +1466,21 @@ static NSMutableDictionary * __contactsOnlineState;
         FMDBQuickCheck(b, sqlString, __db);
     }
     [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
+    //任务
+    hasRec = NO;
+    sqlString = [NSString stringWithFormat:@"SELECT taskId FROM %@ WHERE account=?", str_TableName_Task];
+    rs = [__db executeQuery:sqlString withArgumentsInArray:@[@""]];
+    hasRec = [rs next];
+    [rs close];
+    if (hasRec) {
+        
+        sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", str_TableName_Task];
+        
+        BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
+        
+        FMDBQuickCheck(b, sqlString, __db);
+    }
+    [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
 }
 
 + (NSArray *)getPlanForSync:(NSString *)syntime {
