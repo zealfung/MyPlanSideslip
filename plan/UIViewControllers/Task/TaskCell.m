@@ -28,10 +28,12 @@
         cellView.btnCount.enabled = NO;
         [cellView.btnCount setAllTitle:task.totalCount];
         [cellView.btnCount setBackgroundColor:color_0BA32A];
+        cellView.btnCount.titleLabel.font = font_Bold_23;
     } else {
         cellView.btnCount.enabled = YES;
-        [cellView.btnCount setAllTitle:@"点"];
+        [cellView.btnCount setAllTitle:@"点我"];
         [cellView.btnCount setBackgroundColor:color_Blue];
+        cellView.btnCount.titleLabel.font = font_Bold_16;
     }
     
     return cellView;

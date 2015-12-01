@@ -12,6 +12,7 @@
 @interface AddTaskViewController : FatherViewController
 
 @property (strong, nonatomic) IBOutlet UITextView *txtView;
+@property (strong, nonatomic) IBOutlet UILabel *labelCountTips;
 @property (strong, nonatomic) IBOutlet UIButton *btnCount;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (assign, nonatomic) OperationType operationType;

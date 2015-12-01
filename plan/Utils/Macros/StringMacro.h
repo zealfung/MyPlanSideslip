@@ -76,6 +76,7 @@
 #define str_Photo_Delete_Tips @"删除该影像"
 
 #define str_Task_Tips1 @"暂无任务内容"
+#define str_Photo_Delete_Tips @"删除该任务"
 
 #define str_More @"更多"
 #define str_More_Settings @"通用设置"

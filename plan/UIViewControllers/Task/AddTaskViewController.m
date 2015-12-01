@@ -9,6 +9,8 @@
 #import "TaskRecord.h"
 #import "AddTaskViewController.h"
 
+NSUInteger const kTaskDeleteTag = 20151201;
+
 @interface AddTaskViewController () <UITextViewDelegate, UITableViewDataSource, UITableViewDelegate> {
     
     NSArray *finishRecordArray;
@@ -20,6 +22,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self setControls];
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
+- (void)setControls {
     if (self.operationType == Add) {
         
         self.title = @"新建任务";
@@ -33,14 +43,6 @@
         self.title = @"任务详情";
     }
     [self createRightBarButton];
-    [self setControls];
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
-- (void)setControls {
     
     self.txtView.layer.borderWidth = 1;
     self.txtView.layer.borderColor = [color_GrayLight CGColor];
@@ -55,8 +57,12 @@
         self.txtView.editable = YES;
         self.txtView.inputAccessoryView = [self getInputAccessoryView];
         self.txtView.delegate = self;
+        if (self.task) {
+            self.txtView.text = self.task.content;
+        }
         [self.txtView becomeFirstResponder];
         
+        self.labelCountTips.hidden = YES;
         self.btnCount.hidden = YES;
         self.tableView.hidden = YES;
         
@@ -65,6 +71,7 @@
         self.txtView.editable = NO;
         self.txtView.text = self.task.content;
         
+        self.labelCountTips.hidden = NO;
         self.btnCount.layer.cornerRadius = 25;
         self.btnCount.hidden = NO;
         [self.btnCount setAllTitle:self.task.totalCount];
@@ -117,8 +124,13 @@
     if (result) {
         
         [self alertToastMessage:str_Save_Success];
-        [self.navigationController popViewControllerAnimated:YES];
         
+        if (self.operationType == Add) {
+            [self.navigationController popViewControllerAnimated:YES];
+        } else if (self.operationType == Edit) {
+            self.operationType = View;
+            [self setControls];
+        }
     } else {
         
         [self alertButtonMessage:str_Save_Fail];
@@ -126,13 +138,45 @@
 }
 
 - (void)editAction:(UIButton *)button {
-    
-    
+    self.operationType = Edit;
+    [self setControls];
 }
 
 - (void)deleteAction:(UIButton *)button {
     
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Photo_Delete_Tips
+                                                    message:nil
+                                                   delegate:self
+                                          cancelButtonTitle:str_Cancel
+                                          otherButtonTitles:str_OK,
+                          nil];
+    
+    alert.tag = kTaskDeleteTag;
+    [alert show];
+    
+}
 
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
+    
+    if (alertView.tag == kTaskDeleteTag) {
+        
+        if (buttonIndex == 1) {
+            
+            BOOL result = [PlanCache deleteTask:self.task];
+            if (result) {
+                
+                [self alertToastMessage:str_Delete_Success];
+                [self.navigationController popViewControllerAnimated:YES];
+                
+            } else {
+                
+                [self alertButtonMessage:str_Delete_Fail];
+                
+            }
+            
+        }
+        
+    }
 }
 
 #pragma mark - UITextViewDelegate
