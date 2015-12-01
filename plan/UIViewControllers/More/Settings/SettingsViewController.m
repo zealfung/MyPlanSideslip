@@ -14,10 +14,9 @@
 #import "ThreeSubView.h"
 #import <BmobSDK/BmobUser.h>
 #import <ShareSDK/ShareSDK.h>
+#import "LogInViewController.h"
 #import "SettingsViewController.h"
-#import "RegisterViewController.h"
 #import <TencentOpenAPI/TencentOAuth.h>
-#import "ForgotPasswordViewController.h"
 #import "SettingsSetTextViewController.h"
 
 NSUInteger const kSettingsViewPickerBgViewTag = 20141228;
@@ -31,7 +30,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 
 @interface SettingsViewController() <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, TencentSessionDelegate> {
     
-    UIView *layerView;
+    UIScrollView *scrollView;
     UIImageView *avatarView;
     ThreeSubView *nickThreeSubView;
     ThreeSubView *genderThreeSubView;
@@ -60,13 +59,16 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     
     [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_LogIn object:nil];
     [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_Settings_Save object:nil];
-    [NotificationCenter addObserver:self selector:@selector(changeContentViewPoint:) name:UIKeyboardWillShowNotification object:nil];
-    [NotificationCenter addObserver:self selector:@selector(changeContentViewPoint:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    if (!layerView) {
+    if (!scrollView) {
+        
+        scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+        scrollView.showsHorizontalScrollIndicator = NO;
+        scrollView.showsVerticalScrollIndicator = NO;
+        [self.view addSubview:scrollView];
         
         [self loadCustomView];
     }
@@ -76,40 +78,15 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     [NotificationCenter removeObserver:self];
 }
 
-- (void)changeContentViewPoint:(NSNotification *)notification {
-    NSDictionary *userInfo = [notification userInfo];
-    NSNumber *duration = [userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey];
-    NSNumber *curve = [userInfo objectForKey:UIKeyboardAnimationCurveUserInfoKey];
-    
-    // 添加移动动画，使视图跟随键盘移动
-    [UIView animateWithDuration:duration.doubleValue animations:^{
-        [UIView setAnimationBeginsFromCurrentState:YES];
-        [UIView setAnimationCurve:[curve intValue]];
-        
-        CGRect frame = layerView.frame;
-        if (layerView.frame.origin.y == 0) {
-            
-            frame.origin.y = -150;
-            
-        } else {
-            
-            frame.origin.y = 0;
-        }
-        layerView.frame = frame;
-    }];
-}
-
 - (void)loadCustomView {
-    
-    layerView = [[UIView alloc] initWithFrame:self.view.bounds];
-    layerView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:layerView];
+    [scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    [self showHUD];
     
     CGFloat yOffset = kSettingsViewEdgeInset;
     
     if([LogIn isLogin]) {
         ThreeSubView *view = [self getAccountView];
-        [layerView addSubview:view];
+        [scrollView addSubview:view];
         [self configBorderForView:view];
         
         CGRect frame = view.frame;
@@ -122,7 +99,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     
     {
         UIView *view = [self createSectionTwoView];
-        [layerView addSubview:view];
+        [scrollView addSubview:view];
         
         CGRect frame = view.frame;
         frame.origin.y = yOffset;
@@ -133,45 +110,57 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     
     {
         UIView *view = [self createSectionThreeView];
-        [layerView addSubview:view];
+        [scrollView addSubview:view];
         
         CGRect frame = view.frame;
         frame.origin.y = yOffset;
         view.frame = frame;
         
-        yOffset = CGRectGetMaxY(frame) + kSettingsViewCellHeight;
+        yOffset = CGRectGetMaxY(frame) + kSettingsViewEdgeInset;
     }
     
-    if([LogIn isLogin]) {
-        UIButton *button = [self createSyncDataButton];
-        [layerView addSubview:button];
-        
-        CGRect frame = CGRectZero;
-        frame.origin.x = kSettingsViewEdgeInset;
-        frame.origin.y = yOffset;
-        frame.size.width = CGRectGetWidth(layerView.frame) - kSettingsViewEdgeInset * 2;
-        frame.size.height = kSettingsViewCellHeight;
-        button.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame) + kSettingsViewCellHeight;
-    }
+//    if([LogIn isLogin]) {
+//        UIButton *button = [self createSyncDataButton];
+//        [scrollView addSubview:button];
+//        
+//        CGRect frame = CGRectZero;
+//        frame.origin.x = kSettingsViewEdgeInset;
+//        frame.origin.y = yOffset;
+//        frame.size.width = CGRectGetWidth(scrollView.frame) - kSettingsViewEdgeInset * 2;
+//        frame.size.height = kSettingsViewCellHeight;
+//        button.frame = frame;
+//        
+//        yOffset = CGRectGetMaxY(frame) + kSettingsViewCellHeight;
+//    }
     
     if([LogIn isLogin]) {
         UIButton *button = [self createExitButton];
-        [layerView addSubview:button];
         
         CGRect frame = CGRectZero;
         frame.origin.x = kSettingsViewEdgeInset;
         frame.origin.y = yOffset;
-        frame.size.width = CGRectGetWidth(layerView.frame) - kSettingsViewEdgeInset * 2;
+        frame.size.width = CGRectGetWidth(scrollView.frame) - kSettingsViewEdgeInset * 2;
         frame.size.height = kSettingsViewCellHeight;
         button.frame = frame;
+        [scrollView addSubview:button];
+        
+        yOffset = CGRectGetMaxY(frame) + kSettingsViewCellHeight;
         
     } else {
         
-        yOffset = [self showLineView:yOffset];
-        [self createLogInView:yOffset];
+        UIButton *button = [self createLogInButton];
+
+        CGRect frame = CGRectZero;
+        frame.origin.x = kSettingsViewEdgeInset;
+        frame.origin.y = yOffset;
+        frame.size.width = CGRectGetWidth(scrollView.frame) - kSettingsViewEdgeInset * 2;
+        frame.size.height = kSettingsViewCellHeight;
+        button.frame = frame;
+        [scrollView addSubview:button];
+        
+        yOffset = CGRectGetMaxY(frame) + kSettingsViewCellHeight;
     }
+    scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, yOffset);
     
     [self hideHUD];
 }
@@ -183,26 +172,24 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
     BmobUser *user = [BmobUser getCurrentUser];
     NSString *email = [user objectForKey:@"username"];
-    NSRange range=[email rangeOfString:@"@"];
-    NSString *replaceString = @"*";
-    for (NSInteger i = 1; i < range.location - 1; i++) {
-        replaceString = [replaceString stringByAppendingString:@"*"];
+    NSRange range = [email rangeOfString:@"@"];
+    if (range.location != NSNotFound) {
+        NSString *replaceString = @"*";
+        for (NSInteger i = 1; i < range.location - 1; i++) {
+            replaceString = [replaceString stringByAppendingString:@"*"];
+        }
+        email = [email stringByReplacingCharactersInRange:NSMakeRange(1, range.location - 1) withString:replaceString];
     }
-    email = [email stringByReplacingCharactersInRange:NSMakeRange(1, range.location - 1) withString:replaceString];
     [threeSubView.centerButton setAllTitle:email];
-    
     [threeSubView autoLayout];
-    
     return threeSubView;
 }
 
 - (UIView *)createSectionTwoView {
-    
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(kSettingsViewEdgeInset, 0, [self contentWidth], 0)];
     view.backgroundColor = [UIColor whiteColor];
     
     NSUInteger yOffset = 0;
-    
     {
         ThreeSubView *threeSubView = [self createAvatarView];
         [self addSeparatorForView:threeSubView];
@@ -214,7 +201,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         
         yOffset = CGRectGetMaxY(frame);
     }
-    
     {
         ThreeSubView *threeSubView = [self createNickNameView];
         [self addSeparatorForView:threeSubView];
@@ -226,7 +212,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         
         yOffset = CGRectGetMaxY(frame);
     }
-    
     {
         ThreeSubView *threeSubView = [self createGenderView];
         [self addSeparatorForView:threeSubView];
@@ -238,7 +223,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         
         yOffset = CGRectGetMaxY(frame);
     }
-    
     {
         ThreeSubView *threeSubView = [self createBirthdayView];
         [self addSeparatorForView:threeSubView];
@@ -250,7 +234,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         
         yOffset = CGRectGetMaxY(frame);
     }
-    
     {
         ThreeSubView *threeSubView = [self createLifespanView];
         [view addSubview:threeSubView];
@@ -267,9 +250,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     view.frame = frame;
     
     [self configBorderForView:view];
-    
     return view;
-    
 }
 
 - (UIView *)createSectionThreeView {
@@ -277,7 +258,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     view.backgroundColor = [UIColor whiteColor];
     
     NSUInteger yOffset = 0;
-    
     if ([LogIn isLogin]) {
         ThreeSubView *threeSubView = [self createAutoSyncSwitchView];
         [self addSeparatorForView:threeSubView];
@@ -289,7 +269,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         
         yOffset = CGRectGetMaxY(frame);
     }
-    
     {
         ThreeSubView *threeSubView = [self createGestureLockSwitchView];
         [self addSeparatorForView:threeSubView];
@@ -301,7 +280,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         
         yOffset = CGRectGetMaxY(frame);
     }
-    
     BOOL usePwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
     if (usePwd) {
         {
@@ -333,12 +311,10 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     view.frame = frame;
     
     [self configBorderForView:view];
-    
     return view;
 }
 
 - (ThreeSubView *)createAvatarView {
-    
     __weak typeof(self) weakSelf = self;
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
         [weakSelf setAvatar];
@@ -378,13 +354,10 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     [threeSubView.centerButton addSubview:avatarBg];
     
     avatarView = avatar;
-
     return threeSubView;
-    
 }
 
 - (ThreeSubView *)createNickNameView {
-    
     __weak typeof(self) weakSelf = self;
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
         [weakSelf toSetNickNameViewController];
@@ -401,12 +374,10 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     [threeSubView autoLayout];
     
     nickThreeSubView = threeSubView;
-    
     return threeSubView;
 }
 
 - (ThreeSubView *)createGenderView {
-    
     __weak typeof(self) weakSelf = self;
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
         [weakSelf setMale];
@@ -442,14 +413,11 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         }
     }
     [threeSubView autoLayout];
-    
     genderThreeSubView = threeSubView;
-    
     return threeSubView;
 }
 
 - (ThreeSubView *)createBirthdayView {
-    
     __weak typeof(self) weakSelf = self;
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
         [weakSelf setBirthday];
@@ -464,14 +432,11 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     }
     [threeSubView.centerButton setAllTitle:birthday];
     [threeSubView autoLayout];
-    
     birthThreeSubView = threeSubView;
-    
     return threeSubView;
 }
 
 - (ThreeSubView *)createLifespanView {
-    
     __weak typeof(self) weakSelf = self;
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
         [weakSelf toSetLifeViewController];
@@ -486,9 +451,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     }
     [threeSubView.centerButton setAllTitle:lifetime];
     [threeSubView autoLayout];
-    
     lifeThreeSubView = threeSubView;
-    
     return threeSubView;
 }
 
@@ -521,9 +484,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         threeSubView.rightButton.selected = NO;
     }
     [threeSubView autoLayout];
-    
     autoSyncThreeSubView = threeSubView;
-    
     return threeSubView;
 }
 
@@ -556,14 +517,11 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         threeSubView.rightButton.selected = NO;
     }
     [threeSubView autoLayout];
-    
     isUseGestureLockThreeSubView = threeSubView;
-    
     return threeSubView;
 }
 
 - (ThreeSubView *)createShowGestureTrackView {
-
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: nil rightBlock: ^{
         
         isShowGestureTrackThreeSubView.rightButton.selected = !isShowGestureTrackThreeSubView.rightButton.selected;
@@ -598,9 +556,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         threeSubView.rightButton.selected = NO;
     }
     [threeSubView autoLayout];
-    
     isShowGestureTrackThreeSubView = threeSubView;
-    
     return threeSubView;
 }
 
@@ -620,14 +576,22 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
 
     [threeSubView autoLayout];
-    
     changeGestureThreeSubView = threeSubView;
-    
     return threeSubView;
 }
 
+- (UIButton *)createLogInButton {
+    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+    button.backgroundColor = color_0BA32A;
+    button.titleLabel.font = font_Bold_18;
+    button.layer.cornerRadius = 5;
+    button.clipsToBounds = YES;
+    [button setAllTitle:@"登录"];
+    [button addTarget:self action:@selector(logInAction) forControlEvents:UIControlEventTouchUpInside];
+    return button;
+}
+
 - (UIButton *)createExitButton {
-    
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.backgroundColor = [UIColor redColor];
     button.titleLabel.font = font_Bold_18;
@@ -635,12 +599,10 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     button.clipsToBounds = YES;
     [button setAllTitle:str_Settings_LogOut];
     [button addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
-    
     return button;
 }
 
 - (UIButton *)createSyncDataButton {
-    
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.backgroundColor = color_ff9900;
     button.titleLabel.font = font_Bold_18;
@@ -648,7 +610,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     button.clipsToBounds = YES;
     [button setAllTitle:@"同步数据"];
     [button addTarget:self action:@selector(syncDataAction) forControlEvents:UIControlEventTouchUpInside];
-    
     return button;
 }
 
@@ -680,13 +641,12 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 //    btnWechat.clipsToBounds = YES;
 //    [btnWechat addTarget:self action:@selector(wechatLogIn) forControlEvents:UIControlEventTouchUpInside];
     
-    [layerView addSubview:btnSinaWeibo];
-    [layerView addSubview:btnQQ];
-//    [self.layerView addSubview:btnWechat];
+    [scrollView addSubview:btnSinaWeibo];
+    [scrollView addSubview:btnQQ];
+//    [self.scrollView addSubview:btnWechat];
 }
 
 - (CGFloat)showLineView:(CGFloat)yOffset {
-    
     CGFloat xEdgeInset = kSettingsViewEdgeInset * 2;
     CGFloat labelWidth = 80;
     CGFloat labelHeight = 25;
@@ -704,63 +664,13 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     UIView *rightLine = [[UIView alloc] initWithFrame:CGRectMake(xEdgeInset * 3 + lineWidth + labelWidth, yOffset + labelHeight / 2, lineWidth, 1)];
     rightLine.backgroundColor = color_GrayLight;
     
-    [layerView addSubview:leftLine];
-    [layerView addSubview:tipsLabel];
-    [layerView addSubview:rightLine];
-    
+    [scrollView addSubview:leftLine];
+    [scrollView addSubview:tipsLabel];
+    [scrollView addSubview:rightLine];
     return yOffset + labelHeight * 2;
 }
 
-- (void)createLogInView:(CGFloat)yOffset {
-    
-    txtEmail = [[UITextField alloc] initWithFrame:CGRectMake(kSettingsViewEdgeInset * 2, yOffset, WIDTH_FULL_SCREEN - kSettingsViewEdgeInset * 4, 30)];
-    txtEmail.placeholder = @"账号邮箱Email";
-    txtEmail.keyboardType = UIKeyboardTypeEmailAddress;
-    txtEmail.borderStyle = UITextBorderStyleRoundedRect;
-    txtEmail.returnKeyType = UIReturnKeyNext;
-    txtEmail.inputAccessoryView = [self getInputAccessoryView];
-    txtEmail.font = font_Normal_16;
-    [layerView addSubview:txtEmail];
-    
-    yOffset += 35;
-    txtPwd = [[UITextField alloc] initWithFrame:CGRectMake(kSettingsViewEdgeInset * 2, yOffset, WIDTH_FULL_SCREEN - kSettingsViewEdgeInset * 4, 30)];
-    txtPwd.placeholder = @"密码Password";
-    txtPwd.keyboardType = UIKeyboardTypeEmailAddress;
-    txtPwd.borderStyle = UITextBorderStyleRoundedRect;
-    txtPwd.returnKeyType = UIReturnKeyNext;
-    txtPwd.inputAccessoryView = [self getInputAccessoryView];
-    txtPwd.font = font_Normal_16;
-    [txtPwd setSecureTextEntry:YES];
-    [layerView addSubview:txtPwd];
-    
-    yOffset += 40;
-    UIButton *btnLogIn = [[UIButton alloc] initWithFrame:CGRectMake(kSettingsViewEdgeInset * 2, yOffset, WIDTH_FULL_SCREEN - kSettingsViewEdgeInset * 4, 30)];
-    btnLogIn.titleLabel.font = font_Normal_16;
-    btnLogIn.layer.cornerRadius = 5;
-    [btnLogIn setAllTitle:@"登录"];
-    [btnLogIn setAllTitleColor:[UIColor whiteColor]];
-    [btnLogIn setBackgroundColor:color_0BA32A];
-    [btnLogIn addTarget:self action:@selector(logInAction) forControlEvents:UIControlEventTouchUpInside];
-    [layerView addSubview:btnLogIn];
-    
-    yOffset += 40;
-    UIButton *btnRegister = [[UIButton alloc] initWithFrame:CGRectMake(kSettingsViewEdgeInset * 2, yOffset, 80, 30)];
-    btnRegister.titleLabel.font = font_Normal_14;
-    [btnRegister setAllTitle:@"注册账号"];
-    [btnRegister setAllTitleColor:color_Blue];
-    [btnRegister addTarget:self action:@selector(registerAction) forControlEvents:UIControlEventTouchUpInside];
-    [layerView addSubview:btnRegister];
-    
-    UIButton *btnForgotPassword = [[UIButton alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - kSettingsViewEdgeInset * 2 - 80, yOffset, 80, 30)];
-    btnForgotPassword.titleLabel.font = font_Normal_14;
-    [btnForgotPassword setAllTitle:@"忘记密码"];
-    [btnForgotPassword setAllTitleColor:color_Blue];
-    [btnForgotPassword addTarget:self action:@selector(forgotPasswordAction) forControlEvents:UIControlEventTouchUpInside];
-    [layerView addSubview:btnForgotPassword];
-}
-
 - (ThreeSubView *)getThreeSubViewForCenterBlock:(ButtonSelectBlock)centerBlock rightBlock:(ButtonSelectBlock)rightBlock {
-    
     CGRect frame = CGRectZero;
     frame.size = [self cellSize];
     
@@ -780,42 +690,33 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     [threeSubView.leftButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     [threeSubView.centerButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
     [threeSubView.rightButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
-    
     return threeSubView;
 }
 
 - (void)configBorderForView:(UIView *)view {
-    
     view.layer.borderWidth = 1;
     view.layer.borderColor = [color_GrayLight CGColor];
     view.layer.cornerRadius = 2;
 }
 
 - (void)addSeparatorForView:(UIView *)view {
-    
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(view.bounds) - 1, CGRectGetWidth(view.bounds) - 1, 1)];
     separator.backgroundColor = color_GrayLight;
     [view addSubview:separator];
 }
 
 - (NSUInteger)contentWidth {
-    
     static NSUInteger contentWidth = 0;
     if (contentWidth == 0) {
-        
-        contentWidth = CGRectGetWidth(layerView.bounds) - kSettingsViewEdgeInset * 2;
-        
+        contentWidth = CGRectGetWidth(scrollView.bounds) - kSettingsViewEdgeInset * 2;
     }
     return contentWidth;
 }
 
 - (CGSize)cellSize {
-    
     static CGSize cellSize = {0, 0};
     if (CGSizeEqualToSize(cellSize, CGSizeZero)) {
-        
         cellSize = CGSizeMake([self contentWidth], kSettingsViewCellHeight);
-        
     }
     return cellSize;
 }
@@ -851,7 +752,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 }
 
 - (void)toSetNickNameViewController {
-    
     __weak typeof(self) weakSelf = self;
     SettingsSetTextViewController *controller = [[SettingsSetTextViewController alloc] init];
     controller.title = str_Set_Nickname;
@@ -879,11 +779,9 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         [weakSelf.navigationController popViewControllerAnimated:YES];
     };
     [self.navigationController pushViewController:controller animated:YES];
-    
 }
 
 - (void)toSetLifeViewController {
-    
     __weak typeof(self) weakSelf = self;
     SettingsSetTextViewController *controller = [[SettingsSetTextViewController alloc] init];
     controller.title = str_Set_Lifespan;
@@ -914,7 +812,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 }
 
 - (void)toGestureLockViewController {
-    
     __weak typeof(self) weakSelf = self;
     BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
     if (hasPwd) {
@@ -941,7 +838,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 }
 
 - (void)toChangeGestureViewController {
-    
     __weak typeof(self) weakSelf = self;
     BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
     if (hasPwd) {
@@ -954,22 +850,16 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 }
 
 - (void)setMale {
-    
     genderThreeSubView.centerButton.selected = YES;
     genderThreeSubView.rightButton.selected = NO;
-    
     [Config shareInstance].settings.gender = @"1";
-    
     [PlanCache storePersonalSettings:[Config shareInstance].settings];
 }
 
 - (void)setFemale {
-    
     genderThreeSubView.centerButton.selected = NO;
     genderThreeSubView.rightButton.selected = YES;
-    
     [Config shareInstance].settings.gender = @"0";
-    
     [PlanCache storePersonalSettings:[Config shareInstance].settings];
 }
 
@@ -984,7 +874,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 }
 
 - (void)setBirthday {
-    
     UIView *pickerView = [[UIView alloc] initWithFrame:self.view.bounds];
     pickerView.backgroundColor = [UIColor clearColor];
     
@@ -1044,7 +933,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 }
 
 - (void)onPickerCertainBtn {
-    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd];
     NSString *birthday = [dateFormatter stringFromDate:datePicker.date];
@@ -1058,20 +946,16 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     
     UIView *pickerView = [self.view viewWithTag:kSettingsViewPickerBgViewTag];
     [pickerView removeFromSuperview];
-    
     [Config shareInstance].settings.birthday = birthday;
-    
     [PlanCache storePersonalSettings:[Config shareInstance].settings];
 }
 
 - (void)onPickerCancelBtn {
-    
     UIView *pickerView = [self.view viewWithTag:kSettingsViewPickerBgViewTag];
     [pickerView removeFromSuperview];
 }
 
 - (void)saveAvatar:(UIImage *)icon {
-    
     if (icon == nil) {
         return;
     }
@@ -1084,75 +968,17 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     [PlanCache storePersonalSettings:[Config shareInstance].settings];
 }
 
+- (void)logInAction {
+    LogInViewController *controller = [[LogInViewController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 - (void)exitAction {
-    
     [LogIn bmobLogOut];
 }
 
 - (void)syncDataAction {
     [DataCenter startSyncData];
-}
-
-- (void)logInAction {
-    //检查输入
-    if (txtEmail.text.length == 0) {
-        [self alertToastMessage:@"请输入账号邮箱"];
-        [txtEmail becomeFirstResponder];
-        return;
-    }
-    if (![CommonFunction validateEmail:txtEmail.text]) {
-        [self alertToastMessage:@"账号邮箱格式不正确"];
-        [txtEmail becomeFirstResponder];
-        return;
-    }
-    if (txtPwd.text.length == 0) {
-        [self alertToastMessage:@"请输入密码"];
-        [txtPwd becomeFirstResponder];
-        return;
-    }
-    [self showHUD];
-    __weak typeof(self) weakSelf = self;
-    NSString *acountEmail = [txtEmail.text lowercaseString];
-    //登录账号
-    [BmobUser loginWithUsernameInBackground:acountEmail password:txtPwd.text block:^(BmobUser *user, NSError *error) {
-        
-        [weakSelf hideHUD];
-        if (error) {
-            
-            NSString *errorMsg = [error.userInfo objectForKey:@"error"];
-            if ([errorMsg containsString:@"incorrect"]) {
-                [weakSelf alertButtonMessage:@"账号或密码不正确"];
-            }
-            
-        } else if (user) {
-            
-            //检查账号邮箱是否已经通过验证
-            if ([user objectForKey:@"emailVerified"]) {
-                //用户没验证过邮箱
-                if (![[user objectForKey:@"emailVerified"] boolValue]) {
-                    [weakSelf hideHUD];
-                    [BmobUser logout];
-                    [weakSelf alertButtonMessage:@"你的账号邮箱还没通过验证，请先登录账号邮箱查看验证邮件"];
-                    [user verifyEmailInBackgroundWithEmailAddress:acountEmail];
-                    
-                } else {
-                    
-                    [NotificationCenter postNotificationName:Notify_LogIn object:nil];
-                }
-            }
-        }
-    }];
-}
-
-- (void)registerAction {
-    RegisterViewController *controller = [[RegisterViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
-- (void)forgotPasswordAction {
-    ForgotPasswordViewController *controller = [[ForgotPasswordViewController alloc] init];
-    controller.email = txtEmail.text;
-    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)sinaWeiboLogin {
@@ -1273,19 +1099,16 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         } else {
             
             [self alertButtonMessage:str_Common_Tips1];
-            
         }
     }
 }
 
 #pragma mark - UIImagePickerControllerDelegate
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo {
-    
     [picker dismissViewControllerAnimated:YES completion:nil];
     UIImage *img = [CommonFunction compressImage:image];
     [self saveAvatar:img];
