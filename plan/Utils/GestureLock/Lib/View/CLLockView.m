@@ -179,7 +179,7 @@ const CGFloat marginValue = 36.0f;
             
             if(_setPWConfirmlock != nil) _setPWConfirmlock();
         }
-    } else if (CoreLockTypeVeryfiPwd == _type) {//验证密码
+    } else if (CoreLockTypeVeryfiPwd == _type || CoreLockTypeLogInVeryfiPwd == _type) {//验证密码
         
         //开始
         if (_verifyPWBeginBlock != nil) _verifyPWBeginBlock();
@@ -254,7 +254,7 @@ const CGFloat marginValue = 36.0f;
         //设置密码
         [self setpwd];
         
-    } else if (CoreLockTypeVeryfiPwd == _type) {//验证密码
+    } else if (CoreLockTypeVeryfiPwd == _type || CoreLockTypeLogInVeryfiPwd == _type) {//验证密码
         
         if (_verifyPwdBlock != nil) _verifyPwdBlock(self.pwdM);
         

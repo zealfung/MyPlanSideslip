@@ -8,10 +8,13 @@
 
 #import "Plan.h"
 #import "LogIn.h"
-//#import "CLLockVC.h"
+#import "CLLockVC.h"
 #import "PlanCache.h"
+#import "RESideMenu.h"
+#import "CLLockNavVC.h"
 #import "RegisterSDK.h"
 #import "AppDelegate.h"
+#import "LogInViewController.h"
 #import "LocalNotificationManager.h"
 
 
@@ -64,45 +67,36 @@
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
-
-    // 清除推送图标标记
-    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    
-//    BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
-//    if (hasPwd) {
-//        //关闭手势解锁
-//        [CLLockVC showVerifyLockVCInVC:self.window.rootViewController forgetPwdBlock:^{
-//            NSLog(@"忘记密码");
-//        } successBlock:^(CLLockVC *lockVC, NSString *pwd) {
-//            
-//            [Config shareInstance].settings.isUseGestureLock = @"0";
-//            [Config shareInstance].settings.gesturePasswod = @"";
-//            [PlanCache storePersonalSettings:[Config shareInstance].settings];
-//            [lockVC dismiss:.5f];
-//        }];
-//    }
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-
-//    //打开本地数据库
-//    [PlanCache openDBWithAccount:@"unknown"];
-//    //加载个人设置
-//    [Config shareInstance].settings = [PlanCache getPersonalSettings];
     
-//    BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
-//    if (hasPwd) {
-//        //关闭手势解锁
-//        [CLLockVC showVerifyLockVCInVC:self.window.rootViewController forgetPwdBlock:^{
-//            NSLog(@"忘记密码");
-//        } successBlock:^(CLLockVC *lockVC, NSString *pwd) {
-//            
-//            [Config shareInstance].settings.isUseGestureLock = @"0";
-//            [Config shareInstance].settings.gesturePasswod = @"";
-//            [PlanCache storePersonalSettings:[Config shareInstance].settings];
-//            [lockVC dismiss:.5f];
-//        }];
-//    }
+    // 清除推送图标标记
+    [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+
+    UIViewController *controller = self.window.rootViewController;
+    if ([controller isKindOfClass:[RESideMenu class]]) {
+        //加载个人设置
+        [Config shareInstance].settings = [PlanCache getPersonalSettings];
+        BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"]
+        && [Config shareInstance].settings.gesturePasswod
+        && [Config shareInstance].settings.gesturePasswod.length > 0;
+        if (hasPwd) {
+            //手势解锁
+            __weak typeof(self) weakSelf = self;
+            [CLLockVC showVerifyLockVCInVC:controller isLogIn:YES forgetPwdBlock:^{
+                
+                LogInViewController *LogInVC = [[LogInViewController alloc] init];
+                LogInVC.isForgotGesture = YES;
+//                CLLockNavVC *navVC = [[CLLockNavVC alloc] initWithRootViewController:LogInVC];
+//                [weakSelf.window.rootViewController presentViewController:navVC animated:YES completion:nil];
+                
+            } successBlock:^(CLLockVC *lockVC, NSString *pwd) {
+                
+                [lockVC dismiss:.5f];
+            }];
+        }
+    }
 }
 
 /**

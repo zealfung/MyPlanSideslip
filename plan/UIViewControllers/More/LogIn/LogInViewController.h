@@ -15,5 +15,6 @@
 @property (strong, nonatomic) IBOutlet UIButton *btnLogIn;
 @property (strong, nonatomic) IBOutlet UIButton *btnRegister;
 @property (strong, nonatomic) IBOutlet UIButton *btnForgotPwd;
+@property (assign, nonatomic) BOOL isForgotGesture;
 
 @end

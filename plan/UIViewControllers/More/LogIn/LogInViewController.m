@@ -6,6 +6,7 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
+#import "LogIn.h"
 #import <BmobSDK/BmobUser.h>
 #import "LogInViewController.h"
 #import "RegisterViewController.h"
@@ -36,6 +37,14 @@
     self.txtPassword.placeholder = @"密码Password";
     self.txtPassword.inputAccessoryView = [self getInputAccessoryView];
 
+    if (self.isForgotGesture && [LogIn isLogin]) {
+        BmobUser *user = [BmobUser getCurrentUser];
+        NSString *email = [user objectForKey:@"username"];
+        self.txtEmail.text = email;
+        [self.txtEmail resignFirstResponder];
+        [self.txtPassword becomeFirstResponder];
+    }
+    
     self.btnLogIn.layer.cornerRadius = 5;
     [self.btnLogIn setAllTitle:@"登录"];
     [self.btnRegister setAllTitle:@"注册账号"];
@@ -85,10 +94,18 @@
                     [user verifyEmailInBackgroundWithEmailAddress:acountEmail];
                     
                 } else {
-                    //登录后自动关联本地没有对应账号的数据
-                    [PlanCache linkedLocalDataToAccount];
-                    [NotificationCenter postNotificationName:Notify_LogIn object:nil];
-                    [self.navigationController popViewControllerAnimated:YES];
+                    
+                    if (self.isForgotGesture) {
+                        [Config shareInstance].settings.isUseGestureLock = @"0";
+                        [Config shareInstance].settings.gesturePasswod = @"";
+                        [PlanCache storePersonalSettings:[Config shareInstance].settings];
+//                        [weakSelf dismissViewControllerAnimated:YES completion:nil];
+                    } else {
+                        //登录后自动关联本地没有对应账号的数据
+                        [PlanCache linkedLocalDataToAccount];
+                        [NotificationCenter postNotificationName:Notify_LogIn object:nil];
+                        [weakSelf.navigationController popViewControllerAnimated:YES];
+                    }
                 }
             }
         }

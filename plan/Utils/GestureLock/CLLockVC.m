@@ -142,7 +142,7 @@
             
             [self.label showNormalMsg:CoreLockVerifySuccesslTitle];
             
-            if(CoreLockTypeVeryfiPwd == _type){
+            if(CoreLockTypeVeryfiPwd == _type || CoreLockTypeLogInVeryfiPwd == _type){
                 
                 //禁用交互
                 self.view.userInteractionEnabled = NO;
@@ -154,7 +154,7 @@
                 self.modifyCurrentTitle = CoreLockModifyNewPWDTitle;
             }
             
-            if(CoreLockTypeVeryfiPwd == _type) {
+            if(CoreLockTypeVeryfiPwd == _type || CoreLockTypeLogInVeryfiPwd == _type) {
                 if(_successBlock != nil) _successBlock(self,pwd);
             }
             
@@ -209,14 +209,16 @@
         
         self.modifyBtn.hidden = YES;
         
+    } else if (CoreLockTypeVeryfiPwd == _type) {
+        
+        self.modifyBtn.hidden = YES;
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
+        
     } else {
         
         _actionView.hidden = YES;
-        
         [_actionView removeFromSuperview];
-
         if(_isDirectModify) return;
-        
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"关闭" style:UIBarButtonItemStylePlain target:self action:@selector(dismiss)];
     }
     
@@ -360,7 +362,7 @@
         
         self.msg = CoreLockPWDTitleFirst;
         
-    }else if (CoreLockTypeVeryfiPwd == _type){//验证密码
+    }else if (CoreLockTypeVeryfiPwd == _type || CoreLockTypeLogInVeryfiPwd == _type){//验证密码
         
         self.msg = CoreLockVerifyNormalTitle;
         

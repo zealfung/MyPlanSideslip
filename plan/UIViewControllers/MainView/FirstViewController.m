@@ -57,10 +57,7 @@ NSUInteger const kSecondsPerDay = 86400;
     [NotificationCenter addObserver:self selector:@selector(toPlan:) name:Notify_Push_LocalNotify object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:Notify_Settings_Save object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:Notify_Plan_Save object:nil];
-    
-    //打开本地数据库
-    [PlanCache openDBWithAccount:@"unknown"];
-    
+        
     [self loadCustomView];
 }
 
@@ -70,7 +67,6 @@ NSUInteger const kSecondsPerDay = 86400;
 }
 
 - (void)dealloc {
-    
     [NotificationCenter removeObserver:self];
 }
 
@@ -81,7 +77,6 @@ NSUInteger const kSecondsPerDay = 86400;
 }
 
 - (void)leftMenuAction:(UIButton *)button {
-    
     [self.sideMenuViewController presentLeftMenuViewController];
 }
 
@@ -90,7 +85,6 @@ NSUInteger const kSecondsPerDay = 86400;
     
     UIImage* image = [UIImage imageNamed:png_ImageDefault];
     UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO , 0.0f);//高清，效率比较慢
-    //    UIGraphicsBeginImageContext(scrollView.contentSize);//模糊
     {
 
         [self.view.layer renderInContext: UIGraphicsGetCurrentContext()];

@@ -22,6 +22,9 @@
     self.contentViewShadowEnabled = YES;
     self.contentViewShadowRadius = 4.5;
     
+    //打开本地数据库
+    [PlanCache openDBWithAccount:@"unknown"];
+    
     self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentViewController"];
     self.leftMenuViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"leftMenuViewController"];
 }
