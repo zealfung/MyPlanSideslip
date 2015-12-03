@@ -26,6 +26,7 @@
 @property (nonatomic, strong) NSString *isShowGestureTrack;//是否显示手势轨迹 0否1是
 @property (nonatomic, strong) NSString *gesturePasswod;//手势密码
 @property (nonatomic, strong) NSString *syntime;
+@property (nonatomic, strong) NSString *createtime;
 @property (nonatomic, strong) NSString *updatetime;
 
 @end

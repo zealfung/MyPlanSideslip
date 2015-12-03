@@ -24,6 +24,7 @@ NSString *const kSettings_IsUseGestureLock = @"isUseGestureLock";
 NSString *const kSettings_IsShowGestureTrack = @"isShowGestureTrack";
 NSString *const kSettings_GesturePasswod = @"gesturePasswod";
 NSString *const kSettings_Updatetime = @"updatetime";
+NSString *const kSettings_Createtime = @"createtime";
 NSString *const kSettings_Syntime = @"syntime";
 
 @implementation Settings
@@ -44,6 +45,7 @@ NSString *const kSettings_Syntime = @"syntime";
 @synthesize isShowGestureTrack = _isShowGestureTrack;
 @synthesize gesturePasswod = _gesturePasswod;
 @synthesize updatetime = _updatetime;
+@synthesize createtime = _createtime;
 @synthesize syntime = _syntime;
 
 
@@ -66,6 +68,7 @@ NSString *const kSettings_Syntime = @"syntime";
         self.isShowGestureTrack = [dict objectOrNilForKey:kSettings_IsShowGestureTrack];
         self.gesturePasswod = [dict objectOrNilForKey:kSettings_GesturePasswod];
         self.updatetime = [dict objectOrNilForKey:kSettings_Updatetime];
+        self.createtime = [dict objectOrNilForKey:kSettings_Createtime];
         self.syntime = [dict objectOrNilForKey:kSettings_Syntime];
     }
     return self;
@@ -88,6 +91,7 @@ NSString *const kSettings_Syntime = @"syntime";
     self.isAutoSync = [aDecoder decodeObjectForKey:kSettings_IsAutoSync];
     self.isUseGestureLock = [aDecoder decodeObjectForKey:kSettings_IsUseGestureLock];
     self.updatetime = [aDecoder decodeObjectForKey:kSettings_Updatetime];
+    self.createtime = [aDecoder decodeObjectForKey:kSettings_Createtime];
     self.syntime = [aDecoder decodeObjectForKey:kSettings_Syntime];
     return self;
 }
@@ -109,6 +113,7 @@ NSString *const kSettings_Syntime = @"syntime";
     [aCoder encodeObject:_isShowGestureTrack forKey:kSettings_IsShowGestureTrack];
     [aCoder encodeObject:_gesturePasswod forKey:kSettings_GesturePasswod];
     [aCoder encodeObject:_updatetime forKey:kSettings_Updatetime];
+    [aCoder encodeObject:_createtime forKey:kSettings_Createtime];
     [aCoder encodeObject:_syntime forKey:kSettings_Syntime];
 }
 
@@ -130,6 +135,7 @@ NSString *const kSettings_Syntime = @"syntime";
     copy.isShowGestureTrack = [self.isShowGestureTrack copyWithZone:zone];
     copy.gesturePasswod = [self.gesturePasswod copyWithZone:zone];
     copy.updatetime = [self.updatetime copyWithZone:zone];
+    copy.createtime = [self.createtime copyWithZone:zone];
     copy.syntime = [self.syntime copyWithZone:zone];
     return copy;
 }
