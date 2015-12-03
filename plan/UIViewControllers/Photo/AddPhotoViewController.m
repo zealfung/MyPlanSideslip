@@ -264,6 +264,7 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
         self.photo = [[Photo alloc] init];
         self.photo.photoid = photoid;
         self.photo.createtime = timeNow;
+        self.photo.updatetime = timeNow;
 
     } else {
         
