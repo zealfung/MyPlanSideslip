@@ -18,6 +18,7 @@
 static BOOL finishSettings;
 static BOOL finishUploadAvatar;
 static BOOL finishUploadCenterTop;
+static BOOL finishPlan;
 
 @implementation DataCenter
 
@@ -27,8 +28,11 @@ static BOOL finishUploadCenterTop;
     
     //把本地无账号关联的数据与当前登录账号进行关联
     [PlanCache linkedLocalDataToAccount];
+
+    //同步计划
+    [self startSyncPlan];
     
-    //对比同步时间
+    //同步个人设置 (一定要最后同步个人设置，因为需要更新同步时间)
     [self compareSyncTime];
     
     //加载本地同步时间
@@ -46,13 +50,15 @@ static BOOL finishUploadCenterTop;
     finishSettings = NO;
     finishUploadAvatar = NO;
     finishUploadCenterTop = NO;
+    finishPlan = NO;
 }
 
 + (void)IsAllUploadFinished {
     
     if (finishSettings
         && finishUploadAvatar
-        && finishUploadCenterTop) {
+        && finishUploadCenterTop
+        && finishPlan) {
         
         [AlertCenter alertNavBarMessage:@"同步文本完成"];
     }
@@ -80,7 +86,16 @@ static BOOL finishUploadCenterTop;
                 . 当实例保存的日期值晚于anotherDate时返回NSOrderedDescending
                 . 当实例保存的日期值早于anotherDate时返回NSOrderedAscending
                  */
-                if ([localSyntime compare:serverSynctime] == NSOrderedAscending) {
+                if ((!localSyntime && !serverSynctime)
+                    || (localSyntime && !serverSynctime)) {
+                    //将本地的设置同步到服务器
+                    [self addSettingsToServer];
+                    
+                } else if (!localSyntime && serverSynctime) {
+                    //服务器的设置较新
+                    [self syncServerToLocalForSettings:obj];
+                    
+                } else if ([localSyntime compare:serverSynctime] == NSOrderedAscending) {
                     //服务器的设置较新
                     [self syncServerToLocalForSettings:obj];
                     
@@ -183,11 +198,23 @@ static BOOL finishUploadCenterTop;
     if ([Config shareInstance].settings.isAutoSync) {
         [settingsObject setObject:[Config shareInstance].settings.isAutoSync forKey:@"isAutoSync"];
     }
+    if ([Config shareInstance].settings.createtime) {
+        [settingsObject setObject:[Config shareInstance].settings.createtime forKey:@"createdTime"];
+    }
+    if ([Config shareInstance].settings.updatetime) {
+        [settingsObject setObject:[Config shareInstance].settings.updatetime forKey:@"updatedTime"];
+    }
+    NSString *timeNow = [CommonFunction getTimeNowString];
+    [Config shareInstance].settings.syntime = timeNow;
+    if ([Config shareInstance].settings.syntime) {
+        [settingsObject setObject:timeNow forKey:@"syncTime"];
+    }
     
     [settingsObject updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
             
             finishSettings = YES;
+            [PlanCache storePersonalSettings:[Config shareInstance].settings];
             [DataCenter IsAllUploadFinished];
             
         } else if (error){
@@ -202,9 +229,13 @@ static BOOL finishUploadCenterTop;
     NSString *centerTopUrl = [settingsObject objectForKey:@"centerTopURL"];
     if (![[Config shareInstance].settings.avatarURL isEqualToString:avatarUrl]) {
         [self uploadAvatar:settingsObject];
+    } else {
+        finishUploadAvatar = YES;
     }
     if (![[Config shareInstance].settings.centerTopURL isEqualToString:centerTopUrl]) {
         [self uploadCenterTop:settingsObject];
+    } else {
+        finishUploadCenterTop = YES;
     }
 }
 
@@ -230,11 +261,23 @@ static BOOL finishUploadCenterTop;
     if ([Config shareInstance].settings.isAutoSync) {
         [userSettings setObject:[Config shareInstance].settings.isAutoSync forKey:@"isAutoSync"];
     }
+    if ([Config shareInstance].settings.createtime) {
+        [userSettings setObject:[Config shareInstance].settings.createtime forKey:@"createdTime"];
+    }
+    if ([Config shareInstance].settings.updatetime) {
+        [userSettings setObject:[Config shareInstance].settings.updatetime forKey:@"updatedTime"];
+    }
+    NSString *timeNow = [CommonFunction getTimeNowString];
+    [Config shareInstance].settings.syntime = timeNow;
+    if ([Config shareInstance].settings.syntime) {
+        [userSettings setObject:timeNow forKey:@"syncTime"];
+    }
     //异步保存
     [userSettings saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
             
             finishSettings = YES;
+            [PlanCache storePersonalSettings:[Config shareInstance].settings];
             [DataCenter IsAllUploadFinished];
             
         } else if (error){
@@ -311,36 +354,11 @@ static BOOL finishUploadCenterTop;
 
 + (void)startSyncPlan {
     
-    [DataCenter getNewPlanFromServer];
+    [self syncLocalToServerForPlan];
+    [self syncServerToLocalForPlan];
 }
 
-+ (void)getNewPlanFromServer {
-    
-    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
-    
-    [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
-    [bquery whereKey:@"isDeleted" equalTo:@"0"];
-    [bquery orderByDescending:@"updatedTime"];
-    
-    if ([Config shareInstance].settings.syntime) {
-        
-        [bquery whereKey:@"updatedTime" greaterThanOrEqualTo:[Config shareInstance].settings.syntime];
-        
-    }
-    bquery.limit = 1000;
-    
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-        
-        [DataCenter getNewPlanFromLocal:array];
-        
-//        [DataCenter compareServerNewWithLocalForPlan:array];
-
-    }];
-}
-
-// 加载本地上次同步时间之后的计划数据进行对比
-+ (void)getNewPlanFromLocal:(NSArray *)serverNewArray {
-    
++ (void)syncLocalToServerForPlan {
     NSArray *localNewArray = [NSArray array];
     if ([Config shareInstance].settings.syntime) {
         
@@ -350,93 +368,140 @@ static BOOL finishUploadCenterTop;
         localNewArray = [PlanCache getPlanForSync:nil];
     }
     
-    //服务器上有新数据，本地没有
-    if (serverNewArray.count > 0 && localNewArray.count == 0) {
-        
-    }//服务器上没有新数据，本地有
-    else if (serverNewArray.count == 0 && localNewArray.count > 0) {
-        
-    }
-    else {
-        
-    }
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
     
-    BOOL flag = YES;
     for (Plan *plan in localNewArray) {
         
-        flag = YES;
-        
-        for (BmobObject *obj in serverNewArray) {
+        [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
+        [bquery whereKey:@"planId" equalTo:plan.planid];
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
             
-            NSString *planid = [obj objectForKey:@"planId"];
-            if ([plan.planid isEqualToString:planid]) {
-                flag = NO;
-                break;
-            }
-        }
-        
-        if (flag) {
-            BmobObject *newPlan = [BmobObject objectWithClassName:@"Plan"];
-            NSDictionary *dic = @{@"userObjectId":plan.account,
-                                  @"planId":plan.planid,
-                                  @"content":plan.content,
-                                  @"createdTime":plan.createtime,
-                                  @"completedTime":plan.completetime,
-                                  @"updatedTime":plan.updatetime,
-                                  @"notifyTime":plan.notifytime,
-                                  @"isCompleted":plan.iscompleted,
-                                  @"isNotify":plan.isnotify,
-                                  @"isDeleted":plan.isdeleted,
-                                  @"planType":plan.plantype};
-            [newPlan saveAllWithDictionary:dic];
-            //异步保存
-            [newPlan saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-                if (isSuccessful) {
-                    //创建成功后的动作
-                } else if (error){
-                    //发生错误后的动作
-                    NSLog(@"%@",error);
-                } else {
-                    NSLog(@"Unknow error");
-                }
-            }];
-        }
-        
-    }
-}
+            if (array.count > 0) {
+                
+                BmobObject *obj = array[0];
+                
+                NSString *serverUpdatedTime = [obj objectForKey:@"updatedTime"];
+                if (plan.updatetime.length == 0 && serverUpdatedTime.length == 0) {
 
-+ (void)compareServerNewWithLocalForPlan:(NSArray *)array {
-    
-    for (BmobObject *obj in array) {
-        
-        NSString *account = [obj objectForKey:@"userObjectId"];
-        NSString *planid = [obj objectForKey:@"planId"];
-        NSString *updatedTime = [obj objectForKey:@"updatedTime"];
-        
-        Plan *plan = [PlanCache findPlan:account planid:planid];
-        if (plan.planid) {
-            //本地存在，对比updatetime
-            if ([updatedTime compare:plan.updatetime] == NSOrderedAscending) {
-                //服务器的较新
-                [DataCenter updatePlanToLocal:obj];
+                } else if (plan.updatetime.length != 0 && serverUpdatedTime.length == 0) {
+                    [DataCenter updatePlanForServer:plan obj:obj];
+                } else if (plan.updatetime.length == 0 && serverUpdatedTime.length != 0) {
+                    
+                } else {
+                    
+                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:plan.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    
+                    if ([localDate compare:serverDate] == NSOrderedAscending) {
+                        
+                    } else if ([localDate compare:serverDate] == NSOrderedDescending) {
+                        //本地的设置较新
+                        [DataCenter updatePlanForServer:plan obj:obj];
+                    }
+                }
                 
             } else {
-                //本地的较新
-                [DataCenter updatePlanToServer:obj plan:plan];
                 
+                BmobObject *newPlan = [BmobObject objectWithClassName:@"Plan"];
+                NSDictionary *dic = @{@"userObjectId":plan.account,
+                                      @"planId":plan.planid,
+                                      @"content":plan.content,
+                                      @"createdTime":plan.createtime,
+                                      @"completedTime":plan.completetime,
+                                      @"updatedTime":plan.updatetime,
+                                      @"notifyTime":plan.notifytime,
+                                      @"isCompleted":plan.iscompleted,
+                                      @"isNotify":plan.isnotify,
+                                      @"isDeleted":plan.isdeleted,
+                                      @"planType":plan.plantype};
+                [newPlan saveAllWithDictionary:dic];
+                //异步保存
+                [newPlan saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+                    if (isSuccessful) {
+                        //创建成功后的动作
+                    } else if (error){
+                        //发生错误后的动作
+                        NSLog(@"%@",error);
+                    } else {
+                        NSLog(@"Unknow error");
+                    }
+                }];
             }
-        } else {
-            //本地不存在，存入本地
-            [DataCenter updatePlanToLocal:obj];
-        }
-        
+            
+        }];
+
     }
-    
 }
 
-+ (void)updatePlanToLocal:(BmobObject *)obj {
++ (void)updatePlanForServer:(Plan *)plan obj:(BmobObject *)obj {
+    if (plan.content) {
+        [obj setObject:plan.content forKey:@"content"];
+    }
+    if (plan.completetime) {
+        [obj setObject:plan.completetime forKey:@"completedTime"];
+    }
+    if (plan.updatetime) {
+        [obj setObject:plan.updatetime forKey:@"updatedTime"];
+    }
+    if (plan.notifytime) {
+        [obj setObject:plan.notifytime forKey:@"notifyTime"];
+    }
+    if (plan.iscompleted) {
+        [obj setObject:plan.iscompleted forKey:@"isCompleted"];
+    }
+    if (plan.isnotify) {
+        [obj setObject:plan.isnotify forKey:@"isNotify"];
+    }
+    if (plan.isdeleted) {
+        [obj setObject:plan.isdeleted forKey:@"isDeleted"];
+    }
     
-    Plan *plan = [[Plan alloc] init];
+    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        if (isSuccessful) {
+        } else if (error){
+            NSLog(@"更新本地设置到服务器失败：%@",error);
+        } else {
+            NSLog(@"更新本地设置到服务器遇到未知错误");
+        }
+    }];
+}
+
++ (void)syncServerToLocalForPlan {
+    
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
+    [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
+    [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
+    [bquery orderByDescending:@"updatedAt"];
+    bquery.limit = 100;
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        if (!error && array.count > 0) {
+            
+            for (BmobObject *obj in array) {
+                
+                Plan *plan = [PlanCache findPlan:[Config shareInstance].settings.account planid:[obj objectForKey:@"planId"]];
+                if (plan.content) {
+                    
+                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:plan.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"updatedTime"] formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    
+                    if ([localDate compare:serverDate] == NSOrderedAscending) {
+                        //服务器的较新
+                        [DataCenter updatePlanForLocal:plan obj:obj];
+                        
+                    } else if ([localDate compare:serverDate] == NSOrderedDescending) {
+                        //本地的设置较新
+                    }
+                } else {
+                    [DataCenter updatePlanForLocal:plan obj:obj];
+                }
+            }
+            finishPlan = YES;
+        }
+        
+    }];
+}
+
++ (void)updatePlanForLocal:(Plan *)plan obj:(BmobObject *)obj {
     plan.account = [obj objectForKey:@"userObjectId"];
     plan.planid = [obj objectForKey:@"planId"];
     plan.content = [obj objectForKey:@"content"];
@@ -448,48 +513,6 @@ static BOOL finishUploadCenterTop;
     plan.isnotify = [obj objectForKey:@"isNotify"];
     plan.isdeleted = [obj objectForKey:@"isDeleted"];
     plan.plantype = [obj objectForKey:@"planType"];
-    
     [PlanCache storePlan:plan];
-    
 }
-
-+ (void)updatePlanToServer:(BmobObject *)obj plan:(Plan *)plan {
-    
-    BmobObject *bmobObject = [BmobObject objectWithoutDatatWithClassName:@"Plan"  objectId:[obj objectId]];
-    if (plan.content) {
-        [bmobObject setObject:plan.content forKey:@"content"];
-    }
-    if (plan.completetime) {
-        [bmobObject setObject:plan.completetime forKey:@"completedTime"];
-    }
-    if (plan.updatetime) {
-        [bmobObject setObject:plan.updatetime forKey:@"updatedTime"];
-    }
-    if (plan.notifytime) {
-        [bmobObject setObject:plan.notifytime forKey:@"notifyTime"];
-    }
-    if (plan.iscompleted) {
-        [bmobObject setObject:plan.iscompleted forKey:@"isCompleted"];
-    }
-    if (plan.isnotify) {
-        [bmobObject setObject:plan.isnotify forKey:@"isNotify"];
-    }
-    if (plan.isdeleted) {
-        [bmobObject setObject:plan.isdeleted forKey:@"isDeleted"];
-    }
-    [bmobObject updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-        if (isSuccessful) {
-            //修改成功后的动作
-            
-        } else if (error){
-            NSLog(@"%@",error);
-        } else {
-            NSLog(@"UnKnow error");
-        }
-    }];
-}
-
-+ (void)syncLocalToServerForPlan {
-}
-
 @end
