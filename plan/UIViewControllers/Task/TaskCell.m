@@ -31,7 +31,7 @@
         cellView.btnCount.titleLabel.font = font_Bold_23;
     } else {
         cellView.btnCount.enabled = YES;
-        [cellView.btnCount setAllTitle:@"点我"];
+        [cellView.btnCount setAllTitle:str_Task_AddRecord];
         [cellView.btnCount setBackgroundColor:color_Blue];
         cellView.btnCount.titleLabel.font = font_Bold_16;
     }

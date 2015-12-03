@@ -13,6 +13,7 @@
 
 #define str_Common_Tips1 @"请到“设置”-“隐私”-“照片”中找到”我有计划“，将按钮打开，允许访问相册"
 #define str_Common_Tips2 @"请到“设置”-“隐私”-“相机”中找到”我有计划“，将按钮打开，允许使用摄像头"
+#define str_Common_Tips3 @"至少写点什么吧"
 
 #define str_ViewTitle_1 @"我的"
 #define str_ViewTitle_2 @"计划"
@@ -41,8 +42,12 @@
 
 #define str_Save_Success @"保存成功"
 #define str_Save_Fail @"保存失败"
+#define str_Modify_Success @"修改成功"
 #define str_Delete_Success @"删除成功"
 #define str_Delete_Fail @"删除失败"
+#define str_Register @"注册账号"
+#define str_Register_Fail @"注册失败"
+#define str_ForgotPassword @"忘记密码"
 #define str_OK @"确定"
 #define str_Cancel @"取消"
 #define str_Show @"显示"
@@ -53,7 +58,6 @@
 #define str_Alert_GetIt @"确定"
 #define str_Plan_Add @"新增计划"
 #define str_Plan_Edit @"编辑计划"
-#define str_Plan_NoContent @"至少写点什么吧"
 #define str_Plan_Today @"今天"
 #define str_Plan_Yesterday @"昨天"
 
@@ -75,8 +79,21 @@
 #define str_Photo_Detail_Tips2 @"%@   地点：%@"
 #define str_Photo_Delete_Tips @"删除该影像"
 
+#define str_Task_Add @"新建任务"
+#define str_Task_Edit @"编辑任务"
+#define str_Task_Detail @"任务详情"
+#define str_Task_AddRecord @"点我"
 #define str_Task_Tips1 @"暂无任务内容"
 #define str_Task_Delete_Tips @"删除该任务"
+
+#define str_PersonalCenter_Tips1 @"你的恒心超过了"
+#define str_PersonalCenter_Tips2 @"的坚持者"
+#define str_PersonalCenter_SubTitle3 @"每日计划总数"
+#define str_PersonalCenter_SubTitle4 @"每日计划完成总数"
+#define str_PersonalCenter_SubTitle5 @"长远计划总数"
+#define str_PersonalCenter_SubTitle6 @"长远计划完成总数"
+#define str_PersonalCenter_SubTitle7 @"任务总数"
+#define str_PersonalCenter_SubTitle8 @"影像总数"
 
 #define str_More @"更多"
 #define str_More_Settings @"通用设置"
@@ -91,6 +108,7 @@
 #define str_More_Feedback_Tips7 @"保存或者发送邮件失败"
 #define str_More_Feedback_Tips8 @"我有计划 For iOS"
 
+#define str_Settings_Acount @"账号："
 #define str_Settings_Avatar @"头像："
 #define str_Settings_Nickname @"昵称："
 #define str_Settings_Nickname_Tips @"点击修改昵称"
@@ -105,12 +123,31 @@
 #define str_Settings_SetAvatar_Tips2 @"亲，请选择头像！"
 #define str_Settings_SetAvatar_Camera @"拍照"
 #define str_Settings_SetAvatar_Album @"从相册选择"
-#define str_Settings_LogIn @"登录or注册"
+#define str_Settings_LogIn @"登录"
 #define str_Settings_LogIn_QQ_Tips1 @"没有安装QQ客户端"
 #define str_Settings_LogIn_SinaWeibo_Tips1 @"没有安装微博客户端"
 #define str_Settings_LogOut @"注销登录"
 #define str_Settings_LogOut_Success @"注销成功"
 #define str_Settings_LogOut_Fail @"注销失败"
+#define str_Settings_AutoSync @"自动同步："
+#define str_Settings_Gesture @"手势解锁："
+#define str_Settings_ShowGesture @"显示手势："
+#define str_Settings_ChangeGesture @"修改手势："
+#define str_Settings_Tips1 @"手势密码设置成功"
+
+#define str_Register_Tips1 @"邮箱地址Email"
+#define str_Register_Tips7 @"密码Password"
+#define str_Register_Tips2 @"请输入邮箱地址"
+#define str_Register_Tips3 @"邮箱地址格式不正确"
+#define str_Register_Tips4 @"请输入密码"
+#define str_Register_Tips5 @"该邮箱账号已经注册，如果密码丢失，可通过“忘记密码”找回"
+#define str_Register_Tips6 @"我们给你的邮箱发了一封验证邮件，请先验证邮件后再登录使用"
+
+#define str_LogIn_Tips1 @"账号或密码不正确"
+#define str_LogIn_Tips2 @"你的账号邮箱还没通过验证，请先登录账号邮箱查看验证邮件"
+
+#define str_ForgotPassword_Tips1 @"找回密码"
+#define str_ForgotPassword_Tips2 @"我们给你的邮箱发了一封重置密码的邮件，请注意查收"
 
 #define str_Set_Nickname @"设置昵称"
 #define str_Set_Nickname_Tips1 @"请输入昵称"
@@ -134,6 +171,8 @@
 #define str_Share_Cancel @"取消分享"
 #define str_Share_Content @"推荐一个好玩的应用，你也安装试试啊~可惜目前只有iOS版ToT"
 #define str_Share_URL @"http://www.fengziyi.com/andwho-plan/"
+#define str_Share_Tips1 @"来自我有计划iOS版"
+#define str_Share_Tips2 @"晒数据"
 
 #define str_Avatar @"kAvatar"
 #define str_LogInPlatform @"kLogInPlatform"

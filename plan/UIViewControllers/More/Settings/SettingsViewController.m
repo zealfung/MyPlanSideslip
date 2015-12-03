@@ -52,6 +52,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = str_More_Settings;
+    [self createNavBarButton];
     
     [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_LogIn object:nil];
     [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_Settings_Save object:nil];
@@ -72,6 +73,12 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 
 - (void)dealloc {
     [NotificationCenter removeObserver:self];
+}
+
+- (void)createNavBarButton {
+    if ([LogIn isLogin]) {
+        self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Share selectedImageName:png_Btn_Share selector:@selector(syncDataAction)];
+    }
 }
 
 - (void)loadCustomView {
@@ -114,21 +121,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         
         yOffset = CGRectGetMaxY(frame) + kSettingsViewEdgeInset;
     }
-    
-//    if([LogIn isLogin]) {
-//        UIButton *button = [self createSyncDataButton];
-//        [scrollView addSubview:button];
-//        
-//        CGRect frame = CGRectZero;
-//        frame.origin.x = kSettingsViewEdgeInset;
-//        frame.origin.y = yOffset;
-//        frame.size.width = CGRectGetWidth(scrollView.frame) - kSettingsViewEdgeInset * 2;
-//        frame.size.height = kSettingsViewCellHeight;
-//        button.frame = frame;
-//        
-//        yOffset = CGRectGetMaxY(frame) + kSettingsViewCellHeight;
-//    }
-    
+
     if([LogIn isLogin]) {
         UIButton *button = [self createExitButton];
         
@@ -163,7 +156,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 
 - (ThreeSubView *)getAccountView {
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock:nil rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:@"账号："]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Acount]];
     threeSubView.fixRightWidth = kSettingsViewRightEdgeInset;
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
     BmobUser *user = [BmobUser getCurrentUser];
@@ -461,7 +454,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_AutoSync_Normal] forState:UIControlStateNormal];
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_AutoSync_Selected] forState:UIControlStateSelected];
     
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:@"自动同步："]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_AutoSync]];
     threeSubView.fixLeftWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixCenterWidth;
     threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     
@@ -494,7 +487,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Gesture_Unlock] forState:UIControlStateNormal];
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Gesture_Lock] forState:UIControlStateSelected];
     
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:@"手势解锁："]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Gesture]];
     threeSubView.fixLeftWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixCenterWidth;
     threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     
@@ -533,7 +526,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_GestureTrack_Hide] forState:UIControlStateNormal];
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_GestureTrack_Show] forState:UIControlStateSelected];
     
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:@"显示手势："]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_ShowGesture]];
     threeSubView.fixLeftWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixCenterWidth;
     threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     
@@ -567,7 +560,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     threeSubView.fixRightWidth = 55;
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Arrow_Right] forState:UIControlStateNormal];
 
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:@"修改手势："]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_ChangeGesture]];
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixLeftWidth;
     threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
 
@@ -582,7 +575,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     button.titleLabel.font = font_Bold_18;
     button.layer.cornerRadius = 5;
     button.clipsToBounds = YES;
-    [button setAllTitle:@"登录"];
+    [button setAllTitle:str_Settings_LogIn];
     [button addTarget:self action:@selector(logInAction) forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
@@ -595,17 +588,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     button.clipsToBounds = YES;
     [button setAllTitle:str_Settings_LogOut];
     [button addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
-    return button;
-}
-
-- (UIButton *)createSyncDataButton {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.backgroundColor = color_ff9900;
-    button.titleLabel.font = font_Bold_18;
-    button.layer.cornerRadius = 5;
-    button.clipsToBounds = YES;
-    [button setAllTitle:@"同步数据"];
-    [button addTarget:self action:@selector(syncDataAction) forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
 
@@ -794,7 +776,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         //打开手势解锁
         [CLLockVC showSettingLockVCInVC:self successBlock:^(CLLockVC *lockVC, NSString *pwd) {
             
-            [weakSelf alertToastMessage:@"手势密码设置成功"];
+            [weakSelf alertToastMessage:str_Settings_Tips1];
             [lockVC dismiss:.5f];
         }];
     }
@@ -806,7 +788,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     if (hasPwd) {
         [CLLockVC showModifyLockVCInVC:self successBlock:^(CLLockVC *lockVC, NSString *pwd) {
             
-            [weakSelf alertToastMessage:@"修改成功"];
+            [weakSelf alertToastMessage:str_Modify_Success];
             [lockVC dismiss:.5f];
         }];
     }

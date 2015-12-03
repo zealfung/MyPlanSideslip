@@ -32,15 +32,15 @@ NSUInteger const kTaskDeleteTag = 20151201;
 - (void)setControls {
     if (self.operationType == Add) {
         
-        self.title = @"新建任务";
+        self.title = str_Task_Add;
         
     } else if (self.operationType == Edit) {
         
-        self.title = @"编辑任务";
+        self.title = str_Task_Edit;
         
     } else if (self.operationType == View) {
         
-        self.title = @"任务详情";
+        self.title = str_Task_Detail;
     }
     [self createRightBarButton];
     
@@ -102,7 +102,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
     
     NSString *content = [self.txtView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if (content.length < 2) {
-        [self alertButtonMessage:str_Plan_NoContent];
+        [self alertButtonMessage:str_Common_Tips3];
         return;
     }
     

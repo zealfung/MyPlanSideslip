@@ -20,7 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"登录";
+    self.title = str_Settings_LogIn;
     [self setControls];
 }
 
@@ -30,11 +30,11 @@
 
 - (void)setControls {
 
-    self.txtEmail.placeholder = @"账号邮箱Email";
+    self.txtEmail.placeholder = str_Register_Tips1;
     self.txtEmail.inputAccessoryView = [self getInputAccessoryView];
     [self.txtEmail becomeFirstResponder];
 
-    self.txtPassword.placeholder = @"密码Password";
+    self.txtPassword.placeholder = str_Register_Tips7;
     self.txtPassword.inputAccessoryView = [self getInputAccessoryView];
 
     if (self.isForgotGesture && [LogIn isLogin]) {
@@ -46,25 +46,25 @@
     }
     
     self.btnLogIn.layer.cornerRadius = 5;
-    [self.btnLogIn setAllTitle:@"登录"];
-    [self.btnRegister setAllTitle:@"注册账号"];
-    [self.btnForgotPwd setAllTitle:@"忘记密码"];
+    [self.btnLogIn setAllTitle:str_Settings_LogIn];
+    [self.btnRegister setAllTitle:str_Register];
+    [self.btnForgotPwd setAllTitle:str_ForgotPassword];
 }
 
 - (IBAction)logInAction:(id)sender {
     //检查输入
     if (self.txtEmail.text.length == 0) {
-        [self alertToastMessage:@"请输入账号邮箱"];
+        [self alertToastMessage:str_Register_Tips2];
         [self.txtEmail becomeFirstResponder];
         return;
     }
     if (![CommonFunction validateEmail:self.txtEmail.text]) {
-        [self alertToastMessage:@"账号邮箱格式不正确"];
+        [self alertToastMessage:str_Register_Tips3];
         [self.txtEmail becomeFirstResponder];
         return;
     }
     if (self.txtPassword.text.length == 0) {
-        [self alertToastMessage:@"请输入密码"];
+        [self alertToastMessage:str_Register_Tips4];
         [self.txtPassword becomeFirstResponder];
         return;
     }
@@ -79,7 +79,7 @@
             
             NSString *errorMsg = [error.userInfo objectForKey:@"error"];
             if ([errorMsg containsString:@"incorrect"]) {
-                [weakSelf alertButtonMessage:@"账号或密码不正确"];
+                [weakSelf alertButtonMessage:str_LogIn_Tips1];
             }
             
         } else if (user) {
@@ -90,7 +90,7 @@
                 if (![[user objectForKey:@"emailVerified"] boolValue]) {
                     [weakSelf hideHUD];
                     [BmobUser logout];
-                    [weakSelf alertButtonMessage:@"你的账号邮箱还没通过验证，请先登录账号邮箱查看验证邮件"];
+                    [weakSelf alertButtonMessage:str_LogIn_Tips2];
                     [user verifyEmailInBackgroundWithEmailAddress:acountEmail];
                     
                 } else {

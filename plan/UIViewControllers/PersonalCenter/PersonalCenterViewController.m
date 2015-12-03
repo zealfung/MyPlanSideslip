@@ -152,7 +152,7 @@
         ThreeSubView *tsvRanking = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, rankingHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
         [tsvRanking.leftButton.titleLabel setFont:font_Normal_10];
         [tsvRanking.leftButton setAllTitleColor:color_708cb0];
-        [tsvRanking.leftButton setAllTitle:@"你的恒心超过了"];
+        [tsvRanking.leftButton setAllTitle:str_PersonalCenter_Tips1];
         [tsvRanking.centerButton.titleLabel setFont:font_Normal_20];
         [tsvRanking.centerButton setAllTitleColor:color_75aff4];
 //        if (![CommonFunction isEmptyString:[Config shareInstance].settings.birthday]) {
@@ -165,7 +165,7 @@
         
         [tsvRanking.rightButton.titleLabel setFont:font_Normal_10];
         [tsvRanking.rightButton setAllTitleColor:color_708cb0];
-        [tsvRanking.rightButton setAllTitle:@"的坚持者"];
+        [tsvRanking.rightButton setAllTitle:str_PersonalCenter_Tips2];
         [tsvRanking autoLayout];
         
         CGRect rankingFrame = CGRectZero;
@@ -191,12 +191,12 @@
         
         pbRecentlyConsecutiveDates = [[PieceButton alloc] initWithTitle:@"最近连续计划天数" content:@"78" icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
         pbMaxConsecutiveDates = [[PieceButton alloc] initWithTitle:@"最大连续计划天数" content:@"78" icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F2F3F5];
-        pbTotalEverydayPlan = [[PieceButton alloc] initWithTitle:@"每日计划总数" content:dayPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F2F3F5];
-        pbTotalEverydayPlanDone = [[PieceButton alloc] initWithTitle:@"每日计划完成总数" content:doneDayPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
-        pbTotalLongtermPlan = [[PieceButton alloc] initWithTitle:@"长远计划总数" content:longPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
-        pbTotalLongtermPlanDone = [[PieceButton alloc] initWithTitle:@"长远计划完成总数" content:doneLongPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F2F3F5];
-        pbTotalTask = [[PieceButton alloc] initWithTitle:@"任务总数" content:taskTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F2F3F5];
-        pbTotalPhoto = [[PieceButton alloc] initWithTitle:@"影像总数" content:photoTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
+        pbTotalEverydayPlan = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle3 content:dayPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F2F3F5];
+        pbTotalEverydayPlanDone = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle4 content:doneDayPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
+        pbTotalLongtermPlan = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle5 content:longPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
+        pbTotalLongtermPlanDone = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle6 content:doneLongPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F2F3F5];
+        pbTotalTask = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle7 content:taskTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F2F3F5];
+        pbTotalPhoto = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle8 content:photoTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
         
         NSMutableArray *array = [NSMutableArray array];
 //        [array addObject:pbRecentlyConsecutiveDates];
@@ -239,7 +239,7 @@
         logo.image = [UIImage imageNamed:png_Icon_Logo_512];
         [view addSubview:logo];
         UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(viewHeight + 2, 0, viewWidth - viewHeight - 2, viewHeight)];
-        labelName.text = @"来自我有计划iOS版";
+        labelName.text = str_Share_Tips1;
         labelName.font = font_Normal_10;
         labelName.textColor = color_Blue;
         [view addSubview:labelName];
@@ -253,7 +253,7 @@
         btnShare.backgroundColor = color_ff9900;
         btnShare.layer.cornerRadius = btnHeight / 2;
         [btnShare.titleLabel setFont:font_Normal_14];
-        [btnShare setAllTitle:@"晒数据"];
+        [btnShare setAllTitle:str_Share_Tips2];
         [btnShare setAllTitleColor:[UIColor whiteColor]];
         [btnShare addTarget:self action:@selector(shareData:) forControlEvents:UIControlEventTouchUpInside];
         btnShareData = btnShare;

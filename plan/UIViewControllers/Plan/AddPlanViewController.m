@@ -170,7 +170,7 @@ NSUInteger const kToolBarHeight = 44;
     NSString *title = [self.textNoteTitle.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSString *detail = [self.textNoteDetail.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if (title.length == 0 && detail.length == 0) {
-        [self alertButtonMessage:str_Plan_NoContent];
+        [self alertButtonMessage:str_Common_Tips3];
         return;
     }
     [self savePlan];
@@ -230,6 +230,7 @@ NSUInteger const kToolBarHeight = 44;
         self.plan = [[Plan alloc]init];
         self.plan.planid = planid;
         self.plan.createtime = timeNow;
+        self.plan.updatetime = timeNow;
         self.plan.iscompleted = @"0";
     } else {
         self.plan.updatetime = timeNow;

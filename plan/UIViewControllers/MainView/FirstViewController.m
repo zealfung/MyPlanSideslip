@@ -455,7 +455,7 @@ NSUInteger const kSecondsPerDay = 86400;
     logo.image = [UIImage imageNamed:png_Icon_Logo_512];
     [view addSubview:logo];
     UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(viewHeight + 2, 0, viewWidth - viewHeight - 2, viewHeight)];
-    labelName.text = @"来自我有计划iOS版";
+    labelName.text = str_Share_Tips1;
     labelName.font = font_Normal_10;
     labelName.textColor = color_Blue;
     [view addSubview:labelName];

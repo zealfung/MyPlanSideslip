@@ -28,12 +28,12 @@
 }
 
 - (void)setControls {
-    self.txtEmail.placeholder = @"邮箱地址Email";
+    self.txtEmail.placeholder = str_Register_Tips1;
     [self.txtEmail becomeFirstResponder];
-    self.txtPassword.placeholder = @"密码";
+    self.txtPassword.placeholder = str_Register_Tips7;
     self.btnRegister.layer.cornerRadius = 5;
-    [self.btnRegister setAllTitle:@"注册"];
-    [self.btnforgotPwd setAllTitle:@"忘记密码"];
+    [self.btnRegister setAllTitle:str_Register];
+    [self.btnforgotPwd setAllTitle:str_ForgotPassword];
 }
 
 - (IBAction)registerAction:(id)sender {
@@ -49,17 +49,17 @@
 
 - (BOOL)checkInput {
     if (self.txtEmail.text.length == 0) {
-        [self alertToastMessage:@"请输入邮箱地址"];
+        [self alertToastMessage:str_Register_Tips2];
         [self.txtEmail becomeFirstResponder];
         return NO;
     }
     if (![CommonFunction validateEmail:self.txtEmail.text]) {
-        [self alertToastMessage:@"邮箱地址格式不正确"];
+        [self alertToastMessage:str_Register_Tips3];
         [self.txtEmail becomeFirstResponder];
         return NO;
     }
     if (self.txtPassword.text.length == 0) {
-        [self alertToastMessage:@"请输入密码"];
+        [self alertToastMessage:str_Register_Tips4];
         [self.txtPassword becomeFirstResponder];
         return NO;
     }
@@ -79,7 +79,7 @@
             if (array && array.count > 0) {//已存在
                 
                 [weakSelf hideHUD];
-                [weakSelf alertButtonMessage:@"该邮箱账号已经注册，如果密码丢失，可通过“忘记密码”找回"];
+                [weakSelf alertButtonMessage:str_Register_Tips5];
                 
             } else {//可注册
                 
@@ -100,10 +100,10 @@
         [weakSelf hideHUD];
         
         if (isSuccessful){
-            [weakSelf alertButtonMessage:@"我们给你的邮箱发了一封验证邮件，请先验证邮件后再登录使用"];
+            [weakSelf alertButtonMessage:str_Register_Tips6];
             [weakSelf.navigationController popViewControllerAnimated:YES];
         } else {
-            [weakSelf alertButtonMessage:@"注册失败"];
+            [weakSelf alertButtonMessage:str_Register_Fail];
         }
     }];
 }

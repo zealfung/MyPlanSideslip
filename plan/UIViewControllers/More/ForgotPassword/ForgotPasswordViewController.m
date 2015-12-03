@@ -28,10 +28,10 @@
 
 - (void)setControls {
     self.txtEmail.text = self.email;
-    self.txtEmail.placeholder = @"邮箱地址Email";
+    self.txtEmail.placeholder = str_Register_Tips1;
     [self.txtEmail becomeFirstResponder];
     self.btnSumbit.layer.cornerRadius = 5;
-    [self.btnSumbit setAllTitle:@"马上找回"];
+    [self.btnSumbit setAllTitle:str_ForgotPassword_Tips1];
 }
 
 - (IBAction)submitAction:(id)sender {
@@ -41,12 +41,12 @@
 
 - (BOOL)checkInput {
     if (self.txtEmail.text.length == 0) {
-        [self alertToastMessage:@"请输入邮箱地址"];
+        [self alertToastMessage:str_Register_Tips2];
         [self.txtEmail becomeFirstResponder];
         return NO;
     }
     if (![CommonFunction validateEmail:self.txtEmail.text]) {
-        [self alertToastMessage:@"邮箱地址格式不正确"];
+        [self alertToastMessage:str_Register_Tips3];
         [self.txtEmail becomeFirstResponder];
         return NO;
     }
@@ -56,7 +56,7 @@
 - (void)submit {
 
     [BmobUser requestPasswordResetInBackgroundWithEmail:self.txtEmail.text];
-    [self alertButtonMessage:@"我们给你的邮箱发了一封重置密码的邮件，请注意查收"];
+    [self alertButtonMessage:str_ForgotPassword_Tips2];
     NSArray *array = self.navigationController.viewControllers;
     for (UIViewController *controller in array) {
         if ([controller isKindOfClass:[SettingsViewController class]]) {
