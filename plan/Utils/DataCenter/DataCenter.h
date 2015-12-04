@@ -12,4 +12,6 @@
 
 + (void)startSyncData;
 
++ (void)IsAllUploadFinished;
+
 @end

@@ -233,14 +233,103 @@ static NSMutableDictionary * __contactsOnlineState;
     //相册
     if (![__db tableExists:str_TableName_Photo]) {
         
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, photoid TEXT, content TEXT, createtime TEXT, phototime TEXT, updatetime TEXT, location TEXT, photo1 BLOB, photo2 BLOB, photo3 BLOB, photo4 BLOB, photo5 BLOB, photo6 BLOB, photo7 BLOB, photo8 BLOB, photo9 BLOB, isdeleted TEXT)", str_TableName_Photo];
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, photoid TEXT, content TEXT, createtime TEXT, phototime TEXT, updatetime TEXT, location TEXT, photo1 BLOB, photo2 BLOB, photo3 BLOB, photo4 BLOB, photo5 BLOB, photo6 BLOB, photo7 BLOB, photo8 BLOB, photo9 BLOB, photo1URL TEXT, photo2URL TEXT, photo3URL TEXT, photo4URL TEXT, photo5URL TEXT, photo6URL TEXT, photo7URL TEXT, photo8URL TEXT, photo9URL TEXT, isdeleted TEXT)", str_TableName_Photo];
         
         BOOL b = [__db executeUpdate:sqlString];
         
         FMDBQuickCheck(b, sqlString, __db);
         
     } else { //新增字段
-        
+        //图片URL字段2015-12-3
+        NSString *photo1URL = @"photo1URL";
+        if (![__db columnExists:photo1URL inTableWithName:str_TableName_Photo]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo1URL];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        //图片URL字段2015-12-3
+        NSString *photo2URL = @"photo2URL";
+        if (![__db columnExists:photo2URL inTableWithName:str_TableName_Photo]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo2URL];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        //图片URL字段2015-12-3
+        NSString *photo3URL = @"photo3URL";
+        if (![__db columnExists:photo3URL inTableWithName:str_TableName_Photo]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo3URL];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        //图片URL字段2015-12-3
+        NSString *photo4URL = @"photo4URL";
+        if (![__db columnExists:photo4URL inTableWithName:str_TableName_Photo]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo4URL];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        //图片URL字段2015-12-3
+        NSString *photo5URL = @"photo5URL";
+        if (![__db columnExists:photo5URL inTableWithName:str_TableName_Photo]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo5URL];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        //图片URL字段2015-12-3
+        NSString *photo6URL = @"photo6URL";
+        if (![__db columnExists:photo6URL inTableWithName:str_TableName_Photo]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo6URL];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        //图片URL字段2015-12-3
+        NSString *photo7URL = @"photo7URL";
+        if (![__db columnExists:photo7URL inTableWithName:str_TableName_Photo]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo7URL];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        //图片URL字段2015-12-3
+        NSString *photo8URL = @"photo8URL";
+        if (![__db columnExists:photo8URL inTableWithName:str_TableName_Photo]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo8URL];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        //图片URL字段2015-12-3
+        NSString *photo9URL = @"photo9URL";
+        if (![__db columnExists:photo9URL inTableWithName:str_TableName_Photo]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo9URL];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
     }
     
     //统计
@@ -414,7 +503,7 @@ static NSMutableDictionary * __contactsOnlineState;
             plan.completetime = @"";
         }
         if (!plan.updatetime) {
-            plan.updatetime = @"";
+            plan.updatetime = plan.createtime;
         }
         if (!plan.iscompleted) {
             plan.iscompleted = @"";
@@ -501,10 +590,37 @@ static NSMutableDictionary * __contactsOnlineState;
             photo.phototime = @"";
         }
         if (!photo.updatetime) {
-            photo.updatetime = @"";
+            photo.updatetime = photo.createtime;
         }
         if (!photo.location) {
             photo.location = @"";
+        }
+        if (!photo.photo1URL) {
+            photo.photo1URL = @"";
+        }
+        if (!photo.photo2URL) {
+            photo.photo2URL = @"";
+        }
+        if (!photo.photo3URL) {
+            photo.photo3URL = @"";
+        }
+        if (!photo.photo4URL) {
+            photo.photo4URL = @"";
+        }
+        if (!photo.photo5URL) {
+            photo.photo5URL = @"";
+        }
+        if (!photo.photo6URL) {
+            photo.photo6URL = @"";
+        }
+        if (!photo.photo7URL) {
+            photo.photo7URL = @"";
+        }
+        if (!photo.photo8URL) {
+            photo.photo8URL = @"";
+        }
+        if (!photo.photo9URL) {
+            photo.photo9URL = @"";
         }
         NSMutableArray *photoDataArray = [NSMutableArray array];
         for (NSInteger i = 0; i < 9; i++) {
@@ -512,7 +628,7 @@ static NSMutableDictionary * __contactsOnlineState;
             if (i < photo.photoArray.count) {
                 
                 UIImage *image = photo.photoArray[i];
-                NSData *imageData = UIImageJPEGRepresentation(image, 1.0);//UIImagePNGRepresentation(image);
+                NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
                 [photoDataArray addObject:imageData];
                 
             } else {
@@ -531,17 +647,17 @@ static NSMutableDictionary * __contactsOnlineState;
         BOOL b = NO;
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, createtime=?, phototime=?, updatetime=?, location=?, photo1=?, photo2=?, photo3=?, photo4=?, photo5=?, photo6=?, photo7=?, photo8=?, photo9=? WHERE photoid=? AND account=?", str_TableName_Photo];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, createtime=?, phototime=?, updatetime=?, location=?, photo1=?, photo2=?, photo3=?, photo4=?, photo5=?, photo6=?, photo7=?, photo8=?, photo9=?, photo1URL=?, photo2URL=?, photo3URL=?, photo4URL=?, photo5URL=?, photo6URL=?, photo7URL=?, photo8URL=?, photo9URL=? WHERE photoid=? AND account=?", str_TableName_Photo];
             
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[photo.content, photo.createtime, photo.phototime, photo.updatetime, photo.location, photoDataArray[0], photoDataArray[1], photoDataArray[2], photoDataArray[3], photoDataArray[4], photoDataArray[5], photoDataArray[6], photoDataArray[7], photoDataArray[8], photo.photoid, photo.account]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[photo.content, photo.createtime, photo.phototime, photo.updatetime, photo.location, photoDataArray[0], photoDataArray[1], photoDataArray[2], photoDataArray[3], photoDataArray[4], photoDataArray[5], photoDataArray[6], photoDataArray[7], photoDataArray[8], photo.photo1URL, photo.photo2URL, photo.photo3URL, photo.photo4URL, photo.photo5URL, photo.photo6URL, photo.photo7URL, photo.photo8URL, photo.photo9URL, photo.photoid, photo.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
 
         } else {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, isdeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Photo];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL, isdeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Photo];
             
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[photo.account, photo.photoid, photo.content, photo.createtime, photo.phototime, photo.updatetime, photo.location, photoDataArray[0], photoDataArray[1], photoDataArray[2], photoDataArray[3], photoDataArray[4], photoDataArray[5], photoDataArray[6], photoDataArray[7], photoDataArray[8], @"0"]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[photo.account, photo.photoid, photo.content, photo.createtime, photo.phototime, photo.updatetime, photo.location, photoDataArray[0], photoDataArray[1], photoDataArray[2], photoDataArray[3], photoDataArray[4], photoDataArray[5], photoDataArray[6], photoDataArray[7], photoDataArray[8], photo.photo1URL, photo.photo2URL, photo.photo3URL, photo.photo4URL, photo.photo5URL, photo.photo6URL, photo.photo7URL, photo.photo8URL, photo.photo9URL, @"0"]];
             
             FMDBQuickCheck(b, sqlString, __db);
         }
@@ -971,7 +1087,7 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9 FROM %@ WHERE account=? AND isdeleted=0 ORDER BY phototime DESC, createtime DESC", str_TableName_Photo];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL FROM %@ WHERE account=? AND isdeleted=0 ORDER BY phototime DESC, createtime DESC", str_TableName_Photo];
         
         FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
@@ -985,6 +1101,15 @@ static NSMutableDictionary * __contactsOnlineState;
             photo.phototime = [rs stringForColumn:@"phototime"];
             photo.updatetime = [rs stringForColumn:@"updatetime"];
             photo.location = [rs stringForColumn:@"location"];
+            photo.photo1URL = [rs stringForColumn:@"photo1URL"];
+            photo.photo2URL = [rs stringForColumn:@"photo2URL"];
+            photo.photo3URL = [rs stringForColumn:@"photo3URL"];
+            photo.photo4URL = [rs stringForColumn:@"photo4URL"];
+            photo.photo5URL = [rs stringForColumn:@"photo5URL"];
+            photo.photo6URL = [rs stringForColumn:@"photo6URL"];
+            photo.photo7URL = [rs stringForColumn:@"photo7URL"];
+            photo.photo8URL = [rs stringForColumn:@"photo8URL"];
+            photo.photo9URL = [rs stringForColumn:@"photo9URL"];
             photo.photoArray = [NSMutableArray array];
             
             NSData *imageData = [rs dataForColumn:@"photo1"];
@@ -1630,6 +1755,98 @@ static NSMutableDictionary * __contactsOnlineState;
         return array;
     }
     
+}
+
++ (NSArray *)getTaskForSync:(NSString *)syntime {
+    
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return nil ;
+            }
+        }
+        
+        NSString *account = @"";
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser getCurrentUser];
+            account = user.objectId;
+        }
+        
+        NSMutableArray *array = [NSMutableArray array];
+        
+        NSString *sqlString = @"";
+        if (syntime) {
+            sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted FROM %@ WHERE account=? AND updatetime >=?", str_TableName_Task];
+        } else {
+            sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted FROM %@ WHERE account=?", str_TableName_Task];
+        }
+        
+        FMResultSet * rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[account]] : [__db executeQuery:sqlString withArgumentsInArray:@[account, syntime]];
+
+        while ([rs next]) {
+            
+            Task *task = [[Task alloc] init];
+            task.account = account;
+            task.taskId = [rs stringForColumn:@"taskId"];
+            task.content = [rs stringForColumn:@"content"];
+            task.totalCount = [rs stringForColumn:@"totalCount"];
+            task.completionDate = [rs stringForColumn:@"completionDate"];
+            task.createTime = [rs stringForColumn:@"createTime"];
+            task.updateTime = [rs stringForColumn:@"updateTime"];
+            task.isNotify = [rs stringForColumn:@"isNotify"];
+            task.notifyTime = [rs stringForColumn:@"notifyTime"];
+            task.isDeleted = [rs stringForColumn:@"isDeleted"];
+            if (!task.completionDate) {
+                task.completionDate = @"";
+            }
+            if (!task.isNotify) {
+                task.isNotify = @"";
+            }
+            if (!task.notifyTime) {
+                task.notifyTime = @"";
+            }
+            [array addObject:task];
+        }
+        [rs close];
+        
+        return array;
+    }
+}
+
++ (NSArray *)getTeaskRecordForSyncByTaskId:(NSString *)taskId syntime:(NSString *)syntime {
+    
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return nil ;
+            }
+        }
+        
+        NSMutableArray *array = [NSMutableArray array];
+        
+        NSString *sqlString = @"";
+        if (syntime) {
+            sqlString = [NSString stringWithFormat:@"SELECT recordId, createTime FROM %@ WHERE recordId=? AND createTime >=?", str_TableName_TaskRecord];
+        } else {
+            sqlString = [NSString stringWithFormat:@"SELECT recordId, createTime FROM %@ WHERE recordId=?", str_TableName_TaskRecord];
+        }
+        
+        FMResultSet * rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[taskId]] : [__db executeQuery:sqlString withArgumentsInArray:@[taskId, syntime]];
+        
+        while ([rs next]) {
+            
+            TaskRecord *taskRecord = [[TaskRecord alloc] init];
+            taskRecord.recordId = taskId;
+            taskRecord.createTime = [rs stringForColumn:@"createTime"];
+            
+            [array addObject:taskRecord];
+        }
+        [rs close];
+        
+        return array;
+    }
 }
 
 @end

@@ -67,4 +67,9 @@
 
 //time:yyyy-MM-dd HH:mm:ss
 + (NSArray *)getPlanDateForStatisticsByTime:(NSString *)time;
+
++ (NSArray *)getTaskForSync:(NSString *)syntime;
+
++ (NSArray *)getTeaskRecordForSyncByTaskId:(NSString *)taskId syntime:(NSString *)syntime;
+
 @end

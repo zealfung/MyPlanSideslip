@@ -32,6 +32,9 @@ static BOOL finishPlan;
     //同步计划
     [self startSyncPlan];
     
+    //同步任务
+    [self startSyncTask];
+    
     //同步个人设置 (一定要最后同步个人设置，因为需要更新同步时间)
     [self compareSyncTime];
     
@@ -75,10 +78,10 @@ static BOOL finishPlan;
             
             BmobObject *obj = array[0];
             
-            if ([Config shareInstance].settings.syntime) {
+            if ([Config shareInstance].settings.updatetime) {
                 //本地有上次同步时间记录，对比服务器的更新时间与本地同步记录时间
-                NSDate *localSyntime = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.syntime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                NSDate *serverSynctime = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"synctime"] formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                NSDate *localSyntime = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                NSDate *serverSynctime = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"syncTime"] formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
                 
                 /*
                 - (NSComparisonResult)compare:(NSDate *)other;
@@ -231,11 +234,13 @@ static BOOL finishPlan;
         [self uploadAvatar:settingsObject];
     } else {
         finishUploadAvatar = YES;
+        [DataCenter IsAllUploadFinished];
     }
     if (![[Config shareInstance].settings.centerTopURL isEqualToString:centerTopUrl]) {
         [self uploadCenterTop:settingsObject];
     } else {
         finishUploadCenterTop = YES;
+        [DataCenter IsAllUploadFinished];
     }
 }
 
@@ -496,6 +501,8 @@ static BOOL finishPlan;
                 }
             }
             finishPlan = YES;
+            [DataCenter IsAllUploadFinished];
+            [AlertCenter alertNavBarMessage:@"同步文本完成"];
         }
         
     }];
@@ -515,4 +522,138 @@ static BOOL finishPlan;
     plan.plantype = [obj objectForKey:@"planType"];
     [PlanCache storePlan:plan];
 }
+
++ (void)startSyncPhoto {
+}
+
++ (void)startSyncTask {
+    __weak typeof(self) weakSelf = self;
+    NSArray *localNewArray = [NSArray array];
+    if ([Config shareInstance].settings.syntime.length > 0) {
+        
+        localNewArray = [PlanCache getTaskForSync:[Config shareInstance].settings.syntime];
+    } else {
+        
+        localNewArray = [PlanCache getTaskForSync:nil];
+    }
+    
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Task"];
+    
+    for (Task *task in localNewArray) {
+        
+        [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
+        [bquery whereKey:@"taskId" equalTo:task.taskId];
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+            
+            if (array.count > 0) {
+                
+                BmobObject *obj = array[0];
+                
+                NSString *serverUpdatedTime = [obj objectForKey:@"updatedTime"];
+                NSDate *localDate = [CommonFunction NSStringDateToNSDate:task.updateTime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                
+                if ([localDate compare:serverDate] == NSOrderedAscending) {
+                    
+                } else if ([localDate compare:serverDate] == NSOrderedDescending) {
+                    //本地的设置较新
+                    [DataCenter updateTaskForServer:task obj:obj];
+                    //同时上传改任务的完成记录
+                    [weakSelf syncTaskRecord:task.taskId syncTime:[Config shareInstance].settings.syntime];
+                }
+                
+            } else {
+                
+                BmobObject *newTask = [BmobObject objectWithClassName:@"Task"];
+                NSDictionary *dic = @{@"userObjectId":task.account,
+                                      @"taskId":task.taskId,
+                                      @"content":task.content,
+                                      @"totalCount":task.totalCount,
+                                      @"completionDate":task.completionDate,
+                                      @"createdTime":task.createTime,
+                                      @"updatedTime":task.updateTime,
+                                      @"isNotify":task.isNotify,
+                                      @"notifyTime":task.notifyTime,
+                                      @"isDeleted":task.isDeleted};
+                [newTask saveAllWithDictionary:dic];
+                //异步保存
+                [newTask saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+                    if (isSuccessful) {
+                        //创建成功后的动作
+                    } else if (error){
+                        //发生错误后的动作
+                        NSLog(@"%@",error);
+                    } else {
+                        NSLog(@"Unknow error");
+                    }
+                }];
+                //同时上传改任务的完成记录
+                [weakSelf syncTaskRecord:task.taskId syncTime:[Config shareInstance].settings.syntime];
+            }
+        }];
+    }
+}
+
++ (void)syncTaskRecord:(NSString *)taskId syncTime:(NSString *)syncTime {
+    NSArray *localNewArray = [NSArray array];
+    if (syncTime.length > 0) {
+        
+        localNewArray = [PlanCache getTeaskRecordForSyncByTaskId:taskId syntime:syncTime];
+    } else {
+        
+        localNewArray = [PlanCache getTeaskRecordForSyncByTaskId:taskId syntime:nil];
+    }
+    for (TaskRecord *taskrecord in localNewArray) {
+        
+        BmobObject *newTaskRecord = [BmobObject objectWithClassName:@"TaskRecord"];
+        NSDictionary *dic = @{@"recordId":taskrecord.recordId,
+                              @"createdTime":taskrecord.createTime};
+        [newTaskRecord saveAllWithDictionary:dic];
+        //异步保存
+        [newTaskRecord saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+            if (isSuccessful) {
+                //创建成功后的动作
+            } else if (error){
+                //发生错误后的动作
+                NSLog(@"%@",error);
+            } else {
+                NSLog(@"Unknow error");
+            }
+        }];
+    }
+}
+
++ (void)updateTaskForServer:(Task *)task obj:(BmobObject *)obj {
+    if (task.content) {
+        [obj setObject:task.content forKey:@"content"];
+    }
+    if (task.totalCount) {
+        [obj setObject:task.totalCount forKey:@"totalCount"];
+    }
+    if (task.completionDate) {
+        [obj setObject:task.completionDate forKey:@"completionDate"];
+    }
+    if (task.updateTime) {
+        [obj setObject:task.updateTime forKey:@"updatedTime"];
+    }
+    if (task.isNotify) {
+        [obj setObject:task.isNotify forKey:@"isNotify"];
+    }
+    if (task.notifyTime) {
+        [obj setObject:task.notifyTime forKey:@"notifyTime"];
+    }
+    if (task.isDeleted) {
+        [obj setObject:task.isDeleted forKey:@"isDeleted"];
+    }
+    
+    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        if (isSuccessful) {
+        } else if (error){
+            NSLog(@"更新本地任务到服务器失败：%@",error);
+        } else {
+            NSLog(@"更新本地任务到服务器遇到未知错误");
+        }
+    }];
+}
+
 @end
