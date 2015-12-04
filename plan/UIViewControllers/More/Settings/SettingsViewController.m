@@ -77,7 +77,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 
 - (void)createNavBarButton {
     if ([LogIn isLogin]) {
-        self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Share selectedImageName:png_Btn_Share selector:@selector(syncDataAction)];
+        self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Sync selectedImageName:png_Btn_Sync selector:@selector(syncDataAction)];
     }
 }
 
@@ -927,6 +927,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 }
 
 - (void)syncDataAction {
+    [AlertCenter alertNavBarMessage:str_Sync_Begin];
     [DataCenter startSyncData];
 }
 
