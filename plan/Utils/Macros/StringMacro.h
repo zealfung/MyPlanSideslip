@@ -124,8 +124,6 @@
 #define str_Settings_SetAvatar_Camera @"拍照"
 #define str_Settings_SetAvatar_Album @"从相册选择"
 #define str_Settings_LogIn @"登录"
-#define str_Settings_LogIn_QQ_Tips1 @"没有安装QQ客户端"
-#define str_Settings_LogIn_SinaWeibo_Tips1 @"没有安装微博客户端"
 #define str_Settings_LogOut @"注销登录"
 #define str_Settings_LogOut_Success @"注销成功"
 #define str_Settings_LogOut_Fail @"注销失败"
@@ -162,17 +160,17 @@
 #define str_Notify_Tips2 @"你已经5天没有新建计划了，要坚持哦~"
 
 #define str_About_Version @"当前版本："
-#define str_About_Copyright @"© 2015 Andwho Inc."
+#define str_About_Copyright @"© 2015 Andwho, Inc."
 #define str_About_Name @"MyPlan"
-#define str_About_Content @"对于世界上大多数人，生命的长度最多不过30000来天。所以，时间对于每一个人都是奢侈品。人生苦短，时间有限，想要成功就得对自己狠一点，从坚持每天给自己定一些计划开始，然后逐个完成它们，让生活更有意义，让生命更有价值。乔布斯说过：活着就是为了改变世界！就算不能改变世界，理想还是要有的，只要坚持不懈，万一哪天就实现了呢？"
 
 #define str_Share_Success @"分享成功"
 #define str_Share_Fail @"分享失败"
 #define str_Share_Cancel @"取消分享"
-#define str_Share_Content @"推荐一个好玩的应用，你也安装试试啊~可惜目前只有iOS版ToT"
 #define str_Share_URL @"http://www.fengziyi.com/andwho-plan/"
 #define str_Share_Tips1 @"来自我有计划iOS版"
 #define str_Share_Tips2 @"晒数据"
+
+#define str_Sync_Begin @"开始同步数据..."
 
 #define str_Avatar @"kAvatar"
 #define str_LogInPlatform @"kLogInPlatform"
