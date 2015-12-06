@@ -95,11 +95,6 @@
                     [user verifyEmailInBackgroundWithEmailAddress:acountEmail];
                     
                 } else {
-                    [Config shareInstance].settings = [PlanCache getPersonalSettings];
-                    [Config shareInstance].settings.isUseGestureLock = @"0";
-                    [Config shareInstance].settings.gesturePasswod = @"";
-                    [PlanCache storePersonalSettings:[Config shareInstance].settings];
-                    
                     if (self.isForgotGesture) {
                         UIStoryboard *story = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
                         RootViewController *controller = [story instantiateViewControllerWithIdentifier:@"rootViewController"];
@@ -112,6 +107,11 @@
                         [NotificationCenter postNotificationName:Notify_LogIn object:nil];
                         [weakSelf.navigationController popViewControllerAnimated:YES];
                     }
+                    
+                    [Config shareInstance].settings = [PlanCache getPersonalSettings];
+                    [Config shareInstance].settings.isUseGestureLock = @"0";
+                    [Config shareInstance].settings.gesturePasswod = @"";
+                    [PlanCache storePersonalSettings:[Config shareInstance].settings];
                 }
             }
         }

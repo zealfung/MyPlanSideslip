@@ -8,7 +8,9 @@
 
 #import "LogIn.h"
 #import "PlanCache.h"
+#import "BmobQuery.h"
 #import "FMDatabase.h"
+#import "DataCenter.h"
 #import "FMDatabasePool.h"
 #import "FMDatabaseQueue.h"
 #import <BmobSDK/BmobUser.h>
@@ -1058,7 +1060,7 @@ static NSMutableDictionary * __contactsOnlineState;
             photo.location = [rs stringForColumn:@"location"];
             photo.photoURLArray = [NSMutableArray arrayWithCapacity:9];
             for (NSInteger n = 0; n < 9; n++) {
-                NSString *url = [NSString stringWithFormat:@"photo%ldURL", n + 1];
+                NSString *url = [NSString stringWithFormat:@"photo%ldURL", (long)(n + 1)];
                 if ([rs stringForColumn:url]) {
                     photo.photoURLArray[n] = [rs stringForColumn:url];
                 } else {
@@ -1068,7 +1070,7 @@ static NSMutableDictionary * __contactsOnlineState;
             }
             photo.photoArray = [NSMutableArray arrayWithCapacity:9];
             for (NSInteger m = 0; m < 9; m++) {
-                NSString *photoName = [NSString stringWithFormat:@"photo%ld", m + 1];
+                NSString *photoName = [NSString stringWithFormat:@"photo%ld", (long)(m + 1)];
                 NSData *imageData = [rs dataForColumn:photoName];
                 if (imageData) {
                     photo.photoArray[m] = [UIImage imageWithData:imageData];
@@ -1117,7 +1119,7 @@ static NSMutableDictionary * __contactsOnlineState;
             photo.isdeleted = @"0";
             photo.photoURLArray = [NSMutableArray arrayWithCapacity:9];
             for (NSInteger n = 0; n < 9; n++) {
-                NSString *url = [NSString stringWithFormat:@"photo%ldURL", n + 1];
+                NSString *url = [NSString stringWithFormat:@"photo%ldURL", (long)(n + 1)];
                 if ([rs stringForColumn:url]) {
                     photo.photoURLArray[n] = [rs stringForColumn:url];
                 } else {
@@ -1126,7 +1128,7 @@ static NSMutableDictionary * __contactsOnlineState;
             }
             photo.photoArray = [NSMutableArray arrayWithCapacity:9];
             for (NSInteger i = 0; i < 9; i++) {
-                NSString *photoName = [NSString stringWithFormat:@"photo%ld", i + 1];
+                NSString *photoName = [NSString stringWithFormat:@"photo%ld", (long)(i + 1)];
                 NSData *imageData = [rs dataForColumn:photoName];
                 if (imageData) {
                     photo.photoArray[i] = [UIImage imageWithData:imageData];
@@ -1449,25 +1451,43 @@ static NSMutableDictionary * __contactsOnlineState;
     BmobUser *user = [BmobUser getCurrentUser];
     if (!user) return;
     
-    //设置
-    BOOL hasRec = NO;
-    NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", str_TableName_Settings];
-    FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[@""]];
-    hasRec = [rs next];
-    [rs close];
-    if (hasRec) {
+    [Config shareInstance].settings = [PlanCache getPersonalSettings];
+    if (![Config shareInstance].settings.nickname) {
         
-        NSString *sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", str_TableName_Settings];
-        
-        BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
-     
-        FMDBQuickCheck(b, sqlString, __db);
+        BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+        [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+            if (array.count > 0) {
+                BmobObject *obj = array[0];
+                [DataCenter syncServerToLocalForSettings:obj];
+            } else {
+                /*
+                 *说明：只要在本地没有已登录账号的设置数据时才关联
+                 *     如果本地已经有已登录账号的设置数据，则不关联
+                 *     防止同一个账号在本地有两份设置数据
+                 */
+                //设置
+                NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", str_TableName_Settings];
+                FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[@""]];
+                BOOL hasRec = [rs next];
+                [rs close];
+                if (hasRec) {
+                    
+                    NSString *sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", str_TableName_Settings];
+                    
+                    BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
+                    
+                    FMDBQuickCheck(b, sqlString, __db);
+                }
+                [NotificationCenter postNotificationName:Notify_Settings_Save object:nil];
+            }
+        }];
     }
-    [NotificationCenter postNotificationName:Notify_Settings_Save object:nil];
+    
     //计划
-    hasRec = NO;
-    sqlString = [NSString stringWithFormat:@"SELECT planid FROM %@ WHERE account=?", str_TableName_Plan];
-    rs = [__db executeQuery:sqlString withArgumentsInArray:@[@""]];
+    BOOL hasRec = NO;
+    NSString *sqlString = [NSString stringWithFormat:@"SELECT planid FROM %@ WHERE account=?", str_TableName_Plan];
+    FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[@""]];
     hasRec = [rs next];
     [rs close];
     if (hasRec) {
@@ -1547,11 +1567,11 @@ static NSMutableDictionary * __contactsOnlineState;
             plan.planid = [rs stringForColumn:@"planid"];
             plan.content = [rs stringForColumn:@"content"];
             plan.createtime = [rs stringForColumn:@"createtime"];
-            plan.completetime = [rs stringForColumn:@"completetime"];
-            plan.updatetime = [rs stringForColumn:@"updatetime"];
-            plan.iscompleted = [rs stringForColumn:@"iscompleted"];
-            plan.isnotify = [rs stringForColumn:@"isnotify"];
-            plan.notifytime = [rs stringForColumn:@"notifytime"];
+            plan.completetime = [rs stringForColumn:@"completetime"] ? [rs stringForColumn:@"completetime"] : @"";
+            plan.updatetime = [rs stringForColumn:@"updatetime"] ? [rs stringForColumn:@"updatetime"] : [rs stringForColumn:@"createtime"];
+            plan.iscompleted = [rs stringForColumn:@"iscompleted"] ? [rs stringForColumn:@"iscompleted"] : @"0";
+            plan.isnotify = [rs stringForColumn:@"isnotify"] ? [rs stringForColumn:@"isnotify"] : @"0";
+            plan.notifytime = [rs stringForColumn:@"notifytime"] ? [rs stringForColumn:@"notifytime"] : @"";
             plan.plantype = [rs stringForColumn:@"plantype"];
             plan.isdeleted = [rs stringForColumn:@"isdeleted"];
             
@@ -1639,7 +1659,7 @@ static NSMutableDictionary * __contactsOnlineState;
             photo.isdeleted = [rs stringForColumn:@"isdeleted"];
             photo.photoURLArray = [NSMutableArray arrayWithCapacity:9];
             for (NSInteger n = 0; n < 9; n++) {
-                NSString *url = [NSString stringWithFormat:@"photo%ldURL", n + 1];
+                NSString *url = [NSString stringWithFormat:@"photo%ldURL", (long)(n + 1)];
                 if ([rs stringForColumn:url]) {
                     photo.photoURLArray[n] = [rs stringForColumn:url];
                 } else {
@@ -1648,7 +1668,7 @@ static NSMutableDictionary * __contactsOnlineState;
             }
             photo.photoArray = [NSMutableArray arrayWithCapacity:9];
             for (NSInteger m = 0; m < 9; m++) {
-                NSString *photoName = [NSString stringWithFormat:@"photo%ld", m + 1];
+                NSString *photoName = [NSString stringWithFormat:@"photo%ld", (long)(m + 1)];
                 NSData *imageData = [rs dataForColumn:photoName];
                 if (imageData) {
                     photo.photoArray[m] = [UIImage imageWithData:imageData];

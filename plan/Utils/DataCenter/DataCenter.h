@@ -14,4 +14,6 @@
 
 + (void)IsAllUploadFinished;
 
++ (void)syncServerToLocalForSettings:(BmobObject *)obj;
+
 @end
