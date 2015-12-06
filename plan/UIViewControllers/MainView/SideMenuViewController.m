@@ -68,12 +68,12 @@
     avatar.userInteractionEnabled = YES;
     avatar.translatesAutoresizingMaskIntoConstraints = NO;
     [headerView addSubview:avatar];
-    UIImage *image = [UIImage imageNamed:png_AvatarBg];
+//    UIImage *image = [UIImage imageNamed:png_AvatarBg];
     if ([Config shareInstance].settings.avatar) {
         
-        image = [Config shareInstance].settings.avatar;
+        avatar.image = [Config shareInstance].settings.avatar;
     }
-    avatar.image = image;
+//    avatar.image = image;
 
     NSString *nickname = str_NickName;
     if ([Config shareInstance].settings.nickname) {
