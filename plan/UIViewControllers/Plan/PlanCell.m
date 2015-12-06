@@ -40,12 +40,10 @@ NSUInteger const kBounceSpace = 20;
 }
 
 - (void)awakeFromNib {
-    
     [self addControl];
 }
 
 - (void)addControl {
-    
     UIView *menuContetnView = [[UIView alloc] init];
     menuContetnView.hidden = YES;
     menuContetnView.tag = 100;
@@ -107,7 +105,6 @@ NSUInteger const kBounceSpace = 20;
 
 //此方法和下面的方法很重要,对ios 5SDK 设置不被Helighted
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    
     UIView *vMenuView = [self.contentView viewWithTag:100];
     if (vMenuView.hidden == YES) {
         [super setSelected:selected animated:animated];
@@ -116,7 +113,6 @@ NSUInteger const kBounceSpace = 20;
 
 //此方法和上面的方法很重要，对ios 5SDK 设置不被Helighted
 - (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    
     UIView *vMenuView = [self.contentView viewWithTag:100];
     if (vMenuView.hidden == YES) {
         [super setHighlighted:highlighted animated:animated];
@@ -124,18 +120,15 @@ NSUInteger const kBounceSpace = 20;
 }
 
 - (void)prepareForReuse {
-    
     self.contentView.clipsToBounds = YES;
     [self hideMenuView:YES Animated:NO];
 }
 
 - (CGFloat)getMaxMenuWidth {
-    
     return kPlanCellHeight * 2;
 }
 
 - (void)enableSubviewUserInteraction:(BOOL)enable {
-    
     if (enable) {
         
         for (UIView *aSubView in self.contentView.subviews) {
@@ -157,7 +150,6 @@ NSUInteger const kBounceSpace = 20;
 }
 
 - (void)hideMenuView:(BOOL)hidden Animated:(BOOL)animated {
-    
     if (self.selected) {
         
         [self setSelected:NO animated:NO];
@@ -186,7 +178,6 @@ NSUInteger const kBounceSpace = 20;
             if ([_delegate respondsToSelector:@selector(didCellHided:)]) {
                 
                 [_delegate didCellHided:self];
-                
             }
             
         } else {
@@ -223,9 +214,7 @@ NSUInteger const kBounceSpace = 20;
             if ([_delegate respondsToSelector:@selector(didCellWillShow:)]) {
                 
                 [_delegate didCellWillShow:self];
-                
             }
-            
         } else {
             
             if ([_delegate respondsToSelector:@selector(didCellWillHide:)]) {
@@ -264,7 +253,6 @@ NSUInteger const kBounceSpace = 20;
 }
 
 - (void)setPlan:(Plan *)plan {
-    
     _plan = plan;
     labelContent.text = plan.content;
     if ([plan.plantype isEqualToString:@"0"]) {
@@ -281,7 +269,6 @@ NSUInteger const kBounceSpace = 20;
 }
 
 - (void)setIsDone:(NSString *)isDone {
-    
     if ([isDone isEqualToString:@"1"]) {
         
         [btnDone setAllBackgroundImage:[UIImage imageNamed:png_Btn_Plan_Doing]];
@@ -293,7 +280,6 @@ NSUInteger const kBounceSpace = 20;
 }
 
 - (void)didContentClicked:(id)sender {
-    
     if ([_delegate respondsToSelector:@selector(didCellClicked:)]) {
         
         [_delegate didCellClicked:self];
@@ -301,7 +287,6 @@ NSUInteger const kBounceSpace = 20;
 }
 
 - (void)deleteButtonClicked:(id)sender {
-    
     if ([_delegate respondsToSelector:@selector(didCellClickedDeleteButton:)]) {
         
         [_delegate didCellClickedDeleteButton:self];
@@ -309,7 +294,6 @@ NSUInteger const kBounceSpace = 20;
 }
 
 - (void)btnDoneClicked:(id)sender {
-    
     [self.superview sendSubviewToBack:self];
     if ([_delegate respondsToSelector:@selector(didCellClickedDoneButton:)]) {
         

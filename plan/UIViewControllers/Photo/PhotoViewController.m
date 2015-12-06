@@ -49,7 +49,6 @@
 }
 
 - (void)dealloc {
-    
     [NotificationCenter removeObserver:self];
 }
 
@@ -58,7 +57,6 @@
 }
 
 - (void)addAction:(UIButton *)button {
-    
     AddPhotoViewController *controller = [[AddPhotoViewController alloc] init];
     controller.operationType = Add;
     controller.hidesBottomBarWhenPushed = YES;
@@ -66,7 +64,6 @@
 }
 
 - (void)reloadPhotoData {
-    
     [self showHUD];
     photoArray = [NSArray arrayWithArray:[PlanCache getPhoto]];
     [self.tableView reloadData];
@@ -74,18 +71,15 @@
 }
 
 - (void)refreshTable {
-    
     [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
     if (photoArray.count > 0) {
         
         return photoArray.count;
@@ -97,7 +91,6 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     if (photoArray.count > 0) {
         
         return kPhotoCellHeight;
@@ -109,7 +102,6 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     if (indexPath.row < photoArray.count) {
         
         tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
@@ -142,15 +134,12 @@
         } else {
             cell.textLabel.text = nil;
         }
-        
         return cell;
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     if (indexPath.row < photoArray.count) {
-        
         PhotoDetailViewController *controller = [[PhotoDetailViewController alloc] init];
         controller.photo = photoArray[indexPath.row];
         controller.hidesBottomBarWhenPushed = YES;

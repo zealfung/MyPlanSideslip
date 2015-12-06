@@ -31,7 +31,6 @@ NSUInteger const kToolBarHeight = 44;
 
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
     
     if (self.operationType == Add) {
@@ -45,19 +44,15 @@ NSUInteger const kToolBarHeight = 44;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
-    
     [super viewWillAppear:animated];
     [self loadCustomView];
-    
 }
 
 - (void)didReceiveMemoryWarning {
-    
     [super didReceiveMemoryWarning];
 }
 
 - (void)createRightBarButton {
-    
     self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Save selectedImageName:png_Btn_Save selector:@selector(saveAction:)];
 }
 
@@ -110,12 +105,10 @@ NSUInteger const kToolBarHeight = 44;
     if (self.operationType == Edit) {
         
         self.textNoteDetail.text = self.plan.content;
-        
         if ([self.plan.isnotify isEqualToString:@"1"]) {
             [switchButton setOn:YES];
             labelNotifyTime.text = self.plan.notifytime;
         }
-        
     } else {
         
         [self.textNoteDetail becomeFirstResponder];
@@ -177,7 +170,6 @@ NSUInteger const kToolBarHeight = 44;
 }
 
 - (void)switchAction:(id)sender {
-    
     UISwitch *btnSwitch = (UISwitch*)sender;
     BOOL isButtonOn = [btnSwitch isOn];
     if (isButtonOn) {
@@ -192,25 +184,19 @@ NSUInteger const kToolBarHeight = 44;
 }
 
 - (void)labelTouchUpInside:(UITapGestureRecognizer *)recognizer {
-    
     if ([switchButton isOn]) {
-        
         [self showDatePicker];
     }
 }
 
 - (void)onPickerCertainBtn {
-    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
     labelNotifyTime.text = [dateFormatter stringFromDate:datePicker.date];
-    
     [self onPickerCancelBtn];
-    
 }
 
 - (void)onPickerCancelBtn {
-    
     UIView *pickerView = [self.view viewWithTag:kDatePickerBgViewTag];
     [pickerView removeFromSuperview];
     
@@ -221,9 +207,7 @@ NSUInteger const kToolBarHeight = 44;
 }
 
 - (void)savePlan {
-    
     NSString *timeNow = [CommonFunction getTimeNowString];
-
     NSString* planid = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyyMMddHHmmss];
     
     if (self.operationType == Add) {
@@ -257,7 +241,6 @@ NSUInteger const kToolBarHeight = 44;
         
         [self alertButtonMessage:str_Save_Fail];
     }
-    
 }
 
 @end

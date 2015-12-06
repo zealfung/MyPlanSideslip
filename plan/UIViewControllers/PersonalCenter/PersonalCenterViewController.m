@@ -17,9 +17,7 @@
     UIScrollView *scrollView;
     UIImageView *imgViewTop;
     UIImageView *imgViewAvatar;
-    
     UIButton *btnShareData;
-    
     UIView *viewPieces;
     PieceButton *pbRecentlyConsecutiveDates;//最近连续计划天数
     PieceButton *pbMaxConsecutiveDates; //最大连续计划天数
@@ -50,18 +48,14 @@
 }
 
 - (void)dealloc {
-    
     [NotificationCenter removeObserver:self];
-    
 }
 
 - (void)createRightBarButton {
-    
     self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Settings selectedImageName:png_Btn_Settings selector:@selector(settingsAction:)];
 }
 
 - (void)loadCustomView {
-    
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, HEIGHT_FULL_SCREEN)];
     scrollView.showsVerticalScrollIndicator = NO;
     scrollView.showsHorizontalScrollIndicator = NO;
@@ -219,18 +213,6 @@
         
         yOffset = CGRectGetMaxY(viewPieces.frame) + 10;
     }
-//    {
-//        CGFloat height = 20;
-//        UILabel *labelUpdate = [[UILabel alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, height)];
-//        labelUpdate.font = font_Normal_10;
-//        labelUpdate.textAlignment = NSTextAlignmentCenter;
-//        labelUpdate.textColor = color_ff9900;
-//        labelUpdate.text = @"数据更新时间：1分钟前";
-//        labelUpdateTime = labelUpdate;
-//        [scrollView addSubview:labelUpdate];
-//        
-//        yOffset = CGRectGetMaxY(labelUpdate.frame) + 15;
-//    }
     {
         CGFloat viewWidth = 110;
         CGFloat viewHeight = 20;
@@ -261,25 +243,21 @@
         
         yOffset =  CGRectGetMaxY(btnShare.frame) + 74;
     }
-    
     scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, yOffset);
 }
 
 - (void)settingsAction:(UIButton *)button {
-    
     SettingsViewController *controller = [[SettingsViewController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)shareData:(UIButton *)button {
-    
     viewLogo.hidden = NO;
     labelUpdateTime.hidden = YES;
     btnShareData.hidden = YES;
 
     UIImage* image = [UIImage imageNamed:png_ImageDefault];
     UIGraphicsBeginImageContextWithOptions(scrollView.contentSize, NO , 0.0f);//高清，效率比较慢
-//    UIGraphicsBeginImageContext(scrollView.contentSize);//模糊
     {
         CGPoint savedContentOffset = scrollView.contentOffset;
         CGRect savedFrame = scrollView.frame;
@@ -302,7 +280,6 @@
 }
 
 - (void)changeTopImage {
-    
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil
@@ -325,7 +302,6 @@
         //不支持相片选取
     }
 }
-
 
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
@@ -369,9 +345,7 @@
 
 #pragma mark - UIImagePickerControllerDelegate
 - (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    
     [picker dismissViewControllerAnimated:YES completion:nil];
-    
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo {

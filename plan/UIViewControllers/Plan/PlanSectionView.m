@@ -14,11 +14,9 @@
     BOOL _toggle;
     UILabel *titleLabel;
     UIImageView *toggleImageView;
-    
 }
 
 - (id)initWithTitle:(NSString *)title isAllDone:(BOOL)isAllDone {
-    
     self = [super initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, kPlanSectionViewHeight)];
     if (self) {
         self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
@@ -33,7 +31,6 @@
         } else {
             
             titleLabel.textColor = [UIColor yellowColor];
-            
         }
         titleLabel.font = font_Normal_18;
         titleLabel.text = title;
@@ -48,16 +45,12 @@
         
         [self addSubview:toggleImageView];
         [self addSubview:titleLabel];
-        
     }
-    
     return self;
 }
 
 - (void)toggleArrow {
-    
     CGFloat fl = (M_PI / 180) * 180;
-    
     if (_toggle) {
         
         toggleImageView.transform = CGAffineTransformMakeRotation(fl * 4);
@@ -65,7 +58,6 @@
     } else {
         
         toggleImageView.transform = CGAffineTransformMakeRotation(fl);
-        
     }
     _toggle = !_toggle;
 }

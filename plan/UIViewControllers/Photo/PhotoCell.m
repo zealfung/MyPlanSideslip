@@ -17,13 +17,10 @@ CGFloat kPhotoCellHeight;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    
     [super setSelected:selected animated:animated];
-
 }
 
 + (PhotoCell *)cellView:(Photo *)photo {
-    
     CGFloat contentHeight = [self setContentHeight:photo.content];
     
     PhotoCell *cell = [[PhotoCell alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, kPhotoCellHeight)];
@@ -80,7 +77,6 @@ CGFloat kPhotoCellHeight;
         labelLocation.textColor = color_Blue;
         labelLocation.text = [NSString stringWithFormat:@"%@%@", str_Photo_Location, photo.location];
         [cell addSubview:labelLocation];
-        
     }
 
     xOffset = CGRectGetMaxX(lineView.frame) + xMargins;
@@ -105,7 +101,6 @@ CGFloat kPhotoCellHeight;
         } else {
             
             labelContent.numberOfLines = 3;
-            
         }
         [cell addSubview:labelContent];
         
@@ -114,9 +109,7 @@ CGFloat kPhotoCellHeight;
     } else {
         
         yOffset = CGRectGetMaxY(btnAge.frame) + yMargins;
-    
     }
-    
     NSInteger imageCount = photo.photoArray.count > 3 ? 3 : photo.photoArray.count;
     CGFloat imageSpace = 10;
     CGFloat imageWidth = (contentWidth - imageSpace * (imageCount - 1)) / imageCount;
@@ -152,26 +145,19 @@ CGFloat kPhotoCellHeight;
             [imageView addSubview:btnTotal];
             
         }
-        
         [photoView addSubview:imageView];
         
         pXOffset += imageWidth + imageSpace;
     }
-    
     return cell;
-    
 }
 
 + (CGFloat)setContentHeight:(NSString *)content {
-    
     CGFloat contentHeight = 0;
     
     if (!content || content.length == 0) {
-        
         kPhotoCellHeight = 190;
-        
     } else {
-        
         CGFloat contentAutoHeight = [self autoContentHeight:content];
         
         if (contentAutoHeight < 30) {
@@ -185,26 +171,18 @@ CGFloat kPhotoCellHeight;
         } else {
             
             contentHeight = 75;
-            
         }
-        
         kPhotoCellHeight = 190 + contentHeight;
-        
     }
-    
     return contentHeight;
-    
 }
 
 + (CGFloat)autoContentHeight:(NSString *)content {
-    
     CGSize  size = [content sizeWithFont:font_Normal_13 constrainedToSize:CGSizeMake(240, 2000)lineBreakMode:NSLineBreakByWordWrapping];
-    
     return size.height + 10;
 }
 
 + (NSString *)getAge:(NSDate *)photoDate {
-    
     NSString *unknow = [NSString stringWithFormat:@"X%@", str_Photo_Age];
     if (![Config shareInstance].settings.birthday
         || [Config shareInstance].settings.birthday.length == 0) {
@@ -223,9 +201,7 @@ CGFloat kPhotoCellHeight;
         
         long age = secondsBetweenDates / (365 * 24 * 60 * 60);
         return [NSString stringWithFormat:@"%ld%@", age, str_Photo_Age];
-        
     }
-
 }
 
 @end

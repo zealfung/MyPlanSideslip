@@ -85,7 +85,6 @@ NSUInteger const kTaskDeleteTag = 20151201;
 }
 
 - (void)createRightBarButton {
-    
     if (self.operationType == Add || self.operationType == Edit) {
         
         self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Save selectedImageName:png_Btn_Save selector:@selector(saveAction:)];
@@ -99,7 +98,6 @@ NSUInteger const kTaskDeleteTag = 20151201;
 }
 
 - (void)saveAction:(UIButton *)button {
-    
     NSString *content = [self.txtView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if (content.length < 2) {
         [self alertButtonMessage:str_Common_Tips3];
@@ -143,7 +141,6 @@ NSUInteger const kTaskDeleteTag = 20151201;
 }
 
 - (void)deleteAction:(UIButton *)button {
-    
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Task_Delete_Tips
                                                     message:nil
                                                    delegate:self
@@ -153,11 +150,9 @@ NSUInteger const kTaskDeleteTag = 20151201;
     
     alert.tag = kTaskDeleteTag;
     [alert show];
-    
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    
     if (alertView.tag == kTaskDeleteTag) {
         
         if (buttonIndex == 1) {
@@ -171,17 +166,13 @@ NSUInteger const kTaskDeleteTag = 20151201;
             } else {
                 
                 [self alertButtonMessage:str_Delete_Fail];
-                
             }
-            
         }
-        
     }
 }
 
 #pragma mark - UITextViewDelegate
 - (void)textViewDidBeginEditing:(UITextView *)textView {
-    
     NSString *text = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if ([text isEqualToString:str_Photo_Add_Tips1]) {
         textView.text = @"";
@@ -190,7 +181,6 @@ NSUInteger const kTaskDeleteTag = 20151201;
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView {
-    
     NSString *text = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (text.length == 0) {
         textView.text = str_Photo_Add_Tips1;
@@ -200,12 +190,10 @@ NSUInteger const kTaskDeleteTag = 20151201;
 
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    
     if (finishRecordArray.count > 0) {
         
         return finishRecordArray.count;
@@ -217,12 +205,10 @@ NSUInteger const kTaskDeleteTag = 20151201;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     return 44.f;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     if (indexPath.row < finishRecordArray.count) {
         
         tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
@@ -273,7 +259,6 @@ NSUInteger const kTaskDeleteTag = 20151201;
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 

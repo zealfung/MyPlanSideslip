@@ -41,7 +41,6 @@
     if (self = [super initWithFrame:CGRectMake(0, 0, kPieceButtonWidth, kPieceButtonHeight)]) {
         [self customInit];
     }
-    
     return self;
 }
 
