@@ -10,6 +10,7 @@
 #import "LogIn.h"
 #import "CLLockVC.h"
 #import "PlanCache.h"
+#import "DataCenter.h"
 #import "RESideMenu.h"
 #import "CLLockNavVC.h"
 #import "RegisterSDK.h"
@@ -63,7 +64,10 @@
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-
+    //自动同步数据
+    if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"]) {
+        [DataCenter startSyncData];
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -73,6 +77,11 @@
     
     // 清除推送图标标记
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
+    
+    //自动同步数据
+    if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"]) {
+        [DataCenter startSyncData];
+    }
 
     UIViewController *controller = self.window.rootViewController;
     if ([controller isKindOfClass:[RESideMenu class]]) {

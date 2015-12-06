@@ -171,6 +171,7 @@
 #define str_Share_Tips2 @"晒数据"
 
 #define str_Sync_Begin @"开始同步数据..."
+#define str_Sync_End @"同步数据完成"
 
 #define str_Avatar @"kAvatar"
 #define str_LogInPlatform @"kLogInPlatform"

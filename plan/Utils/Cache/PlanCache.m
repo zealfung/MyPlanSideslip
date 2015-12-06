@@ -465,7 +465,7 @@ static NSMutableDictionary * __contactsOnlineState;
             
         } else {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, isUseGestureLock, isShowGestureTrack, gesturePasswod, createtime, updatetime, syntime) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Settings];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, isUseGestureLock, isShowGestureTrack, gesturePasswod, createtime, updatetime, syntime) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Settings];
             
             BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.account, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, avatarData, settings.avatarURL, centerTopData, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.createtime, settings.updatetime, settings.syntime]];
 
@@ -1114,6 +1114,7 @@ static NSMutableDictionary * __contactsOnlineState;
             photo.phototime = [rs stringForColumn:@"phototime"];
             photo.updatetime = [rs stringForColumn:@"updatetime"];
             photo.location = [rs stringForColumn:@"location"];
+            photo.isdeleted = @"0";
             photo.photoURLArray = [NSMutableArray arrayWithCapacity:9];
             for (NSInteger n = 0; n < 9; n++) {
                 NSString *url = [NSString stringWithFormat:@"photo%ldURL", n + 1];

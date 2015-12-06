@@ -52,7 +52,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = str_More_Settings;
-    [self createNavBarButton];
     
     [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_LogIn object:nil];
     [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_Settings_Save object:nil];
@@ -78,10 +77,13 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 - (void)createNavBarButton {
     if ([LogIn isLogin]) {
         self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Sync selectedImageName:png_Btn_Sync selector:@selector(syncDataAction)];
+    } else {
+        self.rightBarButtonItem = nil;
     }
 }
 
 - (void)loadCustomView {
+    [self createNavBarButton];
     [scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self showHUD];
     
@@ -927,7 +929,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 }
 
 - (void)syncDataAction {
-    [AlertCenter alertNavBarMessage:str_Sync_Begin];
+    [AlertCenter alertNavBarYellowMessage:str_Sync_Begin];
     [DataCenter startSyncData];
 }
 
