@@ -764,7 +764,10 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     if (hasPwd) {
         //关闭手势解锁
         [CLLockVC showVerifyLockVCInVC:self isLogIn:NO forgetPwdBlock:^{
-            NSLog(@"忘记密码");
+            
+            LogInViewController *controller = [[LogInViewController alloc] init];
+            [self.navigationController pushViewController:controller animated:YES];
+            
         } successBlock:^(CLLockVC *lockVC, NSString *pwd) {
             
             [Config shareInstance].settings.isUseGestureLock = @"0";
