@@ -177,7 +177,7 @@
 }
 
 - (void)alertNavBarMessage:(NSString *)message {
-    [AlertCenter alertNavBarMessage:message];
+    [AlertCenter alertNavBarGreenMessage:message];
 }
 
 @end

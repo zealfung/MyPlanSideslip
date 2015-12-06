@@ -22,14 +22,22 @@
     [pbMessage  showMessage:message];
 }
 
-+ (void)alertNavBarMessage:(NSString *)message {
++ (void)alertNavBarGreenMessage:(NSString *)message {
+    [AlertCenter alertNavBarMessage:message color:color_0BA32A];
+}
+
++ (void)alertNavBarYellowMessage:(NSString *)message {
+    [AlertCenter alertNavBarMessage:message color:color_ff9900];
+}
+
++ (void)alertNavBarMessage:(NSString *)message color:(UIColor *)color {
     NSDictionary *options = @{
                               kCRToastNotificationTypeKey : @(CRToastTypeNavigationBar),
                               kCRToastNotificationPresentationTypeKey : @(CRToastPresentationTypeCover),
                               kCRToastUnderStatusBarKey : @(YES),
                               kCRToastTextKey : message,
                               kCRToastTextAlignmentKey : @(NSTextAlignmentCenter),
-                              kCRToastBackgroundColorKey : color_0BA32A,
+                              kCRToastBackgroundColorKey : color,
                               kCRToastAnimationInTypeKey : @(CRToastAnimationTypeGravity),
                               kCRToastAnimationOutTypeKey : @(CRToastAnimationTypeGravity),
                               kCRToastAnimationInDirectionKey : @(CRToastAnimationDirectionTop),
