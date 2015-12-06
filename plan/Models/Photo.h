@@ -18,25 +18,7 @@
 @property (nonatomic, strong) NSString *updatetime;
 @property (nonatomic, strong) NSString *location; //拍照地点
 @property (nonatomic, strong) NSMutableArray *photoArray;
-
-@property (nonatomic, strong) NSData *photo1NSData;
-@property (nonatomic, strong) NSData *photo2NSData;
-@property (nonatomic, strong) NSData *photo3NSData;
-@property (nonatomic, strong) NSData *photo4NSData;
-@property (nonatomic, strong) NSData *photo5NSData;
-@property (nonatomic, strong) NSData *photo6NSData;
-@property (nonatomic, strong) NSData *photo7NSData;
-@property (nonatomic, strong) NSData *photo8NSData;
-@property (nonatomic, strong) NSData *photo9NSData;
-@property (nonatomic, strong) NSString *photo1URL;
-@property (nonatomic, strong) NSString *photo2URL;
-@property (nonatomic, strong) NSString *photo3URL;
-@property (nonatomic, strong) NSString *photo4URL;
-@property (nonatomic, strong) NSString *photo5URL;
-@property (nonatomic, strong) NSString *photo6URL;
-@property (nonatomic, strong) NSString *photo7URL;
-@property (nonatomic, strong) NSString *photo8URL;
-@property (nonatomic, strong) NSString *photo9URL;
+@property (nonatomic, strong) NSMutableArray *photoURLArray;
 @property (nonatomic, strong) NSString *isdeleted; //是否已删除 1是 0否
 
 @end
