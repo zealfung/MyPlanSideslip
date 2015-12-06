@@ -72,4 +72,8 @@
 
 + (NSArray *)getTeaskRecordForSyncByTaskId:(NSString *)taskId syntime:(NSString *)syntime;
 
++ (Task *)findTask:(NSString *)account taskId:(NSString *)taskId;
+
++ (NSArray *)getPhotoForSync:(NSString *)syntime;
+
 @end

@@ -19,6 +19,8 @@ static BOOL finishSettings;
 static BOOL finishUploadAvatar;
 static BOOL finishUploadCenterTop;
 static BOOL finishPlan;
+static BOOL finishTask;
+static BOOL finishPhoto;
 
 @implementation DataCenter
 
@@ -35,18 +37,11 @@ static BOOL finishPlan;
     //同步任务
     [self startSyncTask];
     
+    //同步影像
+    [self startSyncPhoto];
+    
     //同步个人设置 (一定要最后同步个人设置，因为需要更新同步时间)
     [self compareSyncTime];
-    
-    //加载本地同步时间
-    
-    //如果没有，则从服务器获取全部设置和计划数据（只取未删除标识的）
-    
-    //如果有，则从服务器获取设置和updatetime大于等于本地同步时间的数据（只取未删除标识的）
-    
-    //对比本地数据与服务器上的数据，取updatetime较新的数据进行同步保存
-    
-    //更新本地同步时间
 }
 
 + (void)resetUploadFlag {
@@ -54,6 +49,8 @@ static BOOL finishPlan;
     finishUploadAvatar = NO;
     finishUploadCenterTop = NO;
     finishPlan = NO;
+    finishTask = NO;
+    finishPhoto = NO;
 }
 
 + (void)IsAllUploadFinished {
@@ -61,7 +58,9 @@ static BOOL finishPlan;
     if (finishSettings
         && finishUploadAvatar
         && finishUploadCenterTop
-        && finishPlan) {
+        && finishPlan
+        && finishTask
+        && finishPhoto) {
         
         [AlertCenter alertNavBarMessage:@"同步文本完成"];
     }
@@ -472,7 +471,7 @@ static BOOL finishPlan;
 }
 
 + (void)syncServerToLocalForPlan {
-    
+    __weak typeof(self) weakSelf = self;
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
     [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
     [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
@@ -501,8 +500,7 @@ static BOOL finishPlan;
                 }
             }
             finishPlan = YES;
-            [DataCenter IsAllUploadFinished];
-            [AlertCenter alertNavBarMessage:@"同步文本完成"];
+            [weakSelf IsAllUploadFinished];
         }
         
     }];
@@ -524,9 +522,212 @@ static BOOL finishPlan;
 }
 
 + (void)startSyncPhoto {
+    [self syncLocalToServerForPhoto];
+    [self syncServerToLocalForPhoto];
+}
+
++ (void)syncLocalToServerForPhoto {
+    __weak typeof(self) weakSelf = self;
+    NSArray *localNewArray = [NSArray array];
+    if ([Config shareInstance].settings.syntime.length > 0) {
+        
+        localNewArray = [PlanCache getPhotoForSync:[Config shareInstance].settings.syntime];
+    } else {
+        
+        localNewArray = [PlanCache getPhotoForSync:nil];
+    }
+    
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Photo"];
+    
+    for (Photo *photo in localNewArray) {
+        
+        [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
+        [bquery whereKey:@"photoId" equalTo:photo.photoid];
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+            
+            if (array.count > 0) {
+                
+                BmobObject *obj = array[0];
+                
+                NSString *serverUpdatedTime = [obj objectForKey:@"updatedTime"];
+                NSDate *localDate = [CommonFunction NSStringDateToNSDate:photo.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                
+                if ([localDate compare:serverDate] == NSOrderedAscending) {
+                    
+                } else if ([localDate compare:serverDate] == NSOrderedDescending) {
+                    //本地的设置较新
+                    [weakSelf updatePhotoForServer:photo obj:obj];
+                }
+            } else {
+                
+                BmobObject *newPhoto = [BmobObject objectWithClassName:@"Photo"];
+                NSDictionary *dic = @{@"userObjectId":photo.account,
+                                      @"photoId":photo.photoid,
+                                      @"content":photo.content,
+                                      @"location":photo.location,
+                                      @"createdTime":photo.createtime,
+                                      @"photoTime":photo.phototime,
+                                      @"updatedTime":photo.updatetime,
+                                      @"photo1URL":photo.photoURLArray[0],
+                                      @"photo2URL":photo.photoURLArray[1],
+                                      @"photo3URL":photo.photoURLArray[2],
+                                      @"photo4URL":photo.photoURLArray[3],
+                                      @"photo5URL":photo.photoURLArray[4],
+                                      @"photo6URL":photo.photoURLArray[5],
+                                      @"photo7URL":photo.photoURLArray[6],
+                                      @"photo8URL":photo.photoURLArray[7],
+                                      @"photo9URL":photo.photoURLArray[8],
+                                      @"isDeleted":photo.isdeleted};
+                [newPhoto saveAllWithDictionary:dic];
+                //异步保存
+                [newPhoto saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+                    if (isSuccessful) {
+                        //创建成功后的动作
+                    } else if (error){
+                        //发生错误后的动作
+                        NSLog(@"%@",error);
+                    } else {
+                        NSLog(@"Unknow error");
+                    }
+                }];
+                for (NSInteger i = 0; i < photo.photoArray.count; i++) {
+                    [weakSelf uploadPhoto:photo index:i obj:newPhoto];
+                }
+            }
+        }];
+    }
+}
+
++ (void)updatePhotoForServer:(Photo *)photo obj:(BmobObject *)obj {
+    if (photo.content) {
+        [obj setObject:photo.content forKey:@"content"];
+    }
+    if (photo.phototime) {
+        [obj setObject:photo.phototime forKey:@"photoTime"];
+    }
+    if (photo.updatetime) {
+        [obj setObject:photo.updatetime forKey:@"updatedTime"];
+    }
+    if (photo.location) {
+        [obj setObject:photo.location forKey:@"location"];
+    }
+    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        if (isSuccessful) {
+        } else if (error){
+            NSLog(@"更新本地影像到服务器失败：%@",error);
+        } else {
+            NSLog(@"更新本地影像到服务器遇到未知错误");
+        }
+    }];
+    for (NSInteger i = 0; i < photo.photoArray.count; i++) {
+        [self uploadPhoto:photo index:i obj:obj];
+    }
+}
+
++ (void)uploadPhoto:(Photo *)photo index:(NSInteger)index obj:(BmobObject *)obj {
+    UIImage *image = photo.photoArray[index];
+    NSString *url = [NSString stringWithFormat:@"photo%ldURL", index+1];
+    if (![photo.photoURLArray[index] isEqualToString:[obj objectForKey:url]]
+        && image) {
+        NSData *imgData = UIImageJPEGRepresentation(image, 1.0);
+        [BmobProFile uploadFileWithFilename:@"imgPhoto.png" fileData:imgData block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
+            if (isSuccessful) {
+                
+                [obj setObject:bmobFile.url forKey:url];
+                [obj updateInBackground];
+                
+                photo.photoURLArray[index] = bmobFile.url;
+                [PlanCache storePhoto:photo];
+            } else if (error) {
+            }
+        } progress:^(CGFloat progress) {
+        }];
+    }
+}
+
++ (void)syncServerToLocalForPhoto {
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Photo"];
+    [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
+    [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
+    [bquery orderByDescending:@"updatedAt"];
+    bquery.limit = 100;
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        if (!error && array.count > 0) {
+            
+            for (BmobObject *obj in array) {
+                
+                Photo *photo = [PlanCache getPhotoById:[obj objectForKey:@"photoId"]];
+                if (photo.createtime) {
+                    
+                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:photo.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"updatedTime"] formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    
+                    if ([localDate compare:serverDate] == NSOrderedAscending) {
+                        //服务器的较新
+                        [weakSelf updatePhotoForLocal:photo obj:obj];
+                        
+                    } else if ([localDate compare:serverDate] == NSOrderedDescending) {
+                        //本地的设置较新
+                    }
+                } else {
+                    [weakSelf updatePhotoForLocal:photo obj:obj];
+                }
+            }
+            finishPlan = YES;
+            [weakSelf IsAllUploadFinished];
+        }
+    }];
+}
+
++ (void)updatePhotoForLocal:(Photo *)photo obj:(BmobObject *)obj {
+    photo.account = [obj objectForKey:@"userObjectId"];
+    photo.photoid = [obj objectForKey:@"photoId"];
+    photo.content = [obj objectForKey:@"content"];
+    photo.createtime = [obj objectForKey:@"createdTime"];
+    photo.phototime = [obj objectForKey:@"photoTime"];
+    photo.updatetime = [obj objectForKey:@"updatedTime"];
+    photo.location = [obj objectForKey:@"location"];
+    
+    for (NSInteger i = 0; i < 9; i++) {
+        NSString *url = [NSString stringWithFormat:@"photo%ldURL", i + 1];
+        NSString *serverPhotoURL = [obj objectForKey:url];
+        if (serverPhotoURL
+            && serverPhotoURL.length > 0
+            && ![photo.photoURLArray[i] isEqualToString:serverPhotoURL]) {
+            //本地与服务器的URL不一样，需要更新本地图片
+            [self downloadPhoto:photo index:i url:serverPhotoURL];
+        }
+    }
+    [PlanCache storePhoto:photo];
+}
+
++ (void)downloadPhoto:(Photo *)photo index:(NSInteger)index url:(NSString *)url {
+    photo.photoURLArray[index] = url;
+    
+    SDWebImageDownloader *imageDownloader = [SDWebImageDownloader sharedDownloader];
+    [imageDownloader downloadImageWithURL:[NSURL URLWithString:url] options:SDWebImageDownloaderLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        
+    } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
+        
+        if (image) {
+            if (index < photo.photoArray.count) {
+                photo.photoArray[index] = image;
+            } else {
+                [photo.photoArray addObject:image];
+            }
+            [PlanCache storePhoto:photo];
+        }
+    }];
 }
 
 + (void)startSyncTask {
+    [self syncLocalToServerForTask];
+    [self syncServerToLocalForTask];
+}
+
++ (void)syncLocalToServerForTask {
     __weak typeof(self) weakSelf = self;
     NSArray *localNewArray = [NSArray array];
     if ([Config shareInstance].settings.syntime.length > 0) {
@@ -652,6 +853,75 @@ static BOOL finishPlan;
             NSLog(@"更新本地任务到服务器失败：%@",error);
         } else {
             NSLog(@"更新本地任务到服务器遇到未知错误");
+        }
+    }];
+}
+
++ (void)syncServerToLocalForTask {
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Task"];
+    [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
+    [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
+    [bquery orderByDescending:@"updatedAt"];
+    bquery.limit = 100;
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        if (!error && array.count > 0) {
+            
+            for (BmobObject *obj in array) {
+                
+                Task *task = [PlanCache findTask:[Config shareInstance].settings.account taskId:[obj objectForKey:@"taskId"]];
+                if (task.content) {
+                    
+                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:task.updateTime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"updatedTime"] formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    
+                    if ([localDate compare:serverDate] == NSOrderedAscending) {
+                        //服务器的较新
+                        [weakSelf updateTaskForLocal:task obj:obj];
+                        
+                    } else if ([localDate compare:serverDate] == NSOrderedDescending) {
+                        //本地的设置较新
+                    }
+                } else {
+                    [weakSelf updateTaskForLocal:task obj:obj];
+                }
+            }
+            finishPlan = YES;
+            [weakSelf IsAllUploadFinished];
+        }
+        
+    }];
+}
+
++ (void)updateTaskForLocal:(Task *)task obj:(BmobObject *)obj {
+    task.account = [obj objectForKey:@"userObjectId"];
+    task.taskId = [obj objectForKey:@"taskId"];
+    task.content = [obj objectForKey:@"content"];
+    task.totalCount = [obj objectForKey:@"totalCount"];
+    task.completionDate = [obj objectForKey:@"completionDate"];
+    task.createTime = [obj objectForKey:@"createdTime"];
+    task.updateTime = [obj objectForKey:@"updatedTime"];
+    task.isNotify = [obj objectForKey:@"isNotify"];
+    task.notifyTime = [obj objectForKey:@"notifyTime"];
+    task.isDeleted = [obj objectForKey:@"isDeleted"];
+    [self getNewTaskRecordFromServer:task.taskId];
+    [PlanCache storeTask:task];
+}
+
++ (void)getNewTaskRecordFromServer:(NSString *)recordId {
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"TaskRecord"];
+    [bquery whereKey:@"recordId" equalTo:recordId];
+    [bquery whereKey:@"createdTime" greaterThanOrEqualTo:[Config shareInstance].settings.syntime];
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        if (!error && array.count > 0) {
+            
+            for (BmobObject *obj in array) {
+                
+                TaskRecord *taskRecord = [[TaskRecord alloc] init];
+                taskRecord.recordId = recordId;
+                taskRecord.createTime = [obj objectForKey:@"createdTime"];
+                [PlanCache storeTaskRecord:taskRecord];
+            }
         }
     }];
 }
