@@ -88,8 +88,8 @@
                 
                 LogInViewController *LogInVC = [[LogInViewController alloc] init];
                 LogInVC.isForgotGesture = YES;
-//                CLLockNavVC *navVC = [[CLLockNavVC alloc] initWithRootViewController:LogInVC];
-//                [weakSelf.window.rootViewController presentViewController:navVC animated:YES completion:nil];
+                CLLockNavVC *navVC = [[CLLockNavVC alloc] initWithRootViewController:LogInVC];
+                weakSelf.window.rootViewController = navVC;
                 
             } successBlock:^(CLLockVC *lockVC, NSString *pwd) {
                 

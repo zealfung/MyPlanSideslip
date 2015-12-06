@@ -121,7 +121,7 @@
         <!--Root View Controller-->
         <scene sceneID="NOI-ST-IfS">
             <objects>
-                <viewController id="lSA-md-YaU" customClass="RootViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="rootViewController" id="lSA-md-YaU" customClass="RootViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Gdd-kM-BKy"/>
                         <viewControllerLayoutGuide type="bottom" id="rRB-aJ-12A"/>

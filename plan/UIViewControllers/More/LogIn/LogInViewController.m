@@ -7,7 +7,9 @@
 //
 
 #import "LogIn.h"
+#import "AppDelegate.h"
 #import <BmobSDK/BmobUser.h>
+#import "RootViewController.h"
 #import "LogInViewController.h"
 #import "RegisterViewController.h"
 #import "ForgotPasswordViewController.h"
@@ -88,7 +90,6 @@
             if ([user objectForKey:@"emailVerified"]) {
                 //用户没验证过邮箱
                 if (![[user objectForKey:@"emailVerified"] boolValue]) {
-                    [weakSelf hideHUD];
                     [BmobUser logout];
                     [weakSelf alertButtonMessage:str_LogIn_Tips2];
                     [user verifyEmailInBackgroundWithEmailAddress:acountEmail];
@@ -99,7 +100,13 @@
                         [Config shareInstance].settings.isUseGestureLock = @"0";
                         [Config shareInstance].settings.gesturePasswod = @"";
                         [PlanCache storePersonalSettings:[Config shareInstance].settings];
-//                        [weakSelf dismissViewControllerAnimated:YES completion:nil];
+                        
+                        UIStoryboard *story = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+                        RootViewController *controller = [story instantiateViewControllerWithIdentifier:@"rootViewController"];
+                        AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                        delegate.window.rootViewController = controller;
+                        [delegate.window reloadInputViews];
+
                     } else {
                         //登录后自动关联本地没有对应账号的数据
                         [PlanCache linkedLocalDataToAccount];
