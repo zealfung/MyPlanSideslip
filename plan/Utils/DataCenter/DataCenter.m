@@ -376,7 +376,6 @@ static BOOL finishPhoto;
 }
 
 + (void)startSyncPlan {
-    
     [self syncLocalToServerForPlan];
     [self syncServerToLocalForPlan];
 }
@@ -490,12 +489,17 @@ static BOOL finishPhoto;
 }
 
 + (void)syncServerToLocalForPlan {
+    NSString *count = [PlanCache getPlanTotalCountByPlantype:@"1"];
     __weak typeof(self) weakSelf = self;
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
     [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
     [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
     [bquery orderByDescending:@"updatedAt"];
-    bquery.limit = 100;
+    if ([count integerValue] > 0) {
+        bquery.limit = 100;
+    } else {
+        bquery.limit = 999;
+    }
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
         if (!error && array.count > 0) {
             

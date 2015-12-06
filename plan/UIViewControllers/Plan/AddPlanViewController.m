@@ -216,6 +216,7 @@ NSUInteger const kToolBarHeight = 44;
         self.plan.createtime = timeNow;
         self.plan.updatetime = timeNow;
         self.plan.iscompleted = @"0";
+        self.plan.isdeleted = @"0";
     } else {
         self.plan.updatetime = timeNow;
     }

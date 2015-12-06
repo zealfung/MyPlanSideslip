@@ -505,13 +505,16 @@ static NSMutableDictionary * __contactsOnlineState;
             plan.updatetime = plan.createtime;
         }
         if (!plan.iscompleted) {
-            plan.iscompleted = @"";
+            plan.iscompleted = @"0";
         }
         if (!plan.plantype) {
             plan.plantype = @"";
         }
         if (!plan.notifytime) {
             plan.notifytime = @"";
+        }
+        if (!plan.isdeleted) {
+            plan.isdeleted = @"0";
         }
         
         BOOL hasRec = NO;
@@ -523,9 +526,9 @@ static NSMutableDictionary * __contactsOnlineState;
         BOOL b = NO;
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, createtime=?, completetime=?, updatetime=?, iscompleted=?, isnotify=?, notifytime=?, plantype=? WHERE planid=? AND account=?", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, createtime=?, completetime=?, updatetime=?, iscompleted=?, isnotify=?, notifytime=?, plantype=?, isdeleted=? WHERE planid=? AND account=?", str_TableName_Plan];
             
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.plantype, plan.planid, plan.account]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.plantype, plan.isdeleted, plan.planid, plan.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
@@ -542,7 +545,7 @@ static NSMutableDictionary * __contactsOnlineState;
             
             sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, plantype, isdeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Plan];
             
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.account, plan.planid, plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.plantype, @"0"]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.account, plan.planid, plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.plantype, plan.isdeleted]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
@@ -1001,7 +1004,7 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, plantype FROM %@ WHERE plantype=? AND account=? AND isdeleted=0 ORDER BY iscompleted, createtime DESC", str_TableName_Plan];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, plantype, isdeleted FROM %@ WHERE plantype=? AND account=? AND isdeleted=0 ORDER BY iscompleted, createtime DESC", str_TableName_Plan];
         
         FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[plantype, account]];
         
@@ -1018,6 +1021,7 @@ static NSMutableDictionary * __contactsOnlineState;
             plan.isnotify = [rs stringForColumn:@"isnotify"];
             plan.notifytime = [rs stringForColumn:@"notifytime"];
             plan.plantype = [rs stringForColumn:@"plantype"];
+            plan.isdeleted = [rs stringForColumn:@"isdeleted"];
             
             [array addObject:plan];
         }
