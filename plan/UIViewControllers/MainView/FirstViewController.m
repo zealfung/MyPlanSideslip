@@ -124,12 +124,10 @@ NSUInteger const kSecondsPerDay = 86400;
 }
 
 - (void)refreshView:(NSNotification*)notification {
-    
     [self loadCustomView];
 }
 
 - (void)loadCustomView {
-    
     //加载个人设置
     [Config shareInstance].settings = [PlanCache getPersonalSettings];
     
