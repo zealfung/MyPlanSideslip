@@ -39,7 +39,7 @@
     self.txtPassword.placeholder = str_Register_Tips7;
     self.txtPassword.inputAccessoryView = [self getInputAccessoryView];
 
-    if (self.isForgotGesture && [LogIn isLogin]) {
+    if ([LogIn isLogin]) {
         BmobUser *user = [BmobUser getCurrentUser];
         NSString *email = [user objectForKey:@"username"];
         self.txtEmail.text = email;
@@ -95,18 +95,17 @@
                     [user verifyEmailInBackgroundWithEmailAddress:acountEmail];
                     
                 } else {
+                    [Config shareInstance].settings = [PlanCache getPersonalSettings];
+                    [Config shareInstance].settings.isUseGestureLock = @"0";
+                    [Config shareInstance].settings.gesturePasswod = @"";
+                    [PlanCache storePersonalSettings:[Config shareInstance].settings];
                     
                     if (self.isForgotGesture) {
-                        [Config shareInstance].settings.isUseGestureLock = @"0";
-                        [Config shareInstance].settings.gesturePasswod = @"";
-                        [PlanCache storePersonalSettings:[Config shareInstance].settings];
-                        
                         UIStoryboard *story = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
                         RootViewController *controller = [story instantiateViewControllerWithIdentifier:@"rootViewController"];
                         AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                         delegate.window.rootViewController = controller;
                         [delegate.window reloadInputViews];
-
                     } else {
                         //登录后自动关联本地没有对应账号的数据
                         [PlanCache linkedLocalDataToAccount];
