@@ -7,6 +7,7 @@
 //
 
 #import "LogIn.h"
+#import "BmobACL.h"
 #import "BmobFile.h"
 #import "BmobQuery.h"
 #import "PlanCache.h"
@@ -229,7 +230,10 @@ static BOOL finishPhoto;
     if ([Config shareInstance].settings.syntime) {
         [settingsObject setObject:timeNow forKey:@"syncTime"];
     }
-    
+    BmobACL *acl = [BmobACL ACL];
+    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
+    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    settingsObject.ACL = acl;
     [settingsObject updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
             
@@ -292,6 +296,10 @@ static BOOL finishPhoto;
     if ([Config shareInstance].settings.syntime) {
         [userSettings setObject:timeNow forKey:@"syncTime"];
     }
+    BmobACL *acl = [BmobACL ACL];
+    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
+    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    userSettings.ACL = acl;
     //异步保存
     [userSettings saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
@@ -437,6 +445,10 @@ static BOOL finishPhoto;
                                       @"isDeleted":plan.isdeleted,
                                       @"planType":plan.plantype};
                 [newPlan saveAllWithDictionary:dic];
+                BmobACL *acl = [BmobACL ACL];
+                [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
+                [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+                newPlan.ACL = acl;
                 //异步保存
                 [newPlan saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
                     if (isSuccessful) {
@@ -477,7 +489,10 @@ static BOOL finishPhoto;
     if (plan.isdeleted) {
         [obj setObject:plan.isdeleted forKey:@"isDeleted"];
     }
-    
+    BmobACL *acl = [BmobACL ACL];
+    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
+    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    obj.ACL = acl;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
         } else if (error){
@@ -594,6 +609,10 @@ static BOOL finishPhoto;
                                       @"updatedTime":photo.updatetime,
                                       @"isDeleted":photo.isdeleted};
                 [newPhoto saveAllWithDictionary:dic];
+                BmobACL *acl = [BmobACL ACL];
+                [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
+                [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+                newPhoto.ACL = acl;
                 //异步保存
                 [newPhoto saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
                     if (isSuccessful) {
@@ -626,6 +645,10 @@ static BOOL finishPhoto;
     if (photo.location) {
         [obj setObject:photo.location forKey:@"location"];
     }
+    BmobACL *acl = [BmobACL ACL];
+    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
+    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    obj.ACL = acl;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
         } else if (error){
@@ -639,16 +662,20 @@ static BOOL finishPhoto;
     }
     if (photo.photoArray.count < 9) {
         for (NSInteger i = photo.photoArray.count; i < 9; i++) {
-            NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", i+1];
+            NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", (long)(i+1)];
             [obj setObject:@"" forKey:urlName];
         }
+        BmobACL *acl = [BmobACL ACL];
+        [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
+        [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+        obj.ACL = acl;
         [obj updateInBackground];
     }
 }
 
 + (void)uploadPhoto:(Photo *)photo index:(NSInteger)index obj:(BmobObject *)obj {
     UIImage *image = photo.photoArray[index];
-    NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", index+1];
+    NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", (long)(index+1)];
     NSString *serverURL = [obj objectForKey:urlName];
     if ((!serverURL
          || serverURL.length == 0
@@ -729,7 +756,7 @@ static BOOL finishPhoto;
         photo.photoArray = [NSMutableArray array];
     }
     for (NSInteger i = 0; i < 9; i++) {
-        NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", i + 1];
+        NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", (long)(i + 1)];
         NSString *serverPhotoURL = [obj objectForKey:urlName];
         if (serverPhotoURL
             && serverPhotoURL.length > 0
@@ -814,6 +841,10 @@ static BOOL finishPhoto;
                                       @"notifyTime":task.notifyTime,
                                       @"isDeleted":task.isDeleted};
                 [newTask saveAllWithDictionary:dic];
+                BmobACL *acl = [BmobACL ACL];
+                [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
+                [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+                newTask.ACL = acl;
                 //异步保存
                 [newTask saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
                     if (isSuccessful) {
@@ -847,6 +878,10 @@ static BOOL finishPhoto;
         NSDictionary *dic = @{@"recordId":taskrecord.recordId,
                               @"createdTime":taskrecord.createTime};
         [newTaskRecord saveAllWithDictionary:dic];
+        BmobACL *acl = [BmobACL ACL];
+        [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
+        [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+        newTaskRecord.ACL = acl;
         //异步保存
         [newTaskRecord saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
             if (isSuccessful) {
@@ -883,7 +918,10 @@ static BOOL finishPhoto;
     if (task.isDeleted) {
         [obj setObject:task.isDeleted forKey:@"isDeleted"];
     }
-    
+    BmobACL *acl = [BmobACL ACL];
+    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
+    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    obj.ACL = acl;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
         } else if (error){
