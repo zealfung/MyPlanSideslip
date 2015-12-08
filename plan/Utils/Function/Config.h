@@ -13,7 +13,7 @@
 
 @property (nonatomic, strong) Settings *settings;
 
-+(instancetype)shareInstance;
++ (instancetype)shareInstance;
 
 
 @end

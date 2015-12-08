@@ -11,6 +11,7 @@ PODS:
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
   - SDWebImage/Core (3.7.3)
+  - WZLBadge (1.2.1)
 
 DEPENDENCIES:
   - BmobSDK
@@ -19,6 +20,7 @@ DEPENDENCIES:
   - MBProgressHUD
   - RESideMenu
   - SDWebImage
+  - WZLBadge
 
 SPEC CHECKSUMS:
   BmobSDK: 50aad04eae8c81ccdea6d6125c97e8cec49d8869
@@ -27,5 +29,6 @@ SPEC CHECKSUMS:
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   RESideMenu: f24c508404b49c667344c54aba7e590883533958
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
+  WZLBadge: b6034017a0714454682c9d9ab4fac33c99fcc9a8
 
 COCOAPODS: 0.38.2

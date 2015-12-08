@@ -8,17 +8,47 @@
 
 #import "Config.h"
 
-static Config * instance = nil;
+static Config *instance = nil;
 
 @implementation Config
 
-+ (id)shareInstance {
-    if(instance == nil)
-    {
-        instance = [[super allocWithZone:nil] init];
++ (Config *)shareInstance {
+    @synchronized(self) {
+        if (instance == nil) {
+            instance = [[[self class] hideAlloc] init];
+        }
     }
     return instance;
 }
 
++ (id)hideAlloc {
+    return [super alloc];
+}
+
++ (id)alloc {
+    return nil;
+}
+
++ (id)new {
+    return [self alloc];
+}
+
++ (id)allocWithZone:(struct _NSZone *)zone {
+    @synchronized(self) {
+        if (instance == nil) {
+            instance = [super allocWithZone:zone];
+            return instance;
+        }
+    }
+    return nil;
+}
+
+- (id)copyWithZone:(NSZone *)zone {
+    return self;
+}
+
+- (id)mutableCopyWithZone:(NSZone *)zone {
+    return [self copyWithZone:zone];
+}
 
 @end

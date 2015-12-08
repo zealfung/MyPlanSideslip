@@ -7,9 +7,11 @@
 //
 
 #import <RESideMenu.h>
+#import "WZLBadgeImport.h"
 #import "HelpViewController.h"
 #import "AboutViewController.h"
 #import "PhotoViewController.h"
+#import "MessagesViewController.h"
 #import "SettingsViewController.h"
 #import "SideMenuViewController.h"
 #import "PersonalCenterViewController.h"
@@ -47,8 +49,8 @@
 
 - (void)setMenuArray {
     
-    menuImgArray = [NSMutableArray arrayWithObjects:png_Icon_Menu_PersonalCenter, png_Icon_Menu_PhotoLine, png_Icon_Menu_Help, png_Icon_Menu_FiveStar, png_Icon_Menu_Feedback, png_Icon_Menu_About, nil];
-    menuArray = [NSMutableArray arrayWithObjects:str_ViewTitle_4, str_ViewTitle_5, str_ViewTitle_6, str_ViewTitle_7, str_ViewTitle_8, str_ViewTitle_9, nil];
+    menuImgArray = [NSMutableArray arrayWithObjects:png_Icon_Menu_PersonalCenter, png_Icon_Menu_PhotoLine, png_Icon_Menu_Help, png_Icon_Menu_FiveStar, png_Icon_Menu_Feedback, png_Icon_Menu_Messages, png_Icon_Menu_About, nil];
+    menuArray = [NSMutableArray arrayWithObjects:str_ViewTitle_4, str_ViewTitle_5, str_ViewTitle_6, str_ViewTitle_7, str_ViewTitle_8, str_ViewTitle_12, str_ViewTitle_9, nil];
 }
 
 #pragma mark - Table view data source
@@ -127,6 +129,9 @@
     cell.textLabel.text = menuArray[indexPath.row];
     cell.textLabel.font = font_Normal_16;
     cell.textLabel.textColor = [UIColor whiteColor];
+    if (indexPath.row == 5) {
+        [cell.imageView showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
+    }
     
     return cell;
 }
@@ -168,7 +173,12 @@
             [self displayMailPicker];
             break;
         }
-        case 5: {//关于我们
+        case 5: {//系统消息
+            MessagesViewController *controller = [[MessagesViewController alloc]init];
+            [self setContentViewController:controller];
+            break;
+        }
+        case 6: {//关于我们
             AboutViewController *controller = [[AboutViewController alloc]init];
             [self setContentViewController:controller];
         }

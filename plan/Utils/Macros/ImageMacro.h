@@ -50,6 +50,7 @@
 #define png_Icon_Menu_Help @"Icon_Menu_Help"
 #define png_Icon_Menu_PersonalCenter @"Icon_Menu_PersonalCenter"
 #define png_Icon_Menu_PhotoLine @"Icon_Menu_PhotoLine"
+#define png_Icon_Menu_Messages @"Icon_Menu_Messages"
 #define png_Icon_AutoSync_Normal @"Icon_AutoSync_Normal"
 #define png_Icon_AutoSync_Selected @"Icon_AutoSync_Selected"
 #define png_Icon_Gesture_Lock @"Icon_Gesture_Lock"

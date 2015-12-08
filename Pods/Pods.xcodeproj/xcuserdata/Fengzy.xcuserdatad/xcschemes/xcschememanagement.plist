@@ -34,25 +34,15 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>WZLBadge.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>1609BADA15B445E230703BC98B144FDF</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>2965E38DCEBC6E89D5362BA6561D3FBD</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>29733420F147FCF7D551A9961646A4EB</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>4ED68D79AE9C6D26CEC2EB4EC41C0737</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -62,7 +52,27 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C1074B673FD3705A6370B340E01419C6</key>
+		<key>7A9447A6518A9151C821849FE7DA107C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>910E0D63793EC8C68B0910C7898FF3E2</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>9A7B8D6160D3910FAE14FA0284DBB1A1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B3717BD44AEE825EE008C04B2A6C6D08</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B7DECE5AF51D72E334EEEE624FEAD2D7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
