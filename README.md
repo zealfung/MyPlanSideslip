@@ -1,3 +1,6 @@
+##“我有计划”预览图
+![](https://github.com/JimmyFung/MyPlanSideslip/blob/master/screenshot.jpg)
+
 ##“我有计划”是什么?
 
 * 每天给自己一个目标

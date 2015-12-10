@@ -39,6 +39,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [self reloadTaskData];
+    [self checkUnread:self.tabBarController.tabBar index:2];
 }
 
 - (void)didReceiveMemoryWarning {

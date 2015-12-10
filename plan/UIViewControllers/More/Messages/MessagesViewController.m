@@ -52,16 +52,18 @@
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:TableSampleIdentifier];
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.textLabel.font = font_Normal_18;
-    cell.textLabel.textColor = color_666666;
+    cell.textLabel.font = font_Normal_14;
+    cell.textLabel.textColor = color_8f8f8f;
     cell.textLabel.text = @"消息标题";
-    cell.detailTextLabel.font = font_Normal_15;
+    cell.detailTextLabel.font = font_Normal_11;
     cell.detailTextLabel.textColor = color_8f8f8f;
-    cell.detailTextLabel.text = @"系统消息的明细摘要";
+    cell.detailTextLabel.text = @"系统消息的明细摘要系统消息的明细摘要系统消息的明细摘要系统消息的明细摘要系统消息的明细摘要系统消息的明细摘要mo";
     if (indexPath.row == 2) {
-        UIImage *image = [UIImage imageNamed:png_Icon_Alarm];
-        cell.imageView.image = image;
-        [cell.imageView showBadgeWithStyle:WBadgeStyleNew value:0 animationType:WBadgeAnimTypeScale];
+        cell.textLabel.textColor = color_333333;
+        cell.detailTextLabel.textColor = color_333333;
+//        UIImage *image = [UIImage imageNamed:png_Icon_Alarm];
+//        cell.imageView.image = image;
+        [cell.detailTextLabel showBadgeWithStyle:WBadgeStyleNew value:0 animationType:WBadgeAnimTypeScale];
     }
     
     return cell;

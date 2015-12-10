@@ -57,12 +57,15 @@ NSUInteger const kSecondsPerDay = 86400;
     [NotificationCenter addObserver:self selector:@selector(toPlan:) name:Notify_Push_LocalNotify object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:Notify_Settings_Save object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:Notify_Plan_Save object:nil];
-        
+    
     [self loadCustomView];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [self checkUnread:self.tabBarController.tabBar index:0];
+}
+
 - (void)didReceiveMemoryWarning {
-    
     [super didReceiveMemoryWarning];
 }
 
@@ -71,7 +74,6 @@ NSUInteger const kSecondsPerDay = 86400;
 }
 
 - (void)createNavBarButton {
-    
     self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction:)];
     self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Share selectedImageName:png_Btn_Share selector:@selector(shareAction)];
 }
@@ -130,7 +132,7 @@ NSUInteger const kSecondsPerDay = 86400;
 - (void)loadCustomView {
     //加载个人设置
     [Config shareInstance].settings = [PlanCache getPersonalSettings];
-    
+
     [self createAvatar];
     [self createLabelText];
     [self createStatisticsView];

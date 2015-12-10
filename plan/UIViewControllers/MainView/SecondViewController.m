@@ -55,9 +55,10 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     [self loadCustomView];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    
-    [super viewDidAppear:animated];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+//    [Config shareInstance].unreadPlan = NO;
+    [self checkUnread:self.tabBarController.tabBar index:1];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -66,7 +67,6 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 }
 
 - (void)dealloc {
-    
     [NotificationCenter removeObserver:self];
 }
 

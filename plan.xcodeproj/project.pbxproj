@@ -141,6 +141,8 @@
 		137470F01C1034BE00B7822A /* Btn_Sync@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 137470EF1C1034BE00B7822A /* Btn_Sync@2x.png */; };
 		137470F61C159BEE00B7822A /* Icon_Menu_Messages@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 137470F51C159BEE00B7822A /* Icon_Menu_Messages@2x.png */; };
 		1374712D1C17161600B7822A /* MessagesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1374712C1C17161600B7822A /* MessagesViewController.m */; };
+		1374713A1C1909C500B7822A /* Messages.m in Sources */ = {isa = PBXBuildFile; fileRef = 137471391C1909C400B7822A /* Messages.m */; };
+		1374713D1C1920DB00B7822A /* UITabBar+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 1374713C1C1920DB00B7822A /* UITabBar+Util.m */; };
 		137700BA1B93E290008C83FD /* PlanSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B22251B92EE1A005CE84A /* PlanSectionView.m */; };
 		137700BB1B93E56A008C83FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 135B21931B900394005CE84A /* Main.storyboard */; };
 		137700BC1B93E56A008C83FD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 135B21981B900394005CE84A /* LaunchScreen.xib */; };
@@ -427,6 +429,10 @@
 		137470F51C159BEE00B7822A /* Icon_Menu_Messages@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Menu_Messages@2x.png"; sourceTree = "<group>"; };
 		1374712B1C17161600B7822A /* MessagesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesViewController.h; sourceTree = "<group>"; };
 		1374712C1C17161600B7822A /* MessagesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesViewController.m; sourceTree = "<group>"; };
+		137471381C1909C400B7822A /* Messages.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Messages.h; sourceTree = "<group>"; };
+		137471391C1909C400B7822A /* Messages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Messages.m; sourceTree = "<group>"; };
+		1374713B1C1920DB00B7822A /* UITabBar+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBar+Util.h"; sourceTree = "<group>"; };
+		1374713C1C1920DB00B7822A /* UITabBar+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBar+Util.m"; sourceTree = "<group>"; };
 		137700C01B9428B1008C83FD /* Bg_NavigationBar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bg_NavigationBar@2x.png"; sourceTree = "<group>"; };
 		137700C21B9429FD008C83FD /* LaunchImage@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "LaunchImage@2x.png"; sourceTree = "<group>"; };
 		137700D91B952EE5008C83FD /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
@@ -791,12 +797,14 @@
 				137700E01B95335E008C83FD /* UIImage+Util.m */,
 				135B22201B92E837005CE84A /* UILabel+Util.h */,
 				135B22211B92E837005CE84A /* UILabel+Util.m */,
+				131D6AC51C00AEB0009FDD72 /* UINavigationController+Util.h */,
+				131D6AC61C00AEB0009FDD72 /* UINavigationController+Util.m */,
+				1374713B1C1920DB00B7822A /* UITabBar+Util.h */,
+				1374713C1C1920DB00B7822A /* UITabBar+Util.m */,
 				131D6A1F1BF47FE4009FDD72 /* UIView+Util.h */,
 				131D6A201BF47FE4009FDD72 /* UIView+Util.m */,
 				135B22071B92B126005CE84A /* UIViewController+Util.h */,
 				135B22081B92B126005CE84A /* UIViewController+Util.m */,
-				131D6AC51C00AEB0009FDD72 /* UINavigationController+Util.h */,
-				131D6AC61C00AEB0009FDD72 /* UINavigationController+Util.m */,
 			);
 			path = Catagory;
 			sourceTree = "<group>";
@@ -813,6 +821,8 @@
 		135B21E11B913E1F005CE84A /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				137471381C1909C400B7822A /* Messages.h */,
+				137471391C1909C400B7822A /* Messages.m */,
 				135B21E51B913EAF005CE84A /* ModelBase.h */,
 				135B21E61B913EAF005CE84A /* ModelBase.m */,
 				13A6AC9B1BC38849005A02F9 /* Photo.h */,
@@ -1516,6 +1526,7 @@
 				133B083D1BA439560015E752 /* HitView.m in Sources */,
 				137470C81C0AE75900B7822A /* Task.m in Sources */,
 				135B221F1B92E74C005CE84A /* PromptMessage.m in Sources */,
+				1374713D1C1920DB00B7822A /* UITabBar+Util.m in Sources */,
 				132263781B9825D400D21637 /* UIDevice+Util.m in Sources */,
 				1374712D1C17161600B7822A /* MessagesViewController.m in Sources */,
 				1361AFC61BCBA5E700DD5FFB /* DoImagePickerController.m in Sources */,
@@ -1546,6 +1557,7 @@
 				131D6A1E1BF478D1009FDD72 /* SideMenuViewController.m in Sources */,
 				1374708E1C07E66B00B7822A /* CLLockVC.m in Sources */,
 				1377010C1B967F31008C83FD /* SettingsSetTextViewController.m in Sources */,
+				1374713A1C1909C500B7822A /* Messages.m in Sources */,
 				135B21B31B900FFE005CE84A /* ThreeSubView.m in Sources */,
 				137470BF1C0ABCFE00B7822A /* AddTaskViewController.m in Sources */,
 				137701131B9683E3008C83FD /* CommonFunction.m in Sources */,

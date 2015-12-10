@@ -27,6 +27,9 @@
 //返回,可被重写
 - (void)willBack;
 
+//检查TabBar未读小红点
+- (void)checkUnread:(UITabBar *)tabbar index:(int)index;
+
 @end
 
 

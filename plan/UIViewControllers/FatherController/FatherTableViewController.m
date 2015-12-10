@@ -6,6 +6,7 @@
 //  Copyright (c) 2015年 Fengzy. All rights reserved.
 //
 
+#import "UITabBar+Util.h"
 #import "MBProgressHUD.h"
 #import "FatherTableViewController.h"
 
@@ -142,6 +143,16 @@
     } else {
         
         [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+
+- (void)checkUnread:(UITabBar *)tabbar index:(int)index {
+    if ([Config shareInstance].unreadPlan && index != 1) {
+        //显示小红点
+        [tabbar showBadgeOnItemIndex:1];
+    } else {
+        //隐藏小红点
+        [tabbar hideBadgeOnItemIndex:1];
     }
 }
 
