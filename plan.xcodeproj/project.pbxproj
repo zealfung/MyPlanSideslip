@@ -182,6 +182,7 @@
 		13A6ACB11BC5F83A005A02F9 /* ImageDefault@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13A6ACB01BC5F83A005A02F9 /* ImageDefault@2x.png */; };
 		13A6ACC71BC69E61005A02F9 /* PhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A6ACC61BC69E61005A02F9 /* PhotoDetailViewController.m */; };
 		13A6ACCD1BC6A82C005A02F9 /* FullScreenImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A6ACCC1BC6A82C005A02F9 /* FullScreenImageViewController.m */; };
+		13AF648B1C19C071008E8A9E /* MessagesDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF648A1C19C071008E8A9E /* MessagesDetailViewController.m */; };
 		13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -484,6 +485,8 @@
 		13A6ACC61BC69E61005A02F9 /* PhotoDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoDetailViewController.m; sourceTree = "<group>"; };
 		13A6ACCB1BC6A82C005A02F9 /* FullScreenImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FullScreenImageViewController.h; sourceTree = "<group>"; };
 		13A6ACCC1BC6A82C005A02F9 /* FullScreenImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenImageViewController.m; sourceTree = "<group>"; };
+		13AF64891C19C071008E8A9E /* MessagesDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesDetailViewController.h; sourceTree = "<group>"; };
+		13AF648A1C19C071008E8A9E /* MessagesDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesDetailViewController.m; sourceTree = "<group>"; };
 		13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Settings@2x.png"; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -1151,6 +1154,8 @@
 		137470F71C166A1200B7822A /* Messages */ = {
 			isa = PBXGroup;
 			children = (
+				13AF64891C19C071008E8A9E /* MessagesDetailViewController.h */,
+				13AF648A1C19C071008E8A9E /* MessagesDetailViewController.m */,
 				1374712B1C17161600B7822A /* MessagesViewController.h */,
 				1374712C1C17161600B7822A /* MessagesViewController.m */,
 			);
@@ -1588,6 +1593,7 @@
 				137470961C07E66B00B7822A /* CLLockMainView.m in Sources */,
 				137700DB1B952EE5008C83FD /* MoreViewController.m in Sources */,
 				1374704F1C03ED1200B7822A /* RegisterViewController.m in Sources */,
+				13AF648B1C19C071008E8A9E /* MessagesDetailViewController.m in Sources */,
 				137470A41C0815F100B7822A /* CoreArchive.m in Sources */,
 				1361AFC41BCBA5E700DD5FFB /* DoAlbumCell.m in Sources */,
 				1368F9631BB623E100CC7E63 /* RegisterSDK.m in Sources */,
