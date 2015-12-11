@@ -7,6 +7,7 @@
 //
 
 #import <RESideMenu.h>
+#import "DataCenter.h"
 #import "WZLBadgeImport.h"
 #import "HelpViewController.h"
 #import "AboutViewController.h"
@@ -35,8 +36,10 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
     
     [NotificationCenter addObserver:self selector:@selector(reload) name:Notify_Settings_Save object:nil];
+    [NotificationCenter addObserver:self selector:@selector(reload) name:Notify_Messages_Save object:nil];
     
     [self setMenuArray];
+    [DataCenter getMessagesFromServer];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -129,7 +132,7 @@
     cell.textLabel.text = menuArray[indexPath.row];
     cell.textLabel.font = font_Normal_16;
     cell.textLabel.textColor = [UIColor whiteColor];
-    if (indexPath.row == 5) {
+    if (indexPath.row == 5 && [PlanCache hasUnreadMessages]) {
         [cell.imageView showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
     }
     
