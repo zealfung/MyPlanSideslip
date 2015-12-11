@@ -27,6 +27,7 @@
 #define str_ViewTitle_10 @"注册账号"
 #define str_ViewTitle_11 @"找回密码"
 #define str_ViewTitle_12 @"系统消息"
+#define str_ViewTitle_13 @"消息详情"
 #define str_NickName @"昵称"
 #define str_FirstView_1 @"假如你可以活到"
 #define str_FirstView_2 @"岁"
@@ -161,7 +162,7 @@
 #define str_Notify_Tips2 @"你已经5天没有新建计划了，要坚持哦~"
 
 #define str_About_Version @"当前版本："
-#define str_About_Copyright @"© 2015 Andwho, Inc."
+#define str_About_Copyright @"© 2015 Andwho Inc."
 #define str_About_Name @"MyPlan"
 
 #define str_Share_Success @"分享成功"
@@ -170,6 +171,8 @@
 #define str_Share_URL @"http://www.fengziyi.com/andwho-plan/"
 #define str_Share_Tips1 @"来自我有计划iOS版"
 #define str_Share_Tips2 @"晒数据"
+
+#define str_Messages_Tips1 @"暂无系统消息"
 
 #define str_Sync_Begin @"开始同步数据..."
 #define str_Sync_End @"同步数据完成"
@@ -182,6 +185,7 @@
 #define str_TableName_Statistics @"t_statistics"
 #define str_TableName_Task @"t_task"
 #define str_TableName_TaskRecord @"t_taskrecord"
+#define str_TableName_Messages @"t_messages"
 #define str_Website_URL @"http://www.fengziyi.com"
 #define str_Feedback_Email @"fengziyi@andwho.com"
 
@@ -190,7 +194,7 @@
 #define str_DateFormatter_yyyy_MM_dd_HHmm @"yyyy-MM-dd HH:mm"
 #define str_DateFormatter_yyyy_MM_dd @"yyyy-MM-dd"
 
-#define str_Bmob_ApplicationID @"ed10fc9a05fd6fd5c37be211bc0726b2"
+#define str_Bmob_ApplicationID @"c2d17819bc025e90e998210ee07d5b4c"
 #define str_SinaWeibo_AppKey @"2763375435"
 #define str_SinaWeibo_AppSecret @"c0f52655316236b558b22f6b90e2ba44"
 #define str_SinaWeibo_RedirectURI @"http://www.fengziyi.com"
