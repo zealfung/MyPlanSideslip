@@ -6,7 +6,7 @@
 //  Copyright (c) 2015年 Fengzy. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "BmobQuery.h"
 
 @interface DataCenter : NSObject
 
@@ -15,5 +15,7 @@
 + (void)IsAllUploadFinished;
 
 + (void)syncServerToLocalForSettings:(BmobObject *)obj;
+
++ (void)getMessagesFromServer;
 
 @end

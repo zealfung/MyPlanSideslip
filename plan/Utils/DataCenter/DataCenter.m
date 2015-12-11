@@ -9,7 +9,6 @@
 #import "LogIn.h"
 #import "BmobACL.h"
 #import "BmobFile.h"
-#import "BmobQuery.h"
 #import "PlanCache.h"
 #import "DataCenter.h"
 #import "BmobObjectsBatch.h"
@@ -984,7 +983,8 @@ static BOOL finishPhoto;
 + (void)getNewTaskRecordFromServer:(NSString *)recordId {
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"TaskRecord"];
     [bquery whereKey:@"recordId" equalTo:recordId];
-    [bquery whereKey:@"createdTime" greaterThanOrEqualTo:[Config shareInstance].settings.syntime];
+    NSString *time = [Config shareInstance].settings.syntime;
+    [bquery whereKey:@"createdTime" greaterThanOrEqualTo:time];
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
         if (!error && array.count > 0) {
             
@@ -995,6 +995,35 @@ static BOOL finishPhoto;
                 taskRecord.createTime = [obj objectForKey:@"createdTime"];
                 [PlanCache storeTaskRecord:taskRecord];
             }
+        }
+    }];
+}
+
++ (void)getMessagesFromServer {
+    
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Messages"];
+    //构造约束条件
+    BmobQuery *inQuery = [BmobQuery queryWithClassName:@"_User"];
+    if ([LogIn isLogin]) {
+        BmobUser *user = [BmobUser getCurrentUser];
+        [inQuery whereKey:@"username" equalTo:user.username];
+        //匹配查询
+        //    [bquery whereKey:@"hasRead" matchesQuery:inQuery];（查询所有有关联的数据）
+        [bquery whereKey:@"hasRead" doesNotMatchQuery:inQuery];//（查询所有无关联的数据）
+    }
+    [bquery orderByDescending:@"createdAt"];
+    bquery.limit = 10;
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+
+        for (BmobObject *obj in array) {
+            Messages *message = [[Messages alloc] init];
+            message.messageId = obj.objectId;
+            message.title = [obj objectForKey:@"title"];
+            message.content = [obj objectForKey:@"content"];
+            message.detailURL = [obj objectForKey:@"detailURL"];
+            message.createTime = [CommonFunction NSDateToNSString:obj.createdAt formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+            
+            [PlanCache storeMessages:message];
         }
     }];
 }
