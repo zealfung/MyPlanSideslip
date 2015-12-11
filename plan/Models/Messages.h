@@ -17,5 +17,6 @@
 @property (nonatomic, strong) NSArray *imgURLArray;//图片组链接
 @property (nonatomic, strong) NSString *hasRead;//0未读，1已读
 @property (nonatomic, strong) NSString *readTimes; //阅读次数
+@property (nonatomic, strong) NSString *createTime;
 
 @end
