@@ -10,6 +10,7 @@
 #import "Task.h"
 #import "Photo.h"
 #import "Settings.h"
+#import "Messages.h"
 #import "TaskRecord.h"
 #import "Statistics.h"
 
@@ -29,11 +30,19 @@
 
 + (BOOL)storeTaskRecord:(TaskRecord *)taskRecord;
 
++ (BOOL)storeMessages:(Messages *)message;
+
++ (BOOL)setMessagesRead:(Messages *)message;
+
 + (BOOL)deletePlan:(Plan *)plan;
 
 + (BOOL)deletePhoto:(Photo *)photo;
 
 + (BOOL)deleteTask:(Task *)task;
+
++ (BOOL)cleanHasReadMessages;
+
++ (BOOL)hasUnreadMessages;
 
 + (Settings *)getPersonalSettings;
 
@@ -48,6 +57,8 @@
 + (NSArray *)getTeask;
 
 + (NSArray *)getTeaskRecord:(NSString *)recordId;
+
++ (NSArray *)getMessages;
 
 + (NSString *)getPhotoTotalCount;
 

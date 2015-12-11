@@ -370,6 +370,16 @@ static NSMutableDictionary * __contactsOnlineState;
         
         FMDBQuickCheck(b, sqlString, __db);
     }
+    
+    //系统消息
+    if (![__db tableExists:str_TableName_Messages]) {
+        
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, messageId TEXT, title TEXT, content TEXT, detailURL TEXT, hasRead TEXT, createTime TEXT)", str_TableName_Messages];
+        
+        BOOL b = [__db executeUpdate:sqlString];
+        
+        FMDBQuickCheck(b, sqlString, __db);
+    }
 }
 
 + (void)storePersonalSettings:(Settings *)settings {
@@ -454,7 +464,7 @@ static NSMutableDictionary * __contactsOnlineState;
         
         BOOL hasRec = NO;
         NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", str_TableName_Settings];
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[settings.account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[settings.account]];
         hasRec = [rs next];
         [rs close];
         if (hasRec) {
@@ -520,7 +530,7 @@ static NSMutableDictionary * __contactsOnlineState;
         BOOL hasRec = NO;
         NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE planid=? AND account=?", str_TableName_Plan];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[plan.planid, plan.account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[plan.planid, plan.account]];
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
@@ -611,7 +621,7 @@ static NSMutableDictionary * __contactsOnlineState;
         BOOL hasRec = NO;
         NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE photoid=? AND account=?", str_TableName_Photo];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[photo.photoid, photo.account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[photo.photoid, photo.account]];
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
@@ -676,7 +686,7 @@ static NSMutableDictionary * __contactsOnlineState;
         
         BOOL hasRec = NO;
         NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", str_TableName_Statistics];
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[statistics.account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[statistics.account]];
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
@@ -744,7 +754,7 @@ static NSMutableDictionary * __contactsOnlineState;
         BOOL hasRec = NO;
         NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", str_TableName_Task];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[task.taskId, task.account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[task.taskId, task.account]];
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
@@ -792,6 +802,96 @@ static NSMutableDictionary * __contactsOnlineState;
     }
 }
 
++ (BOOL)storeMessages:(Messages *)message {
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return NO;
+            }
+        }
+        
+        if (!message.messageId)
+            return NO;
+        
+        NSString *account = @"";
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser getCurrentUser];
+            account = user.objectId;
+        }
+        if (!message.title) {
+            message.title = @"";
+        }
+        if (!message.content) {
+            message.content = @"";
+        }
+        if (!message.detailURL) {
+            message.detailURL = @"";
+        }
+        if (!message.createTime) {
+            message.createTime = [CommonFunction getTimeNowString];
+        }
+        
+        BOOL hasRec = NO;
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE messageId=? AND account=?", str_TableName_Messages];
+        
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[message.messageId, account]];
+        hasRec = [rs next];
+        [rs close];
+        BOOL b = NO;
+        if (!hasRec) {
+            
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, messageId, title, content, detailURL, hasRead, createTime) values(?, ?, ?, ?, ?, ?, ?)", str_TableName_Messages];
+            
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[account, message.messageId, message.title, message.content, message.detailURL, @"0", message.createTime]];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+            
+            [NotificationCenter postNotificationName:Notify_Messages_Save object:nil];
+        }
+        return b;
+    }
+}
+
++ (BOOL)setMessagesRead:(Messages *)message {
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return NO;
+            }
+        }
+        
+        if (!message.messageId)
+            return NO;
+        
+        NSString *account = @"";
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser getCurrentUser];
+            account = user.objectId;
+        }
+        
+        BOOL hasRec = NO;
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE messageId=? AND account=?", str_TableName_Messages];
+        
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[message.messageId, account]];
+        hasRec = [rs next];
+        [rs close];
+        BOOL b = NO;
+        if (hasRec) {
+            
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET hasRead=1 WHERE messageId=? AND account=?", str_TableName_Messages];
+            
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[message.messageId, account]];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+            
+            [NotificationCenter postNotificationName:Notify_Messages_Save object:nil];
+        }
+        return b;
+    }
+}
+
 + (BOOL)deletePlan:(Plan *)plan {
     
     @synchronized(__db) {
@@ -813,7 +913,7 @@ static NSMutableDictionary * __contactsOnlineState;
         BOOL hasRec = NO;
         NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE planid=? AND account=?", str_TableName_Plan];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[plan.planid, plan.account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[plan.planid, plan.account]];
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
@@ -895,7 +995,7 @@ static NSMutableDictionary * __contactsOnlineState;
         BOOL hasRec = NO;
         NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", str_TableName_Task];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[task.taskId, task.account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[task.taskId, task.account]];
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
@@ -914,6 +1014,63 @@ static NSMutableDictionary * __contactsOnlineState;
 //            }
         }
         [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
+        return b;
+    }
+}
+
++ (BOOL)cleanHasReadMessages {
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return NO;
+            }
+        }
+        
+        NSString *account = @"";
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser getCurrentUser];
+            account = user.objectId;
+        }
+        
+        NSString *sqlString = [NSString stringWithFormat:@"DELETE FROM %@ WHERE hasRead=1 AND account=?", str_TableName_Messages];
+        BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[account]];
+        
+        FMDBQuickCheck(b, sqlString, __db);
+        
+        [NotificationCenter postNotificationName:Notify_Messages_Save object:nil];
+
+        return b;
+    }
+}
+
++ (BOOL)hasUnreadMessages {
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return nil ;
+            }
+        }
+        
+        NSString *account = @"";
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser getCurrentUser];
+            account = user.objectId;
+        }
+
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=? AND hasRead=0", str_TableName_Messages];
+        
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
+        
+        BOOL b = NO;
+        while ([rs next]) {
+            
+            b = YES;
+            break;
+        }
+        [rs close];
+        
         return b;
     }
 }
@@ -1006,7 +1163,7 @@ static NSMutableDictionary * __contactsOnlineState;
         NSMutableArray *array = [NSMutableArray array];
         NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, plantype, isdeleted FROM %@ WHERE plantype=? AND account=? AND isdeleted=0 ORDER BY iscompleted, createtime DESC", str_TableName_Plan];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[plantype, account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[plantype, account]];
         
         while ([rs next]) {
             
@@ -1050,7 +1207,7 @@ static NSMutableDictionary * __contactsOnlineState;
         NSMutableArray *array = [NSMutableArray array];
         NSString *sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL FROM %@ WHERE account=? AND isdeleted=0 ORDER BY phototime DESC, createtime DESC", str_TableName_Photo];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
         while ([rs next]) {
             
@@ -1109,7 +1266,7 @@ static NSMutableDictionary * __contactsOnlineState;
         
         NSString *sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL FROM %@ WHERE account=? AND photoid=?", str_TableName_Photo];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, photoid]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, photoid]];
         
         while ([rs next]) {
             
@@ -1200,7 +1357,7 @@ static NSMutableDictionary * __contactsOnlineState;
         NSMutableArray *array = [NSMutableArray array];
         NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime FROM %@ WHERE account=? AND isDeleted=0 ORDER BY createTime DESC", str_TableName_Task];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
         while ([rs next]) {
             
@@ -1237,7 +1394,7 @@ static NSMutableDictionary * __contactsOnlineState;
         NSMutableArray *array = [NSMutableArray array];
         NSString *sqlString = [NSString stringWithFormat:@"SELECT recordId, createTime FROM %@ WHERE recordId=? ORDER BY createTime DESC", str_TableName_TaskRecord];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[recordId]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[recordId]];
         
         while ([rs next]) {
             
@@ -1246,6 +1403,44 @@ static NSMutableDictionary * __contactsOnlineState;
             taskRecord.createTime = [rs stringForColumn:@"createTime"];
             
             [array addObject:taskRecord];
+        }
+        [rs close];
+        
+        return array;
+    }
+}
+
++ (NSArray *)getMessages {
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return nil ;
+            }
+        }
+        
+        NSString *account = @"";
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser getCurrentUser];
+            account = user.objectId;
+        }
+        
+        NSMutableArray *array = [NSMutableArray array];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT messageId, title, content, detailURL, hasRead, createTime FROM %@ WHERE account=? ORDER BY createTime DESC", str_TableName_Messages];
+        
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
+        
+        while ([rs next]) {
+            
+            Messages *message = [[Messages alloc] init];
+            message.messageId = [rs stringForColumn:@"messageId"];
+            message.title = [rs stringForColumn:@"title"];
+            message.content = [rs stringForColumn:@"content"];
+            message.detailURL = [rs stringForColumn:@"detailURL"];
+            message.hasRead = [rs stringForColumn:@"hasRead"];
+            message.createTime = [rs stringForColumn:@"createTime"];
+            
+            [array addObject:message];
         }
         [rs close];
         
@@ -1272,7 +1467,7 @@ static NSMutableDictionary * __contactsOnlineState;
         NSString *total = @"0";
         NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE plantype=? AND account=? AND isdeleted=0", str_TableName_Plan];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[plantype, account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[plantype, account]];
         
         if([rs next]) {
             
@@ -1303,7 +1498,7 @@ static NSMutableDictionary * __contactsOnlineState;
         NSString *completed = @"0";
         NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as completed FROM %@ WHERE plantype=? AND account=? AND iscompleted=1 AND isdeleted=0", str_TableName_Plan];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[plantype, account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[plantype, account]];
         
         if([rs next]) {
             
@@ -1333,7 +1528,7 @@ static NSMutableDictionary * __contactsOnlineState;
         NSString *total = @"0";
         NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE account=? AND isdeleted=0", str_TableName_Photo];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
         if([rs next]) {
             
@@ -1363,7 +1558,7 @@ static NSMutableDictionary * __contactsOnlineState;
         NSString *total = @"0";
         NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE account=? AND isDeleted=0", str_TableName_Task];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
         if([rs next]) {
             
@@ -1562,7 +1757,7 @@ static NSMutableDictionary * __contactsOnlineState;
             sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, plantype, isdeleted FROM %@ WHERE account=?", str_TableName_Plan];
         }
         
-        FMResultSet * rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[account]] : [__db executeQuery:sqlString withArgumentsInArray:@[account, syntime]];
+        FMResultSet *rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[account]] : [__db executeQuery:sqlString withArgumentsInArray:@[account, syntime]];
         
         while ([rs next]) {
             
@@ -1598,7 +1793,7 @@ static NSMutableDictionary * __contactsOnlineState;
         
         NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, plantype, isdeleted FROM %@ WHERE account=? AND planid =?", str_TableName_Plan];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, planid]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, planid]];
         
         Plan *plan = [[Plan alloc] init];
         while ([rs next]) {
@@ -1649,7 +1844,7 @@ static NSMutableDictionary * __contactsOnlineState;
             sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL, isdeleted FROM %@ WHERE account=?", str_TableName_Photo];
         }
         
-        FMResultSet * rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[account]] : [__db executeQuery:sqlString withArgumentsInArray:@[account, syntime]];
+        FMResultSet *rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[account]] : [__db executeQuery:sqlString withArgumentsInArray:@[account, syntime]];
         
         while ([rs next]) {
             Photo *photo = [[Photo alloc] init];
@@ -1763,7 +1958,7 @@ static NSMutableDictionary * __contactsOnlineState;
             sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted FROM %@ WHERE account=?", str_TableName_Task];
         }
         
-        FMResultSet * rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[account]] : [__db executeQuery:sqlString withArgumentsInArray:@[account, syntime]];
+        FMResultSet *rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[account]] : [__db executeQuery:sqlString withArgumentsInArray:@[account, syntime]];
 
         while ([rs next]) {
             
@@ -1814,7 +2009,7 @@ static NSMutableDictionary * __contactsOnlineState;
             sqlString = [NSString stringWithFormat:@"SELECT recordId, createTime FROM %@ WHERE recordId=?", str_TableName_TaskRecord];
         }
         
-        FMResultSet * rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[taskId]] : [__db executeQuery:sqlString withArgumentsInArray:@[taskId, syntime]];
+        FMResultSet *rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[taskId]] : [__db executeQuery:sqlString withArgumentsInArray:@[taskId, syntime]];
         
         while ([rs next]) {
             
@@ -1841,12 +2036,12 @@ static NSMutableDictionary * __contactsOnlineState;
         
         NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted FROM %@ WHERE account=? AND taskId =?", str_TableName_Task];
         
-        FMResultSet * rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, taskId]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, taskId]];
         
         Task *task = [[Task alloc] init];
         while ([rs next]) {
             task.account = account;
-            task.taskId = [rs stringForColumn:@"taskId"];
+            task.taskId = taskId;
             task.content = [rs stringForColumn:@"content"];
             task.totalCount = [rs stringForColumn:@"totalCount"];
             task.completionDate = [rs stringForColumn:@"completionDate"];
