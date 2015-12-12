@@ -133,7 +133,7 @@
     cell.textLabel.font = font_Normal_16;
     cell.textLabel.textColor = [UIColor whiteColor];
     if (indexPath.row == 5 && [PlanCache hasUnreadMessages]) {
-        [cell.imageView showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
+        [cell.imageView showBadge];
     }
     
     return cell;

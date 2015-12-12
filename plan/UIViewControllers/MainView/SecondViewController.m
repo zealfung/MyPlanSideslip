@@ -11,6 +11,7 @@
 #import "PlanCell.h"
 #import "PlanCache.h"
 #import "ThreeSubView.h"
+#import "WZLBadgeImport.h"
 #import "PlanSectionView.h"
 #import "SecondViewController.h"
 #import "AddPlanViewController.h"
@@ -51,6 +52,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     [self createNavBarButton];
     
     [NotificationCenter addObserver:self selector:@selector(getPlanData) name:Notify_Plan_Save object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:Notify_Messages_Save object:nil];
 
     [self loadCustomView];
 }
@@ -59,10 +61,10 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     [super viewWillAppear:animated];
 //    [Config shareInstance].unreadPlan = NO;
     [self checkUnread:self.tabBarController.tabBar index:1];
+    [self refreshRedDot];
 }
 
 - (void)didReceiveMemoryWarning {
-    
     [super didReceiveMemoryWarning];
 }
 
@@ -71,7 +73,6 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 }
 
 - (void)createNavBarButton {
-    
     self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction:)];
     self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
 }
@@ -121,11 +122,19 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     }
 }
 
+- (void)refreshRedDot {
+    //小红点
+    if ([PlanCache hasUnreadMessages]) {
+        [self.leftBarButtonItem showBadge];
+    } else {
+        [self.leftBarButtonItem clearBadge];
+    }
+}
+
 #pragma mark -初始化自定义界面
 - (void)loadCustomView {
     
     if (!self.underLineView) {
-        
         [self showMenuView];
         [self showUnderLineView];
     }

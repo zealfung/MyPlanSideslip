@@ -10,6 +10,7 @@
 #import "ShareCenter.h"
 #import "ThreeSubView.h"
 #import "UIButton+Util.h"
+#import "WZLBadgeImport.h"
 #import "FirstViewController.h"
 #import "AddPlanViewController.h"
 #import "SettingsViewController.h"
@@ -57,6 +58,7 @@ NSUInteger const kSecondsPerDay = 86400;
     [NotificationCenter addObserver:self selector:@selector(toPlan:) name:Notify_Push_LocalNotify object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:Notify_Settings_Save object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:Notify_Plan_Save object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:Notify_Messages_Save object:nil];
     
     [self loadCustomView];
 }
@@ -129,10 +131,22 @@ NSUInteger const kSecondsPerDay = 86400;
     [self loadCustomView];
 }
 
+- (void)refreshRedDot {
+    //小红点
+    if ([PlanCache hasUnreadMessages]) {
+        [self.leftBarButtonItem showBadge];
+    } else {
+        [self.leftBarButtonItem clearBadge];
+    }
+}
+
 - (void)loadCustomView {
     //加载个人设置
     [Config shareInstance].settings = [PlanCache getPersonalSettings];
-
+    
+    //小红点
+    [self refreshRedDot];
+    
     [self createAvatar];
     [self createLabelText];
     [self createStatisticsView];

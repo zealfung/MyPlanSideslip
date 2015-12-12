@@ -8,6 +8,7 @@
 
 #import "Task.h"
 #import "TaskCell.h"
+#import "WZLBadgeImport.h"
 #import "ThreeViewController.h"
 #import "AddTaskViewController.h"
 #import <RESideMenu/RESideMenu.h>
@@ -35,11 +36,13 @@
     
     taskArray = [NSArray array];
     [NotificationCenter addObserver:self selector:@selector(reloadTaskData) name:Notify_Task_Save object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:Notify_Messages_Save object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [self reloadTaskData];
     [self checkUnread:self.tabBarController.tabBar index:2];
+    [self refreshRedDot];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -72,6 +75,15 @@
 - (void)reloadTaskData {
     taskArray = [PlanCache getTeask];
     [self.tableView reloadData];
+}
+
+- (void)refreshRedDot {
+    //小红点
+    if ([PlanCache hasUnreadMessages]) {
+        [self.leftBarButtonItem showBadge];
+    } else {
+        [self.leftBarButtonItem clearBadge];
+    }
 }
 
 #pragma mark - Table view data source
