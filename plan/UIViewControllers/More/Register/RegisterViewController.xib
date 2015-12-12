@@ -20,10 +20,10 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lYS-ys-J0L">
-                    <rect key="frame" x="12" y="100" width="296" height="30"/>
+                    <rect key="frame" x="12" y="120" width="296" height="40"/>
                     <color key="backgroundColor" red="0.043137254901960784" green="0.63921568627450975" blue="0.16470588235294117" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="gde-Od-KSg"/>
+                        <constraint firstAttribute="height" constant="40" id="gde-Od-KSg"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <state key="normal">
@@ -34,23 +34,23 @@
                     </connections>
                 </button>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="ahz-q4-2o6">
-                    <rect key="frame" x="12" y="10" width="296" height="30"/>
+                    <rect key="frame" x="12" y="10" width="296" height="40"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="P6L-oC-wUS"/>
+                        <constraint firstAttribute="height" constant="40" id="P6L-oC-wUS"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="done"/>
                 </textField>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3ql-S5-0co">
-                    <rect key="frame" x="12" y="50" width="296" height="30"/>
+                    <rect key="frame" x="12" y="60" width="296" height="40"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="30" id="atl-fv-gaH"/>
+                        <constraint firstAttribute="height" constant="40" id="atl-fv-gaH"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3c0-b5-zHk">
-                    <rect key="frame" x="228" y="150" width="80" height="30"/>
+                    <rect key="frame" x="228" y="180" width="80" height="30"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="31O-MU-rnI"/>
                         <constraint firstAttribute="width" constant="80" id="NtD-uJ-RBh"/>
