@@ -162,7 +162,7 @@
 #define str_Notify_Tips2 @"你已经5天没有新建计划了，要坚持哦~"
 
 #define str_About_Version @"当前版本："
-#define str_About_Copyright @"© 2015 Andwho Inc."
+#define str_About_Copyright @"©2015-2016 Andwho Inc."
 #define str_About_Name @"MyPlan"
 
 #define str_Share_Success @"分享成功"
