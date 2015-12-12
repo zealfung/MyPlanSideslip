@@ -183,6 +183,7 @@
 		13A6ACC71BC69E61005A02F9 /* PhotoDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A6ACC61BC69E61005A02F9 /* PhotoDetailViewController.m */; };
 		13A6ACCD1BC6A82C005A02F9 /* FullScreenImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A6ACCC1BC6A82C005A02F9 /* FullScreenImageViewController.m */; };
 		13AF648B1C19C071008E8A9E /* MessagesDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF648A1C19C071008E8A9E /* MessagesDetailViewController.m */; };
+		13AF64AB1C1C0C75008E8A9E /* Btn_Share_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64AA1C1C0C75008E8A9E /* Btn_Share_circle@2x.png */; };
 		13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -487,6 +488,7 @@
 		13A6ACCC1BC6A82C005A02F9 /* FullScreenImageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FullScreenImageViewController.m; sourceTree = "<group>"; };
 		13AF64891C19C071008E8A9E /* MessagesDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesDetailViewController.h; sourceTree = "<group>"; };
 		13AF648A1C19C071008E8A9E /* MessagesDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesDetailViewController.m; sourceTree = "<group>"; };
+		13AF64AA1C1C0C75008E8A9E /* Btn_Share_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Share_circle@2x.png"; sourceTree = "<group>"; };
 		13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Settings@2x.png"; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -861,6 +863,7 @@
 				135B22351B932C45005CE84A /* Btn_Save@2x.png */,
 				135B22271B92F4C1005CE84A /* Btn_SectionUp@2x.png */,
 				13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */,
+				13AF64AA1C1C0C75008E8A9E /* Btn_Share_circle@2x.png */,
 				137470D41C0BFF0500B7822A /* Btn_Share@2x.png */,
 				1361AFCE1BCBB54800DD5FFB /* Btn_Show.png */,
 				1361AFCF1BCBB54800DD5FFB /* Btn_Show@2x.png */,
@@ -1429,6 +1432,7 @@
 				137701091B95DF67008C83FD /* Icon_Gender_M_Selected@2x.png in Resources */,
 				135B222F1B9301C9005CE84A /* Btn_Plan_Done@2x.png in Resources */,
 				1385B4801BC9EF9900CB208C /* Btn_AddPhoto@2x.png in Resources */,
+				13AF64AB1C1C0C75008E8A9E /* Btn_Share_circle@2x.png in Resources */,
 				137700DE1B953226008C83FD /* Icon_Arrow_Right@2x.png in Resources */,
 				135B220D1B92B2B5005CE84A /* Btn_Add@2x.png in Resources */,
 				136DF5D81BEDE87D001D6496 /* ShareSDK.bundle in Resources */,
