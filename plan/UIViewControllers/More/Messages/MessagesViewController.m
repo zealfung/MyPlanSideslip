@@ -27,6 +27,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = str_ViewTitle_12;
+    [self createNavBarButton];
     
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
@@ -48,8 +49,17 @@
     [NotificationCenter removeObserver:self];
 }
 
+- (void)createNavBarButton {
+    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Sync selectedImageName:png_Btn_Sync selector:@selector(cleanHasRead)];
+}
+
 - (void)reloadData {
     messagesArray = [PlanCache getMessages];
+    [self.tableView reloadData];
+}
+
+- (void)cleanHasRead {
+    [PlanCache cleanHasReadMessages];
 }
 
 #pragma mark - Table view data source
@@ -92,6 +102,8 @@
             //        UIImage *image = [UIImage imageNamed:png_Icon_Alarm];
             //        cell.imageView.image = image;
             [cell.detailTextLabel showBadgeWithStyle:WBadgeStyleNew value:0 animationType:WBadgeAnimTypeScale];
+        } else {
+            [cell.detailTextLabel clearBadge];
         }
         return cell;
         
@@ -124,25 +136,24 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
     if (messagesArray.count > 0) {
+        
         Messages *message = messagesArray[indexPath.row];
-//        message.title = @"天上掉馅饼啦~~";
-//        message.content = @"这你也信？我只是测试消息详情而已啦！";
-//        message.detailURL = @"www.fengziyi.com";
-//        MessagesDetailViewController *controller = [[MessagesDetailViewController alloc] init];
-//        [self.navigationController pushViewController:controller animated:YES];
         
-        //本地标识已读
-        [PlanCache setMessagesRead:message];
-        
-        if ([LogIn isLogin]) {
+        if ([message.hasRead isEqualToString:@"0"]) {
+            //本地标识已读
+            [PlanCache setMessagesRead:message];
             //网络登记已读
             BmobObject *messages = [BmobObject objectWithoutDatatWithClassName:@"Messages" objectId:message.messageId];
-            //新建relation对象
-            BmobRelation *relation = [[BmobRelation alloc] init];
-            BmobUser *user = [BmobUser getCurrentUser];
-            [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"_User" objectId:user.objectId]];
-            //添加关联关系到hasRead列中
-            [messages addRelation:relation forKey:@"hasRead"];
+            //查看数加1
+            [messages incrementKey:@"readTimes"];
+            if ([LogIn isLogin]) {
+                //新建relation对象
+                BmobRelation *relation = [[BmobRelation alloc] init];
+                BmobUser *user = [BmobUser getCurrentUser];
+                [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"_User" objectId:user.objectId]];
+                //添加关联关系到hasRead列中
+                [messages addRelation:relation forKey:@"hasRead"];
+            }
             //异步更新obj的数据
             [messages updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
                 if (isSuccessful) {
@@ -152,6 +163,10 @@
                 }
             }];
         }
+        
+        MessagesDetailViewController *controller = [[MessagesDetailViewController alloc] init];
+        controller.message = message;
+        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 
