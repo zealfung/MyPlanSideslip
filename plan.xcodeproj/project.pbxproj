@@ -184,6 +184,7 @@
 		13A6ACCD1BC6A82C005A02F9 /* FullScreenImageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A6ACCC1BC6A82C005A02F9 /* FullScreenImageViewController.m */; };
 		13AF648B1C19C071008E8A9E /* MessagesDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF648A1C19C071008E8A9E /* MessagesDetailViewController.m */; };
 		13AF64AB1C1C0C75008E8A9E /* Btn_Share_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64AA1C1C0C75008E8A9E /* Btn_Share_circle@2x.png */; };
+		13AF64AD1C1C5C50008E8A9E /* avatarDefault1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64AC1C1C5C50008E8A9E /* avatarDefault1@2x.png */; };
 		13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -489,6 +490,7 @@
 		13AF64891C19C071008E8A9E /* MessagesDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessagesDetailViewController.h; sourceTree = "<group>"; };
 		13AF648A1C19C071008E8A9E /* MessagesDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessagesDetailViewController.m; sourceTree = "<group>"; };
 		13AF64AA1C1C0C75008E8A9E /* Btn_Share_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Share_circle@2x.png"; sourceTree = "<group>"; };
+		13AF64AC1C1C5C50008E8A9E /* avatarDefault1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatarDefault1@2x.png"; sourceTree = "<group>"; };
 		13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Settings@2x.png"; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -762,6 +764,7 @@
 		135B21CA1B909644005CE84A /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				13AF64AC1C1C5C50008E8A9E /* avatarDefault1@2x.png */,
 				13A6ACB01BC5F83A005A02F9 /* ImageDefault@2x.png */,
 				137700DC1B953226008C83FD /* Icon */,
 				137700C21B9429FD008C83FD /* LaunchImage@2x.png */,
@@ -1464,6 +1467,7 @@
 				135B22101B92B417005CE84A /* Bg_Cell_White@2x.png in Resources */,
 				137470C51C0AE72A00B7822A /* TaskCell.xib in Resources */,
 				137701081B95DF67008C83FD /* Icon_Gender_M_Normal@2x.png in Resources */,
+				13AF64AD1C1C5C50008E8A9E /* avatarDefault1@2x.png in Resources */,
 				13A6ACB11BC5F83A005A02F9 /* ImageDefault@2x.png in Resources */,
 				1361AFD41BCBB54800DD5FFB /* Btn_Show.png in Resources */,
 				137470B01C09490B00B7822A /* Icon_GestureTrack_Hide@2x.png in Resources */,
