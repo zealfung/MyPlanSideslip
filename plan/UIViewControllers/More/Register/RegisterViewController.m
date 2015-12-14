@@ -6,6 +6,7 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
+#import "BmobACL.h"
 #import "BmobUser.h"
 #import "BmobQuery.h"
 #import "RegisterViewController.h"
@@ -96,6 +97,10 @@
     bUser.username = acountEmail;
     bUser.password = self.txtPassword.text;
     bUser.email = acountEmail;
+    BmobACL *acl = [BmobACL ACL];
+    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
+    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    bUser.ACL = acl;
     [bUser signUpInBackgroundWithBlock:^ (BOOL isSuccessful, NSError *error){
         [weakSelf hideHUD];
         
