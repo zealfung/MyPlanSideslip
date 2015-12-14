@@ -660,10 +660,10 @@ static NSMutableDictionary * __contactsOnlineState;
             BmobUser *user = [BmobUser getCurrentUser];
             statistics.account = user.objectId;
         } else {
-            statistics.account = @"";
+            return NO;
         }
         if (!statistics.recentMax) {
-            statistics.recentMax = @"";
+            statistics.recentMax = @"0";
         }
         if (!statistics.recentMaxBeginDate) {
             statistics.recentMaxBeginDate = @"";
@@ -672,7 +672,7 @@ static NSMutableDictionary * __contactsOnlineState;
             statistics.recentMaxEndDate = @"";
         }
         if (!statistics.recordMax) {
-            statistics.recordMax = @"";
+            statistics.recordMax = @"0";
         }
         if (!statistics.recordMaxBeginDate) {
             statistics.recordMaxBeginDate = @"";
@@ -706,6 +706,7 @@ static NSMutableDictionary * __contactsOnlineState;
             
             FMDBQuickCheck(b, sqlString, __db);
         }
+        [NotificationCenter postNotificationName:Notify_Settings_Save object:nil];
         return b;
     }
 }
@@ -1334,6 +1335,12 @@ static NSMutableDictionary * __contactsOnlineState;
             statistics.updatetime = [rs stringForColumn:@"updatetime"];
         }
         [rs close];
+        if (!statistics.recentMax) {
+            statistics.recentMax = @"0";
+        }
+        if (!statistics.recordMax) {
+            statistics.recordMax = @"0";
+        }
         return statistics;
     }
 }

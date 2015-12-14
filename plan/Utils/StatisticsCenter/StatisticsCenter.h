@@ -10,4 +10,10 @@
 
 @interface StatisticsCenter : NSObject
 
+//签到
++ (void)checkIn;
+
+//今天已签到
++ (BOOL)isCheckInToday;
+
 @end

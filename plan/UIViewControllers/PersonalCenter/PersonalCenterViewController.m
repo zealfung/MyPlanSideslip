@@ -6,9 +6,13 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
+#import "LogIn.h"
+#import "Statistics.h"
 #import "ShareCenter.h"
 #import "PieceButton.h"
 #import "ThreeSubView.h"
+#import "StatisticsCenter.h"
+#import "LogInViewController.h"
 #import "SettingsViewController.h"
 #import "PersonalCenterViewController.h"
 
@@ -17,10 +21,11 @@
     UIScrollView *scrollView;
     UIImageView *imgViewTop;
     UIImageView *imgViewAvatar;
+    UIButton *btnCheckIn;
     UIButton *btnShareData;
     UIView *viewPieces;
-    PieceButton *pbRecentlyConsecutiveDates;//最近连续计划天数
-    PieceButton *pbMaxConsecutiveDates; //最大连续计划天数
+    PieceButton *pbRecentlyCheckInDates;//最近连续签到天数
+    PieceButton *pbMaxCheckInDates; //最大连续签到天数
     PieceButton *pbTotalEverydayPlan;//每日计划总数
     PieceButton *pbTotalEverydayPlanDone;//每日计划完成总数
     PieceButton *pbTotalLongtermPlan;//长远计划总数
@@ -38,11 +43,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.title = str_ViewTitle_4;
     [self createRightBarButton];
     
     [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_Settings_Save object:nil];
+    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_LogIn object:nil];
+    
+    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, HEIGHT_FULL_SCREEN)];
+    scrollView.showsVerticalScrollIndicator = NO;
+    scrollView.showsHorizontalScrollIndicator = NO;
+    scrollView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:scrollView];
     
     [self loadCustomView];
 }
@@ -56,11 +67,7 @@
 }
 
 - (void)loadCustomView {
-    scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, HEIGHT_FULL_SCREEN)];
-    scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.showsHorizontalScrollIndicator = NO;
-    scrollView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:scrollView];
+    [scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     CGFloat yOffset = 0;
 
@@ -111,7 +118,6 @@
             
             [avatarBg addSubview:avatar];
         }
-        
         yOffset = avatarBg.frame.origin.y + avatarBgSize + 10;
     }
     {
@@ -126,7 +132,7 @@
         UILabel *labelNickName = [[UILabel alloc] initWithFrame:CGRectMake(nickNameWidth * 2 - nickNameHeight / 2, yOffset, nickNameWidth, nickNameHeight)];
         labelNickName.text = nickname;
         labelNickName.font = font_Normal_14;
-        labelNickName.textAlignment = NSTextAlignmentRight;
+        labelNickName.textAlignment = NSTextAlignmentCenter;
         
         UIImageView *imgViewGender = [[UIImageView alloc] initWithFrame:CGRectMake(nickNameWidth * 3 - nickNameHeight / 2, yOffset, nickNameHeight, nickNameHeight)];
         if (gender && [gender isEqualToString:@"0"]) {
@@ -138,40 +144,62 @@
         }
         [scrollView addSubview:labelNickName];
         [scrollView addSubview:imgViewGender];
-        
         yOffset = labelNickName.frame.origin.y + nickNameHeight + 10;
     }
     {
-        CGFloat rankingHeight = 20;
-        ThreeSubView *tsvRanking = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, rankingHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
-        [tsvRanking.leftButton.titleLabel setFont:font_Normal_10];
-        [tsvRanking.leftButton setAllTitleColor:color_708cb0];
-        [tsvRanking.leftButton setAllTitle:str_PersonalCenter_Tips1];
-        [tsvRanking.centerButton.titleLabel setFont:font_Normal_20];
-        [tsvRanking.centerButton setAllTitleColor:color_75aff4];
+//        CGFloat rankingHeight = 20;
+//        ThreeSubView *tsvRanking = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, rankingHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
+//        [tsvRanking.leftButton.titleLabel setFont:font_Normal_10];
+//        [tsvRanking.leftButton setAllTitleColor:color_708cb0];
+//        [tsvRanking.leftButton setAllTitle:str_PersonalCenter_Tips1];
+//        [tsvRanking.centerButton.titleLabel setFont:font_Normal_20];
+//        [tsvRanking.centerButton setAllTitleColor:color_75aff4];
 //        if (![CommonFunction isEmptyString:[Config shareInstance].settings.birthday]) {
 //            [tsvRanking.centerButton setAllTitle:[NSString stringWithFormat:@"%zd",@""]];
 //        } else {
 //            [tsvRanking.centerButton setAllTitle:@"X"];
 //        }
         
-        [tsvRanking.centerButton setAllTitle:@"99.33%"];
+//        [tsvRanking.centerButton setAllTitle:@"99.33%"];
+//        
+//        [tsvRanking.rightButton.titleLabel setFont:font_Normal_10];
+//        [tsvRanking.rightButton setAllTitleColor:color_708cb0];
+//        [tsvRanking.rightButton setAllTitle:str_PersonalCenter_Tips2];
+//        [tsvRanking autoLayout];
         
-        [tsvRanking.rightButton.titleLabel setFont:font_Normal_10];
-        [tsvRanking.rightButton setAllTitleColor:color_708cb0];
-        [tsvRanking.rightButton setAllTitle:str_PersonalCenter_Tips2];
-        [tsvRanking autoLayout];
-        
-        CGRect rankingFrame = CGRectZero;
-        rankingFrame.size.width = tsvRanking.frame.size.width;
-        rankingFrame.size.height = tsvRanking.frame.size.height;
-        rankingFrame.origin.x = WIDTH_FULL_SCREEN / 2 - tsvRanking.frame.size.width/2;
-        rankingFrame.origin.y = yOffset;
-        tsvRanking.frame = rankingFrame;
+//        CGRect rankingFrame = CGRectZero;
+//        rankingFrame.size.width = tsvRanking.frame.size.width;
+//        rankingFrame.size.height = tsvRanking.frame.size.height;
+//        rankingFrame.origin.x = WIDTH_FULL_SCREEN / 2 - tsvRanking.frame.size.width/2;
+//        rankingFrame.origin.y = yOffset;
+//        tsvRanking.frame = rankingFrame;
         
 //        [scrollView addSubview:tsvRanking];
         
-        yOffset = tsvRanking.frame.origin.y + rankingHeight + 10;
+//        yOffset = tsvRanking.frame.origin.y + rankingHeight + 10;
+        
+        CGFloat btnWidth = WIDTH_FULL_SCREEN / 5;
+        CGFloat btnHeight = 30;
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(btnWidth * 2, yOffset, btnWidth, btnHeight)];
+        btn.layer.cornerRadius = 5;
+        if ([LogIn isLogin] && [StatisticsCenter isCheckInToday]) {
+            btn.layer.borderColor = [color_8f8f8f CGColor];
+            btn.layer.borderWidth = 1;
+            [btn setAllTitle:str_CheckIn_Tips2];
+            [btn setAllTitleColor:color_8f8f8f];
+            btn.enabled = NO;
+        } else {
+            btn.layer.borderColor = [color_Blue CGColor];
+            btn.layer.borderWidth = 1;
+            [btn setAllTitle:str_CheckIn_Tips1];
+            [btn setAllTitleColor:color_Blue];
+        }
+        [btn.titleLabel setFont:font_Normal_14];
+        [btn addTarget:self action:@selector(checkIn:) forControlEvents:UIControlEventTouchUpInside];
+        btnCheckIn = btn;
+        [scrollView addSubview:btn];
+        
+        yOffset =  CGRectGetMaxY(btn.frame) + 10;
     }
     {
         NSString *dayPlanTotalCount = [PlanCache getPlanTotalCountByPlantype:@"1"];
@@ -180,11 +208,12 @@
         NSString *doneLongPlanTotalCount = [PlanCache getPlanCompletedCountByPlantype:@"0"];
         NSString *taskTotalCount = [PlanCache getTaskTotalCount];
         NSString *photoTotalCount = [PlanCache getPhotoTotalCount];
+        Statistics *statistics= [PlanCache getStatistics];
         
-        viewPieces = [[UIView alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, kPieceButtonHeight * 3)];
+        viewPieces = [[UIView alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, kPieceButtonHeight * 4)];
         
-        pbRecentlyConsecutiveDates = [[PieceButton alloc] initWithTitle:@"最近连续计划天数" content:@"78" icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
-        pbMaxConsecutiveDates = [[PieceButton alloc] initWithTitle:@"最大连续计划天数" content:@"78" icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F2F3F5];
+        pbRecentlyCheckInDates = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle1 content:statistics.recentMax icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
+        pbMaxCheckInDates = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle2 content:statistics.recordMax icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F2F3F5];
         pbTotalEverydayPlan = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle3 content:dayPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F2F3F5];
         pbTotalEverydayPlanDone = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle4 content:doneDayPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
         pbTotalLongtermPlan = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle5 content:longPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
@@ -193,8 +222,8 @@
         pbTotalPhoto = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle8 content:photoTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
         
         NSMutableArray *array = [NSMutableArray array];
-//        [array addObject:pbRecentlyConsecutiveDates];
-//        [array addObject:pbMaxConsecutiveDates];
+        [array addObject:pbRecentlyCheckInDates];
+        [array addObject:pbMaxCheckInDates];
         [array addObject:pbTotalEverydayPlan];
         [array addObject:pbTotalEverydayPlanDone];
         [array addObject:pbTotalLongtermPlan];
@@ -208,9 +237,7 @@
             btn.frame = CGRectMake(i%2 * kPieceButtonWidth, i/2 * kPieceButtonHeight, kPieceButtonWidth, kPieceButtonHeight);
             [viewPieces addSubview:btn];
         }
-
         [scrollView addSubview:viewPieces];
-        
         yOffset = CGRectGetMaxY(viewPieces.frame) + 10;
     }
     {
@@ -240,7 +267,6 @@
         [btnShare addTarget:self action:@selector(shareData:) forControlEvents:UIControlEventTouchUpInside];
         btnShareData = btnShare;
         [scrollView addSubview:btnShare];
-        
         yOffset =  CGRectGetMaxY(btnShare.frame) + 74;
     }
     scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, yOffset);
@@ -249,6 +275,16 @@
 - (void)settingsAction:(UIButton *)button {
     SettingsViewController *controller = [[SettingsViewController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)checkIn:(UIButton *)button {
+    if ([LogIn isLogin]) {
+        [StatisticsCenter checkIn];
+    } else {
+        //登录界面
+        LogInViewController *controller = [[LogInViewController alloc] init];
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 
 - (void)shareData:(UIButton *)button {

@@ -90,6 +90,8 @@
 
 #define str_PersonalCenter_Tips1 @"你的恒心超过了"
 #define str_PersonalCenter_Tips2 @"的坚持者"
+#define str_PersonalCenter_SubTitle1 @"最近连续签到天数"
+#define str_PersonalCenter_SubTitle2 @"最大连续签到天数"
 #define str_PersonalCenter_SubTitle3 @"每日计划总数"
 #define str_PersonalCenter_SubTitle4 @"每日计划完成总数"
 #define str_PersonalCenter_SubTitle5 @"长远计划总数"
@@ -173,6 +175,9 @@
 #define str_Share_Tips2 @"晒数据"
 
 #define str_Messages_Tips1 @"暂无系统消息"
+
+#define str_CheckIn_Tips1 @"签到"
+#define str_CheckIn_Tips2 @"已签到"
 
 #define str_Sync_Begin @"开始同步数据..."
 #define str_Sync_End @"同步数据完成"
