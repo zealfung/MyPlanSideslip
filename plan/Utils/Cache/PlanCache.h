@@ -46,7 +46,7 @@
 
 + (Settings *)getPersonalSettings;
 
-+ (NSArray *)getPlanByPlantype:(NSString *)plantype;
++ (NSArray *)getPlanByPlantype:(NSString *)plantype startIndex:(NSInteger)startIndex;
 
 + (NSString *)getPlanTotalCountByPlantype:(NSString *)plantype;
 
