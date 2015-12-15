@@ -27,4 +27,9 @@
 
 #define HEIGHT_FULL_SCREEN      ([UIScreen mainScreen].bounds.size.height)
 
+//计划分页，每批次加载数据行数
+#define kPlanLoadMax 50
+//影像分页，每批次加载数据行数
+#define kPhotoLoadMax 5
+
 #endif

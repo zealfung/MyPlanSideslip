@@ -22,7 +22,6 @@ NSUInteger const kPlan_MenuHeight = 44;
 NSUInteger const kPlan_MenuLineHeight = 3;
 NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 NSUInteger const kPlanCellDeleteTag = 9527;
-NSUInteger const kLoadMax = 50;
 
 @interface SecondViewController ()<UITableViewDataSource, UITableViewDelegate, PlanCellDelegate, HitViewDelegate> {
     
@@ -125,7 +124,7 @@ NSUInteger const kLoadMax = 50;
     
     isLoadMore = NO;
     if (dayStart < dayTotal) {
-        dayStart += kLoadMax;
+        dayStart += kPlanLoadMax;
     } else {
         [self.planEverydayTableView.mj_footer endRefreshingWithNoMoreData];
     }
@@ -143,7 +142,7 @@ NSUInteger const kLoadMax = 50;
 
     isLoadMore = NO;
     if (lifeStart < lifeTotal) {
-        lifeStart += kLoadMax;
+        lifeStart += kPlanLoadMax;
     } else {
         [self.planLifeTableView.mj_footer endRefreshingWithNoMoreData];
     }
