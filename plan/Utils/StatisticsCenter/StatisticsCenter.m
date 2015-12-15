@@ -101,11 +101,8 @@
     [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
     checkIn.ACL = acl;
     //异步保存
-    __weak typeof(self) weakSelf = self;
     [checkIn saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
-            [weakSelf addCheckInRecord];
-
             Statistics *statistics = [[Statistics alloc] init];
             statistics.recentMax = [checkIn objectForKey:@"recentDates"];
             statistics.recentMaxBeginDate = [checkIn objectForKey:@"recentBegin"];
@@ -123,6 +120,7 @@
             NSLog(@"签到Unknow error");
         }
     }];
+    [self addCheckInRecord];
 }
 
 + (void)addCheckInRecord {
@@ -149,11 +147,8 @@
     [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
     [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
     obj.ACL = acl;
-    __weak typeof(self) weakSelf = self;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
-            [weakSelf addCheckInRecord];
-            
             Statistics *statistics = [[Statistics alloc] init];
             statistics.recentMax = [obj objectForKey:@"recentDates"];
             statistics.recentMaxBeginDate = [obj objectForKey:@"recentBegin"];
@@ -170,6 +165,7 @@
             NSLog(@"更新签到UnKnow error");
         }
     }];
+    [self addCheckInRecord];
 }
 
 @end
