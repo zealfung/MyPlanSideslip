@@ -7,6 +7,7 @@ PODS:
   - FMDB/standard (2.5):
     - FMDB/common
   - MBProgressHUD (0.9.1)
+  - MJRefresh (3.0.7)
   - RESideMenu (4.0.7)
   - SDWebImage (3.7.3):
     - SDWebImage/Core (= 3.7.3)
@@ -18,6 +19,7 @@ DEPENDENCIES:
   - CRToast
   - FMDB
   - MBProgressHUD
+  - MJRefresh
   - RESideMenu
   - SDWebImage
   - WZLBadge
@@ -27,6 +29,7 @@ SPEC CHECKSUMS:
   CRToast: 5a78c22b921c5ed3487488af605bc403a9c92fed
   FMDB: 96e8f1bcc1329e269330f99770ad4285d9003e52
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  MJRefresh: f3e1228ec3d38c7ba5208d58032631a52f39f495
   RESideMenu: f24c508404b49c667344c54aba7e590883533958
   SDWebImage: 1d2b1a1efda1ade1b00b6f8498865f8ddedc8a84
   WZLBadge: b6034017a0714454682c9d9ab4fac33c99fcc9a8
