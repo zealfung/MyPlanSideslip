@@ -7,20 +7,17 @@
 //
 
 #import "PhotoCell.h"
+#import "MJRefresh.h"
 #import "PhotoViewController.h"
 #import "AddPhotoViewController.h"
 #import "PhotoDetailViewController.h"
 
-//#import "PlanCache.h"
-//
-//#import "ThreeViewController.h"
-//
-//#import <RESideMenu/RESideMenu.h>
-
-
 @interface PhotoViewController () {
     
-    NSArray *photoArray;
+    NSMutableArray *photoArray;
+    NSInteger photoTotal;
+    NSInteger loadStart;
+    BOOL isLoadMore;
 }
 
 @end
@@ -29,15 +26,19 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.title = str_ViewTitle_5;
     [self createNavBarButton];
     
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.tableFooterView = [[UIView alloc] init];
+    __weak typeof(self) weakSelf = self;
+    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        isLoadMore = YES;
+        [weakSelf reloadPhotoData];
+    }];
+    self.tableView.mj_footer.hidden = YES;
     
-    photoArray = [NSArray array];
     [NotificationCenter addObserver:self selector:@selector(reloadPhotoData) name:Notify_Photo_Save object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshTable) name:Notify_Photo_RefreshOnly object:nil];
     
@@ -65,7 +66,20 @@
 
 - (void)reloadPhotoData {
     [self showHUD];
-    photoArray = [NSArray arrayWithArray:[PlanCache getPhoto]];
+    photoTotal = [[PlanCache getPhotoTotalCount] integerValue];
+    if (!isLoadMore) {
+        loadStart = 0;
+        photoArray = [NSMutableArray array];
+    }
+    [photoArray addObjectsFromArray:[PlanCache getPhoto:loadStart]];
+    isLoadMore = NO;
+    if (loadStart < photoTotal) {
+        loadStart += kPhotoLoadMax;
+    } else {
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
+    }
+    [self.tableView.mj_footer endRefreshing];
+    
     [self.tableView reloadData];
     [self hideHUD];
 }
@@ -81,40 +95,29 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (photoArray.count > 0) {
-        
         return photoArray.count;
-        
     } else {
-        
         return 5;
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (photoArray.count > 0) {
-        
         return kPhotoCellHeight;
-        
     } else {
-        
         return 44.f;
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row < photoArray.count) {
-        
         tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         Photo *photo = photoArray[indexPath.row];
         PhotoCell *cell = [PhotoCell cellView:photo];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        
         return cell;
-        
     } else {
-        
         static NSString *noticeCellIdentifier = @"noPhotoCellIdentifier";
-        
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noticeCellIdentifier];
         if (!cell) {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noticeCellIdentifier];

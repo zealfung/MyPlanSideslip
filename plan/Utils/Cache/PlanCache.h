@@ -52,7 +52,7 @@
 
 + (NSString *)getPlanCompletedCountByPlantype:(NSString *)plantype;
 
-+ (NSArray *)getPhoto;
++ (NSArray *)getPhoto:(NSInteger)startIndex;
 
 + (NSArray *)getTeask;
 

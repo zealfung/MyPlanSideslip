@@ -1162,9 +1162,9 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, plantype, isdeleted FROM %@ WHERE plantype=? AND account=? AND isdeleted=0 ORDER BY iscompleted, createtime DESC Limit 50 Offset ?", str_TableName_Plan];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, plantype, isdeleted FROM %@ WHERE plantype=? AND account=? AND isdeleted=0 ORDER BY iscompleted, createtime DESC Limit ? Offset ?", str_TableName_Plan];
         
-        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[plantype, account, @(startIndex)]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[plantype, account, @(kPlanLoadMax), @(startIndex)]];
         
         while ([rs next]) {
             
@@ -1189,7 +1189,7 @@ static NSMutableDictionary * __contactsOnlineState;
     }
 }
 
-+ (NSArray *)getPhoto {
++ (NSArray *)getPhoto:(NSInteger)startIndex {
     
     @synchronized(__db) {
         
@@ -1206,9 +1206,9 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL FROM %@ WHERE account=? AND isdeleted=0 ORDER BY phototime DESC, createtime DESC", str_TableName_Photo];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL FROM %@ WHERE account=? AND isdeleted=0 ORDER BY phototime DESC, createtime DESC Limit ? Offset ?", str_TableName_Photo];
         
-        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, @(kPhotoLoadMax), @(startIndex)]];
         
         while ([rs next]) {
             
