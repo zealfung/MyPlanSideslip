@@ -60,7 +60,7 @@
 
 - (void)cleanHasRead {
     [PlanCache cleanHasReadMessages];
-    [self alertNavBarMessage:str_Messages_Tips2];
+    [self alertToastMessage:str_Messages_Tips2];
 }
 
 #pragma mark - Table view data source
