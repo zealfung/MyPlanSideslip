@@ -7,7 +7,6 @@
 //
 
 #import "PlanCache.h"
-#import "ImageBrowser.h"
 #import "PagedFlowView.h"
 #import "AddPhotoViewController.h"
 #import "PhotoDetailViewController.h"
