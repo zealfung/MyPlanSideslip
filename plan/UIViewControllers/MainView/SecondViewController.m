@@ -114,8 +114,9 @@ NSUInteger const kPlanCellDeleteTag = 9527;
         
         [dateArray addObject:plan];
     }
+    [dateKeyArray addObjectsFromArray:dateKeyArrayTmp];
     //日期降序排列
-    [dateKeyArray addObjectsFromArray:[CommonFunction arraySort:dateKeyArrayTmp ascending:NO]];
+    dateKeyArray = [NSMutableArray arrayWithArray:[CommonFunction arraySort:dateKeyArray ascending:NO]];
     
     NSUInteger sections = planEverydayDic.count;
     self.flag = (BOOL *)malloc(sections * sizeof(BOOL));
