@@ -42,11 +42,12 @@
             //服务器有签到记录
             BmobObject *obj = array[0];
             NSDate *recentEnd = [obj objectForKey:@"recentEnd"];
-            NSInteger k = [CommonFunction calculateDateInterval:recentEnd toDate:[NSDate date] calendarUnit:NSDayCalendarUnit];
+//            NSInteger k = [CommonFunction calculateDateInterval:recentEnd toDate:[NSDate date] calendarUnit:NSDayCalendarUnit];
             NSInteger recentDates = [[obj objectForKey:@"recentDates"] integerValue];
             NSInteger maxDates = [[obj objectForKey:@"maxDates"] integerValue];
             NSDate *recentBegin = [obj objectForKey:@"recentBegin"];
-            if (k == 1) {
+            BOOL isContinuous = [self isContinuousDate:recentEnd date2:[NSDate date]];
+            if (isContinuous) {
                 
                 recentDates += 1;
                 recentEnd = [NSDate date];
@@ -166,6 +167,16 @@
         }
     }];
     [self addCheckInRecord];
+}
+
++ (BOOL)isContinuousDate:(NSDate*)date1 date2:(NSDate*)date2 {
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+    NSDateComponents *comp1 = [calendar components:unitFlags fromDate:date1];
+    NSDateComponents *comp2 = [calendar components:unitFlags fromDate:date2];
+    return [comp2 day] - [comp1 day] == 1 &&
+    [comp1 month] == [comp2 month] &&
+    [comp1 year] == [comp2 year];
 }
 
 @end
