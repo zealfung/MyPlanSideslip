@@ -175,6 +175,7 @@
 #define str_Share_Tips2 @"晒数据"
 
 #define str_Messages_Tips1 @"暂无系统消息"
+#define str_Messages_Tips2 @"已读信息清理完毕"
 
 #define str_CheckIn_Tips1 @"签到"
 #define str_CheckIn_Tips2 @"已签到"
