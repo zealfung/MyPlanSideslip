@@ -50,7 +50,7 @@
 }
 
 - (void)createNavBarButton {
-    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Sync selectedImageName:png_Btn_Sync selector:@selector(cleanHasRead)];
+    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Clean selectedImageName:png_Btn_Clean selector:@selector(cleanHasRead)];
 }
 
 - (void)reloadData {
@@ -60,6 +60,7 @@
 
 - (void)cleanHasRead {
     [PlanCache cleanHasReadMessages];
+    [self alertNavBarMessage:str_Messages_Tips2];
 }
 
 #pragma mark - Table view data source
