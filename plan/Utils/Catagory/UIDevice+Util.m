@@ -231,6 +231,8 @@
         case UIDeviceiPhone6Plus:           return IPHONE_6Plus_NAMESTRING;
         case UIDeviceiPhone6PlusGSM:        return IPHONE_6Plus_NAMESTRING;
         case UIDeviceiPhone6PlusGSMCDMA:    return IPHONE_6Plus_NAMESTRING;
+        case UIDeviceiPhone6S:              return IPHONE_6S_NAMESTRING;
+        case UIDeviceiPhone6SPlus:          return IPHONE_6SPlus_NAMESTRING;
         case UIDeviceUnknowniPhone:         return IPHONE_UNKNOWN_NAMESTRING;
             
         case UIDeviceiPod1:                 return IPOD_1_NAMESTRING;

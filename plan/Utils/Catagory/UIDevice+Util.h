@@ -20,6 +20,8 @@
 #define IPHONE_5S_NAMESTRING            @"iPhone 5S"
 #define IPHONE_6_NAMESTRING             @"iPhone 6"
 #define IPHONE_6Plus_NAMESTRING         @"iPhone 6Plus"
+#define IPHONE_6S_NAMESTRING            @"iPhone 6S"
+#define IPHONE_6SPlus_NAMESTRING        @"iPhone 6SPlus"
 #define IPHONE_UNKNOWN_NAMESTRING       @"Unknown iPhone"
 
 #define IPOD_1_NAMESTRING               @"iPod touch 1"
