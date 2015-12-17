@@ -7,6 +7,7 @@
 //
 
 #import "PagedFlowView.h"
+#import "WebViewController.h"
 #import "UIImageView+WebCache.h"
 #import "MessagesDetailViewController.h"
 #import "FullScreenImageArrayViewController.h"
@@ -138,7 +139,10 @@
 }
 
 - (void)detailAction:(UIButton *)button {
-    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.message.detailURL]];
+//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.message.detailURL]];
+    WebViewController *controller = [[WebViewController alloc] init];
+    controller.url = self.message.detailURL;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end
