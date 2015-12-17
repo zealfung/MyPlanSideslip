@@ -78,8 +78,22 @@
     txtViewContent.text = content;
     [scrollView addSubview:txtViewContent];
     
+    CGFloat yOffset = CGRectGetMaxY(txtViewContent.frame) + 10;
+    if (self.message.detailURL && self.message.detailURL.length > 0) {
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+        button.frame = CGRectMake(12, yOffset, 150, 30);
+        button.backgroundColor = [UIColor clearColor];
+        button.titleLabel.font = font_Normal_16;
+        [button setAllTitle:str_Messages_Tips3];
+        [button setAllTitleColor:color_Blue];
+        [button addTarget:self action:@selector(detailAction:) forControlEvents:UIControlEventTouchUpInside];
+        [scrollView addSubview:button];
+        
+        yOffset += 40;
+    }
+
     if (self.message.imgURLArray.count > 0) {
-        PagedFlowView *pageFlowView = [[PagedFlowView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(txtViewContent.frame) + 30, WIDTH_FULL_SCREEN, 100)];
+        PagedFlowView *pageFlowView = [[PagedFlowView alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, 100)];
         pageFlowView.backgroundColor = color_e9eff1;
         pageFlowView.minimumPageAlpha = 0.7;
         pageFlowView.minimumPageScale = 0.9;
@@ -121,6 +135,10 @@
 //    controller.imgArray = self.message.imgURLArray;
 //    controller.defaultIndex = index;
 //    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)detailAction:(UIButton *)button {
+    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.message.detailURL]];
 }
 
 @end
