@@ -6,9 +6,12 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
+#import "PagedFlowView.h"
+#import "UIImageView+WebCache.h"
 #import "MessagesDetailViewController.h"
+#import "FullScreenImageArrayViewController.h"
 
-@interface MessagesDetailViewController () {
+@interface MessagesDetailViewController () <PagedFlowViewDataSource, PagedFlowViewDelegate> {
     
     UIScrollView *scrollView;
 }
@@ -75,7 +78,49 @@
     txtViewContent.text = content;
     [scrollView addSubview:txtViewContent];
     
-    scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, CGRectGetMaxY(txtViewContent.frame) + 64);
+    if (self.message.imgURLArray.count > 0) {
+        PagedFlowView *pageFlowView = [[PagedFlowView alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(txtViewContent.frame) + 30, WIDTH_FULL_SCREEN, 100)];
+        pageFlowView.backgroundColor = color_e9eff1;
+        pageFlowView.minimumPageAlpha = 0.7;
+        pageFlowView.minimumPageScale = 0.9;
+        pageFlowView.delegate = self;
+        pageFlowView.dataSource = self;
+        [scrollView addSubview:pageFlowView];
+        scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, CGRectGetMaxY(pageFlowView.frame) + 64);
+    } else {
+        scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, CGRectGetMaxY(txtViewContent.frame) + 64);
+    }
+}
+
+#pragma mark - PagedFlowView Datasource
+- (NSInteger)numberOfPagesInFlowView:(PagedFlowView *)flowView {
+    return self.message.imgURLArray.count;
+}
+
+- (UIView *)flowView:(PagedFlowView *)flowView cellForPageAtIndex:(NSInteger)index {
+    [flowView dequeueReusableCell]; //必须要调用否则会内存泄漏
+    UIImageView *imageView = [[UIImageView alloc] init];
+    imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [imageView sd_setImageWithURL:[NSURL URLWithString:self.message.imgURLArray[index]] placeholderImage:[UIImage imageNamed:png_Bg_LaunchImage]];
+//    imageView.image = self.message.imgURLArray[index];
+    return imageView;
+}
+
+#pragma mark - PagedFlowView Delegate
+- (CGSize)sizeForPageInFlowView:(PagedFlowView *)flowView {
+    CGFloat width = 100 * 185.4 / 300;
+    return CGSizeMake(width, 100);
+}
+
+- (void)flowView:(PagedFlowView *)flowView didScrollToPageAtIndex:(NSInteger)index {
+
+}
+
+- (void)flowView:(PagedFlowView *)flowView didTapPageAtIndex:(NSInteger)index {
+//    FullScreenImageArrayViewController *controller = [[FullScreenImageArrayViewController alloc] init];
+//    controller.imgArray = self.message.imgURLArray;
+//    controller.defaultIndex = index;
+//    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end
