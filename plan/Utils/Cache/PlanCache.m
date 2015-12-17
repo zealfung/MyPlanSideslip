@@ -489,8 +489,36 @@ static NSMutableDictionary * __contactsOnlineState;
     }
 }
 
++ (void)updateSettingsUpdatedTime {
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return ;
+            }
+        }
+        
+        NSString *account = @"";
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser getCurrentUser];
+            account = user.objectId;
+        }
+        NSString *timeNow = [CommonFunction getTimeNowString];
+
+        BOOL hasRec = NO;
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", str_TableName_Settings];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
+        hasRec = [rs next];
+        [rs close];
+        if (hasRec) {
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET updatetime=? WHERE account=?", str_TableName_Settings];
+            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[timeNow, account]];
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+    }
+}
+
 + (BOOL)storePlan:(Plan *)plan {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -567,7 +595,10 @@ static NSMutableDictionary * __contactsOnlineState;
             //更新5天没有新建计划的提醒时间
             [self setFiveDayNotification];
         }
-        [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
+        if (b) {
+            [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
+            [self updateSettingsUpdatedTime];
+        }
         return b;
     }
 }
@@ -641,13 +672,15 @@ static NSMutableDictionary * __contactsOnlineState;
             
             FMDBQuickCheck(b, sqlString, __db);
         }
-        [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
+        if (b) {
+            [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
+            [self updateSettingsUpdatedTime];
+        }
         return b;
     }
 }
 
 + (BOOL)storeStatistics:(Statistics *)statistics {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -712,7 +745,6 @@ static NSMutableDictionary * __contactsOnlineState;
 }
 
 + (BOOL)storeTask:(Task *)task {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -775,13 +807,15 @@ static NSMutableDictionary * __contactsOnlineState;
             
             FMDBQuickCheck(b, sqlString, __db);
         }
-        [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
+        if (b) {
+            [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
+            [self updateSettingsUpdatedTime];
+        }
         return b;
     }
 }
 
 + (BOOL)storeTaskRecord:(TaskRecord *)taskRecord {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -798,7 +832,11 @@ static NSMutableDictionary * __contactsOnlineState;
         BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[taskRecord.recordId, taskRecord.createTime]];
         
         FMDBQuickCheck(b, sqlString, __db);
-        [NotificationCenter postNotificationName:Notify_TaskRecord_Save object:nil];
+        
+        if (b) {
+            [NotificationCenter postNotificationName:Notify_TaskRecord_Save object:nil];
+            [self updateSettingsUpdatedTime];
+        }
         return b;
     }
 }
@@ -894,7 +932,6 @@ static NSMutableDictionary * __contactsOnlineState;
 }
 
 + (BOOL)deletePlan:(Plan *)plan {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -932,13 +969,15 @@ static NSMutableDictionary * __contactsOnlineState;
                 [self cancelLocalNotification:plan.planid];
             }
         }
-        [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
+        if (b) {
+            [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
+            [self updateSettingsUpdatedTime];
+        }
         return b;
     }
 }
 
 + (BOOL)deletePhoto:(Photo *)photo {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -970,13 +1009,15 @@ static NSMutableDictionary * __contactsOnlineState;
             
             FMDBQuickCheck(b, sqlString, __db);
         }
-        [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
+        if (b) {
+            [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
+            [self updateSettingsUpdatedTime];
+        }
         return b;
     }
 }
 
 + (BOOL)deleteTask:(Task *)task {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1014,7 +1055,10 @@ static NSMutableDictionary * __contactsOnlineState;
 //                [self cancelLocalNotification:task.taskId];
 //            }
         }
-        [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
+        if (b) {
+            [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
+            [self updateSettingsUpdatedTime];
+        }
         return b;
     }
 }
@@ -1077,7 +1121,6 @@ static NSMutableDictionary * __contactsOnlineState;
 }
 
 + (Settings *)getPersonalSettings {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1146,7 +1189,6 @@ static NSMutableDictionary * __contactsOnlineState;
 }
 
 + (NSArray *)getPlanByPlantype:(NSString *)plantype startIndex:(NSInteger)startIndex {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1190,7 +1232,6 @@ static NSMutableDictionary * __contactsOnlineState;
 }
 
 + (NSArray *)getPhoto:(NSInteger)startIndex {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1248,7 +1289,6 @@ static NSMutableDictionary * __contactsOnlineState;
 }
 
 + (Photo *)getPhotoById:(NSString *)photoid {
-    
     @synchronized(__db) {
         
         Photo *photo = [[Photo alloc] init];
@@ -1304,7 +1344,6 @@ static NSMutableDictionary * __contactsOnlineState;
 }
 
 + (Statistics *)getStatistics {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1346,7 +1385,6 @@ static NSMutableDictionary * __contactsOnlineState;
 }
 
 + (NSArray *)getTeask {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1389,7 +1427,6 @@ static NSMutableDictionary * __contactsOnlineState;
 }
 
 + (NSArray *)getTeaskRecord:(NSString *)recordId {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1456,7 +1493,6 @@ static NSMutableDictionary * __contactsOnlineState;
 }
 
 + (NSString *)getPlanTotalCountByPlantype:(NSString *)plantype {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1487,7 +1523,6 @@ static NSMutableDictionary * __contactsOnlineState;
 }
 
 + (NSString *)getPlanCompletedCountByPlantype:(NSString *)plantype {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1600,7 +1635,6 @@ static NSMutableDictionary * __contactsOnlineState;
 + (void)updateLocalNotification:(Plan *)plan {
     //首先取消该计划的本地所有通知
     [self cancelLocalNotification:plan.planid];
-    
     //重新添加新的通知
     [self addLocalNotification:plan];
 }
@@ -1649,7 +1683,6 @@ static NSMutableDictionary * __contactsOnlineState;
         
         [self addLocalNotification:fiveDayPlan];
     }
-    
 }
 
 + (void)linkedLocalDataToAccount {
@@ -1738,7 +1771,6 @@ static NSMutableDictionary * __contactsOnlineState;
 }
 
 + (NSArray *)getPlanForSync:(NSString *)syntime {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1825,7 +1857,6 @@ static NSMutableDictionary * __contactsOnlineState;
 }
 
 + (NSArray *)getPhotoForSync:(NSString *)syntime {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1896,7 +1927,6 @@ static NSMutableDictionary * __contactsOnlineState;
 
 //time : yyyy-MM-dd HH:mm:ss
 + (NSArray *)getPlanDateForStatisticsByTime:(NSString *)time {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1941,7 +1971,6 @@ static NSMutableDictionary * __contactsOnlineState;
 }
 
 + (NSArray *)getTaskForSync:(NSString *)syntime {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1998,7 +2027,6 @@ static NSMutableDictionary * __contactsOnlineState;
 }
 
 + (NSArray *)getTeaskRecordForSyncByTaskId:(NSString *)taskId syntime:(NSString *)syntime {
-    
     @synchronized(__db) {
         
         if (!__db.open) {
