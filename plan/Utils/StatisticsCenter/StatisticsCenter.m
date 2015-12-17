@@ -42,7 +42,6 @@
             //服务器有签到记录
             BmobObject *obj = array[0];
             NSDate *recentEnd = [obj objectForKey:@"recentEnd"];
-//            NSInteger k = [CommonFunction calculateDateInterval:recentEnd toDate:[NSDate date] calendarUnit:NSDayCalendarUnit];
             NSInteger recentDates = [[obj objectForKey:@"recentDates"] integerValue];
             NSInteger maxDates = [[obj objectForKey:@"maxDates"] integerValue];
             NSDate *recentBegin = [obj objectForKey:@"recentBegin"];
