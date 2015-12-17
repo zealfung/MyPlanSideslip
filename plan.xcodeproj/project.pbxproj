@@ -186,6 +186,7 @@
 		13AF64AB1C1C0C75008E8A9E /* Btn_Share_circle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64AA1C1C0C75008E8A9E /* Btn_Share_circle@2x.png */; };
 		13AF64AD1C1C5C50008E8A9E /* avatarDefault1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64AC1C1C5C50008E8A9E /* avatarDefault1@2x.png */; };
 		13AF64BB1C214253008E8A9E /* Btn_Clean@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64BA1C214253008E8A9E /* Btn_Clean@2x.png */; };
+		13AF64BE1C22E64E008E8A9E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF64BD1C22E64E008E8A9E /* WebViewController.m */; };
 		13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -493,6 +494,8 @@
 		13AF64AA1C1C0C75008E8A9E /* Btn_Share_circle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Share_circle@2x.png"; sourceTree = "<group>"; };
 		13AF64AC1C1C5C50008E8A9E /* avatarDefault1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "avatarDefault1@2x.png"; sourceTree = "<group>"; };
 		13AF64BA1C214253008E8A9E /* Btn_Clean@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Clean@2x.png"; sourceTree = "<group>"; };
+		13AF64BC1C22E64E008E8A9E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
+		13AF64BD1C22E64E008E8A9E /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Settings@2x.png"; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -1275,6 +1278,8 @@
 				131D6ABF1C00769A009FDD72 /* FullScreenImageArrayViewController.m */,
 				13A6ACCB1BC6A82C005A02F9 /* FullScreenImageViewController.h */,
 				13A6ACCC1BC6A82C005A02F9 /* FullScreenImageViewController.m */,
+				13AF64BC1C22E64E008E8A9E /* WebViewController.h */,
+				13AF64BD1C22E64E008E8A9E /* WebViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1609,6 +1614,7 @@
 				137470A41C0815F100B7822A /* CoreArchive.m in Sources */,
 				1361AFC41BCBA5E700DD5FFB /* DoAlbumCell.m in Sources */,
 				1368F9631BB623E100CC7E63 /* RegisterSDK.m in Sources */,
+				13AF64BE1C22E64E008E8A9E /* WebViewController.m in Sources */,
 				132263A81B9C809400D21637 /* FirstViewController.m in Sources */,
 				135B22221B92E837005CE84A /* UILabel+Util.m in Sources */,
 			);
