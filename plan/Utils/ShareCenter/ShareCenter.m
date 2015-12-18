@@ -25,11 +25,11 @@
     //1、创建分享参数
     NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
     NSArray* imageArray = @[shareImg];
-    [shareParams SSDKSetupShareParamsByText:@""
+    [shareParams SSDKSetupShareParamsByText:str_Share_Tips3
                                      images:imageArray
                                         url:[NSURL URLWithString:str_Website_URL]
-                                      title:@""
-                                       type:SSDKContentTypeImage];
+                                      title:str_App_Slogan
+                                       type:SSDKContentTypeWebPage];
     
     //1.2、自定义分享平台
     NSMutableArray *activePlatforms = [NSMutableArray arrayWithArray:@[@(SSDKPlatformTypeSinaWeibo), @(SSDKPlatformSubTypeWechatSession), @(SSDKPlatformSubTypeWechatTimeline), @(SSDKPlatformSubTypeQQFriend), @(SSDKPlatformSubTypeQZone), @(SSDKPlatformTypeQQ)]];
@@ -98,7 +98,7 @@
                                      images:imageArray
                                         url:[NSURL URLWithString:shareUrl]
                                       title:title
-                                       type:SSDKContentTypeAuto];
+                                       type:SSDKContentTypeWebPage];
     
     //1.2、自定义分享平台
     NSMutableArray *activePlatforms = [NSMutableArray arrayWithArray:@[@(SSDKPlatformTypeSinaWeibo), @(SSDKPlatformSubTypeWechatSession), @(SSDKPlatformSubTypeWechatTimeline), @(SSDKPlatformSubTypeQQFriend), @(SSDKPlatformSubTypeQZone), @(SSDKPlatformTypeQQ)]];

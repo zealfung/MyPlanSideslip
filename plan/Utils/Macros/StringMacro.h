@@ -10,6 +10,7 @@
 #define plan_StringMacro_h
 
 #define str_App_Title @"我有计划"
+#define str_App_Slogan @"理想生活，我有计划"
 
 #define str_Common_Tips1 @"请到“设置”-“隐私”-“照片”中找到”我有计划“，将按钮打开，允许访问相册"
 #define str_Common_Tips2 @"请到“设置”-“隐私”-“相机”中找到”我有计划“，将按钮打开，允许使用摄像头"
@@ -170,9 +171,10 @@
 #define str_Share_Success @"分享成功"
 #define str_Share_Fail @"分享失败"
 #define str_Share_Cancel @"取消分享"
-#define str_Share_URL @"http://www.fengziyi.com/andwho-plan/"
+#define str_Share_URL @"http://myplan.bmob.cn/"
 #define str_Share_Tips1 @"来自我有计划iOS版"
 #define str_Share_Tips2 @"晒数据"
+#define str_Share_Tips3 @"做计划管时间的好APP：我有计划"
 
 #define str_Messages_Tips1 @"暂无系统消息"
 #define str_Messages_Tips2 @"已读信息清理完毕"
@@ -193,7 +195,7 @@
 #define str_TableName_Task @"t_task"
 #define str_TableName_TaskRecord @"t_taskrecord"
 #define str_TableName_Messages @"t_messages"
-#define str_Website_URL @"http://www.fengziyi.com"
+#define str_Website_URL @"http://myplan.bmob.cn/"
 #define str_Feedback_Email @"fengziyi@andwho.com"
 
 #define str_DateFormatter_yyyy_MM_dd_HHmmss @"yyyy-MM-dd HH:mm:ss"
