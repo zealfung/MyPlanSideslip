@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B441B0F9DBE845081B1864EC"
+               BlueprintIdentifier = "63E76B2049126A7FAC2AFC5B"
                BuildableName = "libCRToast.a"
                BlueprintName = "CRToast"
                ReferencedContainer = "container:Pods.xcodeproj">

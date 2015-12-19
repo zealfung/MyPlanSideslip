@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B3869B0FA78537202FFD69F4"
+               BlueprintIdentifier = "4A361CB6CCC7D927BFDAC4E5"
                BuildableName = "libWZLBadge.a"
                BlueprintName = "WZLBadge"
                ReferencedContainer = "container:Pods.xcodeproj">
