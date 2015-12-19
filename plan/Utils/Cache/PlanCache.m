@@ -186,36 +186,6 @@ static NSMutableDictionary * __contactsOnlineState;
             
             FMDBQuickCheck(b, sqlString, __db);
         }
-        //新增头像字段2015-10-16
-        NSString *avatar = @"avatar";
-        if (![__db columnExists:avatar inTableWithName:str_TableName_Settings]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ BLOB",str_TableName_Settings, avatar];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //新增头像字段2015-10-16
-        NSString *avatarURL = @"avatarURL";
-        if (![__db columnExists:avatarURL inTableWithName:str_TableName_Settings]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, avatarURL];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //新增头像字段2015-10-16
-        NSString *updateTime = @"updatetime";
-        if (![__db columnExists:updateTime inTableWithName:str_TableName_Settings]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, updateTime];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
     }
     
     // 计划
@@ -445,17 +415,7 @@ static NSMutableDictionary * __contactsOnlineState;
         
         NSData *avatarData = [NSData data];
         if (settings.avatar) {
-            
             avatarData = UIImageJPEGRepresentation(settings.avatar, 1.0);
-            [UserDefaults setObject:nil forKey:str_Avatar];//过渡代码
-            [UserDefaults synchronize];
-            
-        } else if ([UserDefaults objectForKey:str_Avatar]) {//过渡代码
-            
-            avatarData = [UserDefaults objectForKey:str_Avatar];
-            [UserDefaults setObject:nil forKey:str_Avatar];
-            [UserDefaults synchronize];
-            
         }
         NSData *centerTopData = [NSData data];
         if (settings.centerTop) {
