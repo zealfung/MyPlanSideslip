@@ -39,9 +39,6 @@
 //NSDate转换NSString
 + (NSString *)NSDateToNSString:(NSDate *)datetime formatter:(NSString *)format;
 
-//计算date1和date2的时间差 calendarUnit:NSDayCalendarUnit相差天数、NSMonthCalendarUnit相差月数、NSYearCalendarUnit相差年数
-+ (NSInteger)calculateDateInterval:(NSDate *)date1 toDate:(NSDate *)date2 calendarUnit:(int)calendarUnit;
-
 //过滤纯数字
 + (BOOL)validateNumber:(NSString *)textString;
 
@@ -50,5 +47,8 @@
 
 //判断两个日期是否为同一天
 + (BOOL)isSameDay:(NSDate*)date1 date2:(NSDate*)date2;
+
+// MD5 32位加密
++ (NSString *)md5HexDigest:(NSString*)password;
 
 @end

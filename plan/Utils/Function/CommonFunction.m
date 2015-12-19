@@ -8,6 +8,7 @@
 
 #import "UIDevice+Util.h"
 #import "CommonFunction.h"
+#import <CommonCrypto/CommonDigest.h>
 
 @implementation CommonFunction
 
@@ -27,11 +28,9 @@
 
 //获取当前时间字符串：yyyy-MM-dd HH:mm:ss
 + (NSString *)getTimeNowString {
-    
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmmss];
     NSString *timeNow = [dateFormatter stringFromDate:[NSDate date]];
-    
     return timeNow;
 }
 
@@ -44,27 +43,22 @@
         date = [NSDate date];
     }
     NSDateComponents *comps = [calendar components:unitFlags fromDate:date];
-    
     return comps;
 }
 
 //判断是否为空白字符串
 + (BOOL)isEmptyString:(NSString *)original {
-    
     return original == nil || [original isEqualToString:@""];
-    
 }
 
 //压缩图片
 + (UIImage *)compressImage:(UIImage *)image {
-    
     NSData *imgData = UIImageJPEGRepresentation(image, 0.7);
     return [UIImage imageWithData:imgData];
 }
 
 //数组排序 yes升序排列，no,降序排列
 + (NSArray *)arraySort:(NSArray *)array ascending:(BOOL)ascending {
-    
     NSSortDescriptor *sd = [NSSortDescriptor sortDescriptorWithKey:nil ascending:ascending];
     return [array sortedArrayUsingDescriptors:[NSArray arrayWithObjects:sd, nil]];
 
@@ -87,27 +81,6 @@
     return dateStr;
 }
 
-+ (NSInteger)calculateDateInterval:(NSDate *)date1 toDate:(NSDate *)date2 calendarUnit:(int)calendarUnit {
-    
-    NSCalendar *userCalendar = [NSCalendar currentCalendar];
-    unsigned int unitFlags = calendarUnit;
-    NSDateComponents *components = [userCalendar components:unitFlags fromDate:date1 toDate:date2 options:0];
-    switch (calendarUnit) {
-        case NSDayCalendarUnit:
-            return [components day];
-            break;
-        case NSMonthCalendarUnit:
-            return [components month];
-            break;
-        case NSYearCalendarUnit:
-            return [components year];
-            break;
-        default:
-            return 0;
-            break;
-    }
-}
-
 + (BOOL)validateNumber:(NSString *)textString {
     NSString *number = @"^[0-9]+$";
     NSPredicate *numberPre = [NSPredicate predicateWithFormat:@"SELF MATCHES %@", number];
@@ -128,6 +101,20 @@
     return [comp1 day] == [comp2 day] &&
     [comp1 month] == [comp2 month] &&
     [comp1 year] == [comp2 year];
+}
+
+// MD5 32位加密
++ (NSString *)md5HexDigest:(NSString*)password {
+    const char *original_str = [password UTF8String];
+    unsigned char result[CC_MD5_BLOCK_BYTES];
+    CC_MD5(original_str, (CC_LONG)strlen(original_str), result);
+    NSMutableString *hash = [NSMutableString string];
+    for (int i = 0; i < CC_MD5_BLOCK_BYTES; i++) {
+        // %02X是格式控制符：‘x’表示以16进制输出，‘02’表示不足两位，前面补0；
+        [hash appendFormat:@"%02X", result[i]];
+    }
+    NSString *mdfiveString = [hash lowercaseString];
+    return mdfiveString;
 }
 
 @end
