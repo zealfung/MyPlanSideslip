@@ -187,6 +187,7 @@
 		13AF64AD1C1C5C50008E8A9E /* avatarDefault1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64AC1C1C5C50008E8A9E /* avatarDefault1@2x.png */; };
 		13AF64BB1C214253008E8A9E /* Btn_Clean@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64BA1C214253008E8A9E /* Btn_Clean@2x.png */; };
 		13AF64BE1C22E64E008E8A9E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF64BD1C22E64E008E8A9E /* WebViewController.m */; };
+		13AF64C11C255BB7008E8A9E /* FourViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF64C01C255BB7008E8A9E /* FourViewController.m */; };
 		13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -496,6 +497,8 @@
 		13AF64BA1C214253008E8A9E /* Btn_Clean@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Clean@2x.png"; sourceTree = "<group>"; };
 		13AF64BC1C22E64E008E8A9E /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		13AF64BD1C22E64E008E8A9E /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
+		13AF64BF1C255BB7008E8A9E /* FourViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FourViewController.h; sourceTree = "<group>"; };
+		13AF64C01C255BB7008E8A9E /* FourViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FourViewController.m; sourceTree = "<group>"; };
 		13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Settings@2x.png"; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -618,6 +621,8 @@
 			children = (
 				132263A41B9C809400D21637 /* FirstViewController.h */,
 				132263A51B9C809400D21637 /* FirstViewController.m */,
+				13AF64BF1C255BB7008E8A9E /* FourViewController.h */,
+				13AF64C01C255BB7008E8A9E /* FourViewController.m */,
 				131D6A241BF4D95F009FDD72 /* RootViewController.h */,
 				131D6A251BF4D95F009FDD72 /* RootViewController.m */,
 				132263A61B9C809400D21637 /* SecondViewController.h */,
@@ -1583,6 +1588,7 @@
 				135B21B31B900FFE005CE84A /* ThreeSubView.m in Sources */,
 				137470BF1C0ABCFE00B7822A /* AddTaskViewController.m in Sources */,
 				137701131B9683E3008C83FD /* CommonFunction.m in Sources */,
+				13AF64C11C255BB7008E8A9E /* FourViewController.m in Sources */,
 				135B21DC1B90A145005CE84A /* UIButton+Util.m in Sources */,
 				13A6ACA81BC3FBF1005A02F9 /* PagedFlowView.m in Sources */,
 				135B221C1B92E72A005CE84A /* AlertCenter.m in Sources */,
