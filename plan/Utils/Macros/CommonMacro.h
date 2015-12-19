@@ -27,9 +27,12 @@
 
 #define iPhone6SPlus [[CommonFunction getDeviceType] rangeOfString:@"iPhone 6SPlus"].location != NSNotFound
 
-#define WIDTH_FULL_SCREEN       ([UIScreen mainScreen].bounds.size.width)
+#define WIDTH_FULL_SCREEN    ([UIScreen mainScreen].bounds.size.width)
 
-#define HEIGHT_FULL_SCREEN      ([UIScreen mainScreen].bounds.size.height)
+#define HEIGHT_FULL_SCREEN   ([UIScreen mainScreen].bounds.size.height)
+
+//除导航栏和状态栏外的视图的高度
+#define HEIGHT_FULL_VIEW     ([UIScreen mainScreen].bounds.size.height) - 64
 
 //计划分页，每批次加载数据行数
 #define kPlanLoadMax 50
