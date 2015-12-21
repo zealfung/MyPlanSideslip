@@ -27,7 +27,7 @@
 #define str_ViewTitle_9 @"关于我们"
 #define str_ViewTitle_10 @"注册账号"
 #define str_ViewTitle_11 @"找回密码"
-#define str_ViewTitle_12 @"系统消息"
+#define str_ViewTitle_12 @"消息中心"
 #define str_ViewTitle_13 @"消息详情"
 #define str_NickName @"昵称"
 #define str_FirstView_1 @"假如你可以活到"
