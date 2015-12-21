@@ -188,6 +188,8 @@
 		13AF64BB1C214253008E8A9E /* Btn_Clean@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64BA1C214253008E8A9E /* Btn_Clean@2x.png */; };
 		13AF64BE1C22E64E008E8A9E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF64BD1C22E64E008E8A9E /* WebViewController.m */; };
 		13AF64C11C255BB7008E8A9E /* FourViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF64C01C255BB7008E8A9E /* FourViewController.m */; };
+		13AF64C61C269369008E8A9E /* PostsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF64C41C269369008E8A9E /* PostsCell.m */; };
+		13AF64C71C269369008E8A9E /* PostsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64C51C269369008E8A9E /* PostsCell.xib */; };
 		13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */; };
 /* End PBXBuildFile section */
 
@@ -499,6 +501,9 @@
 		13AF64BD1C22E64E008E8A9E /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		13AF64BF1C255BB7008E8A9E /* FourViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FourViewController.h; sourceTree = "<group>"; };
 		13AF64C01C255BB7008E8A9E /* FourViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FourViewController.m; sourceTree = "<group>"; };
+		13AF64C31C269369008E8A9E /* PostsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsCell.h; sourceTree = "<group>"; };
+		13AF64C41C269369008E8A9E /* PostsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsCell.m; sourceTree = "<group>"; };
+		13AF64C51C269369008E8A9E /* PostsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsCell.xib; sourceTree = "<group>"; };
 		13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Settings@2x.png"; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
@@ -904,6 +909,7 @@
 		135B22111B92C070005CE84A /* UIViewControllers */ = {
 			isa = PBXGroup;
 			children = (
+				13AF64C21C269238008E8A9E /* Community */,
 				135B22121B92C0AC005CE84A /* FatherController */,
 				132263A31B9C805700D21637 /* MainView */,
 				137700D81B952DA1008C83FD /* More */,
@@ -1289,6 +1295,16 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		13AF64C21C269238008E8A9E /* Community */ = {
+			isa = PBXGroup;
+			children = (
+				13AF64C31C269369008E8A9E /* PostsCell.h */,
+				13AF64C41C269369008E8A9E /* PostsCell.m */,
+				13AF64C51C269369008E8A9E /* PostsCell.xib */,
+			);
+			path = Community;
+			sourceTree = "<group>";
+		};
 		13BB1C721BE63F0200412D6D /* Share */ = {
 			isa = PBXGroup;
 			children = (
@@ -1454,6 +1470,7 @@
 				136DF5D81BEDE87D001D6496 /* ShareSDK.bundle in Resources */,
 				137470AD1C0945D000B7822A /* Icon_Gesture_Unlock@2x.png in Resources */,
 				13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */,
+				13AF64C71C269369008E8A9E /* PostsCell.xib in Resources */,
 				131D6A281BF58C81009FDD72 /* Btn_LeftMenu@2x.png in Resources */,
 				137701101B9680AC008C83FD /* Bg_Input_Gray@2x.png in Resources */,
 				1361AFD21BCBB54800DD5FFB /* Btn_Down.png in Resources */,
@@ -1607,6 +1624,7 @@
 				13A6AC931BC344A2005A02F9 /* FatherTableViewController.m in Sources */,
 				13A6AC8D1BBFDDD6005A02F9 /* DataCenter.m in Sources */,
 				135B21891B900394005CE84A /* main.m in Sources */,
+				13AF64C61C269369008E8A9E /* PostsCell.m in Sources */,
 				13A6ACC71BC69E61005A02F9 /* PhotoDetailViewController.m in Sources */,
 				131D69E81BF37614009FDD72 /* Statistics.m in Sources */,
 				13A6AC901BC3439E005A02F9 /* ThreeViewController.m in Sources */,
