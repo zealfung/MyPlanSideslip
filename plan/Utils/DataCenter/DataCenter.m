@@ -225,7 +225,6 @@ static BOOL finishPhoto;
         [settingsObject setObject:[Config shareInstance].settings.updatetime forKey:@"updatedTime"];
     }
     NSString *timeNow = [CommonFunction getTimeNowString];
-    [Config shareInstance].settings.syntime = timeNow;
     if ([Config shareInstance].settings.syntime) {
         [settingsObject setObject:timeNow forKey:@"syncTime"];
     }
@@ -236,6 +235,7 @@ static BOOL finishPhoto;
     [settingsObject updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
             
+            [Config shareInstance].settings.syntime = timeNow;
             [PlanCache storePersonalSettings:[Config shareInstance].settings];
             
         } else if (error){
@@ -291,7 +291,6 @@ static BOOL finishPhoto;
         [userSettings setObject:[Config shareInstance].settings.updatetime forKey:@"updatedTime"];
     }
     NSString *timeNow = [CommonFunction getTimeNowString];
-    [Config shareInstance].settings.syntime = timeNow;
     if ([Config shareInstance].settings.syntime) {
         [userSettings setObject:timeNow forKey:@"syncTime"];
     }
@@ -303,6 +302,7 @@ static BOOL finishPhoto;
     [userSettings saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
             
+            [Config shareInstance].settings.syntime = timeNow;
             [PlanCache storePersonalSettings:[Config shareInstance].settings];
             
         } else if (error){
