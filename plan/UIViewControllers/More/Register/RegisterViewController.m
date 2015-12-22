@@ -95,11 +95,11 @@
     NSString *acountEmail = [self.txtEmail.text lowercaseString];
     BmobUser *bUser = [[BmobUser alloc] init];
     bUser.username = acountEmail;
-    bUser.password = self.txtPassword.text;
+    bUser.password = [CommonFunction md5HexDigest:self.txtPassword.text];
     bUser.email = acountEmail;
     BmobACL *acl = [BmobACL ACL];
-    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
-    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    [acl setReadAccessForUser:bUser];//设置只有当前用户可读
+    [acl setWriteAccessForUser:bUser];//设置只有当前用户可写
     bUser.ACL = acl;
     [bUser signUpInBackgroundWithBlock:^ (BOOL isSuccessful, NSError *error){
         [weakSelf hideHUD];
