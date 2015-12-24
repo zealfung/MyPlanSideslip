@@ -97,14 +97,11 @@
     bUser.username = acountEmail;
     bUser.password = [CommonFunction md5HexDigest:self.txtPassword.text];
     bUser.email = acountEmail;
-    BmobACL *acl = [BmobACL ACL];
-    [acl setReadAccessForUser:bUser];//设置只有当前用户可读
-    [acl setWriteAccessForUser:bUser];//设置只有当前用户可写
-    bUser.ACL = acl;
     [bUser signUpInBackgroundWithBlock:^ (BOOL isSuccessful, NSError *error){
         [weakSelf hideHUD];
         
         if (isSuccessful){
+            [BmobUser logout];
             [weakSelf alertButtonMessage:str_Register_Tips6];
             [weakSelf.navigationController popViewControllerAnimated:YES];
         } else {
