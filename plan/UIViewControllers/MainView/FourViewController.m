@@ -6,6 +6,7 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
+#import "PostsCell.h"
 #import "SDCycleScrollView.h"
 #import "FourViewController.h"
 
@@ -68,7 +69,7 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 50.f;
+    return 295.f;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -77,15 +78,19 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
-    static NSString *cellIdentifier = @"UITableViewCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil) {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-    }
-    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+//    static NSString *cellIdentifier = @"UITableViewCell";
+//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+//    if (cell == nil) {
+//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
+//    }
+//    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
 //    cell.textLabel.font = K_Font_16;
 //    cell.textLabel.height = 44;
 //    cell.textLabel.text = [NSString stringWithFormat:@"%@   %@", card.carNumber, card.cardName];
+    
+    PostsCell *cell = [PostsCell cellView];
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+    
     return cell;
 }
 
