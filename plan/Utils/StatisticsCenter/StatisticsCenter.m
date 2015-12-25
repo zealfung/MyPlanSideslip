@@ -35,8 +35,9 @@
         if ([CommonFunction isSameDay:[NSDate date] date2:lastCheckInDate]) return;
     }
     __weak typeof(self) weakSelf = self;
+    BmobUser *user = [BmobUser getCurrentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"CheckIn"];
-    [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
         if (!error && array.count == 1) {
             //服务器有签到记录
@@ -88,8 +89,9 @@
 }
 
 + (void)addCheckIn {
+    BmobUser *user = [BmobUser getCurrentUser];
     BmobObject  *checkIn = [BmobObject objectWithClassName:@"CheckIn"];
-    [checkIn setObject:[Config shareInstance].settings.account forKey:@"userObjectId"];
+    [checkIn setObject:user.objectId forKey:@"userObjectId"];
     [checkIn setObject:[NSNumber numberWithInt:1] forKey:@"recentDates"];
     [checkIn setObject:[NSDate date] forKey:@"recentBegin"];
     [checkIn setObject:[NSDate date] forKey:@"recentEnd"];
@@ -97,8 +99,8 @@
     [checkIn setObject:[NSDate date] forKey:@"maxBegin"];
     [checkIn setObject:[NSDate date] forKey:@"maxEnd"];
     BmobACL *acl = [BmobACL ACL];
-    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
-    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    [acl setReadAccessForUser:user];//设置只有当前用户可读
+    [acl setWriteAccessForUser:user];//设置只有当前用户可写
     checkIn.ACL = acl;
     //异步保存
     [checkIn saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
@@ -124,11 +126,12 @@
 }
 
 + (void)addCheckInRecord {
+    BmobUser *user = [BmobUser getCurrentUser];
     BmobObject *checkInRecord = [BmobObject objectWithClassName:@"CheckInRecord"];
-    [checkInRecord setObject:[Config shareInstance].settings.account forKey:@"userObjectId"];
+    [checkInRecord setObject:user.objectId forKey:@"userObjectId"];
     BmobACL *acl = [BmobACL ACL];
-    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
-    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    [acl setReadAccessForUser:user];//设置只有当前用户可读
+    [acl setWriteAccessForUser:user];//设置只有当前用户可写
     checkInRecord.ACL = acl;
     //异步保存
     [checkInRecord saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
