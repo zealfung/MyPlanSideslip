@@ -58,5 +58,9 @@
 #define png_Icon_Gesture_Unlock @"Icon_Gesture_Unlock"
 #define png_Icon_GestureTrack_Show @"Icon_GestureTrack_Show"
 #define png_Icon_GestureTrack_Hide @"Icon_GestureTrack_Hide"
+#define png_Icon_Posts_Comment @"Icon_Posts_Comment"
+#define png_Icon_Posts_Eyes @"Icon_Posts_Eyes"
+#define png_Icon_Posts_Praise_Normal @"Icon_Posts_Praise_Normal"
+#define png_Icon_Posts_Praise_Selected @"Icon_Posts_Praise_Selected"
 
 #endif
