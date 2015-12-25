@@ -15,6 +15,7 @@
 #import <BmobSDK/BmobProFile.h>
 #import "SDWebImageDownloader.h"
 
+static BOOL isSyncingData;//同步中
 static BOOL finishSettings;
 static BOOL finishUploadAvatar;
 static BOOL finishUploadCenterTop;
@@ -26,14 +27,14 @@ static BOOL finishPhoto;
 
 + (void)startSyncData {
     
-    if (![LogIn isLogin]) return;
+    if (![LogIn isLogin] || isSyncingData) return;
+    
+    //重置完成标识
+    [self resetUploadFlag];
     
     //把本地无账号关联的数据与当前登录账号进行关联
     [PlanCache linkedLocalDataToAccount];
 
-    //重置完成标识
-    [self resetUploadFlag];
-    
     //同步计划
     [self startSyncPlan];
     
@@ -48,6 +49,7 @@ static BOOL finishPhoto;
 }
 
 + (void)resetUploadFlag {
+    isSyncingData = YES;
     finishSettings = NO;
     finishUploadAvatar = NO;
     finishUploadCenterTop = NO;
@@ -64,7 +66,7 @@ static BOOL finishPhoto;
         && finishPlan
         && finishTask
         && finishPhoto) {
-        
+        isSyncingData = NO;
         [AlertCenter alertNavBarGreenMessage:str_Sync_End];
     }
 }
@@ -508,7 +510,7 @@ static BOOL finishPhoto;
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
     [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
     [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
-    [bquery orderByDescending:@"updatedAt"];
+    [bquery orderByDescending:@"updatedTime"];
     if ([count integerValue] > 0) {
         bquery.limit = 100;
     } else {
@@ -700,11 +702,17 @@ static BOOL finishPhoto;
 }
 
 + (void)syncServerToLocalForPhoto {
+    NSString *count = [PlanCache getPhotoTotalCount];
+    BmobUser *user = [BmobUser getCurrentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Photo"];
-    [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
-    [bquery orderByDescending:@"updatedAt"];
-    bquery.limit = 100;
+    [bquery orderByDescending:@"updatedTime"];
+    if ([count integerValue] > 0) {
+        bquery.limit = 100;
+    } else {
+        bquery.limit = 999;
+    }
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
         if (!error && array.count > 0) {
             
@@ -935,7 +943,7 @@ static BOOL finishPhoto;
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Task"];
     [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
     [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
-    [bquery orderByDescending:@"updatedAt"];
+    [bquery orderByDescending:@"updatedTime"];
     bquery.limit = 100;
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
         if (!error && array.count > 0) {
