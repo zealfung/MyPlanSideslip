@@ -191,6 +191,10 @@
 		13AF64C61C269369008E8A9E /* PostsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF64C41C269369008E8A9E /* PostsCell.m */; };
 		13AF64C71C269369008E8A9E /* PostsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64C51C269369008E8A9E /* PostsCell.xib */; };
 		13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */; };
+		13D405F71C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F61C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png */; };
+		13D405FB1C2D13360089D702 /* Icon_Posts_Eyes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */; };
+		13D405FC1C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */; };
+		13D405FD1C2D13360089D702 /* Icon_Posts_Praise_Selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405FA1C2D13360089D702 /* Icon_Posts_Praise_Selected@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -505,6 +509,10 @@
 		13AF64C41C269369008E8A9E /* PostsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsCell.m; sourceTree = "<group>"; };
 		13AF64C51C269369008E8A9E /* PostsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsCell.xib; sourceTree = "<group>"; };
 		13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Settings@2x.png"; sourceTree = "<group>"; };
+		13D405F61C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Comment@2x.png"; sourceTree = "<group>"; };
+		13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Eyes@2x.png"; sourceTree = "<group>"; };
+		13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Praise_Normal@2x.png"; sourceTree = "<group>"; };
+		13D405FA1C2D13360089D702 /* Icon_Posts_Praise_Selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Praise_Selected@2x.png"; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E7C51BA1CAD16DA7E729CF56 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1225,6 +1233,10 @@
 				137470F51C159BEE00B7822A /* Icon_Menu_Messages@2x.png */,
 				131D6A3E1BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png */,
 				131D6A3F1BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png */,
+				13D405F61C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png */,
+				13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */,
+				13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */,
+				13D405FA1C2D13360089D702 /* Icon_Posts_Praise_Selected@2x.png */,
 			);
 			path = Icon;
 			sourceTree = "<group>";
@@ -1459,6 +1471,7 @@
 				137470B11C09490B00B7822A /* Icon_GestureTrack_Show@2x.png in Resources */,
 				133B08441BA458610015E752 /* PlanCell.xib in Resources */,
 				135B22361B932C45005CE84A /* Btn_Save@2x.png in Resources */,
+				13D405FD1C2D13360089D702 /* Icon_Posts_Praise_Selected@2x.png in Resources */,
 				1361AFCB1BCBB52E00DD5FFB /* Bg_Line@2x.png in Resources */,
 				1361AFD71BCBB54800DD5FFB /* Btn_Up@2x.png in Resources */,
 				137701091B95DF67008C83FD /* Icon_Gender_M_Selected@2x.png in Resources */,
@@ -1477,6 +1490,7 @@
 				1361AFC51BCBA5E700DD5FFB /* DoAlbumCell.xib in Resources */,
 				137700C31B9429FD008C83FD /* LaunchImage@2x.png in Resources */,
 				13A6ACAF1BC55B9D005A02F9 /* Icon_Alarm@2x.png in Resources */,
+				13D405FC1C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png in Resources */,
 				1374705A1C04202700B7822A /* ForgotPasswordViewController.xib in Resources */,
 				131D6A411BF6CFAA009FDD72 /* Icon_Menu_FiveStar@2x.png in Resources */,
 				135B21971B900394005CE84A /* Images.xcassets in Resources */,
@@ -1484,6 +1498,7 @@
 				1361AFC91BCBA5E700DD5FFB /* DoPhotoCell.xib in Resources */,
 				13A6ACAD1BC551EE005A02F9 /* Btn_Photo_Delete@2x.png in Resources */,
 				131D6A721BFC0994009FDD72 /* Bg_SideTop@2x.png in Resources */,
+				13D405F71C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png in Resources */,
 				135B21CE1B909644005CE84A /* avatarDefault@2x.png in Resources */,
 				1377010F1B9680AC008C83FD /* Bg_Input_Blue@2x.png in Resources */,
 				137470721C05F1DC00B7822A /* Icon_AutoSync_Selected@2x.png in Resources */,
@@ -1505,6 +1520,7 @@
 				13AF64BB1C214253008E8A9E /* Btn_Clean@2x.png in Resources */,
 				13A6ACA21BC3AAA3005A02F9 /* AddPhotoViewController.xib in Resources */,
 				135B22311B9301C9005CE84A /* Btn_Plan_Doing@2x.png in Resources */,
+				13D405FB1C2D13360089D702 /* Icon_Posts_Eyes@2x.png in Resources */,
 				136DF5D61BEDE87D001D6496 /* read_me.txt in Resources */,
 				133B07AD1B9FC46A0015E752 /* Questions in Resources */,
 			);
