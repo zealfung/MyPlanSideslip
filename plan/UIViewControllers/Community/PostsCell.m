@@ -63,7 +63,7 @@
     self.subViewButton.leftButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     self.subViewButton.centerButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     self.subViewButton.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-    self.subViewButton.leftButton.titleLabel.font = font_Normal_14;
+    self.subViewButton.leftButton.titleLabel.font = font_Normal_13;
     self.subViewButton.centerButton.titleLabel.font = font_Normal_14;
     self.subViewButton.rightButton.titleLabel.font = font_Normal_14;
     self.subViewButton.leftButton.titleLabel.textAlignment = NSTextAlignmentRight;
