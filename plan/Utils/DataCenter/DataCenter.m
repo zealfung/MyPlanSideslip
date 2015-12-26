@@ -231,7 +231,7 @@ static BOOL finishPhoto;
         [settingsObject setObject:timeNow forKey:@"syncTime"];
     }
     BmobACL *acl = [BmobACL ACL];
-    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
+    [acl setPublicReadAccess];//设置所有人可读
     [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
     settingsObject.ACL = acl;
     [settingsObject updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
@@ -297,7 +297,7 @@ static BOOL finishPhoto;
         [userSettings setObject:timeNow forKey:@"syncTime"];
     }
     BmobACL *acl = [BmobACL ACL];
-    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
+    [acl setPublicReadAccess];//设置所有人可读
     [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
     userSettings.ACL = acl;
     //异步保存
