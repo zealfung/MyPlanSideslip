@@ -23,6 +23,7 @@
 #define png_Btn_Share @"Btn_Share"
 #define png_Btn_Sync @"Btn_Sync"
 #define png_Btn_Clean @"Btn_Clean"
+#define png_Btn_BackToTop @"Btn_BackToTop"
 
 #define png_Bg_NavigationBar @"Bg_NavigationBar"
 #define png_Bg_Cell_White @"Bg_Cell_White"

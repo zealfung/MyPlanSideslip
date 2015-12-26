@@ -14,6 +14,8 @@
     NSMutableArray *postsArray;
     NSArray *headerImagesURLArray;
     NSArray *headerTitlesArray;
+    UIButton *btnBackToTop;
+    CGFloat buttonY;
 }
 
 @end
@@ -46,6 +48,16 @@
     self.tableView.delegate = self;
     self.tableView.tableHeaderView = [self createTableHeaderView];
     self.tableView.tableFooterView = [[UIView alloc] init];
+    
+    btnBackToTop = [[UIButton alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - 40, HEIGHT_FULL_VIEW - 100, 30, 30)];
+    [btnBackToTop setBackgroundImage:[UIImage imageNamed:png_Btn_BackToTop] forState:UIControlStateNormal];
+    btnBackToTop.layer.cornerRadius = 15;
+    [btnBackToTop.layer setMasksToBounds:YES];
+    btnBackToTop.alpha = 0.0;
+    [btnBackToTop addTarget:self action:@selector(backToTop:) forControlEvents:UIControlEventTouchUpInside];
+    [self.tableView addSubview:btnBackToTop];
+    [self.tableView bringSubviewToFront:btnBackToTop];
+    buttonY = btnBackToTop.frame.origin.y;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -66,6 +78,20 @@
 //        cycleScrollView2.imageURLStringsGroup = headerImagesURLArray;
 //    });
     return cycleScrollView2;
+}
+
+- (void)backToTop:(id)sender {
+    [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
+}
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [UIView animateWithDuration:0.2 animations:^(void) {
+        if (scrollView.contentOffset.y <= 150)
+            btnBackToTop.alpha = 0.0;
+        else
+            btnBackToTop.alpha = 1.0;
+    }];
+    btnBackToTop.frame = CGRectMake(btnBackToTop.frame.origin.x, buttonY+self.tableView.contentOffset.y , btnBackToTop.frame.size.width, btnBackToTop.frame.size.height);
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {

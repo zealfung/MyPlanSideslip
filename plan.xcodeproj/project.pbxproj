@@ -195,6 +195,7 @@
 		13D405FB1C2D13360089D702 /* Icon_Posts_Eyes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */; };
 		13D405FC1C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */; };
 		13D405FD1C2D13360089D702 /* Icon_Posts_Praise_Selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405FA1C2D13360089D702 /* Icon_Posts_Praise_Selected@2x.png */; };
+		13D405FF1C2E3E960089D702 /* Btn_BackToTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405FE1C2E3E960089D702 /* Btn_BackToTop@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -513,6 +514,7 @@
 		13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Eyes@2x.png"; sourceTree = "<group>"; };
 		13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Praise_Normal@2x.png"; sourceTree = "<group>"; };
 		13D405FA1C2D13360089D702 /* Icon_Posts_Praise_Selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Praise_Selected@2x.png"; sourceTree = "<group>"; };
+		13D405FE1C2E3E960089D702 /* Btn_BackToTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_BackToTop@2x.png"; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E7C51BA1CAD16DA7E729CF56 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -877,6 +879,7 @@
 			children = (
 				135B220C1B92B2B5005CE84A /* Btn_Add@2x.png */,
 				1385B47F1BC9EF9900CB208C /* Btn_AddPhoto@2x.png */,
+				13D405FE1C2E3E960089D702 /* Btn_BackToTop@2x.png */,
 				13AF64BA1C214253008E8A9E /* Btn_Clean@2x.png */,
 				1385B4811BCA712400CB208C /* Btn_Delete@2x.png */,
 				1361AFCC1BCBB54800DD5FFB /* Btn_Down.png */,
@@ -1498,6 +1501,7 @@
 				1361AFC91BCBA5E700DD5FFB /* DoPhotoCell.xib in Resources */,
 				13A6ACAD1BC551EE005A02F9 /* Btn_Photo_Delete@2x.png in Resources */,
 				131D6A721BFC0994009FDD72 /* Bg_SideTop@2x.png in Resources */,
+				13D405FF1C2E3E960089D702 /* Btn_BackToTop@2x.png in Resources */,
 				13D405F71C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png in Resources */,
 				135B21CE1B909644005CE84A /* avatarDefault@2x.png in Resources */,
 				1377010F1B9680AC008C83FD /* Bg_Input_Blue@2x.png in Resources */,
