@@ -1019,6 +1019,7 @@ static BOOL finishPhoto;
         //    [bquery whereKey:@"hasRead" matchesQuery:inQuery];（查询所有有关联的数据）
         [bquery whereKey:@"hasRead" doesNotMatchQuery:inQuery];//（查询所有无关联的数据）
     }
+    [bquery whereKey:@"isDeleted" equalTo:@"0"];//只加载未删除的
     [bquery orderByDescending:@"createdAt"];
     bquery.limit = 10;
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
