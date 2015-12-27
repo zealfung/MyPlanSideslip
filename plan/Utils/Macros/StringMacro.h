@@ -29,6 +29,7 @@
 #define str_ViewTitle_11 @"找回密码"
 #define str_ViewTitle_12 @"消息中心"
 #define str_ViewTitle_13 @"消息详情"
+#define str_ViewTitle_14 @"小区"
 #define str_NickName @"昵称"
 #define str_FirstView_1 @"假如你可以活到"
 #define str_FirstView_2 @"岁"
