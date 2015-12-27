@@ -224,7 +224,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="community" width="16" height="16"/>
+        <image name="community" width="22" height="22"/>
         <image name="plan" width="16" height="16"/>
         <image name="task" width="16" height="16"/>
         <image name="time" width="16" height="16"/>
