@@ -1,14 +1,14 @@
 //
-//  PostsCell.m
+//  PostsOneImageCell.m
 //  plan
 //
 //  Created by Fengzy on 15/12/20.
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
-#import "PostsCell.h"
+#import "PostsOneImageCell.h"
 
-@implementation PostsCell
+@implementation PostsOneImageCell
 
 - (void)awakeFromNib {
 }
@@ -17,14 +17,14 @@
     [super setSelected:selected animated:animated];
 }
 
-+ (PostsCell *)cellView {
-    PostsCell *cellView = [[NSBundle mainBundle] loadNibNamed:@"PostsCell" owner:self options:nil].lastObject;
++ (PostsOneImageCell *)cellView {
+    PostsOneImageCell *cellView = [[NSBundle mainBundle] loadNibNamed:@"PostsOneImageCell" owner:self options:nil].lastObject;
     
     cellView.imgViewAvatar.layer.cornerRadius = cellView.imgViewAvatar.frame.size.width / 2;
     cellView.imgViewAvatar.clipsToBounds = YES;
     cellView.imgViewAvatar.contentMode = UIViewContentModeScaleAspectFit;
     
-    __weak typeof(PostsCell) *weakSelf = cellView;
+    __weak typeof(PostsOneImageCell) *weakSelf = cellView;
     [cellView getThreeSubViewForLeftBlock: ^{
         if (weakSelf.postsCellViewBlock) {
             weakSelf.postsCellViewBlock();

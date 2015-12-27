@@ -196,6 +196,10 @@
 		13D405FC1C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */; };
 		13D405FD1C2D13360089D702 /* Icon_Posts_Praise_Selected@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405FA1C2D13360089D702 /* Icon_Posts_Praise_Selected@2x.png */; };
 		13D405FF1C2E3E960089D702 /* Btn_BackToTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405FE1C2E3E960089D702 /* Btn_BackToTop@2x.png */; };
+		13D406081C2E9E4F0089D702 /* PostsNoImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D406061C2E9E4F0089D702 /* PostsNoImageCell.m */; };
+		13D406091C2E9E4F0089D702 /* PostsNoImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D406071C2E9E4F0089D702 /* PostsNoImageCell.xib */; };
+		13D406121C2EA2D60089D702 /* PostsOneImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D406101C2EA2D60089D702 /* PostsOneImageCell.m */; };
+		13D406131C2EA2D60089D702 /* PostsOneImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D406111C2EA2D60089D702 /* PostsOneImageCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -515,6 +519,12 @@
 		13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Praise_Normal@2x.png"; sourceTree = "<group>"; };
 		13D405FA1C2D13360089D702 /* Icon_Posts_Praise_Selected@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Praise_Selected@2x.png"; sourceTree = "<group>"; };
 		13D405FE1C2E3E960089D702 /* Btn_BackToTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_BackToTop@2x.png"; sourceTree = "<group>"; };
+		13D406051C2E9E4F0089D702 /* PostsNoImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsNoImageCell.h; sourceTree = "<group>"; };
+		13D406061C2E9E4F0089D702 /* PostsNoImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsNoImageCell.m; sourceTree = "<group>"; };
+		13D406071C2E9E4F0089D702 /* PostsNoImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsNoImageCell.xib; sourceTree = "<group>"; };
+		13D4060F1C2EA2D60089D702 /* PostsOneImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsOneImageCell.h; sourceTree = "<group>"; };
+		13D406101C2EA2D60089D702 /* PostsOneImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsOneImageCell.m; sourceTree = "<group>"; };
+		13D406111C2EA2D60089D702 /* PostsOneImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsOneImageCell.xib; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E7C51BA1CAD16DA7E729CF56 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1316,6 +1326,12 @@
 				13AF64C31C269369008E8A9E /* PostsCell.h */,
 				13AF64C41C269369008E8A9E /* PostsCell.m */,
 				13AF64C51C269369008E8A9E /* PostsCell.xib */,
+				13D406051C2E9E4F0089D702 /* PostsNoImageCell.h */,
+				13D406061C2E9E4F0089D702 /* PostsNoImageCell.m */,
+				13D406071C2E9E4F0089D702 /* PostsNoImageCell.xib */,
+				13D4060F1C2EA2D60089D702 /* PostsOneImageCell.h */,
+				13D406101C2EA2D60089D702 /* PostsOneImageCell.m */,
+				13D406111C2EA2D60089D702 /* PostsOneImageCell.xib */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -1510,6 +1526,7 @@
 				135B22281B92F4C1005CE84A /* Btn_SectionUp@2x.png in Resources */,
 				1374708F1C07E66B00B7822A /* CLLockVC.xib in Resources */,
 				136DF5DC1BEDE87D001D6496 /* ShareSDKUI.bundle in Resources */,
+				13D406091C2E9E4F0089D702 /* PostsNoImageCell.xib in Resources */,
 				137470F01C1034BE00B7822A /* Btn_Sync@2x.png in Resources */,
 				137700C11B9428B1008C83FD /* Bg_NavigationBar@2x.png in Resources */,
 				137470C01C0ABCFE00B7822A /* AddTaskViewController.xib in Resources */,
@@ -1524,6 +1541,7 @@
 				13AF64BB1C214253008E8A9E /* Btn_Clean@2x.png in Resources */,
 				13A6ACA21BC3AAA3005A02F9 /* AddPhotoViewController.xib in Resources */,
 				135B22311B9301C9005CE84A /* Btn_Plan_Doing@2x.png in Resources */,
+				13D406131C2EA2D60089D702 /* PostsOneImageCell.xib in Resources */,
 				13D405FB1C2D13360089D702 /* Icon_Posts_Eyes@2x.png in Resources */,
 				136DF5D61BEDE87D001D6496 /* read_me.txt in Resources */,
 				133B07AD1B9FC46A0015E752 /* Questions in Resources */,
@@ -1644,6 +1662,7 @@
 				13A6AC931BC344A2005A02F9 /* FatherTableViewController.m in Sources */,
 				13A6AC8D1BBFDDD6005A02F9 /* DataCenter.m in Sources */,
 				135B21891B900394005CE84A /* main.m in Sources */,
+				13D406081C2E9E4F0089D702 /* PostsNoImageCell.m in Sources */,
 				13AF64C61C269369008E8A9E /* PostsCell.m in Sources */,
 				13A6ACC71BC69E61005A02F9 /* PhotoDetailViewController.m in Sources */,
 				131D69E81BF37614009FDD72 /* Statistics.m in Sources */,
@@ -1660,6 +1679,7 @@
 				1368F9631BB623E100CC7E63 /* RegisterSDK.m in Sources */,
 				13AF64BE1C22E64E008E8A9E /* WebViewController.m in Sources */,
 				132263A81B9C809400D21637 /* FirstViewController.m in Sources */,
+				13D406121C2EA2D60089D702 /* PostsOneImageCell.m in Sources */,
 				135B22221B92E837005CE84A /* UILabel+Util.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

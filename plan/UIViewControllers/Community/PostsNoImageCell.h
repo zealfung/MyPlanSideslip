@@ -1,5 +1,5 @@
 //
-//  PostsCell.h
+//  PostsNoImageCell.h
 //  plan
 //
 //  Created by Fengzy on 15/12/20.
@@ -9,25 +9,23 @@
 #import <UIKit/UIKit.h>
 #import "ThreeSubView.h"
 
-typedef void(^PostsCellViewBlock)();
-typedef void(^PostsCellCommentBlock)();
-typedef void(^PostsCellLikeBlock)();
+typedef void(^PostsNoImageCellViewBlock)();
+typedef void(^PostsNoImageCellCommentBlock)();
+typedef void(^PostsNoImageCellLikeBlock)();
 
-@interface PostsCell : UITableViewCell
+@interface PostsNoImageCell : UITableViewCell
 
 @property (strong, nonatomic) IBOutlet UILabel *labelIsTop;
 @property (strong, nonatomic) IBOutlet UIImageView *imgViewAvatar;
 @property (strong, nonatomic) IBOutlet UILabel *labelNickName;
 @property (strong, nonatomic) IBOutlet UILabel *labelPostTime;
 @property (strong, nonatomic) IBOutlet UILabel *labelContent;
-@property (strong, nonatomic) IBOutlet UIImageView *imgViewOne;
-@property (strong, nonatomic) IBOutlet UIImageView *imgViewTwo;
 @property (strong, nonatomic) IBOutlet ThreeSubView *subViewButton;
-@property (strong, nonatomic) PostsCellViewBlock postsCellViewBlock;
-@property (strong, nonatomic) PostsCellCommentBlock postsCellCommentBlock;
-@property (strong, nonatomic) PostsCellLikeBlock postsCellLikeBlock;
+@property (strong, nonatomic) PostsNoImageCellViewBlock postsCellViewBlock;
+@property (strong, nonatomic) PostsNoImageCellCommentBlock postsCellCommentBlock;
+@property (strong, nonatomic) PostsNoImageCellLikeBlock postsCellLikeBlock;
 
 
-+ (PostsCell *)cellView;
++ (PostsNoImageCell *)cellView;
 
 @end

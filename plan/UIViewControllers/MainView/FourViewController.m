@@ -7,8 +7,11 @@
 //
 
 #import "PostsCell.h"
+#import "PostsNoImageCell.h"
+#import "PostsOneImageCell.h"
 #import "SDCycleScrollView.h"
 #import "FourViewController.h"
+#import "UIImageView+WebCache.h"
 
 @interface FourViewController () <SDCycleScrollViewDelegate> {
     NSMutableArray *postsArray;
@@ -95,6 +98,9 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row == 1) {
+        return 140.f;
+    }
     return 295.f;
 }
 
@@ -103,21 +109,41 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-//    static NSString *cellIdentifier = @"UITableViewCell";
-//    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-//    if (cell == nil) {
-//        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:cellIdentifier];
-//    }
-//    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//    cell.textLabel.font = K_Font_16;
-//    cell.textLabel.height = 44;
-//    cell.textLabel.text = [NSString stringWithFormat:@"%@   %@", card.carNumber, card.cardName];
-    
-    PostsCell *cell = [PostsCell cellView];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    
-    return cell;
+
+    if (indexPath.row == 1) {
+        PostsNoImageCell *cell = [PostsNoImageCell cellView];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.labelIsTop.hidden = YES;
+        return cell;
+    } else if (indexPath.row == 2) {
+        PostsOneImageCell *cell = [PostsOneImageCell cellView];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        cell.labelIsTop.hidden = YES;
+        [cell.imgViewOne sd_setImageWithURL:[NSURL URLWithString:@"http://file.bmob.cn/M02/FB/F0/oYYBAFZwp4KAfkI-AAg3Y3SaXls642.png"] placeholderImage:[UIImage imageNamed:png_Bg_SideTop]];
+        return cell;
+    } else {
+        PostsCell *cell = [PostsCell cellView];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        [cell.imgViewOne sd_setImageWithURL:[NSURL URLWithString:@"http://file.bmob.cn/M02/FB/F0/oYYBAFZwp4KAfkI-AAg3Y3SaXls642.png"] placeholderImage:[UIImage imageNamed:png_Bg_SideTop]];
+        [cell.imgViewTwo sd_setImageWithURL:[NSURL URLWithString:@"http://file.bmob.cn/M02/FB/F0/oYYBAFZwp4KAfkI-AAg3Y3SaXls642.png"] placeholderImage:[UIImage imageNamed:png_Bg_SideTop]];
+        __weak typeof(PostsCell) *weakCell = cell;
+        __weak typeof(self) weakSelf = self;
+        cell.postsCellViewBlock = ^(){
+            [weakSelf toPostsDetail:@"1"];
+        };
+        cell.postsCellCommentBlock = ^(){
+            [weakSelf toPostsDetail:@"1"];
+        };
+        cell.postsCellLikeBlock = ^(){
+            weakCell.subViewButton.rightButton.selected = !weakCell.subViewButton.rightButton.selected;
+            if (weakCell.subViewButton.rightButton.selected) {
+                [weakCell.subViewButton.rightButton setAllTitleColor:color_Red];
+            } else {
+                [weakCell.subViewButton.rightButton setAllTitleColor:color_8f8f8f];
+            }
+        };
+        return cell;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -140,6 +166,7 @@
 //    MemberDetailViewController *controller = [[MemberDetailViewController alloc] init];
 //    controller.cardId = card.cardId;
 //    [self.navigationController pushViewController:controller animated:YES];
+    [self toPostsDetail:@"1"];
 }
 
 #pragma mark - SDCycleScrollViewDelegate
@@ -147,4 +174,6 @@
     NSLog(@"---点击了第%ld张图片", index);
 }
 
+- (void)toPostsDetail:(NSString *)postId {
+}
 @end
