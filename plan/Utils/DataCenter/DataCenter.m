@@ -879,15 +879,17 @@ static BOOL finishPhoto;
         
         localNewArray = [PlanCache getTeaskRecordForSyncByTaskId:taskId syntime:nil];
     }
+    BmobUser *user = [BmobUser getCurrentUser];
     for (TaskRecord *taskrecord in localNewArray) {
         
         BmobObject *newTaskRecord = [BmobObject objectWithClassName:@"TaskRecord"];
-        NSDictionary *dic = @{@"recordId":taskrecord.recordId,
+        NSDictionary *dic = @{@"userObjectId":user.objectId,
+                              @"recordId":taskrecord.recordId,
                               @"createdTime":taskrecord.createTime};
         [newTaskRecord saveAllWithDictionary:dic];
         BmobACL *acl = [BmobACL ACL];
-        [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
-        [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+        [acl setReadAccessForUser:user];//设置只有当前用户可读
+        [acl setWriteAccessForUser:user];//设置只有当前用户可写
         newTaskRecord.ACL = acl;
         //异步保存
         [newTaskRecord saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
@@ -989,7 +991,9 @@ static BOOL finishPhoto;
 }
 
 + (void)getNewTaskRecordFromServer:(NSString *)recordId {
+    BmobUser *user = [BmobUser getCurrentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"TaskRecord"];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery whereKey:@"recordId" equalTo:recordId];
     NSString *time = [Config shareInstance].settings.syntime;
     [bquery whereKey:@"createdTime" greaterThanOrEqualTo:time];
