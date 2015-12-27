@@ -13,6 +13,7 @@
 #import "FourViewController.h"
 #import "UIImageView+WebCache.h"
 #import <RESideMenu/RESideMenu.h>
+#import "AddPostsViewController.h"
 
 @interface FourViewController () <SDCycleScrollViewDelegate> {
     NSMutableArray *postsArray;
@@ -81,11 +82,9 @@
 }
 
 - (void)addAction:(UIButton *)button {
-    
-//    AddTaskViewController *controller = [[AddTaskViewController alloc] init];
-//    controller.operationType = Add;
-//    controller.hidesBottomBarWhenPushed = YES;
-//    [self.navigationController pushViewController:controller animated:YES];
+    AddPostsViewController *controller = [[AddPostsViewController alloc] init];
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (UIView *)createTableHeaderView {
