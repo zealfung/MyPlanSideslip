@@ -188,8 +188,8 @@
 		13AF64BB1C214253008E8A9E /* Btn_Clean@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64BA1C214253008E8A9E /* Btn_Clean@2x.png */; };
 		13AF64BE1C22E64E008E8A9E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF64BD1C22E64E008E8A9E /* WebViewController.m */; };
 		13AF64C11C255BB7008E8A9E /* FourViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF64C01C255BB7008E8A9E /* FourViewController.m */; };
-		13AF64C61C269369008E8A9E /* PostsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF64C41C269369008E8A9E /* PostsCell.m */; };
-		13AF64C71C269369008E8A9E /* PostsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64C51C269369008E8A9E /* PostsCell.xib */; };
+		13AF64C61C269369008E8A9E /* PostsTwoImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF64C41C269369008E8A9E /* PostsTwoImageCell.m */; };
+		13AF64C71C269369008E8A9E /* PostsTwoImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64C51C269369008E8A9E /* PostsTwoImageCell.xib */; };
 		13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */; };
 		13D405F71C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F61C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png */; };
 		13D405FB1C2D13360089D702 /* Icon_Posts_Eyes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */; };
@@ -510,9 +510,9 @@
 		13AF64BD1C22E64E008E8A9E /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		13AF64BF1C255BB7008E8A9E /* FourViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FourViewController.h; sourceTree = "<group>"; };
 		13AF64C01C255BB7008E8A9E /* FourViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FourViewController.m; sourceTree = "<group>"; };
-		13AF64C31C269369008E8A9E /* PostsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsCell.h; sourceTree = "<group>"; };
-		13AF64C41C269369008E8A9E /* PostsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsCell.m; sourceTree = "<group>"; };
-		13AF64C51C269369008E8A9E /* PostsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsCell.xib; sourceTree = "<group>"; };
+		13AF64C31C269369008E8A9E /* PostsTwoImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsTwoImageCell.h; sourceTree = "<group>"; };
+		13AF64C41C269369008E8A9E /* PostsTwoImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsTwoImageCell.m; sourceTree = "<group>"; };
+		13AF64C51C269369008E8A9E /* PostsTwoImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsTwoImageCell.xib; sourceTree = "<group>"; };
 		13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Settings@2x.png"; sourceTree = "<group>"; };
 		13D405F61C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Comment@2x.png"; sourceTree = "<group>"; };
 		13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Eyes@2x.png"; sourceTree = "<group>"; };
@@ -1323,15 +1323,15 @@
 		13AF64C21C269238008E8A9E /* Community */ = {
 			isa = PBXGroup;
 			children = (
-				13AF64C31C269369008E8A9E /* PostsCell.h */,
-				13AF64C41C269369008E8A9E /* PostsCell.m */,
-				13AF64C51C269369008E8A9E /* PostsCell.xib */,
 				13D406051C2E9E4F0089D702 /* PostsNoImageCell.h */,
 				13D406061C2E9E4F0089D702 /* PostsNoImageCell.m */,
 				13D406071C2E9E4F0089D702 /* PostsNoImageCell.xib */,
 				13D4060F1C2EA2D60089D702 /* PostsOneImageCell.h */,
 				13D406101C2EA2D60089D702 /* PostsOneImageCell.m */,
 				13D406111C2EA2D60089D702 /* PostsOneImageCell.xib */,
+				13AF64C31C269369008E8A9E /* PostsTwoImageCell.h */,
+				13AF64C41C269369008E8A9E /* PostsTwoImageCell.m */,
+				13AF64C51C269369008E8A9E /* PostsTwoImageCell.xib */,
 			);
 			path = Community;
 			sourceTree = "<group>";
@@ -1502,7 +1502,7 @@
 				136DF5D81BEDE87D001D6496 /* ShareSDK.bundle in Resources */,
 				137470AD1C0945D000B7822A /* Icon_Gesture_Unlock@2x.png in Resources */,
 				13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */,
-				13AF64C71C269369008E8A9E /* PostsCell.xib in Resources */,
+				13AF64C71C269369008E8A9E /* PostsTwoImageCell.xib in Resources */,
 				131D6A281BF58C81009FDD72 /* Btn_LeftMenu@2x.png in Resources */,
 				137701101B9680AC008C83FD /* Bg_Input_Gray@2x.png in Resources */,
 				1361AFD21BCBB54800DD5FFB /* Btn_Down.png in Resources */,
@@ -1663,7 +1663,7 @@
 				13A6AC8D1BBFDDD6005A02F9 /* DataCenter.m in Sources */,
 				135B21891B900394005CE84A /* main.m in Sources */,
 				13D406081C2E9E4F0089D702 /* PostsNoImageCell.m in Sources */,
-				13AF64C61C269369008E8A9E /* PostsCell.m in Sources */,
+				13AF64C61C269369008E8A9E /* PostsTwoImageCell.m in Sources */,
 				13A6ACC71BC69E61005A02F9 /* PhotoDetailViewController.m in Sources */,
 				131D69E81BF37614009FDD72 /* Statistics.m in Sources */,
 				13A6AC901BC3439E005A02F9 /* ThreeViewController.m in Sources */,

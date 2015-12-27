@@ -6,9 +6,9 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
-#import "PostsCell.h"
 #import "PostsNoImageCell.h"
 #import "PostsOneImageCell.h"
+#import "PostsTwoImageCell.h"
 #import "SDCycleScrollView.h"
 #import "FourViewController.h"
 #import "UIImageView+WebCache.h"
@@ -143,11 +143,11 @@
         [cell.imgViewOne sd_setImageWithURL:[NSURL URLWithString:@"http://file.bmob.cn/M02/FB/F0/oYYBAFZwp4KAfkI-AAg3Y3SaXls642.png"] placeholderImage:[UIImage imageNamed:png_Bg_SideTop]];
         return cell;
     } else {
-        PostsCell *cell = [PostsCell cellView];
+        PostsTwoImageCell *cell = [PostsTwoImageCell cellView];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         [cell.imgViewOne sd_setImageWithURL:[NSURL URLWithString:@"http://file.bmob.cn/M02/FB/F0/oYYBAFZwp4KAfkI-AAg3Y3SaXls642.png"] placeholderImage:[UIImage imageNamed:png_Bg_SideTop]];
         [cell.imgViewTwo sd_setImageWithURL:[NSURL URLWithString:@"http://file.bmob.cn/M02/FB/F0/oYYBAFZwp4KAfkI-AAg3Y3SaXls642.png"] placeholderImage:[UIImage imageNamed:png_Bg_SideTop]];
-        __weak typeof(PostsCell) *weakCell = cell;
+        __weak typeof(PostsTwoImageCell) *weakCell = cell;
         __weak typeof(self) weakSelf = self;
         cell.postsCellViewBlock = ^(){
             [weakSelf toPostsDetail:@"1"];

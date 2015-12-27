@@ -1,5 +1,5 @@
 //
-//  PostsCell.h
+//  PostsTwoImageCell.h
 //  plan
 //
 //  Created by Fengzy on 15/12/20.
@@ -13,7 +13,7 @@ typedef void(^PostsCellViewBlock)();
 typedef void(^PostsCellCommentBlock)();
 typedef void(^PostsCellLikeBlock)();
 
-@interface PostsCell : UITableViewCell
+@interface PostsTwoImageCell : UITableViewCell
 
 @property (strong, nonatomic) IBOutlet UILabel *labelIsTop;
 @property (strong, nonatomic) IBOutlet UIImageView *imgViewAvatar;
@@ -28,6 +28,6 @@ typedef void(^PostsCellLikeBlock)();
 @property (strong, nonatomic) PostsCellLikeBlock postsCellLikeBlock;
 
 
-+ (PostsCell *)cellView;
++ (PostsTwoImageCell *)cellView;
 
 @end
