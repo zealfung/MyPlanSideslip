@@ -12,6 +12,7 @@
 #import "SDCycleScrollView.h"
 #import "FourViewController.h"
 #import "UIImageView+WebCache.h"
+#import <RESideMenu/RESideMenu.h>
 
 @interface FourViewController () <SDCycleScrollViewDelegate> {
     NSMutableArray *postsArray;
@@ -27,7 +28,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"小区";
+    self.title = str_ViewTitle_14;
+    self.tabBarItem.title = str_ViewTitle_14;
+    [self createNavBarButton];
     
     postsArray = [NSMutableArray array];
     headerImagesURLArray = @[@"https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a4b3d7085dee3d6d2293d48b252b5910/0e2442a7d933c89524cd5cd4d51373f0830200ea.jpg",
@@ -65,6 +68,24 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+- (void)createNavBarButton {
+    self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction:)];
+    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
+}
+
+#pragma mark - action
+- (void)leftMenuAction:(UIButton *)button {
+    [self.sideMenuViewController presentLeftMenuViewController];
+}
+
+- (void)addAction:(UIButton *)button {
+    
+//    AddTaskViewController *controller = [[AddTaskViewController alloc] init];
+//    controller.operationType = Add;
+//    controller.hidesBottomBarWhenPushed = YES;
+//    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (UIView *)createTableHeaderView {
