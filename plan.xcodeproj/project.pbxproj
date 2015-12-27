@@ -200,6 +200,8 @@
 		13D406091C2E9E4F0089D702 /* PostsNoImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D406071C2E9E4F0089D702 /* PostsNoImageCell.xib */; };
 		13D406121C2EA2D60089D702 /* PostsOneImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D406101C2EA2D60089D702 /* PostsOneImageCell.m */; };
 		13D406131C2EA2D60089D702 /* PostsOneImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D406111C2EA2D60089D702 /* PostsOneImageCell.xib */; };
+		13D406171C2F9AD00089D702 /* AddPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D406151C2F9AD00089D702 /* AddPostsViewController.m */; };
+		13D406181C2F9AD00089D702 /* AddPostsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D406161C2F9AD00089D702 /* AddPostsViewController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -525,6 +527,9 @@
 		13D4060F1C2EA2D60089D702 /* PostsOneImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsOneImageCell.h; sourceTree = "<group>"; };
 		13D406101C2EA2D60089D702 /* PostsOneImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsOneImageCell.m; sourceTree = "<group>"; };
 		13D406111C2EA2D60089D702 /* PostsOneImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsOneImageCell.xib; sourceTree = "<group>"; };
+		13D406141C2F9AD00089D702 /* AddPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPostsViewController.h; sourceTree = "<group>"; };
+		13D406151C2F9AD00089D702 /* AddPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPostsViewController.m; sourceTree = "<group>"; };
+		13D406161C2F9AD00089D702 /* AddPostsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddPostsViewController.xib; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E7C51BA1CAD16DA7E729CF56 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1323,6 +1328,9 @@
 		13AF64C21C269238008E8A9E /* Community */ = {
 			isa = PBXGroup;
 			children = (
+				13D406141C2F9AD00089D702 /* AddPostsViewController.h */,
+				13D406151C2F9AD00089D702 /* AddPostsViewController.m */,
+				13D406161C2F9AD00089D702 /* AddPostsViewController.xib */,
 				13D406051C2E9E4F0089D702 /* PostsNoImageCell.h */,
 				13D406061C2E9E4F0089D702 /* PostsNoImageCell.m */,
 				13D406071C2E9E4F0089D702 /* PostsNoImageCell.xib */,
@@ -1508,6 +1516,7 @@
 				1361AFD21BCBB54800DD5FFB /* Btn_Down.png in Resources */,
 				1361AFC51BCBA5E700DD5FFB /* DoAlbumCell.xib in Resources */,
 				137700C31B9429FD008C83FD /* LaunchImage@2x.png in Resources */,
+				13D406181C2F9AD00089D702 /* AddPostsViewController.xib in Resources */,
 				13A6ACAF1BC55B9D005A02F9 /* Icon_Alarm@2x.png in Resources */,
 				13D405FC1C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png in Resources */,
 				1374705A1C04202700B7822A /* ForgotPasswordViewController.xib in Resources */,
@@ -1675,6 +1684,7 @@
 				1374704F1C03ED1200B7822A /* RegisterViewController.m in Sources */,
 				13AF648B1C19C071008E8A9E /* MessagesDetailViewController.m in Sources */,
 				137470A41C0815F100B7822A /* CoreArchive.m in Sources */,
+				13D406171C2F9AD00089D702 /* AddPostsViewController.m in Sources */,
 				1361AFC41BCBA5E700DD5FFB /* DoAlbumCell.m in Sources */,
 				1368F9631BB623E100CC7E63 /* RegisterSDK.m in Sources */,
 				13AF64BE1C22E64E008E8A9E /* WebViewController.m in Sources */,
