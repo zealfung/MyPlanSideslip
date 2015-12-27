@@ -6,6 +6,7 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
+#import "MJRefresh.h"
 #import "PostsNoImageCell.h"
 #import "PostsOneImageCell.h"
 #import "PostsTwoImageCell.h"
@@ -16,6 +17,8 @@
 #import "AddPostsViewController.h"
 
 @interface FourViewController () <SDCycleScrollViewDelegate> {
+    
+    BOOL isLoadMore;
     NSMutableArray *postsArray;
     NSArray *headerImagesURLArray;
     NSArray *headerTitlesArray;
@@ -55,6 +58,16 @@
     self.tableView.delegate = self;
     self.tableView.tableHeaderView = [self createTableHeaderView];
     self.tableView.tableFooterView = [[UIView alloc] init];
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        
+    }];
+    header.lastUpdatedTimeLabel.hidden = YES;
+    self.tableView.mj_header = header;
+    self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+//        isLoadMore = YES;
+//        [weakSelf getPlanData];
+    }];
+    self.tableView.mj_footer.hidden = YES;
     
     btnBackToTop = [[UIButton alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - 40, HEIGHT_FULL_VIEW - 100, 30, 30)];
     [btnBackToTop setBackgroundImage:[UIImage imageNamed:png_Btn_BackToTop] forState:UIControlStateNormal];
