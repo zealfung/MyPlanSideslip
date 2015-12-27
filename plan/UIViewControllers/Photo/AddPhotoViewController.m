@@ -448,10 +448,14 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
     [self.photoArray removeObjectAtIndex:index];
     
     UIImage *addImage = [UIImage imageNamed:png_Btn_AddPhoto];
-    NSInteger count = self.photoArray.count;
-    self.photoArray[count - 1] = addImage;
+    if (!canAddPhoto) {
+        self.photoArray[photoMax - 1] = addImage;
+        canAddPhoto = YES;
+    } else {
+        NSInteger count = self.photoArray.count;
+        self.photoArray[count - 1] = addImage;
+    }
     
-    canAddPhoto = YES;
     [self.pageScrollView reloadData];
     [self relocationPage];
 }
