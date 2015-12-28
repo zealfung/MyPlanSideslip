@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostsDetailViewController">
+            <connections>
+                <outlet property="tableView" destination="cFL-vQ-nB6" id="3uk-JI-GpL"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="cFL-vQ-nB6">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </tableView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qIM-m7-sM7">
+                    <rect key="frame" x="0.0" y="528" width="320" height="40"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="l2e-Rr-HA2">
+                            <rect key="frame" x="110" y="5" width="30" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="IDO-hw-YKc"/>
+                                <constraint firstAttribute="width" constant="30" id="whe-jr-K2F"/>
+                            </constraints>
+                            <state key="normal" backgroundImage="Btn_Posts_Unlike.png"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nGc-sL-YjF">
+                            <rect key="frame" x="180" y="5" width="30" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="30" id="0NH-DD-aae"/>
+                                <constraint firstAttribute="height" constant="30" id="WnE-yM-oz0"/>
+                            </constraints>
+                            <state key="normal" backgroundImage="Btn_Posts_Share.png"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yjc-wM-xKM">
+                            <rect key="frame" x="250" y="5" width="30" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="30" id="FDO-SU-yB8"/>
+                                <constraint firstAttribute="height" constant="30" id="pvw-Zn-koX"/>
+                            </constraints>
+                            <state key="normal" backgroundImage="Btn_Posts_More.png"/>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gKZ-YN-H3Y">
+                            <rect key="frame" x="40" y="5" width="30" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="30" id="ab7-9q-BFT"/>
+                                <constraint firstAttribute="height" constant="30" id="wt5-P5-D3O"/>
+                            </constraints>
+                            <state key="normal" backgroundImage="Btn_Posts_Comment.png"/>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="gKZ-YN-H3Y" firstAttribute="leading" secondItem="qIM-m7-sM7" secondAttribute="leading" constant="40" id="4K3-rD-1Do"/>
+                        <constraint firstItem="nGc-sL-YjF" firstAttribute="leading" secondItem="l2e-Rr-HA2" secondAttribute="trailing" constant="40" id="4sT-V0-6hi"/>
+                        <constraint firstItem="l2e-Rr-HA2" firstAttribute="top" secondItem="qIM-m7-sM7" secondAttribute="top" constant="5" id="EEN-gF-6aL"/>
+                        <constraint firstItem="l2e-Rr-HA2" firstAttribute="leading" secondItem="gKZ-YN-H3Y" secondAttribute="trailing" constant="40" id="IAu-kp-YjW"/>
+                        <constraint firstItem="yjc-wM-xKM" firstAttribute="leading" secondItem="nGc-sL-YjF" secondAttribute="trailing" constant="40" id="Xe6-80-BQA"/>
+                        <constraint firstItem="gKZ-YN-H3Y" firstAttribute="top" secondItem="qIM-m7-sM7" secondAttribute="top" constant="5" id="ZeH-Oh-5tq"/>
+                        <constraint firstItem="yjc-wM-xKM" firstAttribute="top" secondItem="qIM-m7-sM7" secondAttribute="top" constant="5" id="eAJ-br-eES"/>
+                        <constraint firstItem="nGc-sL-YjF" firstAttribute="top" secondItem="qIM-m7-sM7" secondAttribute="top" constant="5" id="skS-pf-Lk8"/>
+                        <constraint firstAttribute="height" constant="40" id="tCn-EP-NpC"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="cFL-vQ-nB6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="ALO-Cj-r7X"/>
+                <constraint firstAttribute="trailing" secondItem="cFL-vQ-nB6" secondAttribute="trailing" id="Bs9-Hr-8TB"/>
+                <constraint firstAttribute="trailing" secondItem="qIM-m7-sM7" secondAttribute="trailing" id="FHA-Zv-kBm"/>
+                <constraint firstItem="qIM-m7-sM7" firstAttribute="top" secondItem="cFL-vQ-nB6" secondAttribute="bottom" id="a0u-eD-psC"/>
+                <constraint firstItem="qIM-m7-sM7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="kf9-Kq-OTx"/>
+                <constraint firstAttribute="bottom" secondItem="qIM-m7-sM7" secondAttribute="bottom" id="x5a-Ip-cvc"/>
+                <constraint firstItem="cFL-vQ-nB6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="zij-mY-Qs5"/>
+            </constraints>
+            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="Btn_Posts_Comment.png" width="49" height="49"/>
+        <image name="Btn_Posts_More.png" width="49" height="49"/>
+        <image name="Btn_Posts_Share.png" width="49" height="49"/>
+        <image name="Btn_Posts_Unlike.png" width="49" height="49"/>
+    </resources>
+</document>

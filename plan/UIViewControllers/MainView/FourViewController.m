@@ -15,6 +15,7 @@
 #import "UIImageView+WebCache.h"
 #import <RESideMenu/RESideMenu.h>
 #import "AddPostsViewController.h"
+#import "PostsDetailViewController.h"
 
 @interface FourViewController () <SDCycleScrollViewDelegate> {
     
@@ -208,5 +209,8 @@
 }
 
 - (void)toPostsDetail:(NSString *)postId {
+    PostsDetailViewController *controller = [[PostsDetailViewController alloc] init];
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 @end

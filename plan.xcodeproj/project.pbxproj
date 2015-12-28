@@ -202,6 +202,13 @@
 		13D406131C2EA2D60089D702 /* PostsOneImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D406111C2EA2D60089D702 /* PostsOneImageCell.xib */; };
 		13D406171C2F9AD00089D702 /* AddPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D406151C2F9AD00089D702 /* AddPostsViewController.m */; };
 		13D406181C2F9AD00089D702 /* AddPostsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D406161C2F9AD00089D702 /* AddPostsViewController.xib */; };
+		13D4061C1C2FD4470089D702 /* PostsDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D4061A1C2FD4470089D702 /* PostsDetailViewController.m */; };
+		13D4061D1C2FD4470089D702 /* PostsDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D4061B1C2FD4470089D702 /* PostsDetailViewController.xib */; };
+		13D4061F1C301E5A0089D702 /* Btn_Posts_Comment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D4061E1C301E5A0089D702 /* Btn_Posts_Comment@2x.png */; };
+		13D406211C301F3E0089D702 /* Btn_Posts_Share@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D406201C301F3E0089D702 /* Btn_Posts_Share@2x.png */; };
+		13D406241C3020BF0089D702 /* Btn_Posts_Like@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D406221C3020BF0089D702 /* Btn_Posts_Like@2x.png */; };
+		13D406251C3020BF0089D702 /* Btn_Posts_Unlike@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D406231C3020BF0089D702 /* Btn_Posts_Unlike@2x.png */; };
+		13D406271C3024860089D702 /* Btn_Posts_More@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D406261C3024860089D702 /* Btn_Posts_More@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -530,6 +537,14 @@
 		13D406141C2F9AD00089D702 /* AddPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddPostsViewController.h; sourceTree = "<group>"; };
 		13D406151C2F9AD00089D702 /* AddPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddPostsViewController.m; sourceTree = "<group>"; };
 		13D406161C2F9AD00089D702 /* AddPostsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddPostsViewController.xib; sourceTree = "<group>"; };
+		13D406191C2FD4470089D702 /* PostsDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsDetailViewController.h; sourceTree = "<group>"; };
+		13D4061A1C2FD4470089D702 /* PostsDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsDetailViewController.m; sourceTree = "<group>"; };
+		13D4061B1C2FD4470089D702 /* PostsDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsDetailViewController.xib; sourceTree = "<group>"; };
+		13D4061E1C301E5A0089D702 /* Btn_Posts_Comment@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Posts_Comment@2x.png"; sourceTree = "<group>"; };
+		13D406201C301F3E0089D702 /* Btn_Posts_Share@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Posts_Share@2x.png"; sourceTree = "<group>"; };
+		13D406221C3020BF0089D702 /* Btn_Posts_Like@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Posts_Like@2x.png"; sourceTree = "<group>"; };
+		13D406231C3020BF0089D702 /* Btn_Posts_Unlike@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Posts_Unlike@2x.png"; sourceTree = "<group>"; };
+		13D406261C3024860089D702 /* Btn_Posts_More@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Posts_More@2x.png"; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E7C51BA1CAD16DA7E729CF56 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -905,6 +920,11 @@
 				135B222D1B9301C9005CE84A /* Btn_Plan_Delete@2x.png */,
 				135B222E1B9301C9005CE84A /* Btn_Plan_Doing@2x.png */,
 				135B222C1B9301C9005CE84A /* Btn_Plan_Done@2x.png */,
+				13D4061E1C301E5A0089D702 /* Btn_Posts_Comment@2x.png */,
+				13D406221C3020BF0089D702 /* Btn_Posts_Like@2x.png */,
+				13D406261C3024860089D702 /* Btn_Posts_More@2x.png */,
+				13D406201C301F3E0089D702 /* Btn_Posts_Share@2x.png */,
+				13D406231C3020BF0089D702 /* Btn_Posts_Unlike@2x.png */,
 				135B22351B932C45005CE84A /* Btn_Save@2x.png */,
 				135B22271B92F4C1005CE84A /* Btn_SectionUp@2x.png */,
 				13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */,
@@ -1331,6 +1351,9 @@
 				13D406141C2F9AD00089D702 /* AddPostsViewController.h */,
 				13D406151C2F9AD00089D702 /* AddPostsViewController.m */,
 				13D406161C2F9AD00089D702 /* AddPostsViewController.xib */,
+				13D406191C2FD4470089D702 /* PostsDetailViewController.h */,
+				13D4061A1C2FD4470089D702 /* PostsDetailViewController.m */,
+				13D4061B1C2FD4470089D702 /* PostsDetailViewController.xib */,
 				13D406051C2E9E4F0089D702 /* PostsNoImageCell.h */,
 				13D406061C2E9E4F0089D702 /* PostsNoImageCell.m */,
 				13D406071C2E9E4F0089D702 /* PostsNoImageCell.xib */,
@@ -1488,6 +1511,7 @@
 				1361AFD51BCBB54800DD5FFB /* Btn_Show@2x.png in Resources */,
 				131D6A441BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png in Resources */,
 				137470D31C0BD50400B7822A /* LogInViewController.xib in Resources */,
+				13D406211C301F3E0089D702 /* Btn_Posts_Share@2x.png in Resources */,
 				131D6A401BF6CFAA009FDD72 /* Icon_Menu_About@2x.png in Resources */,
 				137470501C03ED1200B7822A /* RegisterViewController.xib in Resources */,
 				135B21CD1B909644005CE84A /* avatarBg@2x.png in Resources */,
@@ -1511,6 +1535,7 @@
 				137470AD1C0945D000B7822A /* Icon_Gesture_Unlock@2x.png in Resources */,
 				13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */,
 				13AF64C71C269369008E8A9E /* PostsTwoImageCell.xib in Resources */,
+				13D4061F1C301E5A0089D702 /* Btn_Posts_Comment@2x.png in Resources */,
 				131D6A281BF58C81009FDD72 /* Btn_LeftMenu@2x.png in Resources */,
 				137701101B9680AC008C83FD /* Bg_Input_Gray@2x.png in Resources */,
 				1361AFD21BCBB54800DD5FFB /* Btn_Down.png in Resources */,
@@ -1536,6 +1561,7 @@
 				1374708F1C07E66B00B7822A /* CLLockVC.xib in Resources */,
 				136DF5DC1BEDE87D001D6496 /* ShareSDKUI.bundle in Resources */,
 				13D406091C2E9E4F0089D702 /* PostsNoImageCell.xib in Resources */,
+				13D406241C3020BF0089D702 /* Btn_Posts_Like@2x.png in Resources */,
 				137470F01C1034BE00B7822A /* Btn_Sync@2x.png in Resources */,
 				137700C11B9428B1008C83FD /* Bg_NavigationBar@2x.png in Resources */,
 				137470C01C0ABCFE00B7822A /* AddTaskViewController.xib in Resources */,
@@ -1547,12 +1573,15 @@
 				1361AFD41BCBB54800DD5FFB /* Btn_Show.png in Resources */,
 				137470B01C09490B00B7822A /* Icon_GestureTrack_Hide@2x.png in Resources */,
 				137701071B95DF67008C83FD /* Icon_Gender_F_Selected@2x.png in Resources */,
+				13D406251C3020BF0089D702 /* Btn_Posts_Unlike@2x.png in Resources */,
 				13AF64BB1C214253008E8A9E /* Btn_Clean@2x.png in Resources */,
+				13D406271C3024860089D702 /* Btn_Posts_More@2x.png in Resources */,
 				13A6ACA21BC3AAA3005A02F9 /* AddPhotoViewController.xib in Resources */,
 				135B22311B9301C9005CE84A /* Btn_Plan_Doing@2x.png in Resources */,
 				13D406131C2EA2D60089D702 /* PostsOneImageCell.xib in Resources */,
 				13D405FB1C2D13360089D702 /* Icon_Posts_Eyes@2x.png in Resources */,
 				136DF5D61BEDE87D001D6496 /* read_me.txt in Resources */,
+				13D4061D1C2FD4470089D702 /* PostsDetailViewController.xib in Resources */,
 				133B07AD1B9FC46A0015E752 /* Questions in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1613,6 +1642,7 @@
 				137470911C07E66B00B7822A /* CoreLockConst.m in Sources */,
 				137470D21C0BD50400B7822A /* LogInViewController.m in Sources */,
 				137700E11B95335E008C83FD /* UIImage+Util.m in Sources */,
+				13D4061C1C2FD4470089D702 /* PostsDetailViewController.m in Sources */,
 				135B21E71B913EAF005CE84A /* ModelBase.m in Sources */,
 				133B083D1BA439560015E752 /* HitView.m in Sources */,
 				137470C81C0AE75900B7822A /* Task.m in Sources */,
