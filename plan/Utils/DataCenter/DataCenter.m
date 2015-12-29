@@ -138,11 +138,10 @@ static BOOL finishPhoto;
     NSString *serverAvatarURL = [obj objectForKey:@"avatarURL"];
     NSString *serverCenterTopURL = [obj objectForKey:@"centerTopURL"];
     
-    if (!serverAvatarURL) {
+    if (!serverAvatarURL || serverAvatarURL.length == 0) {
         [Config shareInstance].settings.avatarURL = @"";
     } else {
-        if (![[Config shareInstance].settings.avatarURL isEqualToString:serverAvatarURL]
-            && serverAvatarURL.length > 0) {
+        if (![[Config shareInstance].settings.avatarURL isEqualToString:serverAvatarURL]) {
             [Config shareInstance].settings.avatarURL = serverAvatarURL;
             
             SDWebImageDownloader *imageDownloader = [SDWebImageDownloader sharedDownloader];
@@ -156,16 +155,13 @@ static BOOL finishPhoto;
                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
                 }
             }];
-        } else {
-            [Config shareInstance].settings.avatarURL = @"";
         }
     }
     
-    if (!serverCenterTopURL) {
+    if (!serverCenterTopURL || serverCenterTopURL.length == 0) {
         [Config shareInstance].settings.centerTopURL = @"";
     } else {
-        if (![[Config shareInstance].settings.centerTopURL isEqualToString:serverCenterTopURL]
-            && serverCenterTopURL.length > 0) {
+        if (![[Config shareInstance].settings.centerTopURL isEqualToString:serverCenterTopURL]) {
             [Config shareInstance].settings.centerTopURL = serverCenterTopURL;
             
             SDWebImageDownloader *imageDownloader = [SDWebImageDownloader sharedDownloader];
@@ -179,8 +175,6 @@ static BOOL finishPhoto;
                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
                 }
             }];
-        } else {
-            [Config shareInstance].settings.centerTopURL = @"";
         }
     }
 
@@ -190,8 +184,9 @@ static BOOL finishPhoto;
 }
 
 + (void)syncLocalToServerForSettings {
+    BmobUser *user = [BmobUser getCurrentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
-    [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
         
         if (array.count > 0) {
@@ -267,10 +262,11 @@ static BOOL finishPhoto;
 }
 
 + (void)addSettingsToServer {
+    BmobUser *user = [BmobUser getCurrentUser];
     BmobObject *userSettings = [BmobObject objectWithClassName:@"UserSettings"];
-    if ([Config shareInstance].settings.account) {
-        [userSettings setObject:[Config shareInstance].settings.account forKey:@"userObjectId"];
-    }
+    [Config shareInstance].settings = [PlanCache getPersonalSettings];
+    
+    [userSettings setObject:user.objectId forKey:@"userObjectId"];
     if ([Config shareInstance].settings.nickname) {
         [userSettings setObject:[Config shareInstance].settings.nickname forKey:@"nickName"];
     }
@@ -298,7 +294,7 @@ static BOOL finishPhoto;
     }
     BmobACL *acl = [BmobACL ACL];
     [acl setPublicReadAccess];//设置所有人可读
-    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    [acl setWriteAccessForUser:user];//设置只有当前用户可写
     userSettings.ACL = acl;
     //异步保存
     [userSettings saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
@@ -341,12 +337,12 @@ static BOOL finishPhoto;
                 NSLog(@"上传头像到服务器失败：%@",error);
             }
             
+            finishUploadAvatar = YES;
+            [DataCenter IsAllUploadFinished];
         } progress:^(CGFloat progress) {
             //上传进度
             NSLog(@"上传头像进度： %f",progress);
         }];
-        finishUploadAvatar = YES;
-        [DataCenter IsAllUploadFinished];
     } else {
         finishUploadAvatar = YES;
         [DataCenter IsAllUploadFinished];
@@ -372,12 +368,12 @@ static BOOL finishPhoto;
                 NSLog(@"上传个人中心图片到服务器失败：%@",error);
             }
             
+            finishUploadCenterTop = YES;
+            [DataCenter IsAllUploadFinished];
         } progress:^(CGFloat progress) {
             //上传进度
             NSLog(@"上传个人中心图片进度： %f",progress);
         }];
-        finishUploadCenterTop = YES;
-        [DataCenter IsAllUploadFinished];
     } else {
         finishUploadCenterTop = YES;
         [DataCenter IsAllUploadFinished];
@@ -399,11 +395,12 @@ static BOOL finishPhoto;
         localNewArray = [PlanCache getPlanForSync:nil];
     }
     
+    BmobUser *user = [BmobUser getCurrentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
     
     for (Plan *plan in localNewArray) {
         
-        [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
+        [bquery whereKey:@"userObjectId" equalTo:user.objectId];
         [bquery whereKey:@"planId" equalTo:plan.planid];
         [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
             
@@ -447,8 +444,8 @@ static BOOL finishPhoto;
                                       @"planType":plan.plantype};
                 [newPlan saveAllWithDictionary:dic];
                 BmobACL *acl = [BmobACL ACL];
-                [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
-                [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+                [acl setReadAccessForUser:user];//设置只有当前用户可读
+                [acl setWriteAccessForUser:user];//设置只有当前用户可写
                 newPlan.ACL = acl;
                 //异步保存
                 [newPlan saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
@@ -462,9 +459,7 @@ static BOOL finishPhoto;
                     }
                 }];
             }
-            
         }];
-
     }
 }
 
@@ -539,9 +534,9 @@ static BOOL finishPhoto;
                 }
             }
         }
+        
         finishPlan = YES;
         [weakSelf IsAllUploadFinished];
-        
     }];
 }
 
