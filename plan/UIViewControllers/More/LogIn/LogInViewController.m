@@ -85,34 +85,30 @@
             }
             
         } else if (user) {
-            
             //检查账号邮箱是否已经通过验证
-            if ([user objectForKey:@"emailVerified"]) {
-                //用户没验证过邮箱
-                if (![[user objectForKey:@"emailVerified"] boolValue]) {
-                    [BmobUser logout];
-                    [weakSelf alertButtonMessage:str_LogIn_Tips2];
-                    [user verifyEmailInBackgroundWithEmailAddress:acountEmail];
-                    
+            if ([[user objectForKey:@"emailVerified"] boolValue]) {
+                if (self.isForgotGesture) {
+                    UIStoryboard *story = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
+                    RootViewController *controller = [story instantiateViewControllerWithIdentifier:@"rootViewController"];
+                    AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
+                    delegate.window.rootViewController = controller;
+                    [delegate.window reloadInputViews];
                 } else {
-                    if (self.isForgotGesture) {
-                        UIStoryboard *story = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
-                        RootViewController *controller = [story instantiateViewControllerWithIdentifier:@"rootViewController"];
-                        AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
-                        delegate.window.rootViewController = controller;
-                        [delegate.window reloadInputViews];
-                    } else {
-                        //登录后自动关联本地没有对应账号的数据
-                        [PlanCache linkedLocalDataToAccount];
-                        [NotificationCenter postNotificationName:Notify_LogIn object:nil];
-                        [weakSelf.navigationController popViewControllerAnimated:YES];
-                    }
-                    
-                    [Config shareInstance].settings = [PlanCache getPersonalSettings];
-                    [Config shareInstance].settings.isUseGestureLock = @"0";
-                    [Config shareInstance].settings.gesturePasswod = @"";
-                    [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                    //登录后自动关联本地没有对应账号的数据
+                    [PlanCache linkedLocalDataToAccount];
+                    [NotificationCenter postNotificationName:Notify_LogIn object:nil];
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
                 }
+                
+                [Config shareInstance].settings = [PlanCache getPersonalSettings];
+                [Config shareInstance].settings.isUseGestureLock = @"0";
+                [Config shareInstance].settings.gesturePasswod = @"";
+                [PlanCache storePersonalSettings:[Config shareInstance].settings];
+            } else {
+                //用户没验证过邮箱
+                [BmobUser logout];
+                [weakSelf alertButtonMessage:str_LogIn_Tips2];
+                [user verifyEmailInBackgroundWithEmailAddress:acountEmail];
             }
         }
     }];
