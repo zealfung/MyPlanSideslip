@@ -16,6 +16,7 @@ typedef void(^PostsCellLikeBlock)();
 @interface PostsTwoImageCell : UITableViewCell
 
 @property (strong, nonatomic) IBOutlet UILabel *labelIsTop;
+@property (strong, nonatomic) IBOutlet UILabel *labelIsHighlight;
 @property (strong, nonatomic) IBOutlet UIImageView *imgViewAvatar;
 @property (strong, nonatomic) IBOutlet UILabel *labelNickName;
 @property (strong, nonatomic) IBOutlet UILabel *labelPostTime;

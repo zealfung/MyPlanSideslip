@@ -6,8 +6,12 @@
 //  Copyright (c) 2015年 Fengzy. All rights reserved.
 //
 
+#import "BmobFile.h"
+#import "BmobUser.h"
+#import "BmobQuery.h"
 #import "AssetHelper.h"
 #import "PageScrollView.h"
+#import <BmobSDK/BmobProFile.h>
 #import "AddPostsViewController.h"
 #import "DoImagePickerController.h"
 
@@ -21,11 +25,12 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     BOOL canAddPhoto;
     CGRect originalFrame;
     NSString *content;
+    UILabel *tipsLabel;
     NSMutableArray *photoArray;
+    NSMutableArray *uploadPhotoArray;
     PageScrollView *pageScrollView;
+    NSInteger uploadCount;
 }
-
-@property (nonatomic, weak) UILabel *tipsLabel;
 
 @end
 
@@ -55,12 +60,11 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 }
 
 - (void)loadCustomView {
-    //描述
+
     self.textViewContent.textColor = color_333333;
     self.textViewContent.text = @"";
     self.textViewContent.inputAccessoryView = [self getInputAccessoryView];
 
-    //照片
     UIImage *addImage = [UIImage imageNamed:png_Btn_AddPhoto];
     [photoArray addObject:addImage];
     
@@ -82,7 +86,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     label.textAlignment = NSTextAlignmentCenter;
     label.text = str_Posts_Add_Tips1;
     [self.viewPhoto addSubview:label];
-    self.tipsLabel = label;
+    tipsLabel = label;
     
     originalFrame = self.view.frame;
 }
@@ -101,18 +105,67 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     if (canAddPhoto) {
         [photoArray removeObjectAtIndex:photoArray.count - 1];
     }
+    
+    __weak typeof(self) weakSelf = self;
 
-//    BOOL result = [PlanCache storePhoto:self.photo];
-//    [self hideHUD];
-//    if (result) {
-//        
-//        [self alertToastMessage:str_Save_Success];
-//        [self.navigationController popViewControllerAnimated:YES];
-//        
-//    } else {
-//        
-//        [self alertButtonMessage:str_Save_Fail];
-//    }
+    BmobObject *newPosts = [BmobObject objectWithClassName:@"Posts"];
+    [newPosts setObject:content forKey:@"content"];
+    [newPosts setObject:@"0" forKey:@"isDeleted"];
+    [newPosts setObject:@"0" forKey:@"isTop"];
+    [newPosts setObject:@"0" forKey:@"isHighlight"];
+
+    //设置帖子关联的作者
+    [Config shareInstance].settings = [PlanCache getPersonalSettings];
+    BmobObject *author = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
+    [newPosts setObject:author forKey:@"author"];
+    //异步保存
+    [newPosts saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        if (isSuccessful) {
+            if (photoArray.count == 0) {
+                [NotificationCenter postNotificationName:Notify_Posts_New object:nil];
+                [weakSelf alertToastMessage:@"发送成功"];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+        } else {
+            [weakSelf alertButtonMessage:@"发送失败"];
+            NSLog(@"%@",error);
+        }
+    }];
+    if (photoArray.count > 0) {
+        uploadCount = 0;
+        uploadPhotoArray = [NSMutableArray arrayWithCapacity:photoArray.count];
+        for (NSInteger i = 0; i < photoArray.count; i++) {
+            [self uploadImage:photoArray[i] index:i obj:newPosts];
+        }
+    } else {
+        [self hideHUD];
+    }
+}
+
+- (void)uploadImage:(UIImage *)image index:(NSInteger)index obj:(BmobObject *)obj {
+    __weak typeof(self) weakSelf = self;
+    NSData *imgData = UIImageJPEGRepresentation(image, 1.0);
+    [BmobProFile uploadFileWithFilename:@"imgPhoto.png" fileData:imgData block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
+        if (isSuccessful) {
+            
+            uploadPhotoArray[index] = bmobFile.url;
+            uploadCount += 1;
+            if (uploadCount == photoArray.count) {
+                [obj addObjectsFromArray:uploadPhotoArray forKey:@"imgURLArray"];
+                [obj updateInBackground];
+                [weakSelf hideHUD];
+                [NotificationCenter postNotificationName:Notify_Posts_New object:nil];
+                [weakSelf alertToastMessage:@"发送成功"];
+                [weakSelf.navigationController popViewControllerAnimated:YES];
+            }
+        } else if (error) {
+            [weakSelf hideHUD];
+            [weakSelf alertButtonMessage:@"发送失败"];
+        }
+    } progress:^(CGFloat progress) {
+        //上传进度
+        NSLog(@"上传帖子图片进度： %f",progress);
+    }];
 }
 
 - (void)relocationPage {
@@ -122,15 +175,11 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 
 - (void)tapAction:(UITapGestureRecognizer *)tapGestureRecognizer {
     NSInteger index = tapGestureRecognizer.view.tag - kAddPostsViewPhotoStartTag;
-    
     if (index != pageScrollView.currentPage) {
-        
         [pageScrollView scrollToPage:index animated:YES];
     }
-    
     if (index == photoArray.count - 1
         && index < imgMax) {
-        
         [self addPhoto];
     }
 }
@@ -148,14 +197,10 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     imageView.image = photo;
     imageView.backgroundColor = [UIColor clearColor];
     if (canAddPhoto && (index == photoArray.count - 1)) {
-        
         imageView.contentMode = UIViewContentModeScaleToFill;
-        
     } else {
-        
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.clipsToBounds = YES;
-        
     }
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
     [imageView addGestureRecognizer:tapGestureRecognizer];
@@ -187,14 +232,11 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 
 - (void)pageScrollView:(PageScrollView *)pageScrollView didScrollToPage:(NSInteger)pageNumber {
     if (photoArray.count == 1) {
-        
-        self.tipsLabel.text = str_Posts_Add_Tips1;
-        
+        tipsLabel.text = str_Posts_Add_Tips1;
     } else if (photoArray.count > 1) {
-    
         long selectedCount = canAddPhoto ? photoArray.count - 1 : photoArray.count;
         long canSelectCount = imgMax - selectedCount;
-        self.tipsLabel.text = [NSString stringWithFormat:str_Photo_Add_Tips6, selectedCount, canSelectCount];
+        tipsLabel.text = [NSString stringWithFormat:str_Photo_Add_Tips6, selectedCount, canSelectCount];
     }
 }
 

@@ -20,6 +20,7 @@
 #define Notify_Messages_Save @"Notify_Messages_Save"
 #define Notify_TaskRecord_Save @"Notify_TaskRecord_Save"
 #define Notify_Photo_RefreshOnly @"Notify_Photo_RefreshOnly"
+#define Notify_Posts_New @"Notify_Posts_New"
 //推送通知
 #define Notify_Push_LocalNotify @"Notify_Push_LocalNotify"
 

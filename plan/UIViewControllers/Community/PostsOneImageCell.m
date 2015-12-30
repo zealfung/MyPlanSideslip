@@ -23,6 +23,8 @@
     cellView.imgViewAvatar.layer.cornerRadius = cellView.imgViewAvatar.frame.size.width / 2;
     cellView.imgViewAvatar.clipsToBounds = YES;
     cellView.imgViewAvatar.contentMode = UIViewContentModeScaleAspectFit;
+    cellView.labelIsTop.hidden = YES;
+    cellView.labelIsHighlight.hidden = YES;
     
     __weak typeof(PostsOneImageCell) *weakSelf = cellView;
     [cellView getThreeSubViewForLeftBlock: ^{
@@ -57,15 +59,12 @@
 
     [self.subViewButton.leftButton setImage:[UIImage imageNamed:png_Icon_Posts_Eyes] forState:UIControlStateNormal];
     [self.subViewButton.leftButton setImage:[UIImage imageNamed:png_Icon_Posts_Eyes] forState:UIControlStateSelected];
-    [self.subViewButton.leftButton setAllTitle:@"238"];
     
     [self.subViewButton.centerButton setImage:[UIImage imageNamed:png_Icon_Posts_Comment] forState:UIControlStateNormal];
     [self.subViewButton.centerButton setImage:[UIImage imageNamed:png_Icon_Posts_Comment] forState:UIControlStateSelected];
-    [self.subViewButton.centerButton setAllTitle:@"6"];
     
     [self.subViewButton.rightButton setImage:[UIImage imageNamed:png_Icon_Posts_Praise_Normal] forState:UIControlStateNormal];
     [self.subViewButton.rightButton setImage:[UIImage imageNamed:png_Icon_Posts_Praise_Selected] forState:UIControlStateSelected];
-    [self.subViewButton.rightButton setAllTitle:@"12"];
     
     self.subViewButton.leftButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     self.subViewButton.centerButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;

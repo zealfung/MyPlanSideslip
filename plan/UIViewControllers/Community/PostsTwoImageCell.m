@@ -23,6 +23,8 @@
     cellView.imgViewAvatar.layer.cornerRadius = cellView.imgViewAvatar.frame.size.width / 2;
     cellView.imgViewAvatar.clipsToBounds = YES;
     cellView.imgViewAvatar.contentMode = UIViewContentModeScaleAspectFit;
+    cellView.labelIsTop.hidden = YES;
+    cellView.labelIsHighlight.hidden = YES;
     
     __weak typeof(PostsTwoImageCell) *weakSelf = cellView;
     [cellView getThreeSubViewForLeftBlock: ^{
