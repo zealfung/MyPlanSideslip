@@ -18,6 +18,7 @@
 #import "SDCycleScrollView.h"
 #import "FourViewController.h"
 #import "LogInViewController.h"
+#import "LogInViewController.h"
 #import "UIImageView+WebCache.h"
 #import <RESideMenu/RESideMenu.h>
 #import "AddPostsViewController.h"
@@ -192,8 +193,8 @@
         NSString *isTop = [obj objectForKey:@"isTop"];
         NSString *isHighlight = [obj objectForKey:@"isHighlight"];
         NSInteger readTimes = [[obj objectForKey:@"readTimes"] integerValue];
-        NSArray *likesArray = [NSArray arrayWithArray:[obj objectForKey:@"likes"]];
-        NSArray *commentsArray = [NSArray arrayWithArray:[obj objectForKey:@"comments"]];
+        NSInteger likesCount = [[obj objectForKey:@"likesCount"] integerValue];
+        NSInteger commentsCount = [[obj objectForKey:@"commentsCount"] integerValue];
         NSArray *imgURLArray = [NSArray arrayWithArray:[obj objectForKey:@"imgURLArray"]];
         __weak typeof(self) weakSelf = self;
         if (imgURLArray && imgURLArray.count > 0) {
@@ -212,8 +213,8 @@
                 }
                 [cell.imgViewOne sd_setImageWithURL:[NSURL URLWithString:imgURLArray[0]] placeholderImage:[UIImage imageNamed:png_Bg_SideTop]];
                 [cell.subViewButton.leftButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)readTimes]];
-                [cell.subViewButton.centerButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)commentsArray.count]];
-                [cell.subViewButton.rightButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)likesArray.count]];
+                [cell.subViewButton.centerButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)commentsCount]];
+                [cell.subViewButton.rightButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)likesCount]];
                 __weak typeof(PostsOneImageCell) *weakCell = cell;
                 cell.postsCellViewBlock = ^(){
                     [weakSelf toPostsDetail:@"1"];
@@ -222,11 +223,18 @@
                     [weakSelf toPostsDetail:@"1"];
                 };
                 cell.postsCellLikeBlock = ^(){
-                    weakCell.subViewButton.rightButton.selected = !weakCell.subViewButton.rightButton.selected;
-                    if (weakCell.subViewButton.rightButton.selected) {
-                        [weakCell.subViewButton.rightButton setAllTitleColor:color_Red];
+                    if ([LogIn isLogin]) {
+                        BmobObject *obj = postsArray[indexPath.row];
+                        weakCell.subViewButton.rightButton.selected = !weakCell.subViewButton.rightButton.selected;
+                        if (weakCell.subViewButton.rightButton.selected) {
+                            [weakSelf likePosts:obj];
+                            [weakCell.subViewButton.rightButton setAllTitleColor:color_Red];
+                        } else {
+                            [weakSelf unlikePosts:obj];
+                            [weakCell.subViewButton.rightButton setAllTitleColor:color_8f8f8f];
+                        }
                     } else {
-                        [weakCell.subViewButton.rightButton setAllTitleColor:color_8f8f8f];
+                        [weakSelf toLogInView];
                     }
                 };
                 return cell;
@@ -246,8 +254,8 @@
                 [cell.imgViewOne sd_setImageWithURL:[NSURL URLWithString:imgURLArray[0]] placeholderImage:[UIImage imageNamed:png_Bg_SideTop]];
                 [cell.imgViewTwo sd_setImageWithURL:[NSURL URLWithString:imgURLArray[1]] placeholderImage:[UIImage imageNamed:png_Bg_SideTop]];
                 [cell.subViewButton.leftButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)readTimes]];
-                [cell.subViewButton.centerButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)commentsArray.count]];
-                [cell.subViewButton.rightButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)likesArray.count]];
+                [cell.subViewButton.centerButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)commentsCount]];
+                [cell.subViewButton.rightButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)likesCount]];
                 __weak typeof(PostsTwoImageCell) *weakCell = cell;
                 cell.postsCellViewBlock = ^(){
                     [weakSelf toPostsDetail:@"1"];
@@ -256,11 +264,18 @@
                     [weakSelf toPostsDetail:@"1"];
                 };
                 cell.postsCellLikeBlock = ^(){
-                    weakCell.subViewButton.rightButton.selected = !weakCell.subViewButton.rightButton.selected;
-                    if (weakCell.subViewButton.rightButton.selected) {
-                        [weakCell.subViewButton.rightButton setAllTitleColor:color_Red];
+                    if ([LogIn isLogin]) {
+                        BmobObject *obj = postsArray[indexPath.row];
+                        weakCell.subViewButton.rightButton.selected = !weakCell.subViewButton.rightButton.selected;
+                        if (weakCell.subViewButton.rightButton.selected) {
+                            [weakSelf likePosts:obj];
+                            [weakCell.subViewButton.rightButton setAllTitleColor:color_Red];
+                        } else {
+                            [weakSelf unlikePosts:obj];
+                            [weakCell.subViewButton.rightButton setAllTitleColor:color_8f8f8f];
+                        }
                     } else {
-                        [weakCell.subViewButton.rightButton setAllTitleColor:color_8f8f8f];
+                        [weakSelf toLogInView];
                     }
                 };
                 return cell;
@@ -279,8 +294,8 @@
                 cell.labelIsHighlight.hidden = NO;
             }
             [cell.subViewButton.leftButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)readTimes]];
-            [cell.subViewButton.centerButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)commentsArray.count]];
-            [cell.subViewButton.rightButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)likesArray.count]];
+            [cell.subViewButton.centerButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)commentsCount]];
+            [cell.subViewButton.rightButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)likesCount]];
             __weak typeof(PostsNoImageCell) *weakCell = cell;
             cell.postsCellViewBlock = ^(){
                 [weakSelf toPostsDetail:@"1"];
@@ -289,11 +304,18 @@
                 [weakSelf toPostsDetail:@"1"];
             };
             cell.postsCellLikeBlock = ^(){
-                weakCell.subViewButton.rightButton.selected = !weakCell.subViewButton.rightButton.selected;
-                if (weakCell.subViewButton.rightButton.selected) {
-                    [weakCell.subViewButton.rightButton setAllTitleColor:color_Red];
+                if ([LogIn isLogin]) {
+                    BmobObject *obj = postsArray[indexPath.row];
+                    weakCell.subViewButton.rightButton.selected = !weakCell.subViewButton.rightButton.selected;
+                    if (weakCell.subViewButton.rightButton.selected) {
+                        [weakSelf likePosts:obj];
+                        [weakCell.subViewButton.rightButton setAllTitleColor:color_Red];
+                    } else {
+                        [weakSelf unlikePosts:obj];
+                        [weakCell.subViewButton.rightButton setAllTitleColor:color_8f8f8f];
+                    }
                 } else {
-                    [weakCell.subViewButton.rightButton setAllTitleColor:color_8f8f8f];
+                    [weakSelf toLogInView];
                 }
             };
             return cell;
@@ -391,7 +413,7 @@
         postsArray = [NSMutableArray array];
     }
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
-    [bquery includeKey:@"author"];//声明该次查询需要将author关联对象信息一并查询出来
+    [bquery includeKey:@"author,likes"];//声明该次查询需要将author关联对象信息一并查询出来
     [bquery whereKey:@"isDeleted" equalTo:@"0"];
     [bquery orderByDescending:@"isTop"];//先按照是否置顶排序
     [bquery orderByDescending:@"updatedAt"];//再按照更新时间排序
@@ -454,8 +476,68 @@
     }];
 }
 
+- (void)likePosts:(BmobObject *)posts {
+    BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
+    [obj incrementKey:@"likesCount"];
+    
+    BmobRelation *relation = [[BmobRelation alloc] init];
+    [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
+
+    [obj addRelation:relation forKey:@"likes"];
+    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        if (isSuccessful) {
+            NSLog(@"successful");
+        }else{
+            NSLog(@"error %@",[error description]);
+        }
+    }];
+}
+
+- (void)unlikePosts:(BmobObject *)posts {
+    BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
+    [obj decrementKey:@"likesCount"];
+    
+    BmobRelation *relation = [[BmobRelation alloc] init];
+    [relation removeObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
+
+    [obj addRelation:relation forKey:@"likes"];
+    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        if (isSuccessful) {
+            NSLog(@"successful");
+        }else{
+            NSLog(@"error %@",[error description]);
+        }
+    }];
+}
+
+- (void)isLikedPost:(BmobObject *)posts {
+    
+    if ([LogIn isLogin]) {
+        BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
+        BmobQuery *inQuery = [BmobQuery queryWithClassName:@"UserSettings"];
+        BmobUser *user = [BmobUser getCurrentUser];
+        [inQuery whereKey:@"userObjectId" equalTo:user.objectId];
+        //匹配查询
+        [bquery whereKey:@"hasRead" matchesQuery:inQuery];//（查询所有有关联的数据）
+        [bquery whereKey:@"objectId" equalTo:posts.objectId];
+        
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+            
+            if (!error && array.count > 0) {
+                
+            }
+        }];
+    }
+}
+
 - (void)toPostsDetail:(NSString *)postId {
     PostsDetailViewController *controller = [[PostsDetailViewController alloc] init];
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)toLogInView {
+    LogInViewController *controller = [[LogInViewController alloc] init];
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
