@@ -10,6 +10,7 @@
 
 @interface Settings : ModelBase <NSCoding, NSCopying>
 
+@property (nonatomic, strong) NSString *objectId;
 @property (nonatomic, strong) NSString *account;
 @property (nonatomic, strong) NSString *nickname;
 @property (nonatomic, strong) NSString *birthday;

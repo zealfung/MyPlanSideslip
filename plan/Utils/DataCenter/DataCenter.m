@@ -82,6 +82,7 @@ static BOOL finishPhoto;
             BmobObject *obj = array[0];
             
             if ([Config shareInstance].settings.updatetime) {
+                [Config shareInstance].settings.objectId = obj.objectId;
                 //本地有上次同步时间记录，对比服务器的更新时间与本地同步记录时间
                 NSDate *localSyntime = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
                 NSDate *serverSynctime = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"syncTime"] formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
@@ -126,6 +127,7 @@ static BOOL finishPhoto;
 
 + (void)syncServerToLocalForSettings:(BmobObject *)obj {
     
+    [Config shareInstance].settings.objectId = obj.objectId;
     [Config shareInstance].settings.nickname = [obj objectForKey:@"nickName"];
     [Config shareInstance].settings.birthday = [obj objectForKey:@"birthday"];
     [Config shareInstance].settings.gender = [obj objectForKey:@"gender"];
@@ -300,6 +302,7 @@ static BOOL finishPhoto;
     [userSettings saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
             
+            [Config shareInstance].settings.objectId = userSettings.objectId;
             [Config shareInstance].settings.syntime = timeNow;
             [PlanCache storePersonalSettings:[Config shareInstance].settings];
             

@@ -8,6 +8,7 @@
 
 #import "Settings.h"
 
+NSString *const kSettings_ObjectId = @"objectId";
 NSString *const kSettings_Account = @"account";
 NSString *const kSettings_NickName = @"nickname";
 NSString *const kSettings_Birthday = @"birthday";
@@ -29,6 +30,7 @@ NSString *const kSettings_Syntime = @"syntime";
 
 @implementation Settings
 
+@synthesize objectId = _objectId;
 @synthesize account = _account;
 @synthesize nickname = _nickname;
 @synthesize birthday = _birthday;
@@ -52,6 +54,7 @@ NSString *const kSettings_Syntime = @"syntime";
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
     if(self && [dict isKindOfClass:[NSDictionary class]]) {
+        self.objectId = [dict objectOrNilForKey:kSettings_ObjectId];
         self.account = [dict objectOrNilForKey:kSettings_Account];
         self.nickname = [dict objectOrNilForKey:kSettings_NickName];
         self.birthday = [dict objectOrNilForKey:kSettings_Birthday];
@@ -77,6 +80,7 @@ NSString *const kSettings_Syntime = @"syntime";
 #pragma mark - NSCoding Methods
 - (id)initWithCoder:(NSCoder *)aDecoder {
     self = [super init];
+    self.objectId = [aDecoder decodeObjectForKey:kSettings_ObjectId];
     self.account = [aDecoder decodeObjectForKey:kSettings_Account];
     self.nickname = [aDecoder decodeObjectForKey:kSettings_NickName];
     self.birthday = [aDecoder decodeObjectForKey:kSettings_Birthday];
@@ -97,6 +101,7 @@ NSString *const kSettings_Syntime = @"syntime";
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder {
+    [aCoder encodeObject:_objectId forKey:kSettings_ObjectId];
     [aCoder encodeObject:_account forKey:kSettings_Account];
     [aCoder encodeObject:_nickname forKey:kSettings_NickName];
     [aCoder encodeObject:_birthday forKey:kSettings_Birthday];
@@ -119,6 +124,7 @@ NSString *const kSettings_Syntime = @"syntime";
 
 - (id)copyWithZone:(NSZone *)zone {
     Settings *copy = [[Settings alloc] init];
+    copy.objectId = [self.objectId copyWithZone:zone];
     copy.account = [self.account copyWithZone:zone];
     copy.nickname = [self.nickname copyWithZone:zone];
     copy.birthday = [self.birthday copyWithZone:zone];
