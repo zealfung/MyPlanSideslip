@@ -11,6 +11,7 @@
 
 #define png_AvatarBg @"avatarBg"
 #define png_AvatarDefault @"avatarDefault"
+#define png_AvatarDefault1 @"avatarDefault1"
 #define png_ImageDefault @"ImageDefault"
 
 #define png_Btn_Add @"Btn_Add"
