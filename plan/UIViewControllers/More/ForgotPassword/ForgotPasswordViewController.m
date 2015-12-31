@@ -54,7 +54,6 @@
 }
 
 - (void)submit {
-
     [BmobUser requestPasswordResetInBackgroundWithEmail:self.txtEmail.text];
     [self alertButtonMessage:str_ForgotPassword_Tips2];
     NSArray *array = self.navigationController.viewControllers;
