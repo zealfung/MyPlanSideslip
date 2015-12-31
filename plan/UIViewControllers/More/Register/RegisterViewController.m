@@ -73,17 +73,15 @@
     BmobQuery   *bquery = [BmobQuery queryWithClassName:@"_User"];
     [bquery whereKey:@"username" equalTo:self.txtEmail.text];
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        
         if (error){
             //进行错误处理
             [weakSelf hideHUD];
-        }else{
+        } else {
             if (array && array.count > 0) {//已存在
-                
                 [weakSelf hideHUD];
                 [weakSelf alertButtonMessage:str_Register_Tips5];
-                
             } else {//可注册
-                
                 [weakSelf registerUser];
             }
         }
@@ -98,8 +96,8 @@
     bUser.password = [CommonFunction md5HexDigest:self.txtPassword.text];
     bUser.email = acountEmail;
     [bUser signUpInBackgroundWithBlock:^ (BOOL isSuccessful, NSError *error){
-        [weakSelf hideHUD];
         
+        [weakSelf hideHUD];
         if (isSuccessful){
             [BmobUser logout];
             [weakSelf alertButtonMessage:str_Register_Tips6];
