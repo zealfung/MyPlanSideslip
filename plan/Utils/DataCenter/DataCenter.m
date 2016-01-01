@@ -34,6 +34,14 @@ static BOOL finishPhoto;
     
     //把本地无账号关联的数据与当前登录账号进行关联
     [PlanCache linkedLocalDataToAccount];
+    
+    //优化同步逻辑后，把本地数据都过一遍，防止之前同步落下的数据
+    NSString *tmp = [UserDefaults objectForKey:str_Tmp_Flag];
+    if (!tmp || ![tmp isEqualToString:@"1"]) {
+        [Config shareInstance].settings.syntime = @"2015-09-01 09:09:09";
+        [UserDefaults setObject:@"1" forKey:str_Tmp_Flag];
+        [UserDefaults synchronize];
+    }
 
     //同步计划
     [self startSyncPlan];
@@ -266,7 +274,6 @@ static BOOL finishPhoto;
 + (void)addSettingsToServer {
     BmobUser *user = [BmobUser getCurrentUser];
     BmobObject *userSettings = [BmobObject objectWithClassName:@"UserSettings"];
-    [Config shareInstance].settings = [PlanCache getPersonalSettings];
     
     [userSettings setObject:user.objectId forKey:@"userObjectId"];
     if ([Config shareInstance].settings.nickname) {
@@ -567,15 +574,12 @@ static BOOL finishPhoto;
     __weak typeof(self) weakSelf = self;
     NSArray *localNewArray = [NSArray array];
     if ([Config shareInstance].settings.syntime.length > 0) {
-        
         localNewArray = [PlanCache getPhotoForSync:[Config shareInstance].settings.syntime];
     } else {
-        
         localNewArray = [PlanCache getPhotoForSync:nil];
     }
     
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Photo"];
-    
     for (Photo *photo in localNewArray) {
         
         [bquery whereKey:@"userObjectId" equalTo:[Config shareInstance].settings.account];
@@ -632,6 +636,7 @@ static BOOL finishPhoto;
 }
 
 + (void)updatePhotoForServer:(Photo *)photo obj:(BmobObject *)obj {
+    BmobUser *user = [BmobUser getCurrentUser];
     if (photo.content) {
         [obj setObject:photo.content forKey:@"content"];
     }
@@ -645,8 +650,8 @@ static BOOL finishPhoto;
         [obj setObject:photo.location forKey:@"location"];
     }
     BmobACL *acl = [BmobACL ACL];
-    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
-    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    [acl setReadAccessForUser:user];//设置只有当前用户可读
+    [acl setWriteAccessForUser:user];//设置只有当前用户可写
     obj.ACL = acl;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
@@ -656,19 +661,19 @@ static BOOL finishPhoto;
             NSLog(@"更新本地影像到服务器遇到未知错误");
         }
     }];
-    for (NSInteger i = 0; i < photo.photoArray.count; i++) {
-        [DataCenter uploadPhoto:photo index:i obj:obj];
-    }
     if (photo.photoArray.count < 9) {
         for (NSInteger i = photo.photoArray.count; i < 9; i++) {
             NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", (long)(i+1)];
             [obj setObject:@"" forKey:urlName];
         }
         BmobACL *acl = [BmobACL ACL];
-        [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
-        [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+        [acl setReadAccessForUser:user];//设置只有当前用户可读
+        [acl setWriteAccessForUser:user];//设置只有当前用户可写
         obj.ACL = acl;
         [obj updateInBackground];
+    }
+    for (NSInteger i = 0; i < photo.photoArray.count; i++) {
+        [DataCenter uploadPhoto:photo index:i obj:obj];
     }
 }
 
