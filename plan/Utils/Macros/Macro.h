@@ -15,5 +15,6 @@
 #import "StringMacro.h"
 #import "CommonMacro.h"
 #import "NotificationMacro.h"
+#import "UIImageView+WebCache.h"
 
 #endif
