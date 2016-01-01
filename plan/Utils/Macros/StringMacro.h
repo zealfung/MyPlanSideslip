@@ -191,8 +191,7 @@
 #define str_Sync_Begin @"开始同步数据..."
 #define str_Sync_End @"同步数据完成"
 
-#define str_Avatar @"kAvatar"
-#define str_LogInPlatform @"kLogInPlatform"
+#define str_Tmp_Flag @"kTmpFlag"
 #define str_TableName_Settings @"t_settings"
 #define str_TableName_Plan @"t_plan"
 #define str_TableName_Photo @"t_photo"
