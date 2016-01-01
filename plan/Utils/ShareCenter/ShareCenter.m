@@ -29,7 +29,7 @@
                                      images:imageArray
                                         url:[NSURL URLWithString:str_Website_URL]
                                       title:str_App_Slogan
-                                       type:SSDKContentTypeWebPage];
+                                       type:SSDKContentTypeAuto];
     
     //1.2、自定义分享平台
     NSMutableArray *activePlatforms = [NSMutableArray arrayWithArray:@[@(SSDKPlatformTypeSinaWeibo), @(SSDKPlatformSubTypeWechatSession), @(SSDKPlatformSubTypeWechatTimeline), @(SSDKPlatformSubTypeQQFriend), @(SSDKPlatformSubTypeQZone), @(SSDKPlatformTypeQQ)]];
@@ -98,7 +98,7 @@
                                      images:imageArray
                                         url:[NSURL URLWithString:shareUrl]
                                       title:title
-                                       type:SSDKContentTypeWebPage];
+                                       type:SSDKContentTypeAuto];
     
     //1.2、自定义分享平台
     NSMutableArray *activePlatforms = [NSMutableArray arrayWithArray:@[@(SSDKPlatformTypeSinaWeibo), @(SSDKPlatformSubTypeWechatSession), @(SSDKPlatformSubTypeWechatTimeline), @(SSDKPlatformSubTypeQQFriend), @(SSDKPlatformSubTypeQZone), @(SSDKPlatformTypeQQ)]];
