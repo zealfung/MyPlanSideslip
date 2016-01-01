@@ -117,4 +117,13 @@
     return mdfiveString;
 }
 
+//超过仟的数字用K缩写
++ (NSString *)checkNumberForThousand:(NSInteger)number {
+    if (number > 1000) {
+        return [NSString stringWithFormat:@"%.1fK", (CGFloat)number / 1000];
+    } else {
+        return [NSString stringWithFormat:@"%ld", (long)number];
+    }
+}
+
 @end

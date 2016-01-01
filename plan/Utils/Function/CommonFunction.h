@@ -51,4 +51,7 @@
 // MD5 32位加密
 + (NSString *)md5HexDigest:(NSString*)password;
 
+//超过仟的数字用K缩写
++ (NSString *)checkNumberForThousand:(NSInteger)number;
+
 @end
