@@ -19,7 +19,6 @@
 #import "FourViewController.h"
 #import "LogInViewController.h"
 #import "LogInViewController.h"
-#import "UIImageView+WebCache.h"
 #import <RESideMenu/RESideMenu.h>
 #import "AddPostsViewController.h"
 #import "PostsDetailViewController.h"
@@ -221,9 +220,9 @@
                     cell.subViewButton.rightButton.selected = YES;
                     [cell.subViewButton.rightButton setAllTitleColor:color_Red];
                 }
-                [cell.subViewButton.leftButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)readTimes]];
-                [cell.subViewButton.centerButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)commentsCount]];
-                [cell.subViewButton.rightButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)likesCount]];
+                [cell.subViewButton.leftButton setAllTitle:[CommonFunction checkNumberForThousand:readTimes]];
+                [cell.subViewButton.centerButton setAllTitle:[CommonFunction checkNumberForThousand:commentsCount]];
+                [cell.subViewButton.rightButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
                 __weak typeof(PostsOneImageCell) *weakCell = cell;
                 cell.postsCellViewBlock = ^(){
                     [weakSelf toPostsDetail:obj];
@@ -239,13 +238,13 @@
                             [weakSelf likePosts:obj];
                             NSInteger likesCount = [[obj objectForKey:@"likesCount"] integerValue];
                             likesCount += 1;
-                            [weakCell.subViewButton.rightButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)(likesCount)]];
+                            [weakCell.subViewButton.rightButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
                             [weakCell.subViewButton.rightButton setAllTitleColor:color_Red];
                         } else {
                             [weakSelf unlikePosts:obj];
                             NSInteger likesCount = [[obj objectForKey:@"likesCount"] integerValue];
                             likesCount -= 1;
-                            [weakCell.subViewButton.rightButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)(likesCount)]];
+                            [weakCell.subViewButton.rightButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
                             [weakCell.subViewButton.rightButton setAllTitleColor:color_8f8f8f];
                         }
                     } else {
@@ -272,9 +271,9 @@
                     cell.subViewButton.rightButton.selected = YES;
                     [cell.subViewButton.rightButton setAllTitleColor:color_Red];
                 }
-                [cell.subViewButton.leftButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)readTimes]];
-                [cell.subViewButton.centerButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)commentsCount]];
-                [cell.subViewButton.rightButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)likesCount]];
+                [cell.subViewButton.leftButton setAllTitle:[CommonFunction checkNumberForThousand:readTimes]];
+                [cell.subViewButton.centerButton setAllTitle:[CommonFunction checkNumberForThousand:commentsCount]];
+                [cell.subViewButton.rightButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
                 __weak typeof(PostsTwoImageCell) *weakCell = cell;
                 cell.postsCellViewBlock = ^(){
                     [weakSelf toPostsDetail:obj];
@@ -290,13 +289,13 @@
                             [weakSelf likePosts:obj];
                             NSInteger likesCount = [[obj objectForKey:@"likesCount"] integerValue];
                             likesCount += 1;
-                            [weakCell.subViewButton.rightButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)(likesCount)]];
+                            [weakCell.subViewButton.rightButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
                             [weakCell.subViewButton.rightButton setAllTitleColor:color_Red];
                         } else {
                             [weakSelf unlikePosts:obj];
                             NSInteger likesCount = [[obj objectForKey:@"likesCount"] integerValue];
                             likesCount -= 1;
-                            [weakCell.subViewButton.rightButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)(likesCount)]];
+                            [weakCell.subViewButton.rightButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
                             [weakCell.subViewButton.rightButton setAllTitleColor:color_8f8f8f];
                         }
                     } else {
@@ -322,9 +321,9 @@
                 cell.subViewButton.rightButton.selected = YES;
                 [cell.subViewButton.rightButton setAllTitleColor:color_Red];
             }
-            [cell.subViewButton.leftButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)readTimes]];
-            [cell.subViewButton.centerButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)commentsCount]];
-            [cell.subViewButton.rightButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)likesCount]];
+            [cell.subViewButton.leftButton setAllTitle:[CommonFunction checkNumberForThousand:readTimes]];
+            [cell.subViewButton.centerButton setAllTitle:[CommonFunction checkNumberForThousand:commentsCount]];
+            [cell.subViewButton.rightButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
             __weak typeof(PostsNoImageCell) *weakCell = cell;
             cell.postsCellViewBlock = ^(){
                 [weakSelf toPostsDetail:obj];
@@ -340,13 +339,13 @@
                         [weakSelf likePosts:obj];
                         NSInteger likesCount = [[obj objectForKey:@"likesCount"] integerValue];
                         likesCount += 1;
-                        [weakCell.subViewButton.rightButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)(likesCount)]];
+                        [weakCell.subViewButton.rightButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
                         [weakCell.subViewButton.rightButton setAllTitleColor:color_Red];
                     } else {
                         [weakSelf unlikePosts:obj];
                         NSInteger likesCount = [[obj objectForKey:@"likesCount"] integerValue];
                         likesCount -= 1;
-                        [weakCell.subViewButton.rightButton setAllTitle:[NSString stringWithFormat:@"%ld", (long)(likesCount)]];
+                        [weakCell.subViewButton.rightButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
                         [weakCell.subViewButton.rightButton setAllTitleColor:color_8f8f8f];
                     }
                 } else {
@@ -585,6 +584,7 @@
     [posts setObject:@(readTimes) forKey:@"readTimes"];
     
     PostsDetailViewController *controller = [[PostsDetailViewController alloc] init];
+    controller.posts = posts;
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }

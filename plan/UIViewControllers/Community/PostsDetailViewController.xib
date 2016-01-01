@@ -56,7 +56,7 @@
                             <state key="normal" backgroundImage="Btn_Posts_Comment.png"/>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
                         <constraint firstItem="gKZ-YN-H3Y" firstAttribute="leading" secondItem="qIM-m7-sM7" secondAttribute="leading" constant="40" id="4K3-rD-1Do"/>
                         <constraint firstItem="nGc-sL-YjF" firstAttribute="leading" secondItem="l2e-Rr-HA2" secondAttribute="trailing" constant="40" id="4sT-V0-6hi"/>
