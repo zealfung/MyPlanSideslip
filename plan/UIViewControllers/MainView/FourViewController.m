@@ -26,6 +26,8 @@
 @interface FourViewController () <SDCycleScrollViewDelegate> {
     
     BOOL isLoadMore;
+    BOOL isLoadingBanner;
+    BOOL isLoadingPosts;
     NSInteger startIndex;
     NSMutableArray *postsArray;
     SDCycleScrollView *bannerView;
@@ -54,13 +56,6 @@
     headerDetailURLArray = [NSMutableArray array];
     
     [NotificationCenter addObserver:self selector:@selector(loadPostsData) name:Notify_Posts_New object:nil];
-    
-//    [headerImagesURLArray addObject:@"https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a4b3d7085dee3d6d2293d48b252b5910/0e2442a7d933c89524cd5cd4d51373f0830200ea.jpg"
-//                             ];
-    
-//    headerImagesURLArray = @[@"https://ss2.baidu.com/-vo3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a4b3d7085dee3d6d2293d48b252b5910/0e2442a7d933c89524cd5cd4d51373f0830200ea.jpg",
-//                             @"https://ss0.baidu.com/-Po3dSag_xI4khGko9WTAnF6hhy/super/whfpf%3D425%2C260%2C50/sign=a41eb338dd33c895a62bcb3bb72e47c2/5fdf8db1cb134954a2192ccb524e9258d1094a1e.jpg",
-//                             @"http://c.hiphotos.baidu.com/image/w%3D400/sign=c2318ff84334970a4773112fa5c8d1c0/b7fd5266d0160924c1fae5ccd60735fae7cd340d.jpg",
 
     [self initTableView];
     
@@ -171,7 +166,7 @@
             return 140.f;
         }
     } else {
-        return 0;
+        return 44.f;
     }
 }
 
@@ -180,7 +175,6 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
     if (postsArray.count > indexPath.row) {
         BmobObject *obj = postsArray[indexPath.row];
         BmobObject *author = [obj objectForKey:@"author"];
@@ -205,6 +199,7 @@
             if (imgURLArray.count == 1) {
                 PostsOneImageCell *cell = [PostsOneImageCell cellView];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
                 cell.labelNickName.text = nickName;
                 cell.labelPostTime.text = [CommonFunction NSDateToNSString:obj.updatedAt formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
@@ -255,6 +250,7 @@
             } else {
                 PostsTwoImageCell *cell = [PostsTwoImageCell cellView];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
                 cell.labelNickName.text = nickName;
                 cell.labelPostTime.text = [CommonFunction NSDateToNSString:obj.updatedAt formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
@@ -307,6 +303,7 @@
         } else {
             PostsNoImageCell *cell = [PostsNoImageCell cellView];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
             [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
             cell.labelNickName.text = nickName;
             cell.labelPostTime.text = [CommonFunction NSDateToNSString:obj.updatedAt formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
@@ -355,13 +352,35 @@
             return cell;
         }
     } else {
-        UITableViewCell *cell = [[UITableViewCell alloc] init];
-        return  cell;
+        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        static NSString *noDataCellIdentifier = @"noDataCellIdentifier";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noDataCellIdentifier];
+        if (!cell) {
+            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noDataCellIdentifier];
+            cell.backgroundColor = [UIColor clearColor];
+            cell.contentView.backgroundColor = [UIColor clearColor];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.textLabel.text = @"";
+            cell.textLabel.frame = cell.contentView.bounds;
+            cell.textLabel.textAlignment = NSTextAlignmentCenter;
+            cell.textLabel.textColor = [UIColor lightGrayColor];
+            cell.textLabel.font = font_Bold_16;
+        }
+        if (indexPath.row == 1) {
+            cell.textLabel.text = @"网络罢工啦，点击重试~";
+        } else {
+            cell.textLabel.text = nil;
+        }
+        return cell;
     }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return postsArray.count;
+    if (postsArray.count > 0) {
+        return postsArray.count;
+    } else {
+        return 2;
+    }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -369,6 +388,9 @@
     if (postsArray.count > indexPath.row) {
         BmobObject *obj = postsArray[indexPath.row];
         [self toPostsDetail:obj];
+    } else {
+        [self loadBannerData];
+        [self loadPostsData];
     }
 }
 
@@ -390,10 +412,14 @@
 }
 
 - (void)loadBannerData {
+    if (isLoadingBanner) return;
+    
+    isLoadingBanner = YES;
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Banner"];
     [bquery whereKey:@"isDeleted" equalTo:@"0"];
     [bquery orderByDescending:@"updatedAt"];
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        isLoadingBanner = NO;
         if (!error && array.count > 0) {
             
             bannerObjArray = [NSMutableArray arrayWithArray:array];
@@ -430,6 +456,9 @@
 }
 
 - (void)loadPostsData {
+    if (isLoadingPosts) return;
+    
+    isLoadingPosts = YES;
     [self showHUD];
     if (!isLoadMore) {
         startIndex = 0;
@@ -445,6 +474,7 @@
     __weak typeof(self) weakSelf = self;
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
         isLoadMore = NO;
+        isLoadingPosts = NO;
         [weakSelf.tableView.mj_header endRefreshing];
         [weakSelf.tableView.mj_footer endRefreshing];
         if (!error && array.count > 0) {
