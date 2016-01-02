@@ -119,7 +119,9 @@
 
 //超过仟的数字用K缩写
 + (NSString *)checkNumberForThousand:(NSInteger)number {
-    if (number > 1000) {
+    if (number > 100000) {
+        return [NSString stringWithFormat:@"%.1fW", (CGFloat)number / 10000];
+    } else if (number > 1000) {
         return [NSString stringWithFormat:@"%.1fK", (CGFloat)number / 1000];
     } else {
         return [NSString stringWithFormat:@"%ld", (long)number];
