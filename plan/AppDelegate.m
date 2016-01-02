@@ -65,9 +65,9 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
     //自动同步数据
-//    if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"]) {
-//        [DataCenter startSyncData];
-//    }
+    if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"]) {
+        [DataCenter startSyncData];
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
@@ -79,9 +79,9 @@
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     
     //自动同步数据
-    if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"]) {
-        [DataCenter startSyncData];
-    }
+//    if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"]) {
+//        [DataCenter startSyncData];
+//    }
 
     UIViewController *controller = self.window.rootViewController;
     if ([controller isKindOfClass:[RESideMenu class]]) {
