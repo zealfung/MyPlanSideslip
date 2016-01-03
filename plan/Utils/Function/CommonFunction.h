@@ -54,4 +54,13 @@
 //超过仟的数字用K缩写
 + (NSString *)checkNumberForThousand:(NSInteger)number;
 
+//获取PNG图片的大小
++ (CGSize)getPNGImageSizeWithRequest:(NSMutableURLRequest*)request;
+
+//获取gif图片的大小
++ (CGSize)getGIFImageSizeWithRequest:(NSMutableURLRequest*)request;
+
+//获取jpg图片的大小
++ (CGSize)getJPGImageSizeWithRequest:(NSMutableURLRequest*)request;
+
 @end
