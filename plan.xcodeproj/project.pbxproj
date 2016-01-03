@@ -209,6 +209,8 @@
 		13D406241C3020BF0089D702 /* Btn_Posts_Like@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D406221C3020BF0089D702 /* Btn_Posts_Like@2x.png */; };
 		13D406251C3020BF0089D702 /* Btn_Posts_Unlike@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D406231C3020BF0089D702 /* Btn_Posts_Unlike@2x.png */; };
 		13D406271C3024860089D702 /* Btn_Posts_More@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D406261C3024860089D702 /* Btn_Posts_More@2x.png */; };
+		13D406921C377E030089D702 /* PostsDetailContentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D406901C377E030089D702 /* PostsDetailContentCell.m */; };
+		13D406931C377E030089D702 /* PostsDetailContentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D406911C377E030089D702 /* PostsDetailContentCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -545,6 +547,9 @@
 		13D406221C3020BF0089D702 /* Btn_Posts_Like@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Posts_Like@2x.png"; sourceTree = "<group>"; };
 		13D406231C3020BF0089D702 /* Btn_Posts_Unlike@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Posts_Unlike@2x.png"; sourceTree = "<group>"; };
 		13D406261C3024860089D702 /* Btn_Posts_More@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Posts_More@2x.png"; sourceTree = "<group>"; };
+		13D4068F1C377E030089D702 /* PostsDetailContentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsDetailContentCell.h; sourceTree = "<group>"; };
+		13D406901C377E030089D702 /* PostsDetailContentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsDetailContentCell.m; sourceTree = "<group>"; };
+		13D406911C377E030089D702 /* PostsDetailContentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsDetailContentCell.xib; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E7C51BA1CAD16DA7E729CF56 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1351,6 +1356,9 @@
 				13D406141C2F9AD00089D702 /* AddPostsViewController.h */,
 				13D406151C2F9AD00089D702 /* AddPostsViewController.m */,
 				13D406161C2F9AD00089D702 /* AddPostsViewController.xib */,
+				13D4068F1C377E030089D702 /* PostsDetailContentCell.h */,
+				13D406901C377E030089D702 /* PostsDetailContentCell.m */,
+				13D406911C377E030089D702 /* PostsDetailContentCell.xib */,
 				13D406191C2FD4470089D702 /* PostsDetailViewController.h */,
 				13D4061A1C2FD4470089D702 /* PostsDetailViewController.m */,
 				13D4061B1C2FD4470089D702 /* PostsDetailViewController.xib */,
@@ -1499,6 +1507,7 @@
 				131D6A421BF6CFAA009FDD72 /* Icon_Menu_Help@2x.png in Resources */,
 				137700BB1B93E56A008C83FD /* Main.storyboard in Resources */,
 				137700EB1B953915008C83FD /* Icon_Logo_512@2x.png in Resources */,
+				13D406931C377E030089D702 /* PostsDetailContentCell.xib in Resources */,
 				1361AFC71BCBA5E700DD5FFB /* DoImagePickerController.xib in Resources */,
 				137701061B95DF67008C83FD /* Icon_Gender_F_Normal@2x.png in Resources */,
 				137470F61C159BEE00B7822A /* Icon_Menu_Messages@2x.png in Resources */,
@@ -1696,6 +1705,7 @@
 				131D6A6C1BFB5D9D009FDD72 /* PieceButton.m in Sources */,
 				131D6AC71C00AEB0009FDD72 /* UINavigationController+Util.m in Sources */,
 				137700E91B953521008C83FD /* AboutViewController.m in Sources */,
+				13D406921C377E030089D702 /* PostsDetailContentCell.m in Sources */,
 				131D6A6B1BFB5D9D009FDD72 /* PersonalCenterViewController.m in Sources */,
 				132263A21B9C7DC200D21637 /* LocalNotificationManager.m in Sources */,
 				13A6AC931BC344A2005A02F9 /* FatherTableViewController.m in Sources */,
