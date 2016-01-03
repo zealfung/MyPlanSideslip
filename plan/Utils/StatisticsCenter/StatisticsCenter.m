@@ -172,12 +172,43 @@
 }
 
 + (BOOL)isContinuousDate:(NSDate*)date1 date2:(NSDate*)date2 {
-    NSTimeInterval time = [date2 timeIntervalSinceDate:date1];
-    int days = ((int)time)/(3600*24);
-    if (days < 1) {
-        return true;
+    NSCalendar *calendar = [NSCalendar currentCalendar];
+    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+    NSDateComponents *comp1 = [calendar components:unitFlags fromDate:date1];
+    NSDateComponents *comp2 = [calendar components:unitFlags fromDate:date2];
+
+    if ([comp2 day] - [comp1 day] == 1 &&
+        [comp1 month] == [comp2 month] &&
+        [comp1 year] == [comp2 year]) {//普通隔天连续
+        return YES;
+    } else if ([comp2 year] - [comp1 year] == 1
+               && [comp1 month] == 12
+               && [comp1 day] == 31
+               && [comp2 month] == 1
+               && [comp2 day] == 1) {//跨年连续
+        return YES;
+    } else if ([comp1 year] == [comp2 year]
+               && [comp2 month] - [comp1 month] == 1
+               && [comp2 day] == 1
+               && ((([comp1 month] == 1
+                     || [comp1 month] == 3
+                     || [comp1 month] == 5
+                     || [comp1 month] == 7
+                     || [comp1 month] == 8
+                     || [comp1 month] == 10
+                     || [comp1 month] == 12)
+                    && [comp1 day] == 31) ||
+                   (([comp1 month] == 4
+                     || [comp1 month] == 6
+                     || [comp1 month] == 9
+                     || [comp1 month] == 11)
+                    && [comp1 day] == 30) ||
+                   ([comp1 month] == 2
+                    && ([comp1 day] == 28
+                        || [comp1 day] == 29)))) {//跨月不跨年连续
+        return YES;
     } else {
-        return false;
+        return NO;
     }
 }
 
