@@ -6,9 +6,12 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
+#import "PostsDetailContentCell.h"
 #import "PostsDetailViewController.h"
 
 @interface PostsDetailViewController () <UITableViewDelegate, UITableViewDataSource> {
+    
+    CGFloat cell0Height;
 }
 
 @end
@@ -44,7 +47,7 @@
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 30;
+    return 10;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
@@ -91,11 +94,25 @@
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 44.f;
+    if (indexPath.row == 0) {
+        if (cell0Height > 0) {
+            return cell0Height;
+        } else {
+            cell0Height = [self cellHeight:self.posts];
+            return cell0Height;
+        }
+    } else {
+        return 44.f;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     
+    if (indexPath.row == 0) {
+        PostsDetailContentCell *cell = [PostsDetailContentCell cellView:self.posts];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
     UITableViewCell *cell = [[UITableViewCell alloc] init];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -103,6 +120,52 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
+- (CGFloat)cellHeight:(BmobObject *)obj {
+    NSString *content = [obj objectForKey:@"content"];
+    CGFloat yOffset = 10;
+    if (content && content.length > 0) {
+        UIFont *font = font_Normal_16;
+        CGSize size = CGSizeMake(WIDTH_FULL_SCREEN - 24, 2000);
+        CGSize labelsize = [content sizeWithFont:font constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+        yOffset = labelsize.height + 20;
+    }
+    NSArray *imgURLArray = [NSArray arrayWithArray:[obj objectForKey:@"imgURLArray"]];
+    if (imgURLArray && imgURLArray.count > 0) {
+        
+        for (NSInteger i=0; i < imgURLArray.count; i++) {
+            NSURL *URL = nil;
+            if ([imgURLArray[i] isKindOfClass:[NSString class]]) {
+                URL = [NSURL URLWithString:imgURLArray[i]];
+                NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
+                NSString *pathExtendsion = [URL.pathExtension lowercaseString];
+                
+                CGSize size = CGSizeZero;
+                if ([pathExtendsion isEqualToString:@"png"]) {
+                    size =  [CommonFunction getPNGImageSizeWithRequest:request];
+                } else if([pathExtendsion isEqual:@"gif"]) {
+                    size =  [CommonFunction getGIFImageSizeWithRequest:request];
+                } else {
+                    size = [CommonFunction getJPGImageSizeWithRequest:request];
+                }
+                if (CGSizeEqualToSize(CGSizeZero, size)) { // 如果获取文件头信息失败,发送异步请求请求原图
+                    NSData *data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:URL] returningResponse:nil error:nil];
+                    UIImage *image = [UIImage imageWithData:data];
+                    if (image) {
+                        size = image.size;
+                    }
+                }
+                CGFloat kWidth = fabs(size.width);
+                CGFloat kHeight = fabs(size.height);
+                if (kWidth > WIDTH_FULL_SCREEN) {
+                    kHeight = WIDTH_FULL_SCREEN * size.height / size.width;
+                }
+                yOffset += kHeight + 10;
+            }
+        }
+    }
+    return fabs(yOffset);
 }
 
 @end

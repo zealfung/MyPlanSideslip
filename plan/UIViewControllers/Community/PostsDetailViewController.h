@@ -7,9 +7,9 @@
 //
 
 #import "BmobQuery.h"
-#import <UIKit/UIKit.h>
+#import "FatherViewController.h"
 
-@interface PostsDetailViewController : UIViewController
+@interface PostsDetailViewController : FatherViewController
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) BmobObject *posts;
