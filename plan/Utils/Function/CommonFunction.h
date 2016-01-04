@@ -54,6 +54,11 @@
 //超过仟的数字用K缩写
 + (NSString *)checkNumberForThousand:(NSInteger)number;
 
+//时间间隔显示：刚刚，N分钟前，N天前...
++ (NSString *)intervalSinceNow:(NSDate *)date;
+
++ (NSDictionary *)timeIntervalArrayFromString:(NSDate *)date;
+
 //获取PNG图片的大小
 + (CGSize)getPNGImageSizeWithRequest:(NSMutableURLRequest*)request;
 

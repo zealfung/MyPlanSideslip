@@ -16,6 +16,15 @@
 #define str_Common_Tips2 @"请到“设置”-“隐私”-“相机”中找到”我有计划“，将按钮打开，允许使用摄像头"
 #define str_Common_Tips3 @"至少写点什么吧"
 
+#define str_Common_Time1 @"刚刚"
+#define str_Common_Time2 @"今天"
+#define str_Common_Time3 @"昨天"
+#define str_Common_Time4 @"一个月前"
+#define str_Common_Time5 @"%ld分钟前"
+#define str_Common_Time6 @"%ld小时前"
+#define str_Common_Time7 @"%ld天前"
+#define str_Common_Time8 @"%ld个月前"
+
 #define str_ViewTitle_1 @"我的"
 #define str_ViewTitle_2 @"计划"
 #define str_ViewTitle_3 @"任务"
@@ -62,8 +71,6 @@
 #define str_Alert_GetIt @"确定"
 #define str_Plan_Add @"新增计划"
 #define str_Plan_Edit @"编辑计划"
-#define str_Plan_Today @"今天"
-#define str_Plan_Yesterday @"昨天"
 
 #define str_Photo_Add @"新增影像"
 #define str_Photo_Edit @"编辑影像"

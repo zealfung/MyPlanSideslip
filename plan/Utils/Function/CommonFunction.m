@@ -10,6 +10,13 @@
 #import "CommonFunction.h"
 #import <CommonCrypto/CommonDigest.h>
 
+
+static NSString * const kKeyYears = @"years";
+static NSString * const kKeyMonths = @"months";
+static NSString * const kKeyDays = @"days";
+static NSString * const kKeyHours = @"hours";
+static NSString * const kKeyMinutes = @"minutes";
+
 @implementation CommonFunction
 
 //获取设备型号 iPhone4、iPhone6 Plus
@@ -126,6 +133,54 @@
     } else {
         return [NSString stringWithFormat:@"%ld", (long)number];
     }
+}
+
+//时间间隔显示：刚刚，N分钟前，N天前...
++ (NSString *)intervalSinceNow:(NSDate *)date {
+    NSDictionary *dic = [CommonFunction timeIntervalArrayFromString:date];
+    NSInteger months = [[dic objectForKey:kKeyMonths] integerValue];
+    NSInteger days = [[dic objectForKey:kKeyDays] integerValue];
+    NSInteger hours = [[dic objectForKey:kKeyHours] integerValue];
+    NSInteger minutes = [[dic objectForKey:kKeyMinutes] integerValue];
+    
+    if (minutes < 1) {
+        return str_Common_Time1;
+    } else if (minutes < 60) {
+        return [NSString stringWithFormat:str_Common_Time5, (long)minutes];
+    } else if (hours < 24) {
+        return [NSString stringWithFormat:str_Common_Time6, (long)hours];
+    } else if (hours < 48 && days == 1) {
+        return str_Common_Time3;
+    } else if (days < 30) {
+        return [NSString stringWithFormat:str_Common_Time7, (long)days];
+    } else if (days < 60) {
+        return str_Common_Time4;
+    } else if (months < 12) {
+        return [NSString stringWithFormat:str_Common_Time8, (long)months];
+    } else {
+        return [CommonFunction NSDateToNSString:date formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+    }
+}
+
++ (NSDictionary *)timeIntervalArrayFromString:(NSDate *)date {
+    NSUInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSDateComponents *compsPast = [calendar components:unitFlags fromDate:date];
+    NSDateComponents *compsNow = [calendar components:unitFlags fromDate:[NSDate date]];
+    
+    NSInteger years = [compsNow year] - [compsPast year];
+    NSInteger months = [compsNow month] - [compsPast month] + years * 12;
+    NSInteger days = [compsNow day] - [compsPast day] + months * 30;
+    NSInteger hours = [compsNow hour] - [compsPast hour] + days * 24;
+    NSInteger minutes = [compsNow minute] - [compsPast minute] + hours * 60;
+    
+    return @{
+             kKeyYears:  @(years),
+             kKeyMonths: @(months),
+             kKeyDays:   @(days),
+             kKeyHours:  @(hours),
+             kKeyMinutes:@(minutes)
+             };
 }
 
 //获取PNG图片的大小
