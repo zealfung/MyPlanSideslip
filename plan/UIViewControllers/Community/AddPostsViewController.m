@@ -22,6 +22,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 
 @interface AddPostsViewController () <UIImagePickerControllerDelegate, UINavigationControllerDelegate, PageScrollViewDataSource, PageScrollViewDelegate, DoImagePickerControllerDelegate> {
     
+    BOOL isSending;
     BOOL canAddPhoto;
     CGRect originalFrame;
     NSString *content;
@@ -93,6 +94,8 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 
 #pragma mark - action
 - (void)saveAction:(UIButton *)button {
+    if (isSending) return;
+    
     content = self.textViewContent.text;
     if (content.length == 0 && photoArray.count < 2) {
         [self alertButtonMessage:str_Posts_Add_Tips2];
@@ -118,8 +121,10 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     [Config shareInstance].settings = [PlanCache getPersonalSettings];
     BmobObject *author = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
     [newPosts setObject:author forKey:@"author"];
+    isSending = YES;
     //异步保存
     [newPosts saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        isSending = NO;
         if (isSuccessful) {
             if (photoArray.count == 0) {
                 [NotificationCenter postNotificationName:Notify_Posts_New object:nil];
@@ -133,8 +138,9 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     }];
     if (photoArray.count > 0) {
         uploadCount = 0;
-        uploadPhotoArray = [NSMutableArray arrayWithCapacity:photoArray.count];
+        uploadPhotoArray = [NSMutableArray array];
         for (NSInteger i = 0; i < photoArray.count; i++) {
+            [uploadPhotoArray addObject:@""];
             [self uploadImage:photoArray[i] index:i obj:newPosts];
         }
     } else {
