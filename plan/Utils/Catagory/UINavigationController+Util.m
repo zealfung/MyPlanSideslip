@@ -21,10 +21,8 @@
 }
 
 - (void)navigationBarOptimize {
-    [self.view setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"png_Bg_NavigationBar"]]];
-    if ([self.navigationBar respondsToSelector:@selector(setBackgroundImage:forBarMetrics:)]) {
-        [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"png_Bg_NavigationBar"] forBarMetrics:UIBarMetricsDefault];
-    }
+    [self.view setBackgroundColor:color_Blue];
+    [self.navigationBar setBarTintColor:color_Blue];
 }
 
 - (void)navCtrlConfig {
@@ -37,13 +35,8 @@
     [titleTextAttributes setObject:[UIColor clearColor] forKey:UITextAttributeTextShadowColor];
     self.navigationBar.titleTextAttributes = titleTextAttributes;
     
-    if (iOS7_LATER) {
-        UIImage *image = [UIImage imageNamed:@"png_Bg_NavigationBar"];
-        [self.navigationBar setBackgroundImage:image forBarMetrics:UIBarMetricsDefault];
-        [self.navigationBar setBackgroundImage:[image resizableImageWithCapInsets:UIEdgeInsetsMake(0, 0, 0, 0)] forBarMetrics:UIBarMetricsCompact];
-    } else {
-        [self.navigationBar setBackgroundImage:[UIImage imageNamed:@"png_Bg_NavigationBar"] forBarMetrics:UIBarMetricsDefault];
-    }
+    [self.view setBackgroundColor:color_Blue];
+    [self.navigationBar setBarTintColor:color_Blue];
 }
 
 @end
