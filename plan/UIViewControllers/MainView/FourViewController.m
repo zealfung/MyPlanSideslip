@@ -28,6 +28,7 @@
     BOOL isLoadMore;
     BOOL isLoadingBanner;
     BOOL isLoadingPosts;
+    BOOL isSendingLikes;
     NSInteger startIndex;
     NSMutableArray *postsArray;
     SDCycleScrollView *bannerView;
@@ -417,7 +418,7 @@
     isLoadingBanner = YES;
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Banner"];
     [bquery whereKey:@"isDeleted" equalTo:@"0"];
-    [bquery orderByDescending:@"updatedAt"];
+    [bquery orderByDescending:@"createdAt"];
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
         isLoadingBanner = NO;
         if (!error && array.count > 0) {
@@ -468,7 +469,7 @@
     [bquery includeKey:@"author"];//声明该次查询需要将author关联对象信息一并查询出来
     [bquery whereKey:@"isDeleted" equalTo:@"0"];
     [bquery orderByDescending:@"isTop"];//先按照是否置顶排序
-    [bquery orderByDescending:@"updatedAt"];//再按照更新时间排序
+    [bquery orderByDescending:@"updatedTime"];//再按照更新时间排序
     bquery.limit = 10;
     bquery.skip = postsArray.count;
     __weak typeof(self) weakSelf = self;
@@ -543,13 +544,16 @@
 }
 
 - (void)likePosts:(BmobObject *)posts {
+    if (isSendingLikes) return;
+    
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
     [obj incrementKey:@"likesCount"];
-    
     BmobRelation *relation = [[BmobRelation alloc] init];
     [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
+    isSendingLikes = YES;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        isSendingLikes = NO;
         if (isSuccessful) {
             NSInteger likesCount = [[posts objectForKey:@"likesCount"] integerValue];
             likesCount += 1;
@@ -563,13 +567,16 @@
 }
 
 - (void)unlikePosts:(BmobObject *)posts {
+    if (isSendingLikes) return;
+    
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
     [obj decrementKey:@"likesCount"];
-    
     BmobRelation *relation = [[BmobRelation alloc] init];
     [relation removeObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
+    isSendingLikes = YES;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        isSendingLikes = NO;
         if (isSuccessful) {
             NSInteger likesCount = [[posts objectForKey:@"likesCount"] integerValue];
             likesCount -= 1;
@@ -592,7 +599,6 @@
     [bquery whereKey:@"objectId" equalTo:posts.objectId];
     __weak typeof(self) weakSelf = self;
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-        
         if (!error && array.count > 0) {
             [posts setObject:@(YES) forKey:@"isLike"];
         } else {
