@@ -19,6 +19,7 @@
     DOPNavbarMenu *menu;
     CGFloat cell0Height;
     NSArray *commentsArray;
+    BOOL isAnding;
 }
 
 @end
@@ -55,15 +56,16 @@
 
 - (DOPNavbarMenu *)menu {
     if (menu == nil) {
-        DOPNavbarMenuItem *item1 = [DOPNavbarMenuItem ItemWithTitle:@"item" icon:[UIImage imageNamed:png_Btn_Share]];
-        menu = [[DOPNavbarMenu alloc] initWithItems:@[item1,item1,item1,item1,item1,item1] width:self.view.dop_width maximumNumberInRow:numberOfItemsInRow];
+        DOPNavbarMenuItem *itemRefresh = [DOPNavbarMenuItem ItemWithTitle:@"刷新" icon:[UIImage imageNamed:png_Btn_Share]];
+        DOPNavbarMenuItem *itemShare = [DOPNavbarMenuItem ItemWithTitle:@"分享" icon:[UIImage imageNamed:png_Btn_Share]];
+        DOPNavbarMenuItem *itemReport = [DOPNavbarMenuItem ItemWithTitle:@"举报" icon:[UIImage imageNamed:png_Btn_Share]];
+        menu = [[DOPNavbarMenu alloc] initWithItems:@[itemRefresh,itemShare,itemReport] width:self.view.dop_width maximumNumberInRow:numberOfItemsInRow];
         menu.backgroundColor = color_Blue;
         menu.separatarColor = [UIColor whiteColor];
         menu.delegate = self;
     }
     return menu;
 }
-
 
 - (void)openMenu:(id)sender {
     self.navigationItem.rightBarButtonItem.enabled = NO;
@@ -85,8 +87,19 @@
 }
 
 - (void)didSelectedMenu:(DOPNavbarMenu *)menu atIndex:(NSInteger)index {
-    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"you selected" message:[NSString stringWithFormat:@"number %@", @(index+1)] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
-    [av show];
+    switch (index) {
+        case 0:
+            [self refreshAction];
+            break;
+        case 1:
+            [self shareAction];
+            break;
+        case 2:
+            [self reportAction];
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)createDetailView {
@@ -218,16 +231,24 @@
 }
 
 - (void)getCommets {
-//    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
-//    [bquery includeKey:@"author"];
-//    [bquery whereKey:@"objectId" equalTo:self.posts.objectId];
-////    __weak typeof(self) weakSelf = self;
-//    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-//        
-//        if (!error && array.count == 1) {
-//            
-//        }
-//    }];
+    if (isAnding) return;
+    
+    [self showHUD];
+    __weak typeof(self) weakSelf = self;
+    //关联评论表
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Comments"];
+    //需要查询的列
+    BmobObject *post = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:self.posts.objectId];
+    [bquery whereObjectKey:@"comments" relatedTo:post];
+    //查询该联系所有关联的评论
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        if (error) {
+            NSLog(@"%@",error);
+        } else {
+            for (BmobObject *comment in array) {
+            }
+        }
+    }];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -405,14 +426,49 @@
     }
 }
 
+- (void)refreshAction {
+}
+
+- (void)shareAction {
+}
+
+- (void)reportAction {
+    if (isAnding) return;
+    
+    [self showHUD];
+    __weak typeof(self) weakSelf = self;
+    BmobObject *newPosts = [BmobObject objectWithClassName:@"Report"];
+    [newPosts setObject:@"1" forKey:@"reportType"];//举报类型：1帖子 2评论
+    [newPosts setObject:self.posts.objectId forKey:@"reportId"];
+    [newPosts setObject:@"0" forKey:@"isSolved"];
+    if ([LogIn isLogin]) {
+        BmobUser *user = [BmobUser getCurrentUser];
+        [newPosts setObject:user.objectId forKey:@"reporterObjectId"];
+    }
+    isAnding = YES;
+    //异步保存
+    [newPosts saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        isAnding = NO;
+        [weakSelf hideHUD];
+        if (isSuccessful) {
+            [weakSelf alertToastMessage:@"举报成功"];
+        } else {
+            [weakSelf alertButtonMessage:@"举报失败"];
+        }
+    }];
+}
+
 - (void)likePosts:(BmobObject *)posts {
+    if (isAnding) return;
+    
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
     [obj incrementKey:@"likesCount"];
-    
     BmobRelation *relation = [[BmobRelation alloc] init];
     [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
+    isAnding = YES;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        isAnding = NO;
         if (isSuccessful) {
             NSInteger likesCount = [[posts objectForKey:@"likesCount"] integerValue];
             likesCount += 1;
@@ -426,13 +482,16 @@
 }
 
 - (void)unlikePosts:(BmobObject *)posts {
+    if (isAnding) return;
+    
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
     [obj decrementKey:@"likesCount"];
-    
     BmobRelation *relation = [[BmobRelation alloc] init];
     [relation removeObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
+    isAnding = YES;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        isAnding = NO;
         if (isSuccessful) {
             NSInteger likesCount = [[posts objectForKey:@"likesCount"] integerValue];
             likesCount -= 1;
@@ -447,7 +506,6 @@
 
 - (void)toLogInView {
     LogInViewController *controller = [[LogInViewController alloc] init];
-//    controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
