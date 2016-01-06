@@ -8,12 +8,15 @@
 
 #import "LogIn.h"
 #import "BmobRelation.h"
+#import "DOPNavbarMenu.h"
 #import "LogInViewController.h"
 #import "PostsDetailContentCell.h"
 #import "PostsDetailViewController.h"
 
-@interface PostsDetailViewController () <UITableViewDelegate, UITableViewDataSource> {
+@interface PostsDetailViewController () <UITableViewDelegate, UITableViewDataSource, DOPNavbarMenuDelegate> {
     
+    NSInteger numberOfItemsInRow;
+    DOPNavbarMenu *menu;
     CGFloat cell0Height;
     NSArray *commentsArray;
 }
@@ -38,11 +41,52 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)createNavBarButton {
-    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Share selectedImageName:png_Btn_Share selector:@selector(menuAction)];
+- (void)viewWillDisappear:(BOOL)animated {
+    [super viewWillDisappear:animated];
+    if (self.menu) {
+        [self.menu dismissWithAnimation:NO];
+    }
 }
 
-- (void)menuAction {
+- (void)createNavBarButton {
+    numberOfItemsInRow = 3;
+    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Share selectedImageName:png_Btn_Share selector:@selector(openMenu:)];
+}
+
+- (DOPNavbarMenu *)menu {
+    if (menu == nil) {
+        DOPNavbarMenuItem *item1 = [DOPNavbarMenuItem ItemWithTitle:@"item" icon:[UIImage imageNamed:png_Btn_Share]];
+        menu = [[DOPNavbarMenu alloc] initWithItems:@[item1,item1,item1,item1,item1,item1] width:self.view.dop_width maximumNumberInRow:numberOfItemsInRow];
+        menu.backgroundColor = color_Blue;
+        menu.separatarColor = [UIColor whiteColor];
+        menu.delegate = self;
+    }
+    return menu;
+}
+
+
+- (void)openMenu:(id)sender {
+    self.navigationItem.rightBarButtonItem.enabled = NO;
+    if (self.menu.isOpen) {
+        [self.menu dismissWithAnimation:YES];
+    } else {
+        [self.menu showInNavigationController:self.navigationController];
+    }
+}
+
+- (void)didShowMenu:(DOPNavbarMenu *)menu {
+//    [self.navigationItem.rightBarButtonItem setTitle:@"dismiss"];
+//    self.navigationItem.rightBarButtonItem.enabled = YES;
+}
+
+- (void)didDismissMenu:(DOPNavbarMenu *)menu {
+//    [self.navigationItem.rightBarButtonItem setTitle:@"menu"];
+//    self.navigationItem.rightBarButtonItem.enabled = YES;
+}
+
+- (void)didSelectedMenu:(DOPNavbarMenu *)menu atIndex:(NSInteger)index {
+    UIAlertView *av = [[UIAlertView alloc] initWithTitle:@"you selected" message:[NSString stringWithFormat:@"number %@", @(index+1)] delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil, nil];
+    [av show];
 }
 
 - (void)createDetailView {
