@@ -78,12 +78,4 @@
     [self.subViewButton.rightButton setAllTitleColor:color_8f8f8f];
 }
 
-- (CGSize)cellSize {
-    static CGSize cellSize = {0, 0};
-    if (CGSizeEqualToSize(cellSize, CGSizeZero)) {
-        cellSize = CGSizeMake(self.bounds.size.width, self.bounds.size.height);
-    }
-    return cellSize;
-}
-
 @end
