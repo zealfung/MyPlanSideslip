@@ -113,6 +113,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 
     BmobObject *newPosts = [BmobObject objectWithClassName:@"Posts"];
     [newPosts setObject:content forKey:@"content"];
+    [newPosts setObject:[NSDate date] forKey:@"updatedTime"];
     [newPosts setObject:@"0" forKey:@"isDeleted"];
     [newPosts setObject:@"0" forKey:@"isTop"];
     [newPosts setObject:@"0" forKey:@"isHighlight"];
