@@ -13,7 +13,7 @@
 #import "PostsDetailContentCell.h"
 #import "PostsDetailViewController.h"
 
-@interface PostsDetailViewController () <UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, DOPNavbarMenuDelegate> {
+@interface PostsDetailViewController () <UITextViewDelegate, DOPNavbarMenuDelegate> {
     
     NSInteger numberOfItemsInRow;
     DOPNavbarMenu *menu;
@@ -31,6 +31,7 @@
     [self createNavBarButton];
     
     commentsArray = [NSArray array];
+    [self createDetailHeaderView];
     [self createDetailView];
     [self createBottomBtnView];
 }
@@ -164,7 +165,134 @@
         }
     }
     
+    if (yOffset < 200) {
+        yOffset = 200;
+    }
+    
+    //评论区标题
+    UILabel *labelCommentTitle = [[UILabel alloc] initWithFrame:CGRectMake(12, yOffset, 30, 20)];
+    [labelCommentTitle setTextColor:color_666666];
+    [labelCommentTitle setFont:font_Normal_13];
+    [labelCommentTitle setText:@"评论"];
+    [self.scrollView addSubview:labelCommentTitle];
+    //分割线
+    UILabel *labelLine = [[UILabel alloc] initWithFrame:CGRectMake(12 + 30, yOffset + 9.5, WIDTH_FULL_SCREEN - 24 - 30, 1)];
+    [labelLine setBackgroundColor:color_dedede];
+    [self.scrollView addSubview:labelLine];
+    yOffset += 20 + 20;
+
+    if (commentsArray.count > 0) {
+        for (BmobObject *obj in commentsArray) {
+            UIView *viewComment = [self createCommentView:obj];
+            CGRect frame = viewComment.frame;
+            frame.origin.y = yOffset;
+            viewComment.frame = frame;
+            [self.scrollView addSubview:viewComment];
+            yOffset += frame.size.height;
+        }
+    } else {
+        UILabel *labelNoComment = [[UILabel alloc] initWithFrame:CGRectMake(12, yOffset, WIDTH_FULL_SCREEN - 24, 100)];
+        [labelNoComment setTextColor:color_666666];
+        [labelNoComment setFont:font_Normal_16];
+        labelNoComment.textAlignment = NSTextAlignmentCenter;
+        [labelNoComment setText:@"暂无评论，快占沙发~"];
+        [self.scrollView addSubview:labelNoComment];
+        yOffset += 100;
+    }
+    yOffset += 20;
+    
+    if (yOffset < HEIGHT_FULL_VIEW) {
+        yOffset = HEIGHT_FULL_VIEW;
+    }
     [self.scrollView setContentSize:CGSizeMake(WIDTH_FULL_SCREEN, yOffset)];
+}
+
+- (void)createDetailHeaderView {
+    BmobObject *author = [self.posts objectForKey:@"author"];
+    NSString *nickName = [author objectForKey:@"nickName"];
+    if (!nickName || nickName.length == 0) {
+        nickName = @"匿名者";
+    }
+    NSString *avatarURL = [author objectForKey:@"avatarURL"];
+//    NSString *isHighlight = [self.posts objectForKey:@"isHighlight"];
+    
+    self.headerView.layer.borderWidth = 1;
+    self.headerView.layer.borderColor = [color_dedede CGColor];
+    //图像
+    UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 5, 40, 40)];
+    avatarView.layer.cornerRadius = 20;
+    avatarView.clipsToBounds = YES;
+    [avatarView sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed:png_AvatarDefault1]];
+    avatarView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.headerView addSubview:avatarView];
+    //昵称
+    UILabel *labelNickName = [[UILabel alloc] initWithFrame:CGRectMake(57, 0, WIDTH_FULL_SCREEN / 2, 30)];
+    labelNickName.textColor = color_Blue;
+    labelNickName.font = font_Normal_16;
+    labelNickName.text = nickName;
+    [self.headerView addSubview:labelNickName];
+    //发表时间
+    UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(57, 30, WIDTH_FULL_SCREEN / 2, 20)];
+    labelDate.textColor = color_666666;
+    labelDate.font = font_Normal_13;
+    labelDate.text = [CommonFunction intervalSinceNow:self.posts.createdAt];
+    [self.headerView addSubview:labelDate];
+}
+
+- (UIView *)createCommentView:(BmobObject *)comment {
+    BmobObject *author = [comment objectForKey:@"author"];
+    NSString *nickName = [author objectForKey:@"nickName"];
+    if (!nickName || nickName.length == 0) {
+        nickName = @"匿名者";
+    }
+    NSString *avatarURL = [author objectForKey:@"avatarURL"];
+    //    NSString *content = [self.posts objectForKey:@"content"];
+    //    NSString *isTop = [self.posts objectForKey:@"isTop"];
+    //    NSString *isHighlight = [self.posts objectForKey:@"isHighlight"];
+    //    NSArray *imgURLArray = [NSArray arrayWithArray:[self.posts objectForKey:@"imgURLArray"]];
+    
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, 55)];
+    view.backgroundColor = [UIColor whiteColor];
+    view.layer.borderWidth = 1;
+    view.layer.borderColor = [color_dedede CGColor];
+    //图像
+    UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 5, 40, 40)];
+    avatarView.layer.cornerRadius = 20;
+    avatarView.clipsToBounds = YES;
+    [avatarView sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed:png_AvatarDefault1]];
+    avatarView.contentMode = UIViewContentModeScaleAspectFit;
+    [view addSubview:avatarView];
+    //昵称
+    UILabel *labelNickName = [[UILabel alloc] initWithFrame:CGRectMake(57, 0, WIDTH_FULL_SCREEN / 2, 30)];
+    labelNickName.textColor = color_Blue;
+    labelNickName.font = font_Normal_16;
+    labelNickName.text = nickName;
+    [view addSubview:labelNickName];
+    //发表时间
+    UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(57, 30, WIDTH_FULL_SCREEN / 2, 20)];
+    labelDate.textColor = color_666666;
+    labelDate.font = font_Normal_13;
+    labelDate.text = [CommonFunction intervalSinceNow:self.posts.createdAt];
+    [view addSubview:labelDate];
+    
+    NSString *content = [comment objectForKey:@"content"];
+    UILabel *labelContent = [[UILabel alloc] initWithFrame:CGRectMake(0,0,0,0)];
+    [labelContent setNumberOfLines:0];
+    labelContent.lineBreakMode = NSLineBreakByWordWrapping;
+    [labelContent setTextColor:color_333333];
+    UIFont *font = font_Normal_16;
+    [labelContent setFont:font];
+    [labelContent setText:content];
+    CGSize size = CGSizeMake(WIDTH_FULL_SCREEN - 24, 2000);
+    CGSize labelsize = [content sizeWithFont:font constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+    labelContent.frame = CGRectMake(12, 50, labelsize.width, labelsize.height);
+    [view addSubview:labelContent];
+    
+    CGRect frame = view.frame;
+    frame.size.height += labelsize.height;
+    view.frame = frame;
+    
+    return view;
 }
 
 - (void)createBottomBtnView {

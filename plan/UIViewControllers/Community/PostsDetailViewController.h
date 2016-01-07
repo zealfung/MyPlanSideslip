@@ -12,6 +12,7 @@
 
 @interface PostsDetailViewController : FatherViewController
 
+@property (strong, nonatomic) IBOutlet UIView *headerView;
 @property (strong, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (strong, nonatomic) IBOutlet ThreeSubView *bottomBtnView;
 @property (strong, nonatomic) BmobObject *posts;

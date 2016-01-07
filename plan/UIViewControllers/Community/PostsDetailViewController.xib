@@ -8,6 +8,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="PostsDetailViewController">
             <connections>
                 <outlet property="bottomBtnView" destination="qIM-m7-sM7" id="wI7-sC-nP2"/>
+                <outlet property="headerView" destination="Llo-Ml-sc4" id="Qws-sQ-Rey"/>
                 <outlet property="scrollView" destination="boL-mW-3VH" id="JP3-Tf-cY2"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -24,19 +25,29 @@
                         <constraint firstAttribute="height" constant="40" id="tCn-EP-NpC"/>
                     </constraints>
                 </view>
-                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="boL-mW-3VH">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="528"/>
+                <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="boL-mW-3VH">
+                    <rect key="frame" x="0.0" y="50" width="320" height="478"/>
                 </scrollView>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Llo-Ml-sc4">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="50"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="cC0-np-tva"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
+                <constraint firstItem="Llo-Ml-sc4" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="7dM-sa-Tjz"/>
+                <constraint firstItem="Llo-Ml-sc4" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="9CR-kn-H1F"/>
                 <constraint firstAttribute="trailing" secondItem="qIM-m7-sM7" secondAttribute="trailing" id="FHA-Zv-kBm"/>
                 <constraint firstItem="boL-mW-3VH" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="K7k-Fc-rSm"/>
                 <constraint firstAttribute="trailing" secondItem="boL-mW-3VH" secondAttribute="trailing" id="TGL-li-Vi9"/>
                 <constraint firstItem="qIM-m7-sM7" firstAttribute="top" secondItem="boL-mW-3VH" secondAttribute="bottom" id="Vnr-l2-bON"/>
+                <constraint firstItem="boL-mW-3VH" firstAttribute="top" secondItem="Llo-Ml-sc4" secondAttribute="bottom" id="h7a-le-L5p"/>
                 <constraint firstItem="qIM-m7-sM7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="kf9-Kq-OTx"/>
-                <constraint firstItem="boL-mW-3VH" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="kvX-Ec-5P6"/>
                 <constraint firstAttribute="bottom" secondItem="qIM-m7-sM7" secondAttribute="bottom" id="x5a-Ip-cvc"/>
+                <constraint firstAttribute="trailing" secondItem="Llo-Ml-sc4" secondAttribute="trailing" id="ywV-mq-UK9"/>
             </constraints>
             <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina4"/>
         </view>
