@@ -609,7 +609,7 @@ static BOOL finishPhoto;
                                       @"location":photo.location,
                                       @"createdTime":photo.createtime,
                                       @"photoTime":photo.phototime,
-                                      @"updatedTime":photo.updatetime,
+                                      @"updatedTime":@"2015-09-09 09:09:09",
                                       @"isDeleted":photo.isdeleted};
                 [newPhoto saveAllWithDictionary:dic];
                 BmobACL *acl = [BmobACL ACL];
@@ -690,6 +690,7 @@ static BOOL finishPhoto;
             if (isSuccessful) {
                 
                 [obj setObject:bmobFile.url forKey:urlName];
+                [obj setObject:photo.updatetime forKey:@"updatedTime"];
                 [obj updateInBackground];
                 
                 photo.photoURLArray[index] = bmobFile.url;
