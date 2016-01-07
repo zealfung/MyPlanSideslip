@@ -203,7 +203,7 @@
                 tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
                 cell.labelNickName.text = nickName;
-                cell.labelPostTime.text = [CommonFunction NSDateToNSString:obj.updatedAt formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
+                cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
                 cell.labelContent.text = content;
                 if ([isTop isEqualToString:@"1"]) {
                     cell.labelIsTop.hidden = NO;
@@ -254,7 +254,7 @@
                 tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
                 cell.labelNickName.text = nickName;
-                cell.labelPostTime.text = [CommonFunction NSDateToNSString:obj.updatedAt formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
+                cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
                 cell.labelContent.text = content;
                 if ([isTop isEqualToString:@"1"]) {
                     cell.labelIsTop.hidden = NO;
@@ -307,7 +307,7 @@
             tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
             [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
             cell.labelNickName.text = nickName;
-            cell.labelPostTime.text = [CommonFunction NSDateToNSString:obj.updatedAt formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
+            cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
             cell.labelContent.text = content;
             if ([isTop isEqualToString:@"1"]) {
                 cell.labelIsTop.hidden = NO;
