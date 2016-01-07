@@ -190,6 +190,10 @@
 		13AF64C61C269369008E8A9E /* PostsTwoImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF64C41C269369008E8A9E /* PostsTwoImageCell.m */; };
 		13AF64C71C269369008E8A9E /* PostsTwoImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64C51C269369008E8A9E /* PostsTwoImageCell.xib */; };
 		13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */; };
+		13D1AD6B1C3E71EA007734F6 /* Btn_More@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD6A1C3E71EA007734F6 /* Btn_More@2x.png */; };
+		13D1AD6D1C3E7670007734F6 /* Btn_Refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD6C1C3E7670007734F6 /* Btn_Refresh@2x.png */; };
+		13D1AD6F1C3E7930007734F6 /* Btn_Report@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD6E1C3E7930007734F6 /* Btn_Report@2x.png */; };
+		13D1AD711C3E79E8007734F6 /* Btn_Share66@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD701C3E79E8007734F6 /* Btn_Share66@2x.png */; };
 		13D405F71C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F61C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png */; };
 		13D405FB1C2D13360089D702 /* Icon_Posts_Eyes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */; };
 		13D405FC1C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */; };
@@ -524,6 +528,10 @@
 		13AF64C41C269369008E8A9E /* PostsTwoImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsTwoImageCell.m; sourceTree = "<group>"; };
 		13AF64C51C269369008E8A9E /* PostsTwoImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsTwoImageCell.xib; sourceTree = "<group>"; };
 		13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Settings@2x.png"; sourceTree = "<group>"; };
+		13D1AD6A1C3E71EA007734F6 /* Btn_More@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_More@2x.png"; sourceTree = "<group>"; };
+		13D1AD6C1C3E7670007734F6 /* Btn_Refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Refresh@2x.png"; sourceTree = "<group>"; };
+		13D1AD6E1C3E7930007734F6 /* Btn_Report@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Report@2x.png"; sourceTree = "<group>"; };
+		13D1AD701C3E79E8007734F6 /* Btn_Share66@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Share66@2x.png"; sourceTree = "<group>"; };
 		13D405F61C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Comment@2x.png"; sourceTree = "<group>"; };
 		13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Eyes@2x.png"; sourceTree = "<group>"; };
 		13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Praise_Normal@2x.png"; sourceTree = "<group>"; };
@@ -923,6 +931,7 @@
 				1361AFCD1BCBB54800DD5FFB /* Btn_Down@2x.png */,
 				1385B47B1BC9E50D00CB208C /* Btn_Edit@2x.png */,
 				131D6A271BF58C81009FDD72 /* Btn_LeftMenu@2x.png */,
+				13D1AD6A1C3E71EA007734F6 /* Btn_More@2x.png */,
 				13A6ACAC1BC551EE005A02F9 /* Btn_Photo_Delete@2x.png */,
 				135B222D1B9301C9005CE84A /* Btn_Plan_Delete@2x.png */,
 				135B222E1B9301C9005CE84A /* Btn_Plan_Doing@2x.png */,
@@ -932,11 +941,14 @@
 				13D406261C3024860089D702 /* Btn_Posts_More@2x.png */,
 				13D406201C301F3E0089D702 /* Btn_Posts_Share@2x.png */,
 				13D406231C3020BF0089D702 /* Btn_Posts_Unlike@2x.png */,
+				13D1AD6C1C3E7670007734F6 /* Btn_Refresh@2x.png */,
+				13D1AD6E1C3E7930007734F6 /* Btn_Report@2x.png */,
 				135B22351B932C45005CE84A /* Btn_Save@2x.png */,
 				135B22271B92F4C1005CE84A /* Btn_SectionUp@2x.png */,
 				13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */,
 				13AF64AA1C1C0C75008E8A9E /* Btn_Share_circle@2x.png */,
 				137470D41C0BFF0500B7822A /* Btn_Share@2x.png */,
+				13D1AD701C3E79E8007734F6 /* Btn_Share66@2x.png */,
 				1361AFCE1BCBB54800DD5FFB /* Btn_Show.png */,
 				1361AFCF1BCBB54800DD5FFB /* Btn_Show@2x.png */,
 				137470EF1C1034BE00B7822A /* Btn_Sync@2x.png */,
@@ -1518,6 +1530,7 @@
 				137700BB1B93E56A008C83FD /* Main.storyboard in Resources */,
 				137700EB1B953915008C83FD /* Icon_Logo_512@2x.png in Resources */,
 				13D406931C377E030089D702 /* PostsDetailContentCell.xib in Resources */,
+				13D1AD6B1C3E71EA007734F6 /* Btn_More@2x.png in Resources */,
 				1361AFC71BCBA5E700DD5FFB /* DoImagePickerController.xib in Resources */,
 				137701061B95DF67008C83FD /* Icon_Gender_F_Normal@2x.png in Resources */,
 				137470F61C159BEE00B7822A /* Icon_Menu_Messages@2x.png in Resources */,
@@ -1553,6 +1566,7 @@
 				136DF5D81BEDE87D001D6496 /* ShareSDK.bundle in Resources */,
 				137470AD1C0945D000B7822A /* Icon_Gesture_Unlock@2x.png in Resources */,
 				13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */,
+				13D1AD711C3E79E8007734F6 /* Btn_Share66@2x.png in Resources */,
 				13AF64C71C269369008E8A9E /* PostsTwoImageCell.xib in Resources */,
 				13D4061F1C301E5A0089D702 /* Btn_Posts_Comment@2x.png in Resources */,
 				131D6A281BF58C81009FDD72 /* Btn_LeftMenu@2x.png in Resources */,
@@ -1591,10 +1605,12 @@
 				1361AFD41BCBB54800DD5FFB /* Btn_Show.png in Resources */,
 				137470B01C09490B00B7822A /* Icon_GestureTrack_Hide@2x.png in Resources */,
 				137701071B95DF67008C83FD /* Icon_Gender_F_Selected@2x.png in Resources */,
+				13D1AD6D1C3E7670007734F6 /* Btn_Refresh@2x.png in Resources */,
 				13D406251C3020BF0089D702 /* Btn_Posts_Unlike@2x.png in Resources */,
 				13AF64BB1C214253008E8A9E /* Btn_Clean@2x.png in Resources */,
 				13D406271C3024860089D702 /* Btn_Posts_More@2x.png in Resources */,
 				13A6ACA21BC3AAA3005A02F9 /* AddPhotoViewController.xib in Resources */,
+				13D1AD6F1C3E7930007734F6 /* Btn_Report@2x.png in Resources */,
 				135B22311B9301C9005CE84A /* Btn_Plan_Doing@2x.png in Resources */,
 				13D406131C2EA2D60089D702 /* PostsOneImageCell.xib in Resources */,
 				13D405FB1C2D13360089D702 /* Icon_Posts_Eyes@2x.png in Resources */,

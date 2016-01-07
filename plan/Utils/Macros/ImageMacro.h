@@ -22,8 +22,12 @@
 #define png_Btn_AddPhoto @"Btn_AddPhoto"
 #define png_Btn_LeftMenu @"Btn_LeftMenu"
 #define png_Btn_Share @"Btn_Share"
+#define png_Btn_Share66 @"Btn_Share66"
 #define png_Btn_Sync @"Btn_Sync"
 #define png_Btn_Clean @"Btn_Clean"
+#define png_Btn_More @"Btn_More"
+#define png_Btn_Refresh @"Btn_Refresh"
+#define png_Btn_Report @"Btn_Report"
 #define png_Btn_BackToTop @"Btn_BackToTop"
 
 #define png_Bg_Cell_White @"Bg_Cell_White"

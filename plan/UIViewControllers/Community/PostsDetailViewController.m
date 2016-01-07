@@ -13,7 +13,7 @@
 #import "PostsDetailContentCell.h"
 #import "PostsDetailViewController.h"
 
-@interface PostsDetailViewController () <UITableViewDelegate, UITableViewDataSource, DOPNavbarMenuDelegate> {
+@interface PostsDetailViewController () <UITextViewDelegate, UITableViewDelegate, UITableViewDataSource, DOPNavbarMenuDelegate> {
     
     NSInteger numberOfItemsInRow;
     DOPNavbarMenu *menu;
@@ -30,9 +30,6 @@
     [super viewDidLoad];
     [self createNavBarButton];
     
-//    self.tableView.delegate = self;
-//    self.tableView.dataSource = self;
-//    self.tableView.tableFooterView = [[UIView alloc] init];
     commentsArray = [NSArray array];
     [self createDetailView];
     [self createBottomBtnView];
@@ -51,14 +48,14 @@
 
 - (void)createNavBarButton {
     numberOfItemsInRow = 3;
-    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Share selectedImageName:png_Btn_Share selector:@selector(openMenu:)];
+    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_More selectedImageName:png_Btn_More selector:@selector(openMenu:)];
 }
 
 - (DOPNavbarMenu *)menu {
     if (menu == nil) {
-        DOPNavbarMenuItem *itemRefresh = [DOPNavbarMenuItem ItemWithTitle:@"刷新" icon:[UIImage imageNamed:png_Btn_Share]];
-        DOPNavbarMenuItem *itemShare = [DOPNavbarMenuItem ItemWithTitle:@"分享" icon:[UIImage imageNamed:png_Btn_Share]];
-        DOPNavbarMenuItem *itemReport = [DOPNavbarMenuItem ItemWithTitle:@"举报" icon:[UIImage imageNamed:png_Btn_Share]];
+        DOPNavbarMenuItem *itemRefresh = [DOPNavbarMenuItem ItemWithTitle:@"刷新" icon:[UIImage imageNamed:png_Btn_Refresh]];
+        DOPNavbarMenuItem *itemShare = [DOPNavbarMenuItem ItemWithTitle:@"分享" icon:[UIImage imageNamed:png_Btn_Share66]];
+        DOPNavbarMenuItem *itemReport = [DOPNavbarMenuItem ItemWithTitle:@"举报" icon:[UIImage imageNamed:png_Btn_Report]];
         menu = [[DOPNavbarMenu alloc] initWithItems:@[itemRefresh,itemShare,itemReport] width:self.view.dop_width maximumNumberInRow:numberOfItemsInRow];
         menu.backgroundColor = color_Blue;
         menu.separatarColor = [UIColor whiteColor];
@@ -77,13 +74,9 @@
 }
 
 - (void)didShowMenu:(DOPNavbarMenu *)menu {
-//    [self.navigationItem.rightBarButtonItem setTitle:@"dismiss"];
-//    self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
 - (void)didDismissMenu:(DOPNavbarMenu *)menu {
-//    [self.navigationItem.rightBarButtonItem setTitle:@"menu"];
-//    self.navigationItem.rightBarButtonItem.enabled = YES;
 }
 
 - (void)didSelectedMenu:(DOPNavbarMenu *)menu atIndex:(NSInteger)index {
@@ -181,7 +174,7 @@
     } centerBlock:^{
         
     } rightBlock: ^{
-
+        
     }];
     
     [self.bottomBtnView autoLayout];
@@ -249,114 +242,6 @@
             }
         }
     }];
-}
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (commentsArray.count > 0) {
-        return commentsArray.count + 1;
-    } else {
-        return 2;
-    }
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return 50.f;
-}
-
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    BmobObject *author = [self.posts objectForKey:@"author"];
-    NSString *nickName = [author objectForKey:@"nickName"];
-    if (!nickName || nickName.length == 0) {
-        nickName = @"匿名者";
-    }
-    NSString *avatarURL = [author objectForKey:@"avatarURL"];
-//    NSString *content = [self.posts objectForKey:@"content"];
-//    NSString *isTop = [self.posts objectForKey:@"isTop"];
-//    NSString *isHighlight = [self.posts objectForKey:@"isHighlight"];
-//    NSArray *imgURLArray = [NSArray arrayWithArray:[self.posts objectForKey:@"imgURLArray"]];
-    
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, 50)];
-    view.backgroundColor = [UIColor whiteColor];
-    view.layer.borderWidth = 1;
-    view.layer.borderColor = [color_dedede CGColor];
-    //图像
-    UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 5, 40, 40)];
-    avatarView.layer.cornerRadius = 20;
-    avatarView.clipsToBounds = YES;
-    [avatarView sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed:png_AvatarDefault1]];
-    avatarView.contentMode = UIViewContentModeScaleAspectFit;
-    [view addSubview:avatarView];
-    //昵称
-    UILabel *labelNickName = [[UILabel alloc] initWithFrame:CGRectMake(57, 0, WIDTH_FULL_SCREEN / 2, 30)];
-    labelNickName.textColor = color_Blue;
-    labelNickName.font = font_Normal_16;
-    labelNickName.text = nickName;
-    [view addSubview:labelNickName];
-    //发表时间
-    UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(57, 30, WIDTH_FULL_SCREEN / 2, 20)];
-    labelDate.textColor = color_666666;
-    labelDate.font = font_Normal_13;
-    labelDate.text = [CommonFunction intervalSinceNow:self.posts.createdAt];
-    [view addSubview:labelDate];
-    
-    return view;
-}
-
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        if (cell0Height > 0) {
-            return cell0Height;
-        } else {
-            cell0Height = [self cellHeight:self.posts];
-            return cell0Height;
-        }
-    } else {
-        if (commentsArray.count > 0) {
-            return 168.f;
-        } else {
-            return 168.f;
-        }
-    }
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row == 0) {
-        PostsDetailContentCell *cell = [PostsDetailContentCell cellView:self.posts];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
-    } else {
-        if (commentsArray.count > 0) {
-            
-        } else {
-            static NSString *noCommentCellIdentifier = @"noCommentCellIdentifier";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noCommentCellIdentifier];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            if (!cell) {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noCommentCellIdentifier];
-                cell.backgroundColor = [UIColor clearColor];
-                cell.contentView.backgroundColor = [UIColor clearColor];
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                cell.textLabel.text = @"";
-                cell.textLabel.frame = cell.contentView.bounds;
-                cell.textLabel.textAlignment = NSTextAlignmentCenter;
-                cell.textLabel.textColor = [UIColor lightGrayColor];
-                cell.textLabel.font = font_Bold_16;
-                cell.textLabel.text = @"暂无评论";
-            }
-            return cell;
-        }
-    }
-    UITableViewCell *cell = [[UITableViewCell alloc] init];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    return cell;
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-//    [self.tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 - (CGFloat)cellHeight:(BmobObject *)obj {
