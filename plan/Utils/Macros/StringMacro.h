@@ -101,6 +101,8 @@
 #define str_Posts_Add_Tips1 @"可选2张照片"
 #define str_Posts_Add_Tips2 @"至少写点什么或留一张照片吧~"
 
+#define str_PostsDetail_Comment_Tips1 @"评论一下"
+
 #define str_PersonalCenter_Tips1 @"你的恒心超过了"
 #define str_PersonalCenter_Tips2 @"的坚持者"
 #define str_PersonalCenter_SubTitle1 @"最近连续签到天数"

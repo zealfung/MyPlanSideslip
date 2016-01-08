@@ -19,6 +19,7 @@
     DOPNavbarMenu *menu;
     CGFloat cell0Height;
     NSArray *commentsArray;
+    BmobObject *selectedComment;
     BOOL isAnding;
 }
 
@@ -32,14 +33,20 @@
     
     commentsArray = [NSArray array];
     [self createDetailHeaderView];
-    [self createDetailView];
+    [self getCommets];
     [self createBottomBtnView];
+
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewTouch)];
+    [recognizer setNumberOfTapsRequired:1];
+    [recognizer setNumberOfTouchesRequired:1];
+    self.scrollView.delegate = self;
+    [self.scrollView addGestureRecognizer:recognizer];
     
     self.inputView.placeholderFont = font_Normal_16;
     self.inputView.returnKeyType = UIReturnKeySend;
     [self.inputView setBorderWidth:1.0f andColor:color_eeeeee];
     self.inputView.backgroundColor = color_F2F3F5;
-    [self.inputView setUpWithPlaceholder:@"评论一下"];
+    [self.inputView setUpWithPlaceholder:str_PostsDetail_Comment_Tips1];
     self.inputView.delegate = self;
     self.inputView.hidden = YES;
     self.inputViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.inputView attribute:NSLayoutAttributeHeight         relatedBy:NSLayoutRelationEqual
@@ -114,7 +121,7 @@
 
 - (void)createDetailView {
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    
+
     NSString *content = [self.posts objectForKey:@"content"];
     CGFloat yOffset = 10;
     if (content && content.length > 0) {
@@ -184,7 +191,7 @@
     if (yOffset < 200) {
         yOffset = 200;
     }
-    
+
     //评论区标题
     UILabel *labelCommentTitle = [[UILabel alloc] initWithFrame:CGRectMake(12, yOffset, 30, 20)];
     [labelCommentTitle setTextColor:color_666666];
@@ -195,11 +202,12 @@
     UILabel *labelLine = [[UILabel alloc] initWithFrame:CGRectMake(12 + 30, yOffset + 9.5, WIDTH_FULL_SCREEN - 24 - 30, 1)];
     [labelLine setBackgroundColor:color_dedede];
     [self.scrollView addSubview:labelLine];
-    yOffset += 20 + 20;
+    yOffset += 20 + 5;
 
     if (commentsArray.count > 0) {
-        for (BmobObject *obj in commentsArray) {
-            UIView *viewComment = [self createCommentView:obj];
+        for (NSInteger i=0; i< commentsArray.count; i++) {
+            BmobObject *obj = commentsArray[i];
+            UIView *viewComment = [self createCommentView:obj index:i];
             CGRect frame = viewComment.frame;
             frame.origin.y = yOffset;
             viewComment.frame = frame;
@@ -234,6 +242,7 @@
     
     self.headerView.layer.borderWidth = 1;
     self.headerView.layer.borderColor = [color_dedede CGColor];
+    
     //图像
     UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 5, 40, 40)];
     avatarView.layer.cornerRadius = 20;
@@ -266,58 +275,108 @@
     }
 }
 
-- (UIView *)createCommentView:(BmobObject *)comment {
-    BmobObject *author = [comment objectForKey:@"author"];
-    NSString *nickName = [author objectForKey:@"nickName"];
+- (UIView *)createCommentView:(BmobObject *)comment index:(NSInteger)index {
+    BmobObject *commentAuthor = [comment objectForKey:@"author"];
+    NSString *nickName = [commentAuthor objectForKey:@"nickName"];
     if (!nickName || nickName.length == 0) {
         nickName = @"匿名者";
     }
-    NSString *avatarURL = [author objectForKey:@"avatarURL"];
-    //    NSString *content = [self.posts objectForKey:@"content"];
-    //    NSString *isTop = [self.posts objectForKey:@"isTop"];
-    //    NSString *isHighlight = [self.posts objectForKey:@"isHighlight"];
-    //    NSArray *imgURLArray = [NSArray arrayWithArray:[self.posts objectForKey:@"imgURLArray"]];
+    NSString *avatarURL = [commentAuthor objectForKey:@"avatarURL"];
     
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, 55)];
-    view.backgroundColor = [UIColor whiteColor];
-    view.layer.borderWidth = 1;
-    view.layer.borderColor = [color_dedede CGColor];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, 85)];
     //图像
-    UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 5, 40, 40)];
-    avatarView.layer.cornerRadius = 20;
+    UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 2.5, 30, 30)];
+    avatarView.layer.cornerRadius = 15;
     avatarView.clipsToBounds = YES;
     [avatarView sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed:png_AvatarDefault1]];
     avatarView.contentMode = UIViewContentModeScaleAspectFit;
     [view addSubview:avatarView];
     //昵称
-    UILabel *labelNickName = [[UILabel alloc] initWithFrame:CGRectMake(57, 0, WIDTH_FULL_SCREEN / 2, 30)];
-    labelNickName.textColor = color_Blue;
-    labelNickName.font = font_Normal_16;
-    labelNickName.text = nickName;
-    [view addSubview:labelNickName];
+    ThreeSubView *tsViewNickname = [[ThreeSubView alloc] initWithFrame:CGRectMake(47, 0, WIDTH_FULL_SCREEN - 24, 20) leftButtonSelectBlock:^{
+        
+    } centerButtonSelectBlock:^{
+        
+    } rightButtonSelectBlock:^{
+        
+    }];
+    [tsViewNickname.leftButton.titleLabel setFont:font_Normal_13];
+    [tsViewNickname.leftButton setAllTitleColor:color_333333];
+    [tsViewNickname.leftButton setAllTitle:nickName];
+    tsViewNickname.leftButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+    
+    [tsViewNickname.centerButton.titleLabel setFont:font_Normal_11];
+    [tsViewNickname.centerButton setAllTitleColor:color_666666];
+    tsViewNickname.leftButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    //楼主
+    BmobObject *postsAuthor = [self.posts objectForKey:@"author"];
+    NSString *postsUserObjectId = [postsAuthor objectForKey:@"userObjectId"];
+    NSString *commentUserObjectId = [commentAuthor objectForKey:@"userObjectId"];
+    if ([postsUserObjectId isEqualToString:commentUserObjectId]) {
+        [tsViewNickname.centerButton setAllTitle:@"楼主"];
+        tsViewNickname.fixCenterWidth = 30;
+    } else {
+        [tsViewNickname.centerButton setAllTitle:@""];
+        tsViewNickname.fixCenterWidth = 0;
+    }
+    
+    [tsViewNickname.rightButton.titleLabel setFont:font_Normal_13];
+    [tsViewNickname.rightButton setAllTitleColor:color_333333];
+    [tsViewNickname.rightButton setAllTitle:@""];
+    tsViewNickname.fixRightWidth = 0;
+    [tsViewNickname autoLayout];
+    [view addSubview:tsViewNickname];
     //发表时间
-    UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(57, 30, WIDTH_FULL_SCREEN / 2, 20)];
+    UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(47, 20, WIDTH_FULL_SCREEN / 2, 15)];
     labelDate.textColor = color_666666;
-    labelDate.font = font_Normal_13;
-    labelDate.text = [CommonFunction intervalSinceNow:self.posts.createdAt];
+    labelDate.font = font_Normal_11;
+    labelDate.text = [CommonFunction intervalSinceNow:comment.createdAt];
     [view addSubview:labelDate];
+
+    CGFloat yOffset = 40;
+    
+    //回复XX
+    BmobObject *replyAuthor = [comment objectForKey:@"replyAuthor"];
+    NSString *replyNickName = [replyAuthor objectForKey:@"nickName"];
+    if (replyNickName && replyNickName.length > 0) {
+        UILabel *labelReply = [[UILabel alloc] initWithFrame:CGRectMake(12, yOffset, WIDTH_FULL_SCREEN / 2, 20)];
+        labelReply.textColor = color_666666;
+        labelReply.font = font_Normal_13;
+        labelReply.text = [NSString stringWithFormat:@"回复 %@：", replyNickName];
+        [view addSubview:labelReply];
+        yOffset += 25;
+    }
     
     NSString *content = [comment objectForKey:@"content"];
     UILabel *labelContent = [[UILabel alloc] initWithFrame:CGRectMake(0,0,0,0)];
     [labelContent setNumberOfLines:0];
     labelContent.lineBreakMode = NSLineBreakByWordWrapping;
     [labelContent setTextColor:color_333333];
-    UIFont *font = font_Normal_16;
+    UIFont *font = font_Normal_13;
     [labelContent setFont:font];
     [labelContent setText:content];
     CGSize size = CGSizeMake(WIDTH_FULL_SCREEN - 24, 2000);
     CGSize labelsize = [content sizeWithFont:font constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
-    labelContent.frame = CGRectMake(12, 50, labelsize.width, labelsize.height);
+    labelContent.frame = CGRectMake(12, yOffset, labelsize.width, labelsize.height);
     [view addSubview:labelContent];
+    yOffset += labelsize.height + 5;
+    
+    //分隔线
+    UILabel *labelLine = [[UILabel alloc] initWithFrame:CGRectMake(12, yOffset, WIDTH_FULL_SCREEN - 24, 1)];
+    labelLine.backgroundColor = color_dedede;
+    [view addSubview:labelLine];
+    
+    yOffset += 5;
     
     CGRect frame = view.frame;
-    frame.size.height += labelsize.height;
+    frame.size.height = yOffset;
     view.frame = frame;
+    
+    //添加单击事件
+    UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(replyCommentAction:)];
+    [recognizer setNumberOfTapsRequired:1];
+    [recognizer setNumberOfTouchesRequired:1];
+    view.tag = index;
+    [view addGestureRecognizer:recognizer];
     
     return view;
 }
@@ -329,7 +388,8 @@
     } centerBlock:^{
         
     } rightBlock: ^{
-        [weakSelf.inputView becomeFirstResponder];
+        selectedComment = nil;
+        [weakSelf commentAction];
     }];
     
     [self.bottomBtnView autoLayout];
@@ -385,17 +445,25 @@
     __weak typeof(self) weakSelf = self;
     //关联评论表
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Comments"];
+    [bquery includeKey:@"author"];
+//    [bquery includeKey:@"replyAuthor"];
+    [bquery whereKey:@"isDeleted" equalTo:@"0"];
     //需要查询的列
     BmobObject *post = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:self.posts.objectId];
     [bquery whereObjectKey:@"comments" relatedTo:post];
+    [bquery orderByDescending:@"createdAt"];
     //查询该联系所有关联的评论
+    isAnding = YES;
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        [weakSelf hideHUD];
+        isAnding = NO;
+        
         if (error) {
             NSLog(@"%@",error);
         } else {
-            for (BmobObject *comment in array) {
-            }
+            commentsArray = [NSArray arrayWithArray:array];
         }
+        [weakSelf createDetailView];
     }];
 }
 
@@ -464,6 +532,33 @@
     } else {
         [self toLogInView];
     }
+}
+
+- (void)commentAction {
+    if ([LogIn isLogin]) {
+        if (selectedComment) {
+            BmobObject *commentAuthor = [selectedComment objectForKey:@"author"];
+            NSString *nickName = [commentAuthor objectForKey:@"nickName"];
+            if (nickName && nickName.length > 0) {
+                self.inputView.placeholder = [NSString stringWithFormat:@"回复 %@：", nickName];
+            }
+        } else {
+            self.inputView.placeholder = str_PostsDetail_Comment_Tips1;
+        }
+        [self.inputView becomeFirstResponder];
+    } else {
+        [self toLogInView];
+    }
+}
+
+- (void)replyCommentAction:(id)sender {
+    UITapGestureRecognizer *tap = (UITapGestureRecognizer *)sender;
+    UIView *view = (UIView *)tap.view;
+    NSInteger i = view.tag;
+    if (i < commentsArray.count) {
+        selectedComment = commentsArray[i];
+    }
+    [self commentAction];
 }
 
 - (void)refreshAction {
@@ -549,6 +644,17 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:YES];
+}
+
+- (void)scrollViewTouch {
+    [self.view endEditing:YES];
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    [self.view endEditing:YES];
+}
 
 #pragma mark - textView的基本设置
 - (GrowingTextView *)textView {
@@ -600,7 +706,6 @@
 
 - (void)updateInputBarHeight {
     CGFloat inputbarHeight = [self appropriateInputbarHeight];
-    
     if (inputbarHeight != self.inputViewHeightConstraint.constant) {
         self.inputViewHeightConstraint.constant = inputbarHeight;
         [self.view layoutIfNeeded];
@@ -627,12 +732,10 @@
 
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     if ([text isEqualToString: @"\n"]) {
-//        if ([Config getOwnID] == 0) {
-//            [self.navigationController pushViewController:[LoginViewController new] animated:YES];
-//        } else {
+
         [self sendContent:textView.text];
-            [textView resignFirstResponder];
-//        }
+        [self.view endEditing:YES];
+
         return NO;
     }
     return YES;
@@ -647,8 +750,63 @@
 }
 
 - (void)sendContent:(NSString *)content {
+    if (isAnding) return;
+    
+    __weak typeof(self) weakSelf = self;
+    BmobObject *newComments = [BmobObject objectWithClassName:@"Comments"];
+    [newComments setObject:content forKey:@"content"];
+    [newComments setObject:@"0" forKey:@"isDeleted"];
+    
+    //新建relation对象
+    BmobRelation *relation = [[BmobRelation alloc] init];
+    [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:self.posts.objectId]];
+    //添加关联关系到readUser列中
+    [newComments addRelation:relation forKey:@"posts"];
+    
+    //回复对象
+    if (selectedComment) {
+        BmobRelation *relationReply = [[BmobRelation alloc] init];
+        [relationReply addObject:selectedComment];
+        [newComments addRelation:relationReply forKey:@"comments"];
+
+        BmobObject *replyAuthor = [selectedComment objectForKey:@"author"];
+        [newComments setObject:replyAuthor forKey:@"replyAuthor"];
+    }
+
+    //设置评论关联的作者
+    [Config shareInstance].settings = [PlanCache getPersonalSettings];
+    BmobObject *author = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
+    [newComments setObject:author forKey:@"author"];
+    [self showHUD];
+    isAnding = YES;
+    //异步保存
+    [newComments saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        [weakSelf hideHUD];
+        isAnding = NO;
+        
+        if (isSuccessful) {
+            //把评论关联到帖子的评论字段
+            [weakSelf relationCommentToPost:newComments.objectId];
+
+            [weakSelf alertToastMessage:@"评论成功"];
+            [weakSelf getCommets];
+        } else {
+            [weakSelf alertButtonMessage:@"评论失败"];
+            NSLog(@"%@",error);
+        }
+    }];
+    
+    self.inputView.text = @"";
     NSLog(@"发送内容：%@", content);
-    NSAssert(false, @"Over ride in subclasses");
+}
+
+- (void)relationCommentToPost:(NSString *)commentsObjectId {
+    BmobObject *post = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:self.posts.objectId];
+    BmobRelation *relation = [[BmobRelation alloc] init];
+    [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"Comments" objectId:commentsObjectId]];
+    [post addRelation:relation forKey:@"comments"];
+    [post setObject:[NSDate date] forKey:@"updatedTime"];
+    [post updateInBackground];
 }
 
 @end
