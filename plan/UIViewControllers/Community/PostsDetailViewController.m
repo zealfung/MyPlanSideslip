@@ -7,6 +7,7 @@
 //
 
 #import "LogIn.h"
+#import "ShareCenter.h"
 #import "BmobRelation.h"
 #import "DOPNavbarMenu.h"
 #import "LogInViewController.h"
@@ -445,8 +446,7 @@
     __weak typeof(self) weakSelf = self;
     //关联评论表
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Comments"];
-    [bquery includeKey:@"author"];
-//    [bquery includeKey:@"replyAuthor"];
+    [bquery includeKey:@"author,replyAuthor"];
     [bquery whereKey:@"isDeleted" equalTo:@"0"];
     //需要查询的列
     BmobObject *post = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:self.posts.objectId];
@@ -562,9 +562,11 @@
 }
 
 - (void)refreshAction {
+    [self getCommets];
 }
 
 - (void)shareAction {
+    [ShareCenter showShareActionSheet:self.view title:str_App_Title content:[self.posts objectForKey:@"content"] shareUrl:@"" sharedImageURL:@""];
 }
 
 - (void)reportAction {
@@ -805,6 +807,7 @@
     BmobRelation *relation = [[BmobRelation alloc] init];
     [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"Comments" objectId:commentsObjectId]];
     [post addRelation:relation forKey:@"comments"];
+    [post incrementKey:@"commentsCount"];
     [post setObject:[NSDate date] forKey:@"updatedTime"];
     [post updateInBackground];
 }
