@@ -34,6 +34,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>ReactiveCocoa.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>SDCycleScrollView.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -52,7 +57,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>055B1D131050F00C8E0CB6FC2CF9E7BE</key>
+		<key>14A0FBDCF6EC0A9574F4188D01F95BD6</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -62,7 +67,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>43B2449741B04BAA2699554BB6FFB045</key>
+		<key>2A45060DB51B355B29FDA17355471F39</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>472D4775C852F57A2D72D61D7000DF94</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -72,12 +82,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>8CEB55D34A1113BE8ECA1EB1E24C8F03</key>
+		<key>6951DA9871DA259A9AAA6EFC68AEF8EB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9F36CCB2B7A85528954BC0181F022643</key>
+		<key>8CEB55D34A1113BE8ECA1EB1E24C8F03</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -87,12 +97,12 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>B7F7DEC674DCCB8F93FD06A0B0D851C3</key>
+		<key>BAD8B90472FADB60D687F2250E815452</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>F2891D59EF7300B19BB57B3F6D8B1E93</key>
+		<key>FEC9F2137C4DE5F39AFF0820F21E7910</key>
 		<dict>
 			<key>primary</key>
 			<true/>

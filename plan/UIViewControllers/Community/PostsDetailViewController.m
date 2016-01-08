@@ -34,6 +34,22 @@
     [self createDetailHeaderView];
     [self createDetailView];
     [self createBottomBtnView];
+    
+    self.inputView.placeholderFont = font_Normal_16;
+    self.inputView.returnKeyType = UIReturnKeySend;
+    [self.inputView setBorderWidth:1.0f andColor:color_eeeeee];
+    self.inputView.backgroundColor = color_F2F3F5;
+    [self.inputView setUpWithPlaceholder:@"评论一下"];
+    self.inputView.delegate = self;
+    self.inputView.hidden = YES;
+    self.inputViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.inputView attribute:NSLayoutAttributeHeight         relatedBy:NSLayoutRelationEqual
+                                                                  toItem:nil         attribute:NSLayoutAttributeNotAnAttribute multiplier:1.0 constant:[self minimumInputbarHeight]];
+    [self.view addSubview:self.inputView];
+    [self.view addConstraint:self.inputViewHeightConstraint];
+    
+    [NotificationCenter addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+    [NotificationCenter addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    [NotificationCenter addObserver:self selector:@selector(textDidUpdate:)    name:UITextViewTextDidChangeNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -214,7 +230,7 @@
         nickName = @"匿名者";
     }
     NSString *avatarURL = [author objectForKey:@"avatarURL"];
-//    NSString *isHighlight = [self.posts objectForKey:@"isHighlight"];
+    NSString *isHighlight = [self.posts objectForKey:@"isHighlight"];
     
     self.headerView.layer.borderWidth = 1;
     self.headerView.layer.borderColor = [color_dedede CGColor];
@@ -237,6 +253,17 @@
     labelDate.font = font_Normal_13;
     labelDate.text = [CommonFunction intervalSinceNow:self.posts.createdAt];
     [self.headerView addSubview:labelDate];
+    //精华帖
+    if ([isHighlight isEqualToString:@"1"]) {
+        UIButton *btn = [[UIButton alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - 35, 5, 30, 20)];
+        btn.layer.cornerRadius = 5;
+        btn.layer.borderWidth = 1;
+        btn.layer.borderColor = [color_Blue CGColor];
+        [btn setAllTitle:@"精华"];
+        [btn setAllTitleColor:color_Blue];
+        btn.titleLabel.font = font_Normal_13;
+        [self.headerView addSubview:btn];
+    }
 }
 
 - (UIView *)createCommentView:(BmobObject *)comment {
@@ -302,7 +329,7 @@
     } centerBlock:^{
         
     } rightBlock: ^{
-        
+        [weakSelf.inputView becomeFirstResponder];
     }];
     
     [self.bottomBtnView autoLayout];
@@ -520,6 +547,108 @@
 - (void)toLogInView {
     LogInViewController *controller = [[LogInViewController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+
+#pragma mark - textView的基本设置
+- (GrowingTextView *)textView {
+    return self.inputView;
+}
+
+- (CGFloat)minimumInputbarHeight {
+    return self.bottomBtnView.frame.size.height;
+}
+
+- (CGFloat)deltaInputbarHeight {
+    return self.bottomBtnView.frame.size.height - self.textView.font.lineHeight;
+}
+
+- (CGFloat)barHeightForLines:(NSUInteger)numberOfLines {
+    CGFloat height = [self deltaInputbarHeight];
+    height += roundf(self.textView.font.lineHeight * numberOfLines);
+    return height;
+}
+
+#pragma mark - 调整bar的高度
+- (void)keyboardWillShow:(NSNotification *)notification {
+    CGRect keyboardBounds = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
+    self.inputViewConstraint.constant = keyboardBounds.size.height;
+    self.inputView.hidden = NO;
+    [self setBottomBarHeight];
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification {
+    self.inputViewConstraint.constant = 0;
+    self.inputView.hidden = YES;
+    [self setBottomBarHeight];
+}
+
+- (void)setBottomBarHeight {
+    [self.view setNeedsUpdateConstraints];
+    [UIView animateKeyframesWithDuration:0.25       //animationDuration
+                                   delay:0
+                                 options:7 << 16    //animationOptions
+                              animations:^{
+                                  [self.view layoutIfNeeded];
+                              } completion:nil];
+}
+
+#pragma mark - 编辑框相关
+- (void)textDidUpdate:(NSNotification *)notification {
+    [self updateInputBarHeight];
+}
+
+- (void)updateInputBarHeight {
+    CGFloat inputbarHeight = [self appropriateInputbarHeight];
+    
+    if (inputbarHeight != self.inputViewHeightConstraint.constant) {
+        self.inputViewHeightConstraint.constant = inputbarHeight;
+        [self.view layoutIfNeeded];
+    }
+}
+
+- (CGFloat)appropriateInputbarHeight {
+    CGFloat height = 0;
+    CGFloat minimumHeight = [self minimumInputbarHeight];
+    CGFloat newSizeHeight = [self.textView measureHeight];
+    CGFloat maxHeight     = self.textView.maxHeight;
+    
+    self.textView.scrollEnabled = newSizeHeight >= maxHeight;
+    
+    if (newSizeHeight < minimumHeight) {
+        height = minimumHeight;
+    } else if (newSizeHeight < maxHeight) {
+        height = newSizeHeight;
+    } else {
+        height = self.textView.maxHeight;;
+    }
+    return roundf(height);
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
+    if ([text isEqualToString: @"\n"]) {
+//        if ([Config getOwnID] == 0) {
+//            [self.navigationController pushViewController:[LoginViewController new] animated:YES];
+//        } else {
+        [self sendContent:textView.text];
+            [textView resignFirstResponder];
+//        }
+        return NO;
+    }
+    return YES;
+}
+
+- (void)textViewDidEndEditing:(PlaceholderTextView *)textView {
+    [textView checkShouldHidePlaceholder];
+}
+
+- (void)textViewDidChange:(PlaceholderTextView *)textView {
+    [textView checkShouldHidePlaceholder];
+}
+
+- (void)sendContent:(NSString *)content {
+    NSLog(@"发送内容：%@", content);
+    NSAssert(false, @"Over ride in subclasses");
 }
 
 @end

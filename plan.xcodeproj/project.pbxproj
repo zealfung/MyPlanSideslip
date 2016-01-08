@@ -194,6 +194,8 @@
 		13D1AD6D1C3E7670007734F6 /* Btn_Refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD6C1C3E7670007734F6 /* Btn_Refresh@2x.png */; };
 		13D1AD6F1C3E7930007734F6 /* Btn_Report@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD6E1C3E7930007734F6 /* Btn_Report@2x.png */; };
 		13D1AD711C3E79E8007734F6 /* Btn_Share66@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD701C3E79E8007734F6 /* Btn_Share66@2x.png */; };
+		13D1AD771C3F411F007734F6 /* GrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D1AD741C3F411F007734F6 /* GrowingTextView.m */; };
+		13D1AD781C3F411F007734F6 /* PlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D1AD761C3F411F007734F6 /* PlaceholderTextView.m */; };
 		13D405F71C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F61C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png */; };
 		13D405FB1C2D13360089D702 /* Icon_Posts_Eyes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */; };
 		13D405FC1C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */; };
@@ -532,6 +534,10 @@
 		13D1AD6C1C3E7670007734F6 /* Btn_Refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Refresh@2x.png"; sourceTree = "<group>"; };
 		13D1AD6E1C3E7930007734F6 /* Btn_Report@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Report@2x.png"; sourceTree = "<group>"; };
 		13D1AD701C3E79E8007734F6 /* Btn_Share66@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Share66@2x.png"; sourceTree = "<group>"; };
+		13D1AD731C3F411F007734F6 /* GrowingTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GrowingTextView.h; sourceTree = "<group>"; };
+		13D1AD741C3F411F007734F6 /* GrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowingTextView.m; sourceTree = "<group>"; };
+		13D1AD751C3F411F007734F6 /* PlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderTextView.h; sourceTree = "<group>"; };
+		13D1AD761C3F411F007734F6 /* PlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceholderTextView.m; sourceTree = "<group>"; };
 		13D405F61C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Comment@2x.png"; sourceTree = "<group>"; };
 		13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Eyes@2x.png"; sourceTree = "<group>"; };
 		13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Praise_Normal@2x.png"; sourceTree = "<group>"; };
@@ -795,6 +801,7 @@
 			children = (
 				1361AFB71BCBA5E700DD5FFB /* DoImagePicker */,
 				13D406971C3D00310089D702 /* DOPNavbarMenu */,
+				13D1AD721C3F411F007734F6 /* EditingBar */,
 				133B083B1BA439560015E752 /* HitView.h */,
 				133B083C1BA439560015E752 /* HitView.m */,
 				136DF57C1BEC2F7D001D6496 /* ImageBrowser.h */,
@@ -1395,6 +1402,17 @@
 			path = Share;
 			sourceTree = "<group>";
 		};
+		13D1AD721C3F411F007734F6 /* EditingBar */ = {
+			isa = PBXGroup;
+			children = (
+				13D1AD731C3F411F007734F6 /* GrowingTextView.h */,
+				13D1AD741C3F411F007734F6 /* GrowingTextView.m */,
+				13D1AD751C3F411F007734F6 /* PlaceholderTextView.h */,
+				13D1AD761C3F411F007734F6 /* PlaceholderTextView.m */,
+			);
+			path = EditingBar;
+			sourceTree = "<group>";
+		};
 		13D406971C3D00310089D702 /* DOPNavbarMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -1678,6 +1696,7 @@
 				137700E11B95335E008C83FD /* UIImage+Util.m in Sources */,
 				13D4061C1C2FD4470089D702 /* PostsDetailViewController.m in Sources */,
 				135B21E71B913EAF005CE84A /* ModelBase.m in Sources */,
+				13D1AD781C3F411F007734F6 /* PlaceholderTextView.m in Sources */,
 				133B083D1BA439560015E752 /* HitView.m in Sources */,
 				137470C81C0AE75900B7822A /* Task.m in Sources */,
 				135B221F1B92E74C005CE84A /* PromptMessage.m in Sources */,
@@ -1748,6 +1767,7 @@
 				137470961C07E66B00B7822A /* CLLockMainView.m in Sources */,
 				137700DB1B952EE5008C83FD /* MoreViewController.m in Sources */,
 				1374704F1C03ED1200B7822A /* RegisterViewController.m in Sources */,
+				13D1AD771C3F411F007734F6 /* GrowingTextView.m in Sources */,
 				13AF648B1C19C071008E8A9E /* MessagesDetailViewController.m in Sources */,
 				137470A41C0815F100B7822A /* CoreArchive.m in Sources */,
 				13D406171C2F9AD00089D702 /* AddPostsViewController.m in Sources */,
