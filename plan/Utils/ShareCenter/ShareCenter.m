@@ -29,10 +29,10 @@
                                      images:imageArray
                                         url:[NSURL URLWithString:str_Website_URL]
                                       title:str_App_Slogan
-                                       type:SSDKContentTypeAuto];
+                                       type:SSDKContentTypeImage];
     
     //1.2、自定义分享平台
-    NSMutableArray *activePlatforms = [NSMutableArray arrayWithArray:@[@(SSDKPlatformTypeSinaWeibo), @(SSDKPlatformSubTypeWechatSession), @(SSDKPlatformSubTypeWechatTimeline), @(SSDKPlatformSubTypeQQFriend), @(SSDKPlatformSubTypeQZone), @(SSDKPlatformTypeQQ)]];
+    NSMutableArray *activePlatforms = [NSMutableArray arrayWithArray:@[@(SSDKPlatformTypeSinaWeibo), @(SSDKPlatformSubTypeWechatSession), @(SSDKPlatformSubTypeWechatTimeline), @(SSDKPlatformSubTypeQQFriend), @(SSDKPlatformTypeQQ)]];
     
     //2、分享
     [ShareSDK showShareActionSheet:view
