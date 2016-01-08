@@ -20,6 +20,7 @@
     DOPNavbarMenu *menu;
     CGFloat cell0Height;
     NSArray *commentsArray;
+    NSInteger checkLikeCount;
     BmobObject *selectedComment;
     BOOL isAnding;
 }
@@ -113,7 +114,7 @@
             [self shareAction];
             break;
         case 2:
-            [self reportAction];
+            [self reportPostsAction];
             break;
         default:
             break;
@@ -283,6 +284,11 @@
         nickName = @"匿名者";
     }
     NSString *avatarURL = [commentAuthor objectForKey:@"avatarURL"];
+    NSInteger likesCount = [[comment objectForKey:@"likesCount"] integerValue];
+    BOOL isLike = NO;
+    if ([LogIn isLogin]) {
+        isLike = [[comment objectForKey:@"isLike"] boolValue];
+    }
     
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, 85)];
     //图像
@@ -319,13 +325,66 @@
         [tsViewNickname.centerButton setAllTitle:@""];
         tsViewNickname.fixCenterWidth = 0;
     }
-    
     [tsViewNickname.rightButton.titleLabel setFont:font_Normal_13];
     [tsViewNickname.rightButton setAllTitleColor:color_333333];
     [tsViewNickname.rightButton setAllTitle:@""];
     tsViewNickname.fixRightWidth = 0;
     [tsViewNickname autoLayout];
     [view addSubview:tsViewNickname];
+    //赞、举报
+    __weak typeof(self) weakSelf = self;
+    ThreeSubView *tsViewLikes = [[ThreeSubView alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - 12 - 90, 0, 90, 20) leftButtonSelectBlock:^{
+        [weakSelf reportCommentAction:comment];
+    } centerButtonSelectBlock:^{
+        
+    } rightButtonSelectBlock:^{
+        if ([LogIn isLogin]) {
+            if (isLike) {
+                [weakSelf unlikeComment:comment];
+            } else {
+                [weakSelf likeComment:comment];
+            }
+        } else {
+            [weakSelf toLogInView];
+        }
+        
+    }];
+    tsViewLikes.fixLeftWidth = 30;
+    [tsViewLikes.leftButton.titleLabel setFont:font_Normal_11];
+    [tsViewLikes.leftButton setAllTitleColor:color_666666];
+    [tsViewLikes.leftButton setAllTitle:@"举报"];
+    tsViewLikes.leftButton.layer.cornerRadius = 5;
+    tsViewLikes.leftButton.layer.borderWidth = 0.5;
+    tsViewLikes.leftButton.layer.borderColor = [color_666666 CGColor];
+    tsViewLikes.leftButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    
+    tsViewLikes.fixCenterWidth = 20;
+    [tsViewLikes.centerButton.titleLabel setFont:font_Normal_11];
+    [tsViewLikes.centerButton setAllTitleColor:color_666666];
+    [tsViewLikes.centerButton setAllTitle:@""];
+
+    tsViewLikes.fixRightWidth = 40;
+    [tsViewLikes.rightButton.titleLabel setFont:font_Normal_11];
+    [tsViewLikes.rightButton setAllTitle:@"赞"];
+    if (likesCount > 0) {
+        [tsViewLikes.rightButton setAllTitle:[NSString stringWithFormat:@"%@赞", [CommonFunction checkNumberForThousand:likesCount]]];
+    } else {
+        [tsViewLikes.rightButton setAllTitle:@"赞"];
+    }
+    if (isLike) {
+        tsViewLikes.rightButton.selected = YES;
+        [tsViewLikes.rightButton setAllTitleColor:color_Red];
+        tsViewLikes.rightButton.layer.borderColor = [color_Red CGColor];
+    } else {
+        tsViewLikes.rightButton.selected = NO;
+        [tsViewLikes.rightButton setAllTitleColor:color_666666];
+        tsViewLikes.rightButton.layer.borderColor = [color_666666 CGColor];
+    }
+    tsViewLikes.rightButton.layer.cornerRadius = 5;
+    tsViewLikes.rightButton.layer.borderWidth = 0.5;
+    tsViewLikes.rightButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    [tsViewLikes autoLayout];
+    [view addSubview:tsViewLikes];
     //发表时间
     UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(47, 20, WIDTH_FULL_SCREEN / 2, 15)];
     labelDate.textColor = color_666666;
@@ -455,15 +514,52 @@
     //查询该联系所有关联的评论
     isAnding = YES;
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-        [weakSelf hideHUD];
-        isAnding = NO;
         
+        isAnding = NO;
         if (error) {
             NSLog(@"%@",error);
+            [weakSelf hideHUD];
+            [weakSelf createDetailView];
         } else {
             commentsArray = [NSArray arrayWithArray:array];
+            [weakSelf checkIsLike];
         }
-        [weakSelf createDetailView];
+    }];
+}
+
+- (void)checkIsLike {
+    if ([LogIn isLogin]) {
+        checkLikeCount = 0;
+        for (NSInteger i=0; i < commentsArray.count; i++) {
+            [self isLikedComment:commentsArray[i]];
+        }
+    } else {
+        [self hideHUD];
+        [self createDetailView];
+    }
+}
+
+- (void)isLikedComment:(BmobObject *)comment {
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Comments"];
+    BmobQuery *inQuery = [BmobQuery queryWithClassName:@"UserSettings"];
+    BmobUser *user = [BmobUser getCurrentUser];
+    [inQuery whereKey:@"userObjectId" equalTo:user.objectId];
+    //匹配查询
+    [bquery whereKey:@"likes" matchesQuery:inQuery];//（查询所有有关联的数据）
+    [bquery whereKey:@"objectId" equalTo:comment.objectId];
+    __weak typeof(self) weakSelf = self;
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        if (!error && array.count > 0) {
+            [comment setObject:@(YES) forKey:@"isLike"];
+        } else {
+            [comment setObject:@(NO) forKey:@"isLike"];
+        }
+        
+        checkLikeCount ++;
+        if (checkLikeCount == commentsArray.count) {
+            [weakSelf hideHUD];
+            [weakSelf createDetailView];
+        }
     }];
 }
 
@@ -569,7 +665,7 @@
     [ShareCenter showShareActionSheet:self.view title:str_App_Title content:[self.posts objectForKey:@"content"] shareUrl:@"" sharedImageURL:@""];
 }
 
-- (void)reportAction {
+- (void)reportPostsAction {
     if (isAnding) return;
     
     [self showHUD];
@@ -577,6 +673,32 @@
     BmobObject *newPosts = [BmobObject objectWithClassName:@"Report"];
     [newPosts setObject:@"1" forKey:@"reportType"];//举报类型：1帖子 2评论
     [newPosts setObject:self.posts.objectId forKey:@"reportId"];
+    [newPosts setObject:@"0" forKey:@"isSolved"];
+    if ([LogIn isLogin]) {
+        BmobUser *user = [BmobUser getCurrentUser];
+        [newPosts setObject:user.objectId forKey:@"reporterObjectId"];
+    }
+    isAnding = YES;
+    //异步保存
+    [newPosts saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        isAnding = NO;
+        [weakSelf hideHUD];
+        if (isSuccessful) {
+            [weakSelf alertToastMessage:@"举报成功"];
+        } else {
+            [weakSelf alertButtonMessage:@"举报失败"];
+        }
+    }];
+}
+
+- (void)reportCommentAction:(BmobObject *)comment {
+    if (isAnding) return;
+    
+    [self showHUD];
+    __weak typeof(self) weakSelf = self;
+    BmobObject *newPosts = [BmobObject objectWithClassName:@"Report"];
+    [newPosts setObject:@"2" forKey:@"reportType"];//举报类型：1帖子 2评论
+    [newPosts setObject:comment.objectId forKey:@"reportId"];
     [newPosts setObject:@"0" forKey:@"isSolved"];
     if ([LogIn isLogin]) {
         BmobUser *user = [BmobUser getCurrentUser];
@@ -634,6 +756,56 @@
             likesCount -= 1;
             [posts setObject:@(likesCount) forKey:@"likesCount"];
             [posts setObject:@(NO) forKey:@"isLike"];
+            NSLog(@"successful");
+        }else{
+            NSLog(@"error %@",[error description]);
+        }
+    }];
+}
+
+- (void)likeComment:(BmobObject *)comment {
+    if (isAnding) return;
+    
+    BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Comments" objectId:comment.objectId];
+    [obj incrementKey:@"likesCount"];
+    BmobRelation *relation = [[BmobRelation alloc] init];
+    [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
+    [obj addRelation:relation forKey:@"likes"];
+    isAnding = YES;
+    __weak typeof(self) weakSelf = self;
+    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        isAnding = NO;
+        if (isSuccessful) {
+            NSInteger likesCount = [[comment objectForKey:@"likesCount"] integerValue];
+            likesCount += 1;
+            [comment setObject:@(likesCount) forKey:@"likesCount"];
+            [comment setObject:@(YES) forKey:@"isLike"];
+            [weakSelf createDetailView];
+            NSLog(@"successful");
+        }else{
+            NSLog(@"error %@",[error description]);
+        }
+    }];
+}
+
+- (void)unlikeComment:(BmobObject *)comment {
+    if (isAnding) return;
+    
+    BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Comments" objectId:comment.objectId];
+    [obj decrementKey:@"likesCount"];
+    BmobRelation *relation = [[BmobRelation alloc] init];
+    [relation removeObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
+    [obj addRelation:relation forKey:@"likes"];
+    isAnding = YES;
+    __weak typeof(self) weakSelf = self;
+    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        isAnding = NO;
+        if (isSuccessful) {
+            NSInteger likesCount = [[comment objectForKey:@"likesCount"] integerValue];
+            likesCount -= 1;
+            [comment setObject:@(likesCount) forKey:@"likesCount"];
+            [comment setObject:@(NO) forKey:@"isLike"];
+            [weakSelf createDetailView];
             NSLog(@"successful");
         }else{
             NSLog(@"error %@",[error description]);
