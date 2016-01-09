@@ -83,7 +83,7 @@
         DOPNavbarMenuItem *itemShare = [DOPNavbarMenuItem ItemWithTitle:@"分享" icon:[UIImage imageNamed:png_Btn_Share66]];
         DOPNavbarMenuItem *itemReport = [DOPNavbarMenuItem ItemWithTitle:@"举报" icon:[UIImage imageNamed:png_Btn_Report]];
         menu = [[DOPNavbarMenu alloc] initWithItems:@[itemRefresh,itemShare,itemReport] width:self.view.dop_width maximumNumberInRow:numberOfItemsInRow];
-        menu.backgroundColor = color_Blue;
+        menu.backgroundColor = [CommonFunction getGenderColor];
         menu.separatarColor = [UIColor whiteColor];
         menu.delegate = self;
     }
@@ -528,7 +528,7 @@
 }
 
 - (void)checkIsLike {
-    if ([LogIn isLogin]) {
+    if ([LogIn isLogin] && commentsArray.count > 0) {
         checkLikeCount = 0;
         for (NSInteger i=0; i < commentsArray.count; i++) {
             [self isLikedComment:commentsArray[i]];
