@@ -56,14 +56,15 @@
     headerImagesURLArray = [NSMutableArray array];
     headerDetailURLArray = [NSMutableArray array];
     
-    [NotificationCenter addObserver:self selector:@selector(loadPostsData) name:Notify_Posts_New object:nil];
+    [NotificationCenter addObserver:self selector:@selector(reloadPostsData) name:Notify_Posts_New object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshPostsList) name:Notify_Posts_Refresh object:nil];
 
     [self initTableView];
     
     [self createBack2TopButton];
     
-    [self loadBannerData];
-    [self loadPostsData];
+    [self reloadBannerData];
+    [self reloadPostsData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -83,16 +84,16 @@
     __weak typeof(self) weakSelf = self;
     MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         //刷新banner数据
-        [weakSelf loadBannerData];
+        [weakSelf reloadBannerData];
         //刷新帖子数据
-        [weakSelf loadPostsData];
+        [weakSelf reloadPostsData];
     }];
     header.lastUpdatedTimeLabel.hidden = YES;
     self.tableView.mj_header = header;
     self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         isLoadMore = YES;
         //加载更多帖子数据
-        [weakSelf loadPostsData];
+        [weakSelf reloadPostsData];
     }];
     self.tableView.mj_footer.hidden = YES;
 }
@@ -136,10 +137,6 @@
     bannerView.titlesGroup = headerTitlesArray;
     bannerView.dotColor = [UIColor whiteColor]; //自定义分页控件小圆标颜色
     bannerView.placeholderImage = [UIImage imageNamed:png_Bg_SideTop];
-    //--- 模拟加载延迟
-//    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//        cycleScrollView2.imageURLStringsGroup = headerImagesURLArray;
-//    });
     return bannerView;
 }
 
@@ -390,8 +387,8 @@
         BmobObject *obj = postsArray[indexPath.row];
         [self toPostsDetail:obj];
     } else {
-        [self loadBannerData];
-        [self loadPostsData];
+        [self reloadBannerData];
+        [self reloadPostsData];
     }
 }
 
@@ -412,7 +409,11 @@
     }
 }
 
-- (void)loadBannerData {
+- (void)refreshPostsList {
+    [self.tableView reloadData];
+}
+
+- (void)reloadBannerData {
     if (isLoadingBanner) return;
     
     isLoadingBanner = YES;
@@ -456,7 +457,7 @@
     }];
 }
 
-- (void)loadPostsData {
+- (void)reloadPostsData {
     if (isLoadingPosts) return;
     
     isLoadingPosts = YES;

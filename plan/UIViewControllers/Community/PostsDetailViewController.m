@@ -733,7 +733,7 @@
             likesCount += 1;
             [posts setObject:@(likesCount) forKey:@"likesCount"];
             [posts setObject:@(YES) forKey:@"isLike"];
-            NSLog(@"successful");
+            [NotificationCenter postNotificationName:Notify_Posts_Refresh object:nil];
         }else{
             NSLog(@"error %@",[error description]);
         }
@@ -756,7 +756,7 @@
             likesCount -= 1;
             [posts setObject:@(likesCount) forKey:@"likesCount"];
             [posts setObject:@(NO) forKey:@"isLike"];
-            NSLog(@"successful");
+            [NotificationCenter postNotificationName:Notify_Posts_Refresh object:nil];
         }else{
             NSLog(@"error %@",[error description]);
         }
