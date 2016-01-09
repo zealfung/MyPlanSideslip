@@ -38,29 +38,29 @@ CGFloat kPhotoCellHeight;
     UILabel *labelYear = [[UILabel alloc] initWithFrame:CGRectMake(xOffset, yOffset, dateWidth, dateHeight)];
     labelYear.textAlignment = NSTextAlignmentCenter;
     labelYear.font = font_Normal_16;
-    labelYear.textColor = color_Blue;
+    labelYear.textColor = [CommonFunction getGenderColor];
     labelYear.text = [CommonFunction NSDateToNSString:photoDate formatter:@"yyyy"];
     [cell addSubview:labelYear];
     
     UILabel *labelMonthAndDay = [[UILabel alloc] initWithFrame:CGRectMake(xOffset, yOffset + dateHeight / 2, dateWidth, dateHeight)];
     labelMonthAndDay.textAlignment = NSTextAlignmentCenter;
     labelMonthAndDay.font = font_Normal_13;
-    labelMonthAndDay.textColor = color_Blue;
+    labelMonthAndDay.textColor = [CommonFunction getGenderColor];
     labelMonthAndDay.text = [CommonFunction NSDateToNSString:photoDate formatter:@"MM/dd"];
     [cell addSubview:labelMonthAndDay];
     
     xOffset += dateWidth;
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(xOffset + btnAgeSize / 2 - 1, 0, 2, yOffset)];
-    lineView.backgroundColor = color_Blue;
+    lineView.backgroundColor = [CommonFunction getGenderColor];
     [cell addSubview:lineView];
     
     UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(xOffset + btnAgeSize / 2 - 1, yOffset + btnAgeSize, 2, kPhotoCellHeight - yOffset -btnAgeSize)];
-    lineView1.backgroundColor = color_Blue;
+    lineView1.backgroundColor = [CommonFunction getGenderColor];
     [cell addSubview:lineView1];
     
     UIButton *btnAge = [[UIButton alloc] initWithFrame:CGRectMake(xOffset, yOffset, btnAgeSize, btnAgeSize)];
-    btnAge.backgroundColor = color_Blue;
+    btnAge.backgroundColor = [CommonFunction getGenderColor];
     btnAge.layer.cornerRadius = btnAgeSize / 2;
     btnAge.titleLabel.font = font_Bold_18;
     btnAge.tintColor = [UIColor whiteColor];
@@ -74,7 +74,7 @@ CGFloat kPhotoCellHeight;
         UILabel *labelLocation = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(btnAge.frame), yOffset, locationWidth, dateHeight * 3 / 2)];
         labelLocation.textAlignment = NSTextAlignmentRight;
         labelLocation.font = font_Normal_16;
-        labelLocation.textColor = color_Blue;
+        labelLocation.textColor = [CommonFunction getGenderColor];
         labelLocation.text = [NSString stringWithFormat:@"%@%@", str_Photo_Location, photo.location];
         [cell addSubview:labelLocation];
     }

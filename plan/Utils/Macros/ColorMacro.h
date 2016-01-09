@@ -30,7 +30,6 @@
 #define color_e9eff1 RGBColor(233, 239, 241, 1)//青灰色
 #define color_ff9900 RGBColor(255, 153, 0, 1) //橙色
 #define color_57a4fe_05 RGBColor(87, 164, 254, 0.5) //蓝色
-#define color_1dadfc RGBColor(29, 173, 252, 1) //蓝色
 #define color_75aff4 RGBColor(117, 175, 244, 1) //灰蓝色
 #define color_708cb0 RGBColor(112, 140, 176, 1) //深灰蓝色
 #define color_F9F2EA RGBColor(249, 242, 234, 1) //淡黄色

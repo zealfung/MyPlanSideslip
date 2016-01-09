@@ -54,7 +54,7 @@
     self.view.backgroundColor = color_Background;
     
     //设置导航栏背景颜色
-    [self.navigationController.navigationBar setBarTintColor:color_Blue];
+    [self.navigationController.navigationBar setBarTintColor:[CommonFunction getGenderColor]];
     //设置返回按钮文字颜色
     [self.navigationController.navigationBar setTintColor:[UIColor whiteColor]];
     //设置导航栏标题字体和颜色

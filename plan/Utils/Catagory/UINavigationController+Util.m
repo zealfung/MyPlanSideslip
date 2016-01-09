@@ -21,8 +21,8 @@
 }
 
 - (void)navigationBarOptimize {
-    [self.view setBackgroundColor:color_Blue];
-    [self.navigationBar setBarTintColor:color_Blue];
+    [self.view setBackgroundColor:[CommonFunction getGenderColor]];
+    [self.navigationBar setBarTintColor:[CommonFunction getGenderColor]];
 }
 
 - (void)navCtrlConfig {
@@ -35,8 +35,8 @@
     [titleTextAttributes setObject:[UIColor clearColor] forKey:UITextAttributeTextShadowColor];
     self.navigationBar.titleTextAttributes = titleTextAttributes;
     
-    [self.view setBackgroundColor:color_Blue];
-    [self.navigationBar setBarTintColor:color_Blue];
+    [self.view setBackgroundColor:[CommonFunction getGenderColor]];
+    [self.navigationBar setBarTintColor:[CommonFunction getGenderColor]];
 }
 
 @end

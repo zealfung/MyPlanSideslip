@@ -85,7 +85,7 @@
         button.backgroundColor = [UIColor clearColor];
         button.titleLabel.font = font_Normal_16;
         [button setAllTitle:str_Messages_Tips3];
-        [button setAllTitleColor:color_Blue];
+        [button setAllTitleColor:[CommonFunction getGenderColor]];
         [button addTarget:self action:@selector(detailAction:) forControlEvents:UIControlEventTouchUpInside];
         [scrollView addSubview:button];
         

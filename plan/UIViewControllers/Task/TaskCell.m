@@ -32,7 +32,7 @@
     } else {
         cellView.btnCount.enabled = YES;
         [cellView.btnCount setAllTitle:str_Task_AddRecord];
-        [cellView.btnCount setBackgroundColor:color_Blue];
+        [cellView.btnCount setBackgroundColor:[CommonFunction getGenderColor]];
         cellView.btnCount.titleLabel.font = font_Bold_16;
     }
     

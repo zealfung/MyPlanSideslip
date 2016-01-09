@@ -24,6 +24,8 @@
     
     //打开本地数据库
     [PlanCache openDBWithAccount:@"unknown"];
+    //加载个人设置
+    [Config shareInstance].settings = [PlanCache getPersonalSettings];
     
     self.contentViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"contentViewController"];
     self.leftMenuViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"leftMenuViewController"];

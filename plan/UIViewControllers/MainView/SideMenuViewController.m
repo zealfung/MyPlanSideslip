@@ -121,7 +121,7 @@
     }
     
     UIView *selectedBackground = [UIView new];
-    selectedBackground.backgroundColor = color_Blue;
+    selectedBackground.backgroundColor = [CommonFunction getGenderColor];
     [cell setSelectedBackgroundView:selectedBackground];
     cell.imageView.image = [UIImage imageNamed:menuImgArray[indexPath.row]];
     cell.textLabel.text = menuArray[indexPath.row];

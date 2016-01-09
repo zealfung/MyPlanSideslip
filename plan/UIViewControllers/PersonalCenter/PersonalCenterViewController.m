@@ -184,10 +184,10 @@
             [btn setAllTitleColor:color_8f8f8f];
             btn.enabled = NO;
         } else {
-            btn.layer.borderColor = [color_Blue CGColor];
+            btn.layer.borderColor = [[CommonFunction getGenderColor] CGColor];
             btn.layer.borderWidth = 1;
             [btn setAllTitle:str_CheckIn_Tips1];
-            [btn setAllTitleColor:color_Blue];
+            [btn setAllTitleColor:[CommonFunction getGenderColor]];
         }
         [btn.titleLabel setFont:font_Normal_14];
         [btn addTarget:self action:@selector(checkIn:) forControlEvents:UIControlEventTouchUpInside];
@@ -245,7 +245,7 @@
         UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(viewHeight + 2, 0, viewWidth - viewHeight - 2, viewHeight)];
         labelName.text = str_Share_Tips1;
         labelName.font = font_Normal_10;
-        labelName.textColor = color_Blue;
+        labelName.textColor = [CommonFunction getGenderColor];
         [view addSubview:labelName];
         view.hidden = YES;
         viewLogo = view;

@@ -98,7 +98,7 @@
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,0,0)];
         [label setNumberOfLines:0];
         label.lineBreakMode = NSLineBreakByWordWrapping;
-        [label setTextColor:color_Blue];
+        [label setTextColor:[CommonFunction getGenderColor]];
         UIFont *font = font_Normal_16;
         [label setFont:font];
         [label setText:version];

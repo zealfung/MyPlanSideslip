@@ -192,8 +192,8 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     
     threeSubView.fixLeftWidth = CGRectGetWidth(self.view.bounds)/2;
     threeSubView.fixCenterWidth = CGRectGetWidth(self.view.bounds)/2;
-    [threeSubView.leftButton setAllTitleColor:color_Blue];
-    [threeSubView.centerButton setAllTitleColor:color_Blue];
+    [threeSubView.leftButton setAllTitleColor:[CommonFunction getGenderColor]];
+    [threeSubView.centerButton setAllTitleColor:[CommonFunction getGenderColor]];
     threeSubView.leftButton.titleLabel.font = font_Bold_18;
     threeSubView.centerButton.titleLabel.font = font_Bold_18;
     [threeSubView.leftButton setAllTitle:str_FirstView_11];
@@ -220,7 +220,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     frame.origin.y = self.threeSubView.frame.size.height - kPlan_MenuLineHeight;
     frame.size.height = kPlan_MenuLineHeight;
     UIView *view = [[UIView alloc] initWithFrame:frame];
-    view.backgroundColor = color_Blue;
+    view.backgroundColor = [CommonFunction getGenderColor];
     [self.threeSubView addSubview:view];
     self.underLineView = view;
 }

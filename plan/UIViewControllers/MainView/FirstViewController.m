@@ -377,7 +377,7 @@ NSUInteger const kSecondsPerDay = 86400;
     
     ThreeSubView *topTitleView2 = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight, subviewWidth, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
     [topTitleView2.leftButton.titleLabel setFont:font_Normal_16];
-    [topTitleView2.leftButton setAllTitleColor:color_Blue];
+    [topTitleView2.leftButton setAllTitleColor:[CommonFunction getGenderColor]];
     [topTitleView2.leftButton setAllTitle:str_FirstView_11];
     topTitleView2.fixLeftWidth = subviewWidth;
     [self addSeparatorForRight:topTitleView2];
@@ -387,7 +387,7 @@ NSUInteger const kSecondsPerDay = 86400;
     
     ThreeSubView *topTitleView3 = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight * 2, subviewWidth, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
     [topTitleView3.leftButton.titleLabel setFont:font_Normal_16];
-    [topTitleView3.leftButton setAllTitleColor:color_Blue];
+    [topTitleView3.leftButton setAllTitleColor:[CommonFunction getGenderColor]];
     [topTitleView3.leftButton setAllTitle:str_FirstView_12];
     topTitleView3.fixLeftWidth = subviewWidth;
     [self addSeparatorForRight:topTitleView3];
@@ -465,7 +465,7 @@ NSUInteger const kSecondsPerDay = 86400;
     UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(viewHeight + 2, 0, viewWidth - viewHeight - 2, viewHeight)];
     labelName.text = str_Share_Tips1;
     labelName.font = font_Normal_10;
-    labelName.textColor = color_Blue;
+    labelName.textColor = [CommonFunction getGenderColor];
     [view addSubview:labelName];
     view.hidden = YES;
     shareLogoView = view;
