@@ -67,6 +67,21 @@
     [self reloadPostsData];
 }
 
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    //计算最近一次加载数据时间是否已经超过十分钟，如果是，就自动刷新一次数据
+    NSDate *lastUpdatedTime = [UserDefaults objectForKey:str_PostsList_UpdatedTime];
+    if (lastUpdatedTime) {
+        NSTimeInterval late = [lastUpdatedTime timeIntervalSince1970]*1;
+        NSTimeInterval now=[[NSDate date] timeIntervalSince1970]*1;
+
+        if ((now-late)/3600 > 10) {//大于十分钟，自动重载一次数据
+            [self reloadBannerData];
+            [self reloadPostsData];
+        }
+    }
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -479,6 +494,10 @@
         isLoadingPosts = NO;
         [weakSelf.tableView.mj_header endRefreshing];
         [weakSelf.tableView.mj_footer endRefreshing];
+        //记录加载时间
+        [UserDefaults setObject:[NSDate date] forKey:str_PostsList_UpdatedTime];
+        [UserDefaults synchronize];
+        
         if (!error && array.count > 0) {
             [postsArray addObjectsFromArray:array];
             [weakSelf checkIsLike:postsArray];

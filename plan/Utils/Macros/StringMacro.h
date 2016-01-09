@@ -201,6 +201,7 @@
 #define str_Sync_End @"同步数据完成"
 
 #define str_Tmp_Flag @"kTmpFlag"
+#define str_PostsList_UpdatedTime @"kPostsListLastLoadDataTime"
 #define str_TableName_Settings @"t_settings"
 #define str_TableName_Plan @"t_plan"
 #define str_TableName_Photo @"t_photo"
