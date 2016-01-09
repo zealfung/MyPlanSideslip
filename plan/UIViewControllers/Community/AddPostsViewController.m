@@ -96,6 +96,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 - (void)saveAction:(UIButton *)button {
     if (isSending) return;
     
+    [self.view endEditing:YES];
     content = self.textViewContent.text;
     if (content.length == 0 && photoArray.count < 2) {
         [self alertButtonMessage:str_Posts_Add_Tips2];
@@ -159,11 +160,12 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
             uploadCount += 1;
             if (uploadCount == photoArray.count) {
                 [obj addObjectsFromArray:uploadPhotoArray forKey:@"imgURLArray"];
-                [obj updateInBackground];
-                [weakSelf hideHUD];
-                [NotificationCenter postNotificationName:Notify_Posts_New object:nil];
-                [weakSelf alertToastMessage:@"发送成功"];
-                [weakSelf.navigationController popViewControllerAnimated:YES];
+                [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+                    [weakSelf hideHUD];
+                    [NotificationCenter postNotificationName:Notify_Posts_New object:nil];
+                    [weakSelf alertToastMessage:@"发送成功"];
+                    [weakSelf.navigationController popViewControllerAnimated:YES];
+                }];
             }
         } else if (error) {
             [weakSelf hideHUD];
