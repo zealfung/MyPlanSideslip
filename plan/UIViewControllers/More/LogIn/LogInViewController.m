@@ -71,6 +71,7 @@
         return;
     }
     [self showHUD];
+    [self.view endEditing:YES];
     __weak typeof(self) weakSelf = self;
     NSString *acountEmail = [self.txtEmail.text lowercaseString];
     //登录账号

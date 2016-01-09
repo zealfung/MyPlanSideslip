@@ -207,6 +207,7 @@ NSUInteger const kToolBarHeight = 44;
 }
 
 - (void)savePlan {
+    [self.view endEditing:YES];
     NSString *timeNow = [CommonFunction getTimeNowString];
     NSString* planid = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyyMMddHHmmss];
     

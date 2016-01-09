@@ -227,11 +227,10 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
 #pragma mark - action
 - (void)saveAction:(UIButton *)button {
     if (self.photoArray.count < 2) {
-        
         [self alertButtonMessage:str_Photo_Add_Tips5];
         return;
     }
-    
+    [self.view endEditing:YES];
     [self showHUD];
     
     NSString *timeNow = [CommonFunction getTimeNowString];
