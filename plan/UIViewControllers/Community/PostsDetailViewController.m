@@ -156,18 +156,16 @@ NSInteger const kDeleteTag = 20160110;
     NSString *content = [self.posts objectForKey:@"content"];
     CGFloat yOffset = 10;
     if (content && content.length > 0) {
-        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,0,0)];
-        [label setNumberOfLines:0];
-        label.lineBreakMode = NSLineBreakByWordWrapping;
-        [label setTextColor:color_333333];
-        UIFont *font = font_Normal_16;
-        [label setFont:font];
-        [label setText:content];
-        CGSize size = CGSizeMake(WIDTH_FULL_SCREEN - 24, 2000);
-        CGSize labelsize = [content sizeWithFont:font constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
-        label.frame = CGRectMake(12, yOffset, labelsize.width, labelsize.height);
-        [self.scrollView addSubview:label];
-        yOffset = labelsize.height + 20;
+        UITextView *contentView = [[UITextView alloc] initWithFrame:CGRectMake(5, yOffset, WIDTH_FULL_SCREEN - 10, 240)];
+        contentView.textColor = color_333333;
+        contentView.font = font_Normal_16;
+        contentView.editable = NO;
+        contentView.scrollEnabled = NO;
+        contentView.text = content;
+        [contentView sizeToFit];
+        [self.scrollView addSubview:contentView];
+
+        yOffset = contentView.frame.size.height + 20;
     }
     NSArray *imgURLArray = [NSArray arrayWithArray:[self.posts objectForKey:@"imgURLArray"]];
     if (imgURLArray && imgURLArray.count > 0) {
@@ -260,6 +258,11 @@ NSInteger const kDeleteTag = 20160110;
         yOffset = HEIGHT_FULL_VIEW;
     }
     [self.scrollView setContentSize:CGSizeMake(WIDTH_FULL_SCREEN, yOffset)];
+}
+
+- (CGSize)contentSizeOfTextView:(UITextView *)textView {
+    CGSize textViewSize = [textView sizeThatFits:CGSizeMake(textView.frame.size.width, FLT_MAX)];
+    return textViewSize;
 }
 
 - (void)createDetailHeaderView {
