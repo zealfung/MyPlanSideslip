@@ -29,6 +29,7 @@
     BOOL isLoadingBanner;
     BOOL isLoadingPosts;
     BOOL isSendingLikes;
+    BOOL isLoadEnd;
     NSInteger startIndex;
     NSMutableArray *postsArray;
     SDCycleScrollView *bannerView;
@@ -380,7 +381,7 @@
             cell.textLabel.font = font_Bold_16;
         }
         if (indexPath.row == 1) {
-            cell.textLabel.text = @"网络罢工啦，点击重试~";
+            cell.textLabel.text = isLoadEnd ? @"网络罢工啦，点击重试~" : @"";
         } else {
             cell.textLabel.text = nil;
         }
@@ -492,6 +493,7 @@
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
         isLoadMore = NO;
         isLoadingPosts = NO;
+        isLoadEnd = YES;
         [weakSelf.tableView.mj_header endRefreshing];
         [weakSelf.tableView.mj_footer endRefreshing];
         //记录加载时间
