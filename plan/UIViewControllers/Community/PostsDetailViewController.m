@@ -14,6 +14,8 @@
 #import "PostsDetailContentCell.h"
 #import "PostsDetailViewController.h"
 
+NSInteger const kDeleteTag = 20160110;
+
 @interface PostsDetailViewController () <UITextViewDelegate, DOPNavbarMenuDelegate> {
     
     NSInteger numberOfItemsInRow;
@@ -22,6 +24,7 @@
     NSArray *commentsArray;
     NSInteger checkLikeCount;
     BmobObject *selectedComment;
+    BOOL isAuthor;
     BOOL isAnding;
 }
 
@@ -31,6 +34,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    isAuthor = [self checkIsAuthor];
     [self createNavBarButton];
     
     commentsArray = [NSArray array];
@@ -81,7 +85,9 @@
     if (menu == nil) {
         DOPNavbarMenuItem *itemRefresh = [DOPNavbarMenuItem ItemWithTitle:@"刷新" icon:[UIImage imageNamed:png_Btn_Refresh]];
         DOPNavbarMenuItem *itemShare = [DOPNavbarMenuItem ItemWithTitle:@"分享" icon:[UIImage imageNamed:png_Btn_Share66]];
-        DOPNavbarMenuItem *itemReport = [DOPNavbarMenuItem ItemWithTitle:@"举报" icon:[UIImage imageNamed:png_Btn_Report]];
+        NSString *reportTitle = isAuthor ? @"删除" : @"举报";
+        NSString *reportIcon = isAuthor ? png_Btn_Delete : png_Btn_Report;
+        DOPNavbarMenuItem *itemReport = [DOPNavbarMenuItem ItemWithTitle:reportTitle icon:[UIImage imageNamed:reportIcon]];
         menu = [[DOPNavbarMenu alloc] initWithItems:@[itemRefresh,itemShare,itemReport] width:self.view.dop_width maximumNumberInRow:numberOfItemsInRow];
         menu.backgroundColor = [CommonFunction getGenderColor];
         menu.separatarColor = [UIColor whiteColor];
@@ -114,13 +120,36 @@
             [self shareAction];
             break;
         case 2:
-            [self reportPostsAction];
+        {
+            if (isAuthor) {
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"删除帖子" message:@"如果确定，将删除该帖子" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+                alertView.tag = kDeleteTag;
+                [alertView show];
+            } else {
+                [self reportPostsAction];
+            }
+        }
             break;
         default:
             break;
     }
 }
 
+//检查是否是楼主
+- (BOOL)checkIsAuthor {
+    if ([LogIn isLogin]) {
+        BmobObject *postsAuthor = [self.posts objectForKey:@"author"];
+        NSString *postsUserObjectId = [postsAuthor objectForKey:@"userObjectId"];
+        BmobUser *user = [BmobUser getCurrentUser];
+        if ([postsUserObjectId isEqualToString:user.objectId]) {
+            return YES;
+        } else {
+            return NO;
+        }
+    } else {
+        return NO;
+    }
+}
 - (void)createDetailView {
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
 
@@ -665,6 +694,26 @@
     [ShareCenter showShareActionSheet:self.view title:str_App_Title content:[self.posts objectForKey:@"content"] shareUrl:@"" sharedImageURL:@""];
 }
 
+- (void)deleteAction {
+    if (isAnding) return;
+    
+    [self showHUD];
+    __weak typeof(self) weakSelf = self;
+    BmobObject *post = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:self.posts.objectId];
+    [post setObject:@"1" forKey:@"isDeleted"];
+    [post updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        isAnding = NO;
+        [weakSelf hideHUD];
+        if (isSuccessful) {
+            [NotificationCenter postNotificationName:Notify_Posts_New object:nil];
+            [weakSelf alertToastMessage:@"删除成功"];
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        } else {
+            [weakSelf alertButtonMessage:@"删除失败"];
+        }
+    }];
+}
+
 - (void)reportPostsAction {
     if (isAnding) return;
     
@@ -921,6 +970,12 @@
 
 - (void)textViewDidChange:(PlaceholderTextView *)textView {
     [textView checkShouldHidePlaceholder];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (alertView.tag == kDeleteTag && buttonIndex == 1) {
+        [self deleteAction];
+    }
 }
 
 - (void)sendContent:(NSString *)content {
