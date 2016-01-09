@@ -68,4 +68,10 @@
 //获取jpg图片的大小
 + (CGSize)getJPGImageSizeWithRequest:(NSMutableURLRequest*)request;
 
+//根据性别获取颜色
++ (UIColor *)getGenderColor;
+
+//根据性别获取icon图标
++ (UIImage *)getGenderIcon;
+
 @end

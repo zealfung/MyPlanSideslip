@@ -276,4 +276,25 @@ static NSString * const kKeyMinutes = @"minutes";
     }
 }
 
+//根据性别获取颜色
++ (UIColor *)getGenderColor {
+    //昵称：男蓝女粉
+    NSString *gender = [Config shareInstance].settings.gender;
+    if (gender && [gender isEqualToString:@"0"]) {
+        return color_Pink;
+    } else {
+        return color_Blue;
+    }
+}
+
+//根据性别获取icon图标
++ (UIImage *)getGenderIcon {
+    NSString *gender = [Config shareInstance].settings.gender;
+    if (gender && [gender isEqualToString:@"0"]) {
+        return [UIImage imageNamed:png_Icon_Gender_F_Selected];
+    } else {
+        return [UIImage imageNamed:png_Icon_Gender_M_Selected];
+    }
+}
+
 @end

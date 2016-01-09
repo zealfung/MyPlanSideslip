@@ -127,21 +127,16 @@
         if (![CommonFunction isEmptyString:[Config shareInstance].settings.nickname]) {
             nickname = [Config shareInstance].settings.nickname;
         }
-        //昵称：男蓝女粉
-        NSString *gender = [Config shareInstance].settings.gender;
+
         UILabel *labelNickName = [[UILabel alloc] initWithFrame:CGRectMake(nickNameWidth * 2 - nickNameHeight / 2, yOffset, nickNameWidth, nickNameHeight)];
         labelNickName.text = nickname;
         labelNickName.font = font_Normal_14;
         labelNickName.textAlignment = NSTextAlignmentCenter;
+        labelNickName.textColor = [CommonFunction getGenderColor];
         
         UIImageView *imgViewGender = [[UIImageView alloc] initWithFrame:CGRectMake(nickNameWidth * 3 - nickNameHeight / 2, yOffset, nickNameHeight, nickNameHeight)];
-        if (gender && [gender isEqualToString:@"0"]) {
-            labelNickName.textColor = color_Pink;
-            imgViewGender.image = [UIImage imageNamed:png_Icon_Gender_F_Selected];
-        } else {
-            labelNickName.textColor = color_Blue;
-            imgViewGender.image = [UIImage imageNamed:png_Icon_Gender_M_Selected];
-        }
+        imgViewGender.image = [CommonFunction getGenderIcon];
+        
         [scrollView addSubview:labelNickName];
         [scrollView addSubview:imgViewGender];
         yOffset = labelNickName.frame.origin.y + nickNameHeight + 10;

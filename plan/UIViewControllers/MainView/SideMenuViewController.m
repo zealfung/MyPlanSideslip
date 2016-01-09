@@ -88,12 +88,7 @@
     UILabel *nameLabel = [UILabel new];
     nameLabel.text = nickname;
     nameLabel.font = font_Bold_20;
-    NSString *gender = [Config shareInstance].settings.gender;
-    if (gender && [gender isEqualToString:@"0"]) {
-        nameLabel.textColor = color_Pink;
-    } else {
-        nameLabel.textColor = color_Blue;
-    }
+    nameLabel.textColor = [CommonFunction getGenderColor];
     nameLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [headerView addSubview:nameLabel];
     

@@ -215,13 +215,7 @@ NSUInteger const kSecondsPerDay = 86400;
     } rightButtonSelectBlock:nil];
     
     [nickNameSubView.centerButton.titleLabel setFont:font_Bold_32];
-    //昵称：男蓝女粉
-    NSString *gender = [Config shareInstance].settings.gender;
-    if (gender && [gender isEqualToString:@"0"]) {
-        [nickNameSubView.centerButton setAllTitleColor:color_Pink];
-    } else {
-        [nickNameSubView.centerButton setAllTitleColor:color_Blue];
-    }
+    [nickNameSubView.centerButton setAllTitleColor:[CommonFunction getGenderColor]];
     [nickNameSubView.centerButton setAllTitle:nickname];
     [nickNameSubView autoLayout];
     
