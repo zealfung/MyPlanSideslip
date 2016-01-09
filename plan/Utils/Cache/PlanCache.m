@@ -1128,6 +1128,10 @@ static NSMutableDictionary * __contactsOnlineState;
             if (!settings.isShowGestureTrack) {
                 settings.isShowGestureTrack = @"1";
             }
+            
+            if (!settings.objectId || settings.objectId.length ==0) {
+                [self getUserSettingsObjectId];
+            }
         }
         [rs close];
         
@@ -2045,6 +2049,20 @@ static NSMutableDictionary * __contactsOnlineState;
         
         return task;
     }
+}
+
++ (void)getUserSettingsObjectId {
+    BmobUser *user = [BmobUser getCurrentUser];
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+
+        if (!error && array.count == 1) {
+            BmobObject *settings = array[0];
+            [Config shareInstance].settings.objectId = settings.objectId;
+            [PlanCache storePersonalSettings:[Config shareInstance].settings];
+        }
+    }];
 }
 
 @end
