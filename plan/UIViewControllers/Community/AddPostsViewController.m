@@ -132,11 +132,11 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
         if (isSuccessful) {
             if (photoArray.count == 0) {
                 [NotificationCenter postNotificationName:Notify_Posts_New object:nil];
-                [weakSelf alertToastMessage:@"发送成功"];
+                [weakSelf alertToastMessage:str_Send_Success];
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             }
         } else {
-            [weakSelf alertButtonMessage:@"发送失败"];
+            [weakSelf alertButtonMessage:str_Send_Fail];
             NSLog(@"%@",error);
         }
     }];
@@ -170,13 +170,13 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
                 [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
                     [weakSelf hideHUD];
                     [NotificationCenter postNotificationName:Notify_Posts_New object:nil];
-                    [weakSelf alertToastMessage:@"发送成功"];
+                    [weakSelf alertToastMessage:str_Send_Success];
                     [weakSelf.navigationController popViewControllerAnimated:YES];
                 }];
             }
         } else if (error) {
             [weakSelf hideHUD];
-            [weakSelf alertButtonMessage:@"发送失败"];
+            [weakSelf alertButtonMessage:str_Send_Fail];
         }
     } progress:^(CGFloat progress) {
         CGFloat smallProgress = progress;

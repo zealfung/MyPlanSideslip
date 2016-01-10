@@ -194,7 +194,7 @@
         BmobObject *author = [obj objectForKey:@"author"];
         NSString *nickName = [author objectForKey:@"nickName"];
         if (!nickName || nickName.length == 0) {
-            nickName = @"匿名者";
+            nickName = str_NickName;
         }
         NSString *avatarURL = [author objectForKey:@"avatarURL"];
         NSString *content = [obj objectForKey:@"content"];
@@ -381,7 +381,7 @@
             cell.textLabel.font = font_Bold_16;
         }
         if (indexPath.row == 1) {
-            cell.textLabel.text = isLoadEnd ? @"网络罢工啦，点击重试~" : @"";
+            cell.textLabel.text = isLoadEnd ? str_PostsList_Tips1 : @"";
         } else {
             cell.textLabel.text = nil;
         }
@@ -415,6 +415,7 @@
         NSString *url = headerDetailURLArray[index];
         WebViewController *controller = [[WebViewController alloc] init];
         controller.url = url;
+        controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
     }
     

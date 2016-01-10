@@ -12,7 +12,6 @@
 #import "DOPNavbarMenu.h"
 #import "SDPhotoBrowser.h"
 #import "LogInViewController.h"
-#import "PostsDetailContentCell.h"
 #import "PostsDetailViewController.h"
 
 NSInteger const kDeleteTag = 20160110;
@@ -88,9 +87,9 @@ NSInteger const kDeleteTag = 20160110;
 
 - (DOPNavbarMenu *)menu {
     if (menu == nil) {
-        DOPNavbarMenuItem *itemRefresh = [DOPNavbarMenuItem ItemWithTitle:@"刷新" icon:[UIImage imageNamed:png_Btn_Refresh]];
-        DOPNavbarMenuItem *itemShare = [DOPNavbarMenuItem ItemWithTitle:@"分享" icon:[UIImage imageNamed:png_Btn_Share66]];
-        NSString *reportTitle = isAuthor ? @"删除" : @"举报";
+        DOPNavbarMenuItem *itemRefresh = [DOPNavbarMenuItem ItemWithTitle:str_Refresh icon:[UIImage imageNamed:png_Btn_Refresh]];
+        DOPNavbarMenuItem *itemShare = [DOPNavbarMenuItem ItemWithTitle:str_Share icon:[UIImage imageNamed:png_Btn_Share66]];
+        NSString *reportTitle = isAuthor ? str_Delete : str_Report;
         NSString *reportIcon = isAuthor ? png_Btn_Delete : png_Btn_Report;
         DOPNavbarMenuItem *itemReport = [DOPNavbarMenuItem ItemWithTitle:reportTitle icon:[UIImage imageNamed:reportIcon]];
         menu = [[DOPNavbarMenu alloc] initWithItems:@[itemRefresh,itemShare,itemReport] width:self.view.dop_width maximumNumberInRow:numberOfItemsInRow];
@@ -127,7 +126,7 @@ NSInteger const kDeleteTag = 20160110;
         case 2:
         {
             if (isAuthor) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"删除帖子" message:@"如果确定，将删除该帖子" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:str_Posts_Delete message:str_PostsList_Tips2 delegate:self cancelButtonTitle:str_Cancel otherButtonTitles:str_OK, nil];
                 alertView.tag = kDeleteTag;
                 [alertView show];
             } else {
@@ -204,7 +203,7 @@ NSInteger const kDeleteTag = 20160110;
     UILabel *labelCommentTitle = [[UILabel alloc] initWithFrame:CGRectMake(12, yOffset, 30, 20)];
     [labelCommentTitle setTextColor:color_666666];
     [labelCommentTitle setFont:font_Normal_13];
-    [labelCommentTitle setText:@"评论"];
+    [labelCommentTitle setText:str_Comment];
     [self.scrollView addSubview:labelCommentTitle];
     //分割线
     UILabel *labelLine = [[UILabel alloc] initWithFrame:CGRectMake(12 + 30, yOffset + 9.5, WIDTH_FULL_SCREEN - 24 - 30, 1)];
@@ -227,7 +226,7 @@ NSInteger const kDeleteTag = 20160110;
         [labelNoComment setTextColor:color_666666];
         [labelNoComment setFont:font_Normal_16];
         labelNoComment.textAlignment = NSTextAlignmentCenter;
-        [labelNoComment setText:@"暂无评论，快占沙发~"];
+        [labelNoComment setText:str_PostsDetail_Comment_Tips2];
         [self.scrollView addSubview:labelNoComment];
         yOffset += 100;
     }
@@ -248,7 +247,7 @@ NSInteger const kDeleteTag = 20160110;
     BmobObject *author = [self.posts objectForKey:@"author"];
     NSString *nickName = [author objectForKey:@"nickName"];
     if (!nickName || nickName.length == 0) {
-        nickName = @"匿名者";
+        nickName = str_NickName;
     }
     NSString *avatarURL = [author objectForKey:@"avatarURL"];
     NSString *isHighlight = [self.posts objectForKey:@"isHighlight"];
@@ -281,7 +280,7 @@ NSInteger const kDeleteTag = 20160110;
         btn.layer.cornerRadius = 5;
         btn.layer.borderWidth = 1;
         btn.layer.borderColor = [color_Blue CGColor];
-        [btn setAllTitle:@"精华"];
+        [btn setAllTitle:str_Highlight];
         [btn setAllTitleColor:color_Blue];
         btn.titleLabel.font = font_Normal_13;
         [self.headerView addSubview:btn];
@@ -292,7 +291,7 @@ NSInteger const kDeleteTag = 20160110;
     BmobObject *commentAuthor = [comment objectForKey:@"author"];
     NSString *nickName = [commentAuthor objectForKey:@"nickName"];
     if (!nickName || nickName.length == 0) {
-        nickName = @"匿名者";
+        nickName = str_NickName;
     }
     NSString *avatarURL = [commentAuthor objectForKey:@"avatarURL"];
     NSInteger likesCount = [[comment objectForKey:@"likesCount"] integerValue];
@@ -330,7 +329,7 @@ NSInteger const kDeleteTag = 20160110;
     NSString *postsUserObjectId = [postsAuthor objectForKey:@"userObjectId"];
     NSString *commentUserObjectId = [commentAuthor objectForKey:@"userObjectId"];
     if ([postsUserObjectId isEqualToString:commentUserObjectId]) {
-        [tsViewNickname.centerButton setAllTitle:@"楼主"];
+        [tsViewNickname.centerButton setAllTitle:str_Author];
         tsViewNickname.fixCenterWidth = 30;
     } else {
         [tsViewNickname.centerButton setAllTitle:@""];
@@ -363,7 +362,7 @@ NSInteger const kDeleteTag = 20160110;
     tsViewLikes.fixLeftWidth = 30;
     [tsViewLikes.leftButton.titleLabel setFont:font_Normal_11];
     [tsViewLikes.leftButton setAllTitleColor:color_666666];
-    [tsViewLikes.leftButton setAllTitle:@"举报"];
+    [tsViewLikes.leftButton setAllTitle:str_Report];
     tsViewLikes.leftButton.layer.cornerRadius = 5;
     tsViewLikes.leftButton.layer.borderWidth = 0.5;
     tsViewLikes.leftButton.layer.borderColor = [color_666666 CGColor];
@@ -376,11 +375,11 @@ NSInteger const kDeleteTag = 20160110;
 
     tsViewLikes.fixRightWidth = 40;
     [tsViewLikes.rightButton.titleLabel setFont:font_Normal_11];
-    [tsViewLikes.rightButton setAllTitle:@"赞"];
+    [tsViewLikes.rightButton setAllTitle:str_Like];
     if (likesCount > 0) {
-        [tsViewLikes.rightButton setAllTitle:[NSString stringWithFormat:@"%@赞", [CommonFunction checkNumberForThousand:likesCount]]];
+        [tsViewLikes.rightButton setAllTitle:[NSString stringWithFormat:@"%@%@", [CommonFunction checkNumberForThousand:likesCount], str_Like]];
     } else {
-        [tsViewLikes.rightButton setAllTitle:@"赞"];
+        [tsViewLikes.rightButton setAllTitle:str_Like];
     }
     if (isLike) {
         tsViewLikes.rightButton.selected = YES;
@@ -412,7 +411,7 @@ NSInteger const kDeleteTag = 20160110;
         UILabel *labelReply = [[UILabel alloc] initWithFrame:CGRectMake(12, yOffset, WIDTH_FULL_SCREEN / 2, 20)];
         labelReply.textColor = color_666666;
         labelReply.font = font_Normal_13;
-        labelReply.text = [NSString stringWithFormat:@"回复 %@：", replyNickName];
+        labelReply.text = [NSString stringWithFormat:@"%@ %@：", str_Reply, replyNickName];
         [view addSubview:labelReply];
         yOffset += 25;
     }
@@ -495,7 +494,7 @@ NSInteger const kDeleteTag = 20160110;
     
     [self.bottomBtnView.rightButton setImage:[UIImage imageNamed:png_Icon_Posts_Comment] forState:UIControlStateNormal];
     [self.bottomBtnView.rightButton setImage:[UIImage imageNamed:png_Icon_Posts_Comment] forState:UIControlStateSelected];
-    [self.bottomBtnView.rightButton setAllTitle:@"回复"];
+    [self.bottomBtnView.rightButton setAllTitle:str_Reply];
     
     self.bottomBtnView.leftButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     self.bottomBtnView.centerButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
@@ -635,7 +634,7 @@ NSInteger const kDeleteTag = 20160110;
             BmobObject *commentAuthor = [selectedComment objectForKey:@"author"];
             NSString *nickName = [commentAuthor objectForKey:@"nickName"];
             if (nickName && nickName.length > 0) {
-                self.inputView.placeholder = [NSString stringWithFormat:@"回复 %@：", nickName];
+                self.inputView.placeholder = [NSString stringWithFormat:@"%@ %@：", str_Reply, nickName];
             }
         } else {
             self.inputView.placeholder = str_PostsDetail_Comment_Tips1;
@@ -688,10 +687,10 @@ NSInteger const kDeleteTag = 20160110;
         [weakSelf hideHUD];
         if (isSuccessful) {
             [NotificationCenter postNotificationName:Notify_Posts_New object:nil];
-            [weakSelf alertToastMessage:@"删除成功"];
+            [weakSelf alertToastMessage:str_Delete_Success];
             [weakSelf.navigationController popViewControllerAnimated:YES];
         } else {
-            [weakSelf alertButtonMessage:@"删除失败"];
+            [weakSelf alertButtonMessage:str_Delete_Fail];
         }
     }];
 }
@@ -715,9 +714,9 @@ NSInteger const kDeleteTag = 20160110;
         isAnding = NO;
         [weakSelf hideHUD];
         if (isSuccessful) {
-            [weakSelf alertToastMessage:@"举报成功"];
+            [weakSelf alertToastMessage:str_Report_Success];
         } else {
-            [weakSelf alertButtonMessage:@"举报失败"];
+            [weakSelf alertButtonMessage:str_Report_Fail];
         }
     }];
 }
@@ -741,9 +740,9 @@ NSInteger const kDeleteTag = 20160110;
         isAnding = NO;
         [weakSelf hideHUD];
         if (isSuccessful) {
-            [weakSelf alertToastMessage:@"举报成功"];
+            [weakSelf alertToastMessage:str_Report_Success];
         } else {
-            [weakSelf alertButtonMessage:@"举报失败"];
+            [weakSelf alertButtonMessage:str_Report_Fail];
         }
     }];
 }
@@ -1011,10 +1010,10 @@ NSInteger const kDeleteTag = 20160110;
             //把评论关联到帖子的评论字段
             [weakSelf relationCommentToPost:newComments.objectId];
 
-            [weakSelf alertToastMessage:@"评论成功"];
+            [weakSelf alertToastMessage:str_Comment_Success];
             [weakSelf getCommets];
         } else {
-            [weakSelf alertButtonMessage:@"评论失败"];
+            [weakSelf alertButtonMessage:str_Comment_Fail];
             NSLog(@"%@",error);
         }
     }];
