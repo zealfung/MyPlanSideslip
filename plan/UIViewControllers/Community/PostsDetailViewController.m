@@ -27,6 +27,7 @@ NSInteger const kDeleteTag = 20160110;
     NSArray *commentsArray;
     NSInteger checkLikeCount;
     BmobObject *selectedComment;
+    NSInteger postImgDownloadCount;
     BOOL isAuthor;
     BOOL isAnding;
 }
@@ -43,6 +44,7 @@ NSInteger const kDeleteTag = 20160110;
     commentsArray = [NSArray array];
     [self createDetailHeaderView];
     [self getCommets];
+    [self downloadPostImages];
     [self createBottomBtnView];
 
     UITapGestureRecognizer *recognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(scrollViewTouch)];
@@ -155,7 +157,7 @@ NSInteger const kDeleteTag = 20160110;
 }
 - (void)createDetailView {
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-
+    
     NSString *content = [self.posts objectForKey:@"content"];
     CGFloat yOffset = 10;
     if (content && content.length > 0) {
@@ -167,66 +169,28 @@ NSInteger const kDeleteTag = 20160110;
         contentView.text = content;
         [contentView sizeToFit];
         [self.scrollView addSubview:contentView];
-
+        
         yOffset = contentView.frame.size.height + 20;
     }
-    imgURLArray = [NSArray arrayWithArray:[self.posts objectForKey:@"imgURLArray"]];
-    if (imgURLArray && imgURLArray.count > 0) {
-        imgArray = [NSMutableArray array];
-        for (NSInteger i=0; i < imgURLArray.count; i++) {
-            NSURL *URL = nil;
-            if ([imgURLArray[i] isKindOfClass:[NSString class]]) {
-                [imgArray addObject:[UIImage imageNamed:png_Bg_SideTop]];
-                URL = [NSURL URLWithString:imgURLArray[i]];
-                NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
-                NSString *pathExtendsion = [URL.pathExtension lowercaseString];
-                
-                CGSize size = CGSizeZero;
-                if ([pathExtendsion isEqualToString:@"png"]) {
-                    size =  [CommonFunction getPNGImageSizeWithRequest:request];
-                } else if([pathExtendsion isEqual:@"gif"]) {
-                    size =  [CommonFunction getGIFImageSizeWithRequest:request];
-                } else {
-                    size = [CommonFunction getJPGImageSizeWithRequest:request];
-                }
-                if (CGSizeEqualToSize(CGSizeZero, size)) { // 如果获取文件头信息失败,发送异步请求请求原图
-                    NSData *data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:URL] returningResponse:nil error:nil];
-                    UIImage *image = [UIImage imageWithData:data];
-                    if (image) {
-                        size = image.size;
-                    }
-                    CGFloat kWidth = WIDTH_FULL_SCREEN - 10;
-                    CGFloat kHeight = fabs(WIDTH_FULL_SCREEN * fabs(size.height) / fabs(size.width));
-
-                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, yOffset, kWidth, kHeight)];
-                    imageView.backgroundColor = [UIColor clearColor];
-                    imageView.image = image;
-                    imageView.clipsToBounds = YES;
-                    imageView.contentMode = UIViewContentModeScaleAspectFill; //UIViewContentModeScaleToFill;
-                    [self.scrollView addSubview:imageView];
-                    yOffset += kHeight + 3;
-                } else {
-                    CGFloat kWidth = WIDTH_FULL_SCREEN - 10;
-                    CGFloat kHeight = fabs(WIDTH_FULL_SCREEN * fabs(size.height) / fabs(size.width));
-                    
-                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, yOffset, kWidth, kHeight)];
-                    imageView.backgroundColor = [UIColor clearColor];
-                    imageView.clipsToBounds = YES;
-                    imageView.contentMode = UIViewContentModeScaleAspectFill;//UIViewContentModeScaleToFill;
-                    imageView.tag = i;
-                    [imageView sd_setImageWithURL:URL placeholderImage:imgArray[i] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                        if (!error && image) {
-                            imgArray[i] = image;
-                        }
-                    }];
-                    imageView.userInteractionEnabled = YES;
-                    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedImageAction:)];
-                    [imageView addGestureRecognizer:singleTap];
-                    
-                    [self.scrollView addSubview:imageView];
-                    yOffset += kHeight + 3;
-                }
-            }
+    
+    if (imgArray && imgArray.count > 0) {
+        for (NSInteger i=0; i < imgArray.count; i++) {
+            UIImage *image = imgArray[i];
+            CGFloat kWidth = WIDTH_FULL_SCREEN - 10;
+            CGFloat kHeight = WIDTH_FULL_SCREEN * image.size.height / image.size.width;
+            
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, yOffset, kWidth, kHeight)];
+            imageView.backgroundColor = [UIColor clearColor];
+            imageView.clipsToBounds = YES;
+            imageView.contentMode = UIViewContentModeScaleAspectFit;
+            imageView.tag = i;
+            imageView.image = image;
+            imageView.userInteractionEnabled = YES;
+            UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedImageAction:)];
+            [imageView addGestureRecognizer:singleTap];
+            
+            [self.scrollView addSubview:imageView];
+            yOffset += kHeight + 3;
         }
     }
     
@@ -608,6 +572,40 @@ NSInteger const kDeleteTag = 20160110;
             [weakSelf createDetailView];
         }
     }];
+}
+
+- (void)downloadPostImages {
+    imgURLArray = [NSArray arrayWithArray:[self.posts objectForKey:@"imgURLArray"]];
+    if (imgURLArray && imgURLArray.count > 0) {
+        
+        if (!imgArray) {
+            imgArray = [NSMutableArray array];
+            for (NSInteger i=0; i < imgURLArray.count; i++) {
+                NSURL *URL = nil;
+                if ([imgURLArray[i] isKindOfClass:[NSString class]]) {
+                    
+                    UIImage *imgDefault = [UIImage imageNamed:png_Bg_SideTop];
+                    [imgArray addObject:imgDefault];
+                    URL = [NSURL URLWithString:imgURLArray[i]];
+                    
+                    CGFloat kWidth = WIDTH_FULL_SCREEN - 10;
+                    CGFloat kHeight = WIDTH_FULL_SCREEN * imgDefault.size.height / imgDefault.size.width;
+                    
+                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 0, kWidth, kHeight)];
+                    __weak typeof(self) weakSelf = self;
+                    [imageView sd_setImageWithURL:URL placeholderImage:imgArray[i] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                        if (!error && image) {
+                            postImgDownloadCount ++;
+                            imgArray[i] = image;
+                            if (postImgDownloadCount == imgURLArray.count) {
+                                [weakSelf createDetailView];
+                            }
+                        }
+                    }];
+                }
+            }
+        }
+    }
 }
 
 - (void)likeAction {
