@@ -60,7 +60,7 @@ static NSString * const kKeyMinutes = @"minutes";
 
 //压缩图片
 + (UIImage *)compressImage:(UIImage *)image {
-    NSData *imgData = UIImageJPEGRepresentation(image, 0.7);
+    NSData *imgData = UIImageJPEGRepresentation(image, 0.5);
     return [UIImage imageWithData:imgData];
 }
 
