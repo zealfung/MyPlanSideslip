@@ -31,6 +31,8 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     NSMutableArray *uploadPhotoArray;
     PageScrollView *pageScrollView;
     NSInteger uploadCount;
+    CGFloat uploadProgress1;
+    CGFloat uploadProgress2;
 }
 
 @end
@@ -104,7 +106,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     }
     
     [self showHUD];
-
+    
     //去掉那张新增按钮图
     if (canAddPhoto) {
         [photoArray removeObjectAtIndex:photoArray.count - 1];
@@ -151,6 +153,11 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 }
 
 - (void)uploadImage:(UIImage *)image index:(NSInteger)index obj:(BmobObject *)obj {
+    if (index == 0) {
+        uploadProgress1 = 0;
+    } else {
+        uploadProgress2 = 0;
+    }
     __weak typeof(self) weakSelf = self;
     NSData *imgData = UIImageJPEGRepresentation(image, 1.0);
     [BmobProFile uploadFileWithFilename:@"imgPhoto.png" fileData:imgData block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
@@ -172,6 +179,16 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
             [weakSelf alertButtonMessage:@"发送失败"];
         }
     } progress:^(CGFloat progress) {
+        CGFloat smallProgress = progress;
+        if (photoArray.count > 1) {
+            if (index == 0) {
+                uploadProgress1 = progress;
+            } else {
+                uploadProgress2 = progress;
+            }
+            smallProgress = uploadProgress1 > uploadProgress2 ? uploadProgress2 : uploadProgress1;
+        }
+        weakSelf.hudText = [NSString stringWithFormat:@"%0.0f%%", smallProgress * 100];
         //上传进度
         NSLog(@"上传帖子图片进度： %f",progress);
     }];

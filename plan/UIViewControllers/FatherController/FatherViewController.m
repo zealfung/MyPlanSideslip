@@ -151,6 +151,10 @@
     }
 }
 
+- (void)setHudText:(NSString *)hudText {
+    self.hud.labelText = hudText;
+}
+
 @end
 
 

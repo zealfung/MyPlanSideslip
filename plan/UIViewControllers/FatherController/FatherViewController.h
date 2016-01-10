@@ -12,6 +12,7 @@
 
 @property (nonatomic, strong, readonly) UIButton *backButton;
 @property (nonatomic, assign) BOOL isPush;//是否是push进来的
+@property (nonatomic, strong) NSString *hudText;
 
 //创建导航栏文字按钮
 -(UIBarButtonItem *)createBarButtonItemWithTitle:(NSString *)title titleColor:(UIColor *)color font:(UIFont *)font selector:(SEL)selector;
