@@ -10,17 +10,20 @@
 #import "ShareCenter.h"
 #import "BmobRelation.h"
 #import "DOPNavbarMenu.h"
+#import "SDPhotoBrowser.h"
 #import "LogInViewController.h"
 #import "PostsDetailContentCell.h"
 #import "PostsDetailViewController.h"
 
 NSInteger const kDeleteTag = 20160110;
 
-@interface PostsDetailViewController () <UITextViewDelegate, DOPNavbarMenuDelegate> {
+@interface PostsDetailViewController () <UITextViewDelegate, DOPNavbarMenuDelegate, SDPhotoBrowserDelegate> {
     
     NSInteger numberOfItemsInRow;
     DOPNavbarMenu *menu;
     CGFloat cell0Height;
+    NSMutableArray *imgArray;
+    NSArray *imgURLArray;
     NSArray *commentsArray;
     NSInteger checkLikeCount;
     BmobObject *selectedComment;
@@ -167,12 +170,13 @@ NSInteger const kDeleteTag = 20160110;
 
         yOffset = contentView.frame.size.height + 20;
     }
-    NSArray *imgURLArray = [NSArray arrayWithArray:[self.posts objectForKey:@"imgURLArray"]];
+    imgURLArray = [NSArray arrayWithArray:[self.posts objectForKey:@"imgURLArray"]];
     if (imgURLArray && imgURLArray.count > 0) {
-        
+        imgArray = [NSMutableArray array];
         for (NSInteger i=0; i < imgURLArray.count; i++) {
             NSURL *URL = nil;
             if ([imgURLArray[i] isKindOfClass:[NSString class]]) {
+                [imgArray addObject:[UIImage imageNamed:png_Bg_SideTop]];
                 URL = [NSURL URLWithString:imgURLArray[i]];
                 NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
                 NSString *pathExtendsion = [URL.pathExtension lowercaseString];
@@ -191,25 +195,34 @@ NSInteger const kDeleteTag = 20160110;
                     if (image) {
                         size = image.size;
                     }
-                    CGFloat kWidth = WIDTH_FULL_SCREEN;
+                    CGFloat kWidth = WIDTH_FULL_SCREEN - 10;
                     CGFloat kHeight = fabs(WIDTH_FULL_SCREEN * fabs(size.height) / fabs(size.width));
 
-                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, yOffset, kWidth, kHeight)];
+                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, yOffset, kWidth, kHeight)];
                     imageView.backgroundColor = [UIColor clearColor];
                     imageView.image = image;
                     imageView.clipsToBounds = YES;
-                    imageView.contentMode = UIViewContentModeScaleAspectFit; //UIViewContentModeScaleToFill;
+                    imageView.contentMode = UIViewContentModeScaleAspectFill; //UIViewContentModeScaleToFill;
                     [self.scrollView addSubview:imageView];
                     yOffset += kHeight + 3;
                 } else {
-                    CGFloat kWidth = WIDTH_FULL_SCREEN;
+                    CGFloat kWidth = WIDTH_FULL_SCREEN - 10;
                     CGFloat kHeight = fabs(WIDTH_FULL_SCREEN * fabs(size.height) / fabs(size.width));
                     
-                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, yOffset, kWidth, kHeight)];
+                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, yOffset, kWidth, kHeight)];
                     imageView.backgroundColor = [UIColor clearColor];
                     imageView.clipsToBounds = YES;
-                    imageView.contentMode = UIViewContentModeScaleAspectFit;//UIViewContentModeScaleToFill;
-                    [imageView sd_setImageWithURL:URL placeholderImage:[UIImage imageNamed:png_Bg_LaunchImage]];
+                    imageView.contentMode = UIViewContentModeScaleAspectFill;//UIViewContentModeScaleToFill;
+                    imageView.tag = i;
+                    [imageView sd_setImageWithURL:URL placeholderImage:imgArray[i] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+                        if (!error && image) {
+                            imgArray[i] = image;
+                        }
+                    }];
+                    imageView.userInteractionEnabled = YES;
+                    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedImageAction:)];
+                    [imageView addGestureRecognizer:singleTap];
+                    
                     [self.scrollView addSubview:imageView];
                     yOffset += kHeight + 3;
                 }
@@ -219,6 +232,8 @@ NSInteger const kDeleteTag = 20160110;
     
     if (yOffset < 200) {
         yOffset = 200;
+    } else {
+        yOffset += 20;
     }
 
     //评论区标题
@@ -595,52 +610,6 @@ NSInteger const kDeleteTag = 20160110;
     }];
 }
 
-- (CGFloat)cellHeight:(BmobObject *)obj {
-    NSString *content = [obj objectForKey:@"content"];
-    CGFloat yOffset = 10;
-    if (content && content.length > 0) {
-        UIFont *font = font_Normal_16;
-        CGSize size = CGSizeMake(WIDTH_FULL_SCREEN - 24, 2000);
-        CGSize labelsize = [content sizeWithFont:font constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
-        yOffset = labelsize.height + 20;
-    }
-    NSArray *imgURLArray = [NSArray arrayWithArray:[obj objectForKey:@"imgURLArray"]];
-    if (imgURLArray && imgURLArray.count > 0) {
-        
-        for (NSInteger i=0; i < imgURLArray.count; i++) {
-            NSURL *URL = nil;
-            if ([imgURLArray[i] isKindOfClass:[NSString class]]) {
-                URL = [NSURL URLWithString:imgURLArray[i]];
-                NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:URL];
-                NSString *pathExtendsion = [URL.pathExtension lowercaseString];
-                
-                CGSize size = CGSizeZero;
-                if ([pathExtendsion isEqualToString:@"png"]) {
-                    size =  [CommonFunction getPNGImageSizeWithRequest:request];
-                } else if([pathExtendsion isEqual:@"gif"]) {
-                    size =  [CommonFunction getGIFImageSizeWithRequest:request];
-                } else {
-                    size = [CommonFunction getJPGImageSizeWithRequest:request];
-                }
-                if (CGSizeEqualToSize(CGSizeZero, size)) { // 如果获取文件头信息失败,发送异步请求请求原图
-                    NSData *data = [NSURLConnection sendSynchronousRequest:[NSURLRequest requestWithURL:URL] returningResponse:nil error:nil];
-                    UIImage *image = [UIImage imageWithData:data];
-                    if (image) {
-                        size = image.size;
-                    }
-                }
-                CGFloat kWidth = fabs(size.width);
-                CGFloat kHeight = fabs(size.height);
-                if (kWidth > WIDTH_FULL_SCREEN) {
-                    kHeight = WIDTH_FULL_SCREEN * size.height / size.width;
-                }
-                yOffset += kHeight + 10;
-            }
-        }
-    }
-    return fabs(yOffset);
-}
-
 - (void)likeAction {
     if ([LogIn isLogin]) {
         self.bottomBtnView.leftButton.selected = !self.bottomBtnView.leftButton.selected;
@@ -687,6 +656,18 @@ NSInteger const kDeleteTag = 20160110;
         selectedComment = commentsArray[i];
     }
     [self commentAction];
+}
+
+- (void)clickedImageAction:(id)sender {
+    UITapGestureRecognizer *tap = (UITapGestureRecognizer *)sender;
+    UIImageView *imgView = (UIImageView *)tap.view;
+
+    SDPhotoBrowser *browser = [[SDPhotoBrowser alloc] init];
+    browser.sourceImagesContainerView = self.scrollView;
+    browser.imageCount = imgURLArray.count; //图片总数
+    browser.currentImageIndex = imgView.tag;
+    browser.delegate = self;
+    [browser show];
 }
 
 - (void)refreshAction {
@@ -899,6 +880,18 @@ NSInteger const kDeleteTag = 20160110;
     CGFloat height = [self deltaInputbarHeight];
     height += roundf(self.textView.font.lineHeight * numberOfLines);
     return height;
+}
+
+#pragma mark - photobrowser代理方法
+// 返回临时占位图片（即原来的小图）
+- (UIImage *)photoBrowser:(SDPhotoBrowser *)browser placeholderImageForIndex:(NSInteger)index {
+    return imgArray[index];
+}
+
+// 返回高质量图片的url
+- (NSURL *)photoBrowser:(SDPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index {
+    NSString *urlStr = imgURLArray[index];
+    return [NSURL URLWithString:urlStr];
 }
 
 #pragma mark - 调整bar的高度

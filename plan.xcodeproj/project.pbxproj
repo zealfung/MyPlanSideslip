@@ -196,6 +196,9 @@
 		13D1AD711C3E79E8007734F6 /* Btn_Share66@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD701C3E79E8007734F6 /* Btn_Share66@2x.png */; };
 		13D1AD771C3F411F007734F6 /* GrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D1AD741C3F411F007734F6 /* GrowingTextView.m */; };
 		13D1AD781C3F411F007734F6 /* PlaceholderTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D1AD761C3F411F007734F6 /* PlaceholderTextView.m */; };
+		13D1AD901C41FAC2007734F6 /* SDBrowserImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D1AD8A1C41FAC2007734F6 /* SDBrowserImageView.m */; };
+		13D1AD911C41FAC2007734F6 /* SDPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D1AD8C1C41FAC2007734F6 /* SDPhotoBrowser.m */; };
+		13D1AD921C41FAC2007734F6 /* SDWaitingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D1AD8F1C41FAC2007734F6 /* SDWaitingView.m */; };
 		13D405F71C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F61C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png */; };
 		13D405FB1C2D13360089D702 /* Icon_Posts_Eyes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */; };
 		13D405FC1C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */; };
@@ -538,6 +541,13 @@
 		13D1AD741C3F411F007734F6 /* GrowingTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GrowingTextView.m; sourceTree = "<group>"; };
 		13D1AD751C3F411F007734F6 /* PlaceholderTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlaceholderTextView.h; sourceTree = "<group>"; };
 		13D1AD761C3F411F007734F6 /* PlaceholderTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlaceholderTextView.m; sourceTree = "<group>"; };
+		13D1AD891C41FAC2007734F6 /* SDBrowserImageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDBrowserImageView.h; sourceTree = "<group>"; };
+		13D1AD8A1C41FAC2007734F6 /* SDBrowserImageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDBrowserImageView.m; sourceTree = "<group>"; };
+		13D1AD8B1C41FAC2007734F6 /* SDPhotoBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDPhotoBrowser.h; sourceTree = "<group>"; };
+		13D1AD8C1C41FAC2007734F6 /* SDPhotoBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDPhotoBrowser.m; sourceTree = "<group>"; };
+		13D1AD8D1C41FAC2007734F6 /* SDPhotoBrowserConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDPhotoBrowserConfig.h; sourceTree = "<group>"; };
+		13D1AD8E1C41FAC2007734F6 /* SDWaitingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWaitingView.h; sourceTree = "<group>"; };
+		13D1AD8F1C41FAC2007734F6 /* SDWaitingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWaitingView.m; sourceTree = "<group>"; };
 		13D405F61C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Comment@2x.png"; sourceTree = "<group>"; };
 		13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Eyes@2x.png"; sourceTree = "<group>"; };
 		13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Praise_Normal@2x.png"; sourceTree = "<group>"; };
@@ -799,6 +809,7 @@
 		135B21B01B900FD9005CE84A /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				13D1AD881C41FAC2007734F6 /* SDPhotoBrowser */,
 				1361AFB71BCBA5E700DD5FFB /* DoImagePicker */,
 				13D406971C3D00310089D702 /* DOPNavbarMenu */,
 				13D1AD721C3F411F007734F6 /* EditingBar */,
@@ -1413,6 +1424,20 @@
 			path = EditingBar;
 			sourceTree = "<group>";
 		};
+		13D1AD881C41FAC2007734F6 /* SDPhotoBrowser */ = {
+			isa = PBXGroup;
+			children = (
+				13D1AD891C41FAC2007734F6 /* SDBrowserImageView.h */,
+				13D1AD8A1C41FAC2007734F6 /* SDBrowserImageView.m */,
+				13D1AD8B1C41FAC2007734F6 /* SDPhotoBrowser.h */,
+				13D1AD8C1C41FAC2007734F6 /* SDPhotoBrowser.m */,
+				13D1AD8D1C41FAC2007734F6 /* SDPhotoBrowserConfig.h */,
+				13D1AD8E1C41FAC2007734F6 /* SDWaitingView.h */,
+				13D1AD8F1C41FAC2007734F6 /* SDWaitingView.m */,
+			);
+			path = SDPhotoBrowser;
+			sourceTree = "<group>";
+		};
 		13D406971C3D00310089D702 /* DOPNavbarMenu */ = {
 			isa = PBXGroup;
 			children = (
@@ -1694,6 +1719,7 @@
 				137470911C07E66B00B7822A /* CoreLockConst.m in Sources */,
 				137470D21C0BD50400B7822A /* LogInViewController.m in Sources */,
 				137700E11B95335E008C83FD /* UIImage+Util.m in Sources */,
+				13D1AD901C41FAC2007734F6 /* SDBrowserImageView.m in Sources */,
 				13D4061C1C2FD4470089D702 /* PostsDetailViewController.m in Sources */,
 				135B21E71B913EAF005CE84A /* ModelBase.m in Sources */,
 				13D1AD781C3F411F007734F6 /* PlaceholderTextView.m in Sources */,
@@ -1702,12 +1728,14 @@
 				135B221F1B92E74C005CE84A /* PromptMessage.m in Sources */,
 				1374713D1C1920DB00B7822A /* UITabBar+Util.m in Sources */,
 				132263781B9825D400D21637 /* UIDevice+Util.m in Sources */,
+				13D1AD911C41FAC2007734F6 /* SDPhotoBrowser.m in Sources */,
 				1374712D1C17161600B7822A /* MessagesViewController.m in Sources */,
 				1361AFC61BCBA5E700DD5FFB /* DoImagePickerController.m in Sources */,
 				131D6A6F1BFB5DDE009FDD72 /* PhotoViewController.m in Sources */,
 				135B21D21B909955005CE84A /* Config.m in Sources */,
 				133B07A21B9FBCA30015E752 /* HelpViewController.m in Sources */,
 				135B22091B92B126005CE84A /* UIViewController+Util.m in Sources */,
+				13D1AD921C41FAC2007734F6 /* SDWaitingView.m in Sources */,
 				13D4069A1C3D00310089D702 /* DOPNavbarMenu.m in Sources */,
 				1361AFC81BCBA5E700DD5FFB /* DoPhotoCell.m in Sources */,
 				131D6AC01C00769A009FDD72 /* FullScreenImageArrayViewController.m in Sources */,
