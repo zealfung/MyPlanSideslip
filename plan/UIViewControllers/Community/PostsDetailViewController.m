@@ -90,7 +90,7 @@ NSInteger const kDeleteTag = 20160110;
         DOPNavbarMenuItem *itemRefresh = [DOPNavbarMenuItem ItemWithTitle:str_Refresh icon:[UIImage imageNamed:png_Btn_Refresh]];
         DOPNavbarMenuItem *itemShare = [DOPNavbarMenuItem ItemWithTitle:str_Share icon:[UIImage imageNamed:png_Btn_Share66]];
         NSString *reportTitle = isAuthor ? str_Delete : str_Report;
-        NSString *reportIcon = isAuthor ? png_Btn_Delete : png_Btn_Report;
+        NSString *reportIcon = isAuthor ? png_Btn_Delete66 : png_Btn_Report;
         DOPNavbarMenuItem *itemReport = [DOPNavbarMenuItem ItemWithTitle:reportTitle icon:[UIImage imageNamed:reportIcon]];
         menu = [[DOPNavbarMenu alloc] initWithItems:@[itemRefresh,itemShare,itemReport] width:self.view.dop_width maximumNumberInRow:numberOfItemsInRow];
         menu.backgroundColor = [CommonFunction getGenderColor];
@@ -583,7 +583,7 @@ NSInteger const kDeleteTag = 20160110;
                 NSURL *URL = nil;
                 if ([imgURLArray[i] isKindOfClass:[NSString class]]) {
                     
-                    UIImage *imgDefault = [UIImage imageNamed:png_Bg_SideTop];
+                    UIImage *imgDefault = [UIImage imageNamed:png_ImageDefault_Rectangle];
                     [imgArray addObject:imgDefault];
                     URL = [NSURL URLWithString:imgURLArray[i]];
                     
@@ -1010,6 +1010,12 @@ NSInteger const kDeleteTag = 20160110;
             //把评论关联到帖子的评论字段
             [weakSelf relationCommentToPost:newComments.objectId];
 
+            //刷新帖子列表评论数
+            NSInteger commentsCount = [[self.posts objectForKey:@"commentsCount"] integerValue];
+            commentsCount += 1;
+            [self.posts setObject:@(commentsCount) forKey:@"commentsCount"];
+            [NotificationCenter postNotificationName:Notify_Posts_Refresh object:nil];
+            
             [weakSelf alertToastMessage:str_Comment_Success];
             [weakSelf getCommets];
         } else {

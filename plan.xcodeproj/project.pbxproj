@@ -199,6 +199,8 @@
 		13D1AD901C41FAC2007734F6 /* SDBrowserImageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D1AD8A1C41FAC2007734F6 /* SDBrowserImageView.m */; };
 		13D1AD911C41FAC2007734F6 /* SDPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D1AD8C1C41FAC2007734F6 /* SDPhotoBrowser.m */; };
 		13D1AD921C41FAC2007734F6 /* SDWaitingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D1AD8F1C41FAC2007734F6 /* SDWaitingView.m */; };
+		13D1AD941C43337E007734F6 /* Btn_Delete66@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD931C43337E007734F6 /* Btn_Delete66@2x.png */; };
+		13D1AD961C434028007734F6 /* ImageDefault_Rectangle@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD951C434028007734F6 /* ImageDefault_Rectangle@2x.png */; };
 		13D405F71C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F61C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png */; };
 		13D405FB1C2D13360089D702 /* Icon_Posts_Eyes@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */; };
 		13D405FC1C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */; };
@@ -546,6 +548,8 @@
 		13D1AD8D1C41FAC2007734F6 /* SDPhotoBrowserConfig.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDPhotoBrowserConfig.h; sourceTree = "<group>"; };
 		13D1AD8E1C41FAC2007734F6 /* SDWaitingView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SDWaitingView.h; sourceTree = "<group>"; };
 		13D1AD8F1C41FAC2007734F6 /* SDWaitingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWaitingView.m; sourceTree = "<group>"; };
+		13D1AD931C43337E007734F6 /* Btn_Delete66@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Delete66@2x.png"; sourceTree = "<group>"; };
+		13D1AD951C434028007734F6 /* ImageDefault_Rectangle@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ImageDefault_Rectangle@2x.png"; sourceTree = "<group>"; };
 		13D405F61C2D0F8C0089D702 /* Icon_Posts_Comment@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Comment@2x.png"; sourceTree = "<group>"; };
 		13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Eyes@2x.png"; sourceTree = "<group>"; };
 		13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Posts_Praise_Normal@2x.png"; sourceTree = "<group>"; };
@@ -847,14 +851,15 @@
 		135B21CA1B909644005CE84A /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				13AF64AC1C1C5C50008E8A9E /* avatarDefault1@2x.png */,
-				13A6ACB01BC5F83A005A02F9 /* ImageDefault@2x.png */,
-				137700DC1B953226008C83FD /* Icon */,
-				137700C21B9429FD008C83FD /* LaunchImage@2x.png */,
-				135B220E1B92B417005CE84A /* Background */,
-				135B220B1B92B2B5005CE84A /* Button */,
 				135B21CB1B909644005CE84A /* avatarBg@2x.png */,
 				135B21CC1B909644005CE84A /* avatarDefault@2x.png */,
+				13AF64AC1C1C5C50008E8A9E /* avatarDefault1@2x.png */,
+				135B220E1B92B417005CE84A /* Background */,
+				135B220B1B92B2B5005CE84A /* Button */,
+				137700DC1B953226008C83FD /* Icon */,
+				13D1AD951C434028007734F6 /* ImageDefault_Rectangle@2x.png */,
+				13A6ACB01BC5F83A005A02F9 /* ImageDefault@2x.png */,
+				137700C21B9429FD008C83FD /* LaunchImage@2x.png */,
 			);
 			path = Images;
 			sourceTree = "<group>";
@@ -940,6 +945,7 @@
 				13D405FE1C2E3E960089D702 /* Btn_BackToTop@2x.png */,
 				13AF64BA1C214253008E8A9E /* Btn_Clean@2x.png */,
 				1385B4811BCA712400CB208C /* Btn_Delete@2x.png */,
+				13D1AD931C43337E007734F6 /* Btn_Delete66@2x.png */,
 				1361AFCC1BCBB54800DD5FFB /* Btn_Down.png */,
 				1361AFCD1BCBB54800DD5FFB /* Btn_Down@2x.png */,
 				1385B47B1BC9E50D00CB208C /* Btn_Edit@2x.png */,
@@ -1578,6 +1584,7 @@
 				131D6A441BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png in Resources */,
 				137470D31C0BD50400B7822A /* LogInViewController.xib in Resources */,
 				13D406211C301F3E0089D702 /* Btn_Posts_Share@2x.png in Resources */,
+				13D1AD941C43337E007734F6 /* Btn_Delete66@2x.png in Resources */,
 				131D6A401BF6CFAA009FDD72 /* Icon_Menu_About@2x.png in Resources */,
 				137470501C03ED1200B7822A /* RegisterViewController.xib in Resources */,
 				135B21CD1B909644005CE84A /* avatarBg@2x.png in Resources */,
@@ -1611,6 +1618,7 @@
 				13D406181C2F9AD00089D702 /* AddPostsViewController.xib in Resources */,
 				13A6ACAF1BC55B9D005A02F9 /* Icon_Alarm@2x.png in Resources */,
 				13D405FC1C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png in Resources */,
+				13D1AD961C434028007734F6 /* ImageDefault_Rectangle@2x.png in Resources */,
 				1374705A1C04202700B7822A /* ForgotPasswordViewController.xib in Resources */,
 				131D6A411BF6CFAA009FDD72 /* Icon_Menu_FiveStar@2x.png in Resources */,
 				135B21971B900394005CE84A /* Images.xcassets in Resources */,

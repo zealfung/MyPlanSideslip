@@ -152,7 +152,7 @@
     bannerView.delegate = self;
     bannerView.titlesGroup = headerTitlesArray;
     bannerView.dotColor = [UIColor whiteColor]; //自定义分页控件小圆标颜色
-    bannerView.placeholderImage = [UIImage imageNamed:png_Bg_SideTop];
+    bannerView.placeholderImage = [UIImage imageNamed:png_ImageDefault_Rectangle];
     return bannerView;
 }
 
@@ -224,7 +224,7 @@
                 if ([isHighlight isEqualToString:@"1"]) {
                     cell.labelIsHighlight.hidden = NO;
                 }
-                [cell.imgViewOne sd_setImageWithURL:[NSURL URLWithString:imgURLArray[0]] placeholderImage:[UIImage imageNamed:png_Bg_SideTop]];
+                [cell.imgViewOne sd_setImageWithURL:[NSURL URLWithString:imgURLArray[0]] placeholderImage:[UIImage imageNamed:png_ImageDefault_Rectangle]];
                 if (isLike) {
                     cell.subViewButton.rightButton.selected = YES;
                     [cell.subViewButton.rightButton setAllTitleColor:color_Red];
@@ -275,8 +275,8 @@
                 if ([isHighlight isEqualToString:@"1"]) {
                     cell.labelIsHighlight.hidden = NO;
                 }
-                [cell.imgViewOne sd_setImageWithURL:[NSURL URLWithString:imgURLArray[0]] placeholderImage:[UIImage imageNamed:png_Bg_SideTop]];
-                [cell.imgViewTwo sd_setImageWithURL:[NSURL URLWithString:imgURLArray[1]] placeholderImage:[UIImage imageNamed:png_Bg_SideTop]];
+                [cell.imgViewOne sd_setImageWithURL:[NSURL URLWithString:imgURLArray[0]] placeholderImage:[UIImage imageNamed:png_ImageDefault]];
+                [cell.imgViewTwo sd_setImageWithURL:[NSURL URLWithString:imgURLArray[1]] placeholderImage:[UIImage imageNamed:png_ImageDefault]];
                 if (isLike) {
                     cell.subViewButton.rightButton.selected = YES;
                     [cell.subViewButton.rightButton setAllTitleColor:color_Red];

@@ -13,11 +13,13 @@
 #define png_AvatarDefault @"avatarDefault"
 #define png_AvatarDefault1 @"avatarDefault1"
 #define png_ImageDefault @"ImageDefault"
+#define png_ImageDefault_Rectangle @"ImageDefault_Rectangle"
 
 #define png_Btn_Add @"Btn_Add"
 #define png_Btn_Edit @"Btn_Edit"
 #define png_Btn_Save @"Btn_Save"
 #define png_Btn_Delete @"Btn_Delete"
+#define png_Btn_Delete66 @"Btn_Delete66"
 #define png_Btn_Settings @"Btn_Settings"
 #define png_Btn_AddPhoto @"Btn_AddPhoto"
 #define png_Btn_LeftMenu @"Btn_LeftMenu"
