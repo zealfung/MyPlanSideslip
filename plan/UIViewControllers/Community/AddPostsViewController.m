@@ -330,6 +330,9 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 
 - (void)addImageToPhotoArray:(UIImage *)image {
     UIImage *img = [CommonFunction compressImage:image];
+    
+    if (!img) return;
+    
     if (photoArray.count < imgMax) {
         [photoArray insertObject:img atIndex:photoArray.count - 1];
     } else {
