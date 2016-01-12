@@ -246,6 +246,7 @@ NSInteger const kDeleteTag = 20160110;
 - (void)createDetailHeaderView {
     BmobObject *author = [self.posts objectForKey:@"author"];
     NSString *nickName = [author objectForKey:@"nickName"];
+    NSString *gender = [author objectForKey:@"gender"];
     if (!nickName || nickName.length == 0) {
         nickName = str_NickName;
     }
@@ -264,7 +265,11 @@ NSInteger const kDeleteTag = 20160110;
     [self.headerView addSubview:avatarView];
     //昵称
     UILabel *labelNickName = [[UILabel alloc] initWithFrame:CGRectMake(57, 0, WIDTH_FULL_SCREEN / 2, 30)];
-    labelNickName.textColor = color_Blue;
+    if (!gender || [gender isEqualToString:@"1"]) {
+        labelNickName.textColor = color_Blue;
+    } else {
+        labelNickName.textColor = color_Pink;
+    }
     labelNickName.font = font_Normal_16;
     labelNickName.text = nickName;
     [self.headerView addSubview:labelNickName];
@@ -290,6 +295,7 @@ NSInteger const kDeleteTag = 20160110;
 - (UIView *)createCommentView:(BmobObject *)comment index:(NSInteger)index {
     BmobObject *commentAuthor = [comment objectForKey:@"author"];
     NSString *nickName = [commentAuthor objectForKey:@"nickName"];
+    NSString *gender = [commentAuthor objectForKey:@"gender"];
     if (!nickName || nickName.length == 0) {
         nickName = str_NickName;
     }
@@ -317,7 +323,11 @@ NSInteger const kDeleteTag = 20160110;
         
     }];
     [tsViewNickname.leftButton.titleLabel setFont:font_Normal_13];
-    [tsViewNickname.leftButton setAllTitleColor:color_333333];
+    if (!gender || [gender isEqualToString:@"1"]) {
+        [tsViewNickname.leftButton setAllTitleColor:color_Blue];
+    } else {
+        [tsViewNickname.leftButton setAllTitleColor:color_Pink];
+    }
     [tsViewNickname.leftButton setAllTitle:nickName];
     tsViewNickname.leftButton.titleLabel.textAlignment = NSTextAlignmentLeft;
     

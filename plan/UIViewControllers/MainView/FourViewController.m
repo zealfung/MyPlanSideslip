@@ -193,6 +193,7 @@
         BmobObject *obj = postsArray[indexPath.row];
         BmobObject *author = [obj objectForKey:@"author"];
         NSString *nickName = [author objectForKey:@"nickName"];
+        NSString *gender = [author objectForKey:@"gender"];
         if (!nickName || nickName.length == 0) {
             nickName = str_NickName;
         }
@@ -216,6 +217,11 @@
                 tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
                 cell.labelNickName.text = nickName;
+                if (!gender || [gender isEqualToString:@"1"]) {
+                    cell.labelNickName.textColor = color_Blue;
+                } else {
+                    cell.labelNickName.textColor = color_Pink;
+                }
                 cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
                 cell.labelContent.text = content;
                 if ([isTop isEqualToString:@"1"]) {
@@ -267,6 +273,11 @@
                 tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
                 cell.labelNickName.text = nickName;
+                if (!gender || [gender isEqualToString:@"1"]) {
+                    cell.labelNickName.textColor = color_Blue;
+                } else {
+                    cell.labelNickName.textColor = color_Pink;
+                }
                 cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
                 cell.labelContent.text = content;
                 if ([isTop isEqualToString:@"1"]) {
@@ -320,6 +331,11 @@
             tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
             [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
             cell.labelNickName.text = nickName;
+            if (!gender || [gender isEqualToString:@"1"]) {
+                cell.labelNickName.textColor = color_Blue;
+            } else {
+                cell.labelNickName.textColor = color_Pink;
+            }
             cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
             cell.labelContent.text = content;
             if ([isTop isEqualToString:@"1"]) {
