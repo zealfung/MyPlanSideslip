@@ -64,6 +64,7 @@ NSInteger const kDeleteTag = 20160110;
     [self.view addSubview:self.inputView];
     [self.view addConstraint:self.inputViewHeightConstraint];
     
+    [NotificationCenter addObserver:self selector:@selector(refreshCommentsAndBottomBtn) name:Notify_LogIn object:nil];
     [NotificationCenter addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [NotificationCenter addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [NotificationCenter addObserver:self selector:@selector(textDidUpdate:)    name:UITextViewTextDidChangeNotification object:nil];
@@ -516,6 +517,11 @@ NSInteger const kDeleteTag = 20160110;
     [self.bottomBtnView.leftButton setAllTitleColor:color_8f8f8f];
     [self.bottomBtnView.centerButton setAllTitleColor:color_8f8f8f];
     [self.bottomBtnView.rightButton setAllTitleColor:color_8f8f8f];
+}
+
+- (void)refreshCommentsAndBottomBtn {
+    [self getCommets];
+    [self createBottomBtnView];
 }
 
 - (void)getCommets {

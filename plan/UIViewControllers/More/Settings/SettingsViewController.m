@@ -929,6 +929,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
     [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
     [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
+    [NotificationCenter postNotificationName:Notify_Posts_Refresh object:nil];
 }
 
 - (void)syncDataAction {
