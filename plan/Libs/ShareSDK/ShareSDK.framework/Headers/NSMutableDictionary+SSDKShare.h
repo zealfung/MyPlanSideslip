@@ -32,8 +32,7 @@
  *  设置分享参数
  *
  *  @param text     文本
- *  @param images   图片集合,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage，
- *                  如: @"http://mob.com/Assets/images/logo.png?v=20150320" 或 @[@"http://mob.com/Assets/images/logo.png?v=20150320"]
+ *  @param images   图片集合,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage。如: @"http://www.mob.com/images/logo_black.png" 或 @[@"http://www.mob.com/images/logo_black.png"]
  *  @param url      网页路径/应用路径
  *  @param title    标题
  *  @param type     分享类型
@@ -69,8 +68,7 @@
  *  设置腾讯微博分享参数
  *
  *  @param text      文本
- *  @param images    分享图片列表,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage
- *                   如: @"http://mob.com/Assets/images/logo.png?v=20150320" 或 @[@"http://mob.com/Assets/images/logo.png?v=20150320"]
+ *  @param images    分享图片列表,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage。如: @"http://www.mob.com/images/logo_black.png" 或 @[@"http://www.mob.com/images/logo_black.png"]
  *  @param latitude  纬度
  *  @param longitude 经度
  *  @param type      分享类型, 仅支持Text、Image类型
@@ -130,8 +128,7 @@
  *  设置Twitter分享参数
  *
  *  @param text      分享内容
- *  @param images    分享图片列表,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage
- *                   如: @"http://mob.com/Assets/images/logo.png?v=20150320" 或 @[@"http://mob.com/Assets/images/logo.png?v=20150320"]
+ *  @param images    分享图片列表,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage。如: @"http://www.mob.com/images/logo_black.png" 或 @[@"http://www.mob.com/images/logo_black.png"]
  *  @param latitude  地理位置，纬度
  *  @param longitude 地理位置，经度
  *  @param type      分享类型，仅支持Text、Image类型
@@ -177,8 +174,7 @@
  *
  *  @param text        文本
  *  @param title       标题
- *  @param images      分享图片列表,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage
- *                   如: @"http://mob.com/Assets/images/logo.png?v=20150320" 或 @[@"http://mob.com/Assets/images/logo.png?v=20150320"]
+ *  @param images      分享图片列表,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage。如: @"http://www.mob.com/images/logo_black.png" 或 @[@"http://www.mob.com/images/logo_black.png"]
  *  @param attachments 附件列表, 可以为单个附件也可以为一个数组，元素可以为NSData、UIImage、NSString、NSURL（文件路径）、SSDKData、SSDKImage，注：只允许指定本地资源
  *  @param recipients  接收人信息，如：@[@"400-685-2216"]
  *  @param type        分享类型，仅支持Text、Image类型
@@ -195,8 +191,7 @@
  *
  *  @param text          文本
  *  @param title         标题
- *  @param images        分享图片列表,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage
- *                   如: @"http://mob.com/Assets/images/logo.png?v=20150320" 或 @[@"http://mob.com/Assets/images/logo.png?v=20150320"]
+ *  @param images        分享图片列表,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage。如: @"http://www.mob.com/images/logo_black.png" 或 @[@"http://www.mob.com/images/logo_black.png"]
  *  @param attachments   附件列表, 可以为单个附件也可以为一个数组，元素可以为NSData、UIImage、NSString、NSURL（文件路径）、SSDKData、SSDKImage，注：只允许指定本地资源
  *  @param recipients    接收人信息，如：@["tester@163.com"]
  *  @param ccRecipients  抄送人信息，如：@["tester2@163.com"]
@@ -216,8 +211,7 @@
  *  设置拷贝参数
  *
  *  @param text   文本，仅在type为Text时有效
- *  @param images 分享图片列表,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage
- *                   如: @"http://mob.com/Assets/images/logo.png?v=20150320" 或 @[@"http://mob.com/Assets/images/logo.png?v=20150320"]，仅在type为Image时有效。
+ *  @param images 分享图片列表,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage。如: @"http://www.mob.com/images/logo_black.png" 或 @[@"http://www.mob.com/images/logo_black.png"]
  *  @param url    链接，仅在type为WebPage时有效
  *  @param type   分享类型，仅支持Text、Image、WebPage类型
  */
@@ -393,7 +387,7 @@
  *
  *  @param text   分享文本
  *  @param images 分享图片列表,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage，
- *                  如: @"http://mob.com/Assets/images/logo.png?v=20150320" 或 @[@"http://mob.com/Assets/images/logo.png?v=20150320"]
+ *                  
  *  @param title  标题
  *  @param source 来源
  *  @param author 作者
@@ -421,8 +415,7 @@
  *  设置印象笔记分享参数，注：中国版和国际版都是调用此接口进行分享参数设置。
  *
  *  @param text     分享文本
- *  @param images   分享图片列表,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage，
- *                  如: @"http://mob.com/Assets/images/logo.png?v=20150320" 或 @[@"http://mob.com/Assets/images/logo.png?v=20150320"]
+ *  @param images   分享图片列表,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage，如: @"http://www.mob.com/images/logo_black.png" 或 @[@"http://www.mob.com/images/logo_black.png"]
  *  @param title    标题
  *  @param notebook 笔记本GUID
  *  @param tags     标签GUID列表
@@ -434,5 +427,187 @@
                              notebook:(NSString *)notebook
                                  tags:(NSArray *)tags
                          platformType:(SSDKPlatformType)platformType;
+
+/**
+ *  设置支付宝好友分享参数
+ *
+ *  @param text  分享文本
+ *  @param image 分享图片，可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage。
+ *  @param title 标题
+ *  @param url   分享链接
+ *  @param type  分享类型，仅支持Text、Image、WebPage
+ */
+- (void)SSDKSetupAliPaySocialParamsByText:(NSString *)text
+                                    image:(id)image
+                                    title:(NSString *)title
+                                      url:(NSURL *)url
+                                     type:(SSDKContentType)type;
+
+/**
+ *  设置Pinterest分享参数
+ *
+ *  @param image    分享图片，可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage。
+ *  @param desc     图片描述
+ *  @param url      链接地址
+ *  @param boardId  Board标识
+ */
+- (void)SSDKSetupPinterestParamsByImage:(id)image
+                                   desc:(NSString *)desc
+                                    url:(NSURL *)url
+                                boardId:(NSString *)boardId;
+
+/**
+ *  设置KaKao分享参数
+ *
+ *  @param text                 分享文本
+ *  @param images               分享图片列表,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage，如: @"http://www.mob.com/images/logo_black.png" 或 @[@"http://www.mob.com/images/logo_black.png"]
+ *  @param title                分享链接标题，用于SSDKPlatformSubTypeKaKaoTalk分享
+ *  @param url                  分享链接
+ *  @param permission           查看权限：F 表示好友可以查看，A 表示任何人可以查看，M 表示私有，默认为A
+ *  @param enableShare          是否允许分享，当查看权限为好友查看时，该选项有效，可以设置内容是否允许再分享。
+ *  @PARAM imageSize            图片尺寸，，用于SSDKPlatformSubTypeKaKaoTalk分享时指定图片尺寸
+ *  @param appButtonTitle       应用按钮标题,用于SSDKPlatformSubTypeKaKaoTalk分享App类型时设置
+ *  @param androidExecParam     启动安卓版应用时传入参数，如果没有可以为nil，如:@{@"key" : @"value", @"key2" : @"value2"}。
+ *  @param andoridMarkParam     安卓版应用的下载地址，如果没有可以为nil
+ *  @param iphoneExecParams     启动iPhone应用时传入参数，如果没有可以为nil，如:@{@"key" : @"value", @"key2" : @"value2"}。
+ *  @param iphoneMarkParam      iPhone应用的下载地址，如果没有可以nil
+ *  @param ipadExecParams       iPad应用时传入参数，如果没有可以为nil，如:@{@"key" : @"value", @"key2" : @"value2"}。此参数仅用于Kakao Talk平台。
+ *  @param ipadMarkParam        iPad应用的下载地址，如果没有可以为nil，此参数仅用于Kakao Talk平台。
+ *  @param type                 分享类型，仅支持Text、Image、WebPage、App
+ *  @param platformSubType      子平台类型，只能传入SSDKPlatformSubTypeKaKaoTalk或者SSDKPlatformSubTypeKaKaoStory
+ *
+ *  分享类型，平台支持情况如下：
+ *              Kakao Talk                  Kakao Story
+ *
+ *  Text        仅支持客户端分享                应用内分享和客户端分享
+ *  Image       仅支持网络图片的客户端分享        仅支持应用内分享
+ *  WebPage     仅支持客户端分享                仅支持应用内分享
+ *  App         仅支持客户端分享                不支持
+ */
+- (void)SSDKSetupKaKaoParamsByText:(NSString *)text
+                            images:(id)images
+                             title:(NSString *)title
+                               url:(NSURL *)url
+                        permission:(NSString *)permission
+                       enableShare:(BOOL)enableShare
+                         imageSize:(CGSize)imageSize
+                    appButtonTitle:(NSString *)appButtonTitle
+                  androidExecParam:(NSDictionary *)androidExecParam
+                  androidMarkParam:(NSString *)androidMarkParam
+                  iphoneExecParams:(NSDictionary *)iphoneExecParams
+                   iphoneMarkParam:(NSString *)iphoneMarkParam
+                    ipadExecParams:(NSDictionary *)ipadExecParams
+                     ipadMarkParam:(NSString *)ipadMarkParam
+                              type:(SSDKContentType)type
+                forPlatformSubType:(SSDKPlatformType)platformSubType;
+
+/**
+ *  设置Dropbox分享参数
+ *
+ *  @param attachment 分享附件。附可以为NSData、UIImage、NSString、NSURL（文件路径）、SSDKData、SSDKImage，注：只允许指定本地资源
+ */
+- (void)SSDKSetupDropboxParamsByAttachment:(id)attachment;
+
+/**
+ *  设置VKontakte分享参数
+ *
+ *  @param text        分享文本
+ *  @param images      分享图片列表,传入参数可以为单张图片信息，也可以为一个NSArray，数组元素可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage。如: @"http://www.mob.com/images/logo_black.png" 或 @[@"http://www.mob.com/images/logo_black.png"]
+ *  @param url         分享的链接
+ *  @param groupId     圈子标识，默认为nil，分享到share圈子
+ *  @param friendsOnly 是否为好友可见，默认为NO，表示所有人可以看到。
+ *  @param latitude    纬度
+ *  @param longitude   经度
+ *  @param type        分享类型，仅支持Text、Image、WebPage
+ */
+- (void)SSDKSetupVKontakteParamsByText:(NSString *)text
+                                images:(id)images
+                                   url:(NSURL *)url
+                               groupId:(NSString *)groupId
+                           friendsOnly:(BOOL)friendsOnly
+                              latitude:(double)latitude
+                             longitude:(double)longitude
+                                  type:(SSDKContentType)type;
+
+/**
+ *  设置明道分享参数
+ *
+ *  @param text  分享文本
+ *  @param image 分享图片，可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage。分享WebPage时需要指定为网络图片
+ *  @param url   分享链接，仅在WebPage时有效。
+ *  @param title   标题，仅在WebPage时有效
+ *  @param type  分享类型，仅支持Text、Image、WebPage
+ */
+- (void)SSDKSetupMingDaoParamsByText:(NSString *)text
+                               image:(id)image
+                                 url:(NSURL *)url
+                               title:(NSString *)title
+                                type:(SSDKContentType)type;
+
+/**
+ *  设置Instapaper分享参数
+ *
+ *  @param url                 分享链接，如果isPrivateFromSource为YES并且content不为空时将忽略此参数
+ *  @param title               分享标题
+ *  @param desc                分享的链接描述
+ *  @param content             内容
+ *  @param isPrivateFromSource 是否为私有源
+ *  @param folderId            文件夹ID
+ *  @param resolveFinalUrl     解决最终URL问题标识，默认开启，用于解决跳转页面问题，设置为NO则表示不进行跳转
+ */
+- (void)SSDKSetupInstapaperParamsByUrl:(NSURL *)url
+                                 title:(NSString *)title
+                                  desc:(NSString *)desc
+                               content:(NSString *)content
+                   isPrivateFromSource:(BOOL)isPrivateFromSource
+                              folderId:(NSInteger)folderId
+                       resolveFinalUrl:(BOOL)resolveFinalUrl;
+
+/**
+ *  设置微信分享参数
+ *
+ *  @param text         文本
+ *  @param title        标题
+ *  @param url          分享链接
+ *  @param thumbImage   缩略图，可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage
+ *  @param image        图片，可以为UIImage、NSString（图片路径）、NSURL（图片路径）、SSDKImage
+ *  @param musicFileURL 音乐文件链接地址
+ *  @param extInfo      扩展信息
+ *  @param fileData     文件数据，可以为NSData、UIImage、NSString、NSURL（文件路径）、SSDKData、SSDKImage
+ *  @param comment      评论信息,在应用内分享朋友圈时该字段有效
+ *  @param userId       发送給指定用户的唯一标识，在应用内分享好友时需要指定。注：如果双方为非好友关系发送消息即使提示成功，对方也无法接受。
+ *  @param type         分享类型，支持SSDKContentTypeText、SSDKContentTypeImage、SSDKContentTypeWebPage、SSDKContentTypeApp、SSDKContentTypeAudio和SSDKContentTypeVideo
+ *  @param platformType 平台子类型，只能传入SSDKPlatformTypeYiXinSession、SSDKPlatformTypeYiXinTimeline和SSDKPlatformTypeYiXinFav其中一个
+ *
+ *  分享文本时：
+ *  设置type为SSDKContentTypeText, 并填入text参数
+ *
+ *  分享图片时：
+ *  设置type为SSDKContentTypeImage, 非gif图片时：填入title和image参数
+ *
+ *  分享网页时：
+ *  设置type为SSDKContentTypeWebPage, 并设置text、title、url以及thumbImage参数，如果尚未设置thumbImage则会从image参数中读取图片并对图片进行缩放操作。
+ *
+ *  分享应用时：
+ *  设置type为SSDKContentTypeApp，并设置text、title、extInfo（可选）以及fileData（可选）参数。
+ *
+ *  分享音乐时：
+ *  设置type为SSDKContentTypeAudio，并设置text、title、url以及musicFileURL（可选）参数。
+ *
+ *  分享视频时：
+ *  设置type为SSDKContentTypeVideo，并设置text、title、url参数
+ */
+- (void)SSDKSetupYiXinParamsByText:(NSString *)text
+                             title:(NSString *)title
+                               url:(NSURL *)url
+                        thumbImage:(id)thumbImage
+                             image:(id)image
+                      musicFileURL:(NSURL *)musicFileURL
+                           extInfo:(NSString *)extInfo
+                          fileData:(id)fileData
+                           comment:(NSString *)comment
+                          toUserId:(NSString *)userId
+                              type:(SSDKContentType)type
+                forPlatformSubType:(SSDKPlatformType)platformSubType;
 
 @end
