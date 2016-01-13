@@ -297,4 +297,18 @@ static NSString * const kKeyMinutes = @"minutes";
     }
 }
 
+//用户等级icon图标
++ (UIImage *)getUserLevelIcon:(NSString *)level {
+    NSInteger levelCode = [level integerValue];
+    switch (levelCode) {
+        case 9:
+            return [UIImage imageNamed:png_Icon_Gender_M_Selected];
+            break;
+            
+        default:
+            return [UIImage imageNamed:png_Icon_Gender_F_Selected];
+            break;
+    }
+}
+
 @end

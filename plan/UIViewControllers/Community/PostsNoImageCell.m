@@ -26,8 +26,17 @@
     cellView.labelIsTop.hidden = YES;
     cellView.labelIsHighlight.hidden = YES;
     
+    [cellView getNameSubViewForLeftBlock:^{
+        
+    } centerBlock:^{
+        
+    } rightBlock:^{
+        
+    }];
+    [cellView.subViewNickName autoLayout];
+    
     __weak typeof(PostsNoImageCell) *weakSelf = cellView;
-    [cellView getThreeSubViewForLeftBlock: ^{
+    [cellView getBtnSubViewForLeftBlock: ^{
         if (weakSelf.postsCellViewBlock) {
             weakSelf.postsCellViewBlock();
         }
@@ -46,8 +55,22 @@
     return cellView;
 }
 
-- (void)getThreeSubViewForLeftBlock:(ButtonSelectBlock)leftBlock centerBlock:(ButtonSelectBlock)centerBlock rightBlock:(ButtonSelectBlock)rightBlock {
+- (void)getNameSubViewForLeftBlock:(ButtonSelectBlock)leftBlock centerBlock:(ButtonSelectBlock)centerBlock rightBlock:(ButtonSelectBlock)rightBlock {
 
+    [self.subViewNickName setLeftButtonSelectBlock:leftBlock centerButtonSelectBlock:centerBlock rightButtonSelectBlock:rightBlock];
+    self.subViewNickName.backgroundColor = [UIColor clearColor];
+
+    self.subViewNickName.centerButton.enabled = NO;
+    self.subViewNickName.fixCenterWidth = 30;
+    self.subViewNickName.fixRightWidth = self.subViewNickName.frame.size.width - self.subViewNickName.fixLeftWidth - self.subViewNickName.fixCenterWidth;
+    
+    self.subViewNickName.leftButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    self.subViewNickName.leftButton.titleLabel.font = font_Normal_16;
+    self.subViewNickName.leftButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+}
+
+- (void)getBtnSubViewForLeftBlock:(ButtonSelectBlock)leftBlock centerBlock:(ButtonSelectBlock)centerBlock rightBlock:(ButtonSelectBlock)rightBlock {
+    
     [self.subViewButton setLeftButtonSelectBlock:leftBlock centerButtonSelectBlock:centerBlock rightButtonSelectBlock:rightBlock];
     
     self.subViewButton.backgroundColor = [UIColor clearColor];
@@ -56,7 +79,7 @@
     self.subViewButton.fixLeftWidth = btnWidth;
     self.subViewButton.fixCenterWidth = btnWidth;
     self.subViewButton.fixRightWidth = btnWidth;
-
+    
     [self.subViewButton.leftButton setImage:[UIImage imageNamed:png_Icon_Posts_Eyes] forState:UIControlStateNormal];
     [self.subViewButton.leftButton setImage:[UIImage imageNamed:png_Icon_Posts_Eyes] forState:UIControlStateSelected];
     

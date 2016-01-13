@@ -26,6 +26,15 @@
     cellView.labelIsTop.hidden = YES;
     cellView.labelIsHighlight.hidden = YES;
     
+    [cellView getNameSubViewForLeftBlock:^{
+        
+    } centerBlock:^{
+        
+    } rightBlock:^{
+        
+    }];
+    [cellView.subViewNickName autoLayout];
+    
     __weak typeof(PostsTwoImageCell) *weakSelf = cellView;
     [cellView getThreeSubViewForLeftBlock: ^{
         if (weakSelf.postsCellViewBlock) {
@@ -44,6 +53,20 @@
     [cellView.subViewButton autoLayout];
     
     return cellView;
+}
+
+- (void)getNameSubViewForLeftBlock:(ButtonSelectBlock)leftBlock centerBlock:(ButtonSelectBlock)centerBlock rightBlock:(ButtonSelectBlock)rightBlock {
+    
+    [self.subViewNickName setLeftButtonSelectBlock:leftBlock centerButtonSelectBlock:centerBlock rightButtonSelectBlock:rightBlock];
+    self.subViewNickName.backgroundColor = [UIColor clearColor];
+    
+    self.subViewNickName.centerButton.enabled = NO;
+    self.subViewNickName.fixCenterWidth = 30;
+    self.subViewNickName.fixRightWidth = self.subViewNickName.frame.size.width - self.subViewNickName.fixLeftWidth - self.subViewNickName.fixCenterWidth;
+    
+    self.subViewNickName.leftButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    self.subViewNickName.leftButton.titleLabel.font = font_Normal_16;
+    self.subViewNickName.leftButton.titleLabel.textAlignment = NSTextAlignmentLeft;
 }
 
 - (void)getThreeSubViewForLeftBlock:(ButtonSelectBlock)leftBlock centerBlock:(ButtonSelectBlock)centerBlock rightBlock:(ButtonSelectBlock)rightBlock {

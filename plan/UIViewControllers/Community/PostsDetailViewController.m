@@ -248,6 +248,7 @@ NSInteger const kDeleteTag = 20160110;
     BmobObject *author = [self.posts objectForKey:@"author"];
     NSString *nickName = [author objectForKey:@"nickName"];
     NSString *gender = [author objectForKey:@"gender"];
+    NSString *level = [author objectForKey:@"level"];
     if (!nickName || nickName.length == 0) {
         nickName = str_NickName;
     }
@@ -265,15 +266,31 @@ NSInteger const kDeleteTag = 20160110;
     avatarView.contentMode = UIViewContentModeScaleAspectFit;
     [self.headerView addSubview:avatarView];
     //昵称
-    UILabel *labelNickName = [[UILabel alloc] initWithFrame:CGRectMake(57, 0, WIDTH_FULL_SCREEN / 2, 30)];
+    ThreeSubView *tsViewNickname = [[ThreeSubView alloc] initWithFrame:CGRectMake(57, 0, WIDTH_FULL_SCREEN - 69, 30) leftButtonSelectBlock:^{
+        
+    } centerButtonSelectBlock:^{
+        
+    } rightButtonSelectBlock:^{
+        
+    }];
+    [tsViewNickname.leftButton.titleLabel setFont:font_Normal_16];
     if (!gender || [gender isEqualToString:@"1"]) {
-        labelNickName.textColor = color_Blue;
+        [tsViewNickname.leftButton setAllTitleColor:color_Blue];
     } else {
-        labelNickName.textColor = color_Pink;
+        [tsViewNickname.leftButton setAllTitleColor:color_Pink];
     }
-    labelNickName.font = font_Normal_16;
-    labelNickName.text = nickName;
-    [self.headerView addSubview:labelNickName];
+    [tsViewNickname.leftButton setAllTitle:nickName];
+    tsViewNickname.leftButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+
+    if (level) {
+        [tsViewNickname.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+    }
+    tsViewNickname.centerButton.enabled = NO;
+    
+    tsViewNickname.fixCenterWidth = 30;
+    tsViewNickname.fixRightWidth = tsViewNickname.frame.size.width - tsViewNickname.fixLeftWidth - tsViewNickname.fixCenterWidth;
+    [tsViewNickname autoLayout];
+    [self.headerView addSubview:tsViewNickname];
     //发表时间
     UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(57, 30, WIDTH_FULL_SCREEN / 2, 20)];
     labelDate.textColor = color_666666;
@@ -297,6 +314,7 @@ NSInteger const kDeleteTag = 20160110;
     BmobObject *commentAuthor = [comment objectForKey:@"author"];
     NSString *nickName = [commentAuthor objectForKey:@"nickName"];
     NSString *gender = [commentAuthor objectForKey:@"gender"];
+    NSString *level = [commentAuthor objectForKey:@"level"];
     if (!nickName || nickName.length == 0) {
         nickName = str_NickName;
     }
@@ -316,7 +334,7 @@ NSInteger const kDeleteTag = 20160110;
     avatarView.contentMode = UIViewContentModeScaleAspectFit;
     [view addSubview:avatarView];
     //昵称
-    ThreeSubView *tsViewNickname = [[ThreeSubView alloc] initWithFrame:CGRectMake(47, 0, WIDTH_FULL_SCREEN - 24, 20) leftButtonSelectBlock:^{
+    ThreeSubView *tsViewNickname = [[ThreeSubView alloc] initWithFrame:CGRectMake(47, 0, WIDTH_FULL_SCREEN - 159, 20) leftButtonSelectBlock:^{
         
     } centerButtonSelectBlock:^{
         
@@ -334,17 +352,23 @@ NSInteger const kDeleteTag = 20160110;
     
     [tsViewNickname.centerButton.titleLabel setFont:font_Normal_11];
     [tsViewNickname.centerButton setAllTitleColor:color_666666];
-    tsViewNickname.leftButton.titleLabel.textAlignment = NSTextAlignmentCenter;
+    tsViewNickname.centerButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+    
+    if (level) {
+        [tsViewNickname.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+    }
+    tsViewNickname.centerButton.enabled = NO;
+    
     //楼主
     BmobObject *postsAuthor = [self.posts objectForKey:@"author"];
     NSString *postsUserObjectId = [postsAuthor objectForKey:@"userObjectId"];
     NSString *commentUserObjectId = [commentAuthor objectForKey:@"userObjectId"];
     if ([postsUserObjectId isEqualToString:commentUserObjectId]) {
         [tsViewNickname.centerButton setAllTitle:str_Author];
-        tsViewNickname.fixCenterWidth = 30;
+        tsViewNickname.fixCenterWidth = 50;
     } else {
         [tsViewNickname.centerButton setAllTitle:@""];
-        tsViewNickname.fixCenterWidth = 0;
+        tsViewNickname.fixCenterWidth = 20;
     }
     [tsViewNickname.rightButton.titleLabel setFont:font_Normal_13];
     [tsViewNickname.rightButton setAllTitleColor:color_333333];

@@ -195,6 +195,7 @@
         BmobObject *author = [obj objectForKey:@"author"];
         NSString *nickName = [author objectForKey:@"nickName"];
         NSString *gender = [author objectForKey:@"gender"];
+        NSString *level = [author objectForKey:@"level"];
         if (!nickName || nickName.length == 0) {
             nickName = str_NickName;
         }
@@ -217,12 +218,18 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
-                cell.labelNickName.text = nickName;
+                
+                [cell.subViewNickName.leftButton setAllTitle:nickName];
                 if (!gender || [gender isEqualToString:@"1"]) {
-                    cell.labelNickName.textColor = color_Blue;
+                    [cell.subViewNickName.leftButton setAllTitleColor:color_Blue];
                 } else {
-                    cell.labelNickName.textColor = color_Pink;
+                    [cell.subViewNickName.leftButton setAllTitleColor:color_Pink];
                 }
+                if (level) {
+                    [cell.subViewNickName.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+                }
+                [cell.subViewNickName autoLayout];
+                
                 cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
                 cell.labelContent.text = content;
                 if ([isTop isEqualToString:@"1"]) {
@@ -273,12 +280,18 @@
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
-                cell.labelNickName.text = nickName;
+                
+                [cell.subViewNickName.leftButton setAllTitle:nickName];
                 if (!gender || [gender isEqualToString:@"1"]) {
-                    cell.labelNickName.textColor = color_Blue;
+                    [cell.subViewNickName.leftButton setAllTitleColor:color_Blue];
                 } else {
-                    cell.labelNickName.textColor = color_Pink;
+                    [cell.subViewNickName.leftButton setAllTitleColor:color_Pink];
                 }
+                if (level) {
+                    [cell.subViewNickName.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+                }
+                [cell.subViewNickName autoLayout];
+                
                 cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
                 cell.labelContent.text = content;
                 if ([isTop isEqualToString:@"1"]) {
@@ -331,12 +344,18 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
             [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
-            cell.labelNickName.text = nickName;
+
+            [cell.subViewNickName.leftButton setAllTitle:nickName];
             if (!gender || [gender isEqualToString:@"1"]) {
-                cell.labelNickName.textColor = color_Blue;
+                [cell.subViewNickName.leftButton setAllTitleColor:color_Blue];
             } else {
-                cell.labelNickName.textColor = color_Pink;
+                [cell.subViewNickName.leftButton setAllTitleColor:color_Pink];
             }
+            if (level) {
+                [cell.subViewNickName.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+            }
+            [cell.subViewNickName autoLayout];
+            
             cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
             cell.labelContent.text = content;
             if ([isTop isEqualToString:@"1"]) {

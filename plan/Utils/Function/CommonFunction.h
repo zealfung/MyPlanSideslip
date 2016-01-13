@@ -74,4 +74,7 @@
 //根据性别获取icon图标
 + (UIImage *)getGenderIcon;
 
+//用户等级icon图标
++ (UIImage *)getUserLevelIcon:(NSString *)level;
+
 @end
