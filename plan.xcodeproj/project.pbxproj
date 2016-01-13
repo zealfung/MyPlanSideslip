@@ -20,6 +20,12 @@
 		1310C3601C4542FC00A2A404 /* ShareSDKExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1310C3531C4542FC00A2A404 /* ShareSDKExtension.framework */; };
 		1310C3611C4542FC00A2A404 /* ShareSDKUI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3541C4542FC00A2A404 /* ShareSDKUI.bundle */; };
 		1310C3621C4542FC00A2A404 /* ShareSDKUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1310C3551C4542FC00A2A404 /* ShareSDKUI.framework */; };
+		1310C3641C46574100A2A404 /* Icon_UserLevel_9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3631C46574100A2A404 /* Icon_UserLevel_9@2x.png */; };
+		1310C36A1C465BA100A2A404 /* Icon_UserLevel_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3651C465BA100A2A404 /* Icon_UserLevel_4@2x.png */; };
+		1310C36B1C465BA100A2A404 /* Icon_UserLevel_5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3661C465BA100A2A404 /* Icon_UserLevel_5@2x.png */; };
+		1310C36C1C465BA100A2A404 /* Icon_UserLevel_6@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3671C465BA100A2A404 /* Icon_UserLevel_6@2x.png */; };
+		1310C36D1C465BA100A2A404 /* Icon_UserLevel_7@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3681C465BA100A2A404 /* Icon_UserLevel_7@2x.png */; };
+		1310C36E1C465BA100A2A404 /* Icon_UserLevel_8@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3691C465BA100A2A404 /* Icon_UserLevel_8@2x.png */; };
 		131D69E81BF37614009FDD72 /* Statistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D69E71BF37614009FDD72 /* Statistics.m */; };
 		131D69F51BF466D2009FDD72 /* StatisticsCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D69F41BF466D2009FDD72 /* StatisticsCenter.m */; };
 		131D6A1E1BF478D1009FDD72 /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A1D1BF478D1009FDD72 /* SideMenuViewController.m */; };
@@ -260,6 +266,12 @@
 		1310C3531C4542FC00A2A404 /* ShareSDKExtension.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKExtension.framework; sourceTree = "<group>"; };
 		1310C3541C4542FC00A2A404 /* ShareSDKUI.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDKUI.bundle; sourceTree = "<group>"; };
 		1310C3551C4542FC00A2A404 /* ShareSDKUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKUI.framework; sourceTree = "<group>"; };
+		1310C3631C46574100A2A404 /* Icon_UserLevel_9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_UserLevel_9@2x.png"; sourceTree = "<group>"; };
+		1310C3651C465BA100A2A404 /* Icon_UserLevel_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_UserLevel_4@2x.png"; sourceTree = "<group>"; };
+		1310C3661C465BA100A2A404 /* Icon_UserLevel_5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_UserLevel_5@2x.png"; sourceTree = "<group>"; };
+		1310C3671C465BA100A2A404 /* Icon_UserLevel_6@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_UserLevel_6@2x.png"; sourceTree = "<group>"; };
+		1310C3681C465BA100A2A404 /* Icon_UserLevel_7@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_UserLevel_7@2x.png"; sourceTree = "<group>"; };
+		1310C3691C465BA100A2A404 /* Icon_UserLevel_8@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_UserLevel_8@2x.png"; sourceTree = "<group>"; };
 		131D69E61BF37614009FDD72 /* Statistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Statistics.h; sourceTree = "<group>"; };
 		131D69E71BF37614009FDD72 /* Statistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Statistics.m; sourceTree = "<group>"; };
 		131D69F31BF466D2009FDD72 /* StatisticsCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatisticsCenter.h; sourceTree = "<group>"; };
@@ -1314,6 +1326,12 @@
 				13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */,
 				13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */,
 				13D405FA1C2D13360089D702 /* Icon_Posts_Praise_Selected@2x.png */,
+				1310C3651C465BA100A2A404 /* Icon_UserLevel_4@2x.png */,
+				1310C3661C465BA100A2A404 /* Icon_UserLevel_5@2x.png */,
+				1310C3671C465BA100A2A404 /* Icon_UserLevel_6@2x.png */,
+				1310C3681C465BA100A2A404 /* Icon_UserLevel_7@2x.png */,
+				1310C3691C465BA100A2A404 /* Icon_UserLevel_8@2x.png */,
+				1310C3631C46574100A2A404 /* Icon_UserLevel_9@2x.png */,
 			);
 			path = Icon;
 			sourceTree = "<group>";
@@ -1579,6 +1597,7 @@
 				137470F61C159BEE00B7822A /* Icon_Menu_Messages@2x.png in Resources */,
 				1361AFD61BCBB54800DD5FFB /* Btn_Up.png in Resources */,
 				1310C3611C4542FC00A2A404 /* ShareSDKUI.bundle in Resources */,
+				1310C36D1C465BA100A2A404 /* Icon_UserLevel_7@2x.png in Resources */,
 				137700BC1B93E56A008C83FD /* LaunchScreen.xib in Resources */,
 				137470D51C0BFF0500B7822A /* Btn_Share@2x.png in Resources */,
 				1310C35D1C4542FC00A2A404 /* ShareSDK.bundle in Resources */,
@@ -1594,6 +1613,7 @@
 				135B22301B9301C9005CE84A /* Btn_Plan_Delete@2x.png in Resources */,
 				131D6A431BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png in Resources */,
 				137470AB1C0943D700B7822A /* Icon_Gesture_Lock@2x.png in Resources */,
+				1310C36C1C465BA100A2A404 /* Icon_UserLevel_6@2x.png in Resources */,
 				137470711C05F1DC00B7822A /* Icon_AutoSync_Normal@2x.png in Resources */,
 				137470B11C09490B00B7822A /* Icon_GestureTrack_Show@2x.png in Resources */,
 				133B08441BA458610015E752 /* PlanCell.xib in Resources */,
@@ -1602,11 +1622,13 @@
 				1361AFCB1BCBB52E00DD5FFB /* Bg_Line@2x.png in Resources */,
 				1361AFD71BCBB54800DD5FFB /* Btn_Up@2x.png in Resources */,
 				137701091B95DF67008C83FD /* Icon_Gender_M_Selected@2x.png in Resources */,
+				1310C36E1C465BA100A2A404 /* Icon_UserLevel_8@2x.png in Resources */,
 				135B222F1B9301C9005CE84A /* Btn_Plan_Done@2x.png in Resources */,
 				1385B4801BC9EF9900CB208C /* Btn_AddPhoto@2x.png in Resources */,
 				13AF64AB1C1C0C75008E8A9E /* Btn_Share_circle@2x.png in Resources */,
 				137700DE1B953226008C83FD /* Icon_Arrow_Right@2x.png in Resources */,
 				135B220D1B92B2B5005CE84A /* Btn_Add@2x.png in Resources */,
+				1310C36B1C465BA100A2A404 /* Icon_UserLevel_5@2x.png in Resources */,
 				137470AD1C0945D000B7822A /* Icon_Gesture_Unlock@2x.png in Resources */,
 				13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */,
 				13D1AD711C3E79E8007734F6 /* Btn_Share66@2x.png in Resources */,
@@ -1636,6 +1658,7 @@
 				1385B4821BCA712400CB208C /* Btn_Delete@2x.png in Resources */,
 				135B22281B92F4C1005CE84A /* Btn_SectionUp@2x.png in Resources */,
 				1374708F1C07E66B00B7822A /* CLLockVC.xib in Resources */,
+				1310C36A1C465BA100A2A404 /* Icon_UserLevel_4@2x.png in Resources */,
 				13D406091C2E9E4F0089D702 /* PostsNoImageCell.xib in Resources */,
 				13D406241C3020BF0089D702 /* Btn_Posts_Like@2x.png in Resources */,
 				137470F01C1034BE00B7822A /* Btn_Sync@2x.png in Resources */,
@@ -1643,6 +1666,7 @@
 				135B22101B92B417005CE84A /* Bg_Cell_White@2x.png in Resources */,
 				137470C51C0AE72A00B7822A /* TaskCell.xib in Resources */,
 				137701081B95DF67008C83FD /* Icon_Gender_M_Normal@2x.png in Resources */,
+				1310C3641C46574100A2A404 /* Icon_UserLevel_9@2x.png in Resources */,
 				13AF64AD1C1C5C50008E8A9E /* avatarDefault1@2x.png in Resources */,
 				13A6ACB11BC5F83A005A02F9 /* ImageDefault@2x.png in Resources */,
 				1361AFD41BCBB54800DD5FFB /* Btn_Show.png in Resources */,

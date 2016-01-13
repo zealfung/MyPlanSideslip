@@ -302,11 +302,25 @@ static NSString * const kKeyMinutes = @"minutes";
     NSInteger levelCode = [level integerValue];
     switch (levelCode) {
         case 9:
-            return [UIImage imageNamed:png_Icon_Gender_M_Selected];
+            return [UIImage imageNamed:png_Icon_Icon_UserLevel_9];
             break;
-            
+        case 8:
+            return [UIImage imageNamed:png_Icon_Icon_UserLevel_8];
+            break;
+        case 7:
+            return [UIImage imageNamed:png_Icon_Icon_UserLevel_7];
+            break;
+        case 6:
+            return [UIImage imageNamed:png_Icon_Icon_UserLevel_6];
+            break;
+        case 5:
+            return [UIImage imageNamed:png_Icon_Icon_UserLevel_5];
+            break;
+        case 4:
+            return [UIImage imageNamed:png_Icon_Icon_UserLevel_4];
+            break;
         default:
-            return [UIImage imageNamed:png_Icon_Gender_F_Selected];
+            return nil;
             break;
     }
 }

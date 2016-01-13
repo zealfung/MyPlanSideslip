@@ -178,9 +178,9 @@
         BmobObject *obj = postsArray[indexPath.row];
         NSArray *imgURLArray = [NSArray arrayWithArray:[obj objectForKey:@"imgURLArray"]];
         if (imgURLArray && imgURLArray.count > 0) {
-            return 295.f;
+            return 285.f;
         } else {
-            return 140.f;
+            return 130.f;
         }
     } else {
         return 44.f;

@@ -69,5 +69,11 @@
 #define png_Icon_Posts_Eyes @"Icon_Posts_Eyes"
 #define png_Icon_Posts_Praise_Normal @"Icon_Posts_Praise_Normal"
 #define png_Icon_Posts_Praise_Selected @"Icon_Posts_Praise_Selected"
+#define png_Icon_Icon_UserLevel_9 @"Icon_UserLevel_9"
+#define png_Icon_Icon_UserLevel_8 @"Icon_UserLevel_8"
+#define png_Icon_Icon_UserLevel_7 @"Icon_UserLevel_7"
+#define png_Icon_Icon_UserLevel_6 @"Icon_UserLevel_6"
+#define png_Icon_Icon_UserLevel_5 @"Icon_UserLevel_5"
+#define png_Icon_Icon_UserLevel_4 @"Icon_UserLevel_4"
 
 #endif
