@@ -61,7 +61,7 @@
     self.subViewNickName.backgroundColor = [UIColor clearColor];
     
     self.subViewNickName.centerButton.enabled = NO;
-    self.subViewNickName.fixCenterWidth = 20;
+    self.subViewNickName.fixCenterWidth = 18;
     self.subViewNickName.fixRightWidth = self.subViewNickName.frame.size.width - self.subViewNickName.fixLeftWidth - self.subViewNickName.fixCenterWidth;
     
     self.subViewNickName.leftButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;

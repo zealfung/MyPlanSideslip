@@ -259,14 +259,14 @@ NSInteger const kDeleteTag = 20160110;
     self.headerView.layer.borderColor = [color_dedede CGColor];
     
     //图像
-    UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 5, 40, 40)];
-    avatarView.layer.cornerRadius = 20;
+    UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 5, 38, 38)];
+    avatarView.layer.cornerRadius = 19;
     avatarView.clipsToBounds = YES;
     [avatarView sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed:png_AvatarDefault1]];
     avatarView.contentMode = UIViewContentModeScaleAspectFit;
     [self.headerView addSubview:avatarView];
     //昵称
-    ThreeSubView *tsViewNickname = [[ThreeSubView alloc] initWithFrame:CGRectMake(57, 0, WIDTH_FULL_SCREEN - 69, 30) leftButtonSelectBlock:^{
+    ThreeSubView *tsViewNickname = [[ThreeSubView alloc] initWithFrame:CGRectMake(53, 5, WIDTH_FULL_SCREEN - 69, 18) leftButtonSelectBlock:^{
         
     } centerButtonSelectBlock:^{
         
@@ -281,18 +281,16 @@ NSInteger const kDeleteTag = 20160110;
     }
     [tsViewNickname.leftButton setAllTitle:nickName];
     tsViewNickname.leftButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-
+    tsViewNickname.centerButton.enabled = NO;
     if (level) {
         [tsViewNickname.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
     }
-    tsViewNickname.centerButton.enabled = NO;
     
-    tsViewNickname.fixCenterWidth = 30;
-    tsViewNickname.fixRightWidth = tsViewNickname.frame.size.width - tsViewNickname.fixLeftWidth - tsViewNickname.fixCenterWidth;
+    tsViewNickname.fixCenterWidth = 18;
     [tsViewNickname autoLayout];
     [self.headerView addSubview:tsViewNickname];
     //发表时间
-    UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(57, 30, WIDTH_FULL_SCREEN / 2, 20)];
+    UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(53, 23, WIDTH_FULL_SCREEN / 2, 20)];
     labelDate.textColor = color_666666;
     labelDate.font = font_Normal_13;
     labelDate.text = [CommonFunction intervalSinceNow:self.posts.createdAt];
@@ -327,14 +325,14 @@ NSInteger const kDeleteTag = 20160110;
     
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, 85)];
     //图像
-    UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 2.5, 30, 30)];
-    avatarView.layer.cornerRadius = 15;
+    UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 2.5, 25, 25)];
+    avatarView.layer.cornerRadius = 12.5;
     avatarView.clipsToBounds = YES;
     [avatarView sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed:png_AvatarDefault1]];
     avatarView.contentMode = UIViewContentModeScaleAspectFit;
     [view addSubview:avatarView];
     //昵称
-    ThreeSubView *tsViewNickname = [[ThreeSubView alloc] initWithFrame:CGRectMake(47, 0, WIDTH_FULL_SCREEN - 159, 20) leftButtonSelectBlock:^{
+    ThreeSubView *tsViewNickname = [[ThreeSubView alloc] initWithFrame:CGRectMake(40, 0, WIDTH_FULL_SCREEN - 159, 15) leftButtonSelectBlock:^{
         
     } centerButtonSelectBlock:^{
         
@@ -353,27 +351,25 @@ NSInteger const kDeleteTag = 20160110;
     [tsViewNickname.centerButton.titleLabel setFont:font_Normal_11];
     [tsViewNickname.centerButton setAllTitleColor:color_666666];
     tsViewNickname.centerButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-    
+    tsViewNickname.centerButton.enabled = NO;
     if (level) {
         [tsViewNickname.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+        tsViewNickname.fixCenterWidth = 15;
+    } else {
+        tsViewNickname.fixCenterWidth = 0;
     }
-    tsViewNickname.centerButton.enabled = NO;
     
     //楼主
     BmobObject *postsAuthor = [self.posts objectForKey:@"author"];
     NSString *postsUserObjectId = [postsAuthor objectForKey:@"userObjectId"];
     NSString *commentUserObjectId = [commentAuthor objectForKey:@"userObjectId"];
+    [tsViewNickname.rightButton.titleLabel setFont:font_Normal_11];
+    [tsViewNickname.rightButton setAllTitleColor:color_666666];
+    tsViewNickname.fixRightWidth = 30;
+    tsViewNickname.rightButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     if ([postsUserObjectId isEqualToString:commentUserObjectId]) {
-        [tsViewNickname.centerButton setAllTitle:str_Author];
-        tsViewNickname.fixCenterWidth = 50;
-    } else {
-        [tsViewNickname.centerButton setAllTitle:@""];
-        tsViewNickname.fixCenterWidth = 20;
+        [tsViewNickname.rightButton setAllTitle:str_Author];
     }
-    [tsViewNickname.rightButton.titleLabel setFont:font_Normal_13];
-    [tsViewNickname.rightButton setAllTitleColor:color_333333];
-    [tsViewNickname.rightButton setAllTitle:@""];
-    tsViewNickname.fixRightWidth = 0;
     [tsViewNickname autoLayout];
     [view addSubview:tsViewNickname];
     //赞、举报
@@ -431,13 +427,13 @@ NSInteger const kDeleteTag = 20160110;
     [tsViewLikes autoLayout];
     [view addSubview:tsViewLikes];
     //发表时间
-    UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(47, 20, WIDTH_FULL_SCREEN / 2, 15)];
+    UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(40, 15, WIDTH_FULL_SCREEN / 2, 15)];
     labelDate.textColor = color_666666;
     labelDate.font = font_Normal_11;
     labelDate.text = [CommonFunction intervalSinceNow:comment.createdAt];
     [view addSubview:labelDate];
 
-    CGFloat yOffset = 40;
+    CGFloat yOffset = 35;
     
     //回复XX
     BmobObject *replyAuthor = [comment objectForKey:@"replyAuthor"];

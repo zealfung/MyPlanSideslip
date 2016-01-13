@@ -178,7 +178,7 @@
         BmobObject *obj = postsArray[indexPath.row];
         NSArray *imgURLArray = [NSArray arrayWithArray:[obj objectForKey:@"imgURLArray"]];
         if (imgURLArray && imgURLArray.count > 0) {
-            return 285.f;
+            return 275.f;
         } else {
             return 130.f;
         }
@@ -192,6 +192,7 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     if (postsArray.count > indexPath.row) {
         BmobObject *obj = postsArray[indexPath.row];
         BmobObject *author = [obj objectForKey:@"author"];
@@ -218,7 +219,6 @@
             if (imgURLArray.count == 1) {
                 PostsOneImageCell *cell = [PostsOneImageCell cellView];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
                 
                 [cell.subViewNickName.leftButton setAllTitle:nickName];
@@ -280,7 +280,6 @@
             } else {
                 PostsTwoImageCell *cell = [PostsTwoImageCell cellView];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
                 
                 [cell.subViewNickName.leftButton setAllTitle:nickName];
@@ -344,7 +343,6 @@
         } else {
             PostsNoImageCell *cell = [PostsNoImageCell cellView];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
             [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
 
             [cell.subViewNickName.leftButton setAllTitle:nickName];
@@ -404,7 +402,6 @@
             return cell;
         }
     } else {
-        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         static NSString *noDataCellIdentifier = @"noDataCellIdentifier";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noDataCellIdentifier];
         if (!cell) {
