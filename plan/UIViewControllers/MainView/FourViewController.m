@@ -148,6 +148,8 @@
     CGFloat fullViewHeight = HEIGHT_FULL_VIEW;
     CGFloat headerViewHeight = fullViewHeight / 3;
     bannerView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 320, WIDTH_FULL_SCREEN, headerViewHeight) imageURLStringsGroup:headerImagesURLArray];
+    bannerView.autoScrollTimeInterval = 6.0;
+    bannerView.pageControlDotSize = CGSizeMake(5, 5);
     bannerView.backgroundColor = [UIColor whiteColor];
     bannerView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
     bannerView.delegate = self;
