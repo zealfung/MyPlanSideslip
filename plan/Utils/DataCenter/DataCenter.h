@@ -16,6 +16,8 @@
 
 + (void)syncServerToLocalForSettings:(BmobObject *)obj;
 
++ (void)addSettingsToServer;
+
 + (void)getMessagesFromServer;
 
 @end

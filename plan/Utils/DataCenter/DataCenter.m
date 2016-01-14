@@ -274,6 +274,7 @@ static BOOL finishPhoto;
 + (void)addSettingsToServer {
     BmobUser *user = [BmobUser getCurrentUser];
     BmobObject *userSettings = [BmobObject objectWithClassName:@"UserSettings"];
+    [Config shareInstance].settings = [PlanCache getPersonalSettings];
     
     [userSettings setObject:user.objectId forKey:@"userObjectId"];
     if ([Config shareInstance].settings.nickname) {
@@ -297,10 +298,8 @@ static BOOL finishPhoto;
     if ([Config shareInstance].settings.updatetime) {
         [userSettings setObject:[Config shareInstance].settings.updatetime forKey:@"updatedTime"];
     }
-    NSString *timeNow = [CommonFunction getTimeNowString];
-    if ([Config shareInstance].settings.syntime) {
-        [userSettings setObject:timeNow forKey:@"syncTime"];
-    }
+    [userSettings setObject:@"2015-09-01 09:09:09" forKey:@"syncTime"];
+    
     BmobACL *acl = [BmobACL ACL];
     [acl setPublicReadAccess];//设置所有人可读
     [acl setWriteAccessForUser:user];//设置只有当前用户可写
@@ -310,7 +309,6 @@ static BOOL finishPhoto;
         if (isSuccessful) {
             
             [Config shareInstance].settings.objectId = userSettings.objectId;
-            [Config shareInstance].settings.syntime = timeNow;
             [PlanCache storePersonalSettings:[Config shareInstance].settings];
             
         } else if (error){

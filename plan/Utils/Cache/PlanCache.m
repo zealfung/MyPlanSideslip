@@ -422,9 +422,9 @@ static NSMutableDictionary * __contactsOnlineState;
         [rs close];
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=?, objectId=?, nickname=?, birthday=?, email=?, gender=?, lifespan=?, avatar=?, avatarURL=?, centerTop=?, centerTopURL=?, isAutoSync=?, isUseGestureLock=?, isShowGestureTrack=?, gesturePasswod=?, createtime=?, updatetime=?, syntime=? WHERE account=?", str_TableName_Settings];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET objectId=?, nickname=?, birthday=?, email=?, gender=?, lifespan=?, avatar=?, avatarURL=?, centerTop=?, centerTopURL=?, isAutoSync=?, isUseGestureLock=?, isShowGestureTrack=?, gesturePasswod=?, createtime=?, updatetime=?, syntime=? WHERE account=?", str_TableName_Settings];
             
-            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.account, settings.objectId, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, avatarData, settings.avatarURL, centerTopData, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.createtime, settings.updatetime, settings.syntime, settings.account]];
+            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.objectId, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, avatarData, settings.avatarURL, centerTopData, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.createtime, settings.updatetime, settings.syntime, settings.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
@@ -1669,6 +1669,8 @@ static NSMutableDictionary * __contactsOnlineState;
                     FMDBQuickCheck(b, sqlString, __db);
                 }
                 [NotificationCenter postNotificationName:Notify_Settings_Save object:nil];
+                //同时自动将本地设置同步到服务器
+                [DataCenter addSettingsToServer];
             }
         }];
     }
