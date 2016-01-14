@@ -6,8 +6,13 @@
 //  Copyright © 2016年 Fengzy. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "FatherViewController.h"
 
-@interface ChangePasswordViewController : UIViewController
+@interface ChangePasswordViewController : FatherViewController
+
+@property (strong, nonatomic) IBOutlet UITextField *txtOldPassword;
+@property (strong, nonatomic) IBOutlet UITextField *txtNewPassword;
+@property (strong, nonatomic) IBOutlet UITextField *txtNewPasswordAgain;
+@property (strong, nonatomic) IBOutlet UIButton *btnSubmit;
 
 @end

@@ -15,6 +15,7 @@
 #import <ShareSDK/ShareSDK.h>
 #import "LogInViewController.h"
 #import "SettingsViewController.h"
+#import "ChangePasswordViewController.h"
 #import "SettingsSetTextViewController.h"
 
 NSUInteger const kSettingsViewPickerBgViewTag = 20141228;
@@ -35,6 +36,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     ThreeSubView *birthThreeSubView;
     ThreeSubView *lifeThreeSubView;
     ThreeSubView *emailThreeSubView;
+    ThreeSubView *changePasswordThreeSubView;
     ThreeSubView *autoSyncThreeSubView;
     ThreeSubView *isUseGestureLockThreeSubView;//启用手势解锁
     ThreeSubView *isShowGestureTrackThreeSubView;//显示手势轨迹
@@ -250,16 +252,32 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     
     NSUInteger yOffset = 0;
     if ([LogIn isLogin]) {
-        ThreeSubView *threeSubView = [self createAutoSyncSwitchView];
-        [self addSeparatorForView:threeSubView];
-        [view addSubview:threeSubView];
-        
-        CGRect frame = threeSubView.frame;
-        frame.origin.y = yOffset;
-        threeSubView.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame);
+        //修改密码
+        {
+            ThreeSubView *threeSubView = [self createChangePassword];
+            [self addSeparatorForView:threeSubView];
+            [view addSubview:threeSubView];
+            
+            CGRect frame = threeSubView.frame;
+            frame.origin.y = yOffset;
+            threeSubView.frame = frame;
+            
+            yOffset = CGRectGetMaxY(frame);
+        }
+        //自动同步
+        {
+            ThreeSubView *threeSubView = [self createAutoSyncSwitchView];
+            [self addSeparatorForView:threeSubView];
+            [view addSubview:threeSubView];
+            
+            CGRect frame = threeSubView.frame;
+            frame.origin.y = yOffset;
+            threeSubView.frame = frame;
+            
+            yOffset = CGRectGetMaxY(frame);
+        }
     }
+    //手势解锁
     {
         ThreeSubView *threeSubView = [self createGestureLockSwitchView];
         [self addSeparatorForView:threeSubView];
@@ -443,6 +461,26 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     [threeSubView.centerButton setAllTitle:lifetime];
     [threeSubView autoLayout];
     lifeThreeSubView = threeSubView;
+    return threeSubView;
+}
+
+- (ThreeSubView *)createChangePassword {
+    __weak typeof(self) weakSelf = self;
+    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
+        [weakSelf toChangePasswordViewController];
+    } rightBlock: ^{
+        [weakSelf toChangePasswordViewController];
+    }];
+    
+    threeSubView.fixRightWidth = 55;
+    [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Arrow_Right] forState:UIControlStateNormal];
+    
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_ChangePassword]];
+    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixLeftWidth;
+    threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
+    
+    [threeSubView autoLayout];
+    changePasswordThreeSubView = threeSubView;
     return threeSubView;
 }
 
@@ -785,6 +823,11 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
             [lockVC dismiss:.5f];
         }];
     }
+}
+
+- (void)toChangePasswordViewController {
+    ChangePasswordViewController *controller = [[ChangePasswordViewController alloc] init];
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)toChangeGestureViewController {

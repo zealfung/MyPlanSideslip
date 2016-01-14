@@ -41,6 +41,7 @@
 #define str_ViewTitle_12 @"消息中心"
 #define str_ViewTitle_13 @"消息详情"
 #define str_ViewTitle_14 @"小区"
+#define str_ViewTitle_15 @"修改密码"
 #define str_NickName @"昵称"
 #define str_FirstView_1 @"假如你可以活到"
 #define str_FirstView_2 @"岁"
@@ -189,6 +190,15 @@
 
 #define str_ForgotPassword_Tips1 @"找回密码"
 #define str_ForgotPassword_Tips2 @"我们给你的邮箱发了一封重置密码的邮件，请注意查收"
+
+#define str_ChangePassword_Tips1 @"请输入当前密码"
+#define str_ChangePassword_Tips2 @"请输入新密码"
+#define str_ChangePassword_Tips3 @"请再输入一次新密码"
+#define str_ChangePassword_Tips4 @"两次新密码输入不一样"
+#define str_ChangePassword_Tips5 @"修改密码成功"
+#define str_ChangePassword_Tips6 @"修改密码失败"
+#define str_ChangePassword_Tips7 @"使用新密码登录失败"
+#define str_ChangePassword_Tips9 @"旧密码不正确"
 
 #define str_Set_Nickname @"设置昵称"
 #define str_Set_Nickname_Tips1 @"请输入昵称"
