@@ -21,6 +21,7 @@
 #import "LogInViewController.h"
 #import <RESideMenu/RESideMenu.h>
 #import "AddPostsViewController.h"
+#import "UserLevelViewController.h"
 #import "PostsDetailViewController.h"
 
 @interface FourViewController () <SDCycleScrollViewDelegate> {
@@ -90,7 +91,9 @@
 
 - (void)createNavBarButton {
     self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction:)];
-    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
+    self.rightBarButtonItems = [NSArray arrayWithObjects:
+                                [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)],
+                                [self createBarButtonItemWithNormalImageName:png_Btn_M selectedImageName:png_Btn_M selector:@selector(mAction:)], nil];
 }
 
 - (void)initTableView {
@@ -142,6 +145,12 @@
         LogInViewController *controller = [[LogInViewController alloc] init];
         [self.navigationController pushViewController:controller animated:YES];
     }
+}
+
+- (void)mAction:(UIButton *)button {
+    UserLevelViewController *controller = [[UserLevelViewController alloc] init];
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (UIView *)createTableHeaderView {

@@ -28,6 +28,9 @@
 		1310C36E1C465BA100A2A404 /* Icon_UserLevel_8@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3691C465BA100A2A404 /* Icon_UserLevel_8@2x.png */; };
 		1310C3731C47292200A2A404 /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1310C3711C47292200A2A404 /* ChangePasswordViewController.m */; };
 		1310C3741C47292200A2A404 /* ChangePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3721C47292200A2A404 /* ChangePasswordViewController.xib */; };
+		1310C37B1C47AD2C00A2A404 /* UserLevelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1310C37A1C47AD2C00A2A404 /* UserLevelViewController.m */; };
+		1310C37E1C47AE7000A2A404 /* UserLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1310C37D1C47AE7000A2A404 /* UserLevel.m */; };
+		1310C3801C47D3A300A2A404 /* Btn_M@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1310C37F1C47D3A300A2A404 /* Btn_M@2x.png */; };
 		131D69E81BF37614009FDD72 /* Statistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D69E71BF37614009FDD72 /* Statistics.m */; };
 		131D69F51BF466D2009FDD72 /* StatisticsCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D69F41BF466D2009FDD72 /* StatisticsCenter.m */; };
 		131D6A1E1BF478D1009FDD72 /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A1D1BF478D1009FDD72 /* SideMenuViewController.m */; };
@@ -277,6 +280,11 @@
 		1310C3701C47292200A2A404 /* ChangePasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangePasswordViewController.h; sourceTree = "<group>"; };
 		1310C3711C47292200A2A404 /* ChangePasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangePasswordViewController.m; sourceTree = "<group>"; };
 		1310C3721C47292200A2A404 /* ChangePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangePasswordViewController.xib; sourceTree = "<group>"; };
+		1310C3791C47AD2C00A2A404 /* UserLevelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLevelViewController.h; sourceTree = "<group>"; };
+		1310C37A1C47AD2C00A2A404 /* UserLevelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLevelViewController.m; sourceTree = "<group>"; };
+		1310C37C1C47AE7000A2A404 /* UserLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLevel.h; sourceTree = "<group>"; };
+		1310C37D1C47AE7000A2A404 /* UserLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLevel.m; sourceTree = "<group>"; };
+		1310C37F1C47D3A300A2A404 /* Btn_M@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_M@2x.png"; sourceTree = "<group>"; };
 		131D69E61BF37614009FDD72 /* Statistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Statistics.h; sourceTree = "<group>"; };
 		131D69E71BF37614009FDD72 /* Statistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Statistics.m; sourceTree = "<group>"; };
 		131D69F31BF466D2009FDD72 /* StatisticsCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatisticsCenter.h; sourceTree = "<group>"; };
@@ -791,9 +799,11 @@
 		133B079B1B9FBC620015E752 /* Help */ = {
 			isa = PBXGroup;
 			children = (
-				133B07AC1B9FC46A0015E752 /* Questions */,
 				133B07A01B9FBCA30015E752 /* HelpViewController.h */,
 				133B07A11B9FBCA30015E752 /* HelpViewController.m */,
+				133B07AC1B9FC46A0015E752 /* Questions */,
+				1310C3791C47AD2C00A2A404 /* UserLevelViewController.h */,
+				1310C37A1C47AD2C00A2A404 /* UserLevelViewController.m */,
 			);
 			path = Help;
 			sourceTree = "<group>";
@@ -1012,6 +1022,8 @@
 				137470C71C0AE75900B7822A /* Task.m */,
 				137470C91C0AEB0300B7822A /* TaskRecord.h */,
 				137470CA1C0AEB0300B7822A /* TaskRecord.m */,
+				1310C37C1C47AE7000A2A404 /* UserLevel.h */,
+				1310C37D1C47AE7000A2A404 /* UserLevel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1029,6 +1041,7 @@
 				1361AFCD1BCBB54800DD5FFB /* Btn_Down@2x.png */,
 				1385B47B1BC9E50D00CB208C /* Btn_Edit@2x.png */,
 				131D6A271BF58C81009FDD72 /* Btn_LeftMenu@2x.png */,
+				1310C37F1C47D3A300A2A404 /* Btn_M@2x.png */,
 				13D1AD6A1C3E71EA007734F6 /* Btn_More@2x.png */,
 				13A6ACAC1BC551EE005A02F9 /* Btn_Photo_Delete@2x.png */,
 				135B222D1B9301C9005CE84A /* Btn_Plan_Delete@2x.png */,
@@ -1683,6 +1696,7 @@
 				135B22101B92B417005CE84A /* Bg_Cell_White@2x.png in Resources */,
 				137470C51C0AE72A00B7822A /* TaskCell.xib in Resources */,
 				137701081B95DF67008C83FD /* Icon_Gender_M_Normal@2x.png in Resources */,
+				1310C3801C47D3A300A2A404 /* Btn_M@2x.png in Resources */,
 				1310C3641C46574100A2A404 /* Icon_UserLevel_9@2x.png in Resources */,
 				13AF64AD1C1C5C50008E8A9E /* avatarDefault1@2x.png in Resources */,
 				13A6ACB11BC5F83A005A02F9 /* ImageDefault@2x.png in Resources */,
@@ -1794,9 +1808,11 @@
 				137470C41C0AE72A00B7822A /* TaskCell.m in Sources */,
 				137470931C07E66B00B7822A /* CLLockInfoView.m in Sources */,
 				137470591C04202700B7822A /* ForgotPasswordViewController.m in Sources */,
+				1310C37B1C47AD2C00A2A404 /* UserLevelViewController.m in Sources */,
 				136DF57E1BEC2F7D001D6496 /* ImageBrowser.m in Sources */,
 				13A6ACCD1BC6A82C005A02F9 /* FullScreenImageViewController.m in Sources */,
 				135B218C1B900394005CE84A /* AppDelegate.m in Sources */,
+				1310C37E1C47AE7000A2A404 /* UserLevel.m in Sources */,
 				137470921C07E66B00B7822A /* CLLockNavVC.m in Sources */,
 				133B08431BA458610015E752 /* PlanCell.m in Sources */,
 				137700E51B9534A4008C83FD /* SettingsViewController.m in Sources */,

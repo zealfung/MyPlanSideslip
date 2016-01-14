@@ -705,7 +705,7 @@ NSInteger const kDeleteTag = 20160110;
 }
 
 - (void)shareAction {
-    [ShareCenter showShareActionSheet:self.view title:str_App_Title content:[self.posts objectForKey:@"content"] shareUrl:@"" sharedImageURL:@""];
+    [ShareCenter showShareActionSheet:self.view title:str_Share_Tips3 content:[self.posts objectForKey:@"content"] shareUrl:@"" sharedImageURL:@""];
 }
 
 - (void)deleteAction {
