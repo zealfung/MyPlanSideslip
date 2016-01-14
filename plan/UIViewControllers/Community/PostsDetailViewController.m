@@ -255,9 +255,6 @@ NSInteger const kDeleteTag = 20160110;
     NSString *avatarURL = [author objectForKey:@"avatarURL"];
     NSString *isHighlight = [self.posts objectForKey:@"isHighlight"];
     
-    self.headerView.layer.borderWidth = 1;
-    self.headerView.layer.borderColor = [color_dedede CGColor];
-    
     //图像
     UIImageView *avatarView = [[UIImageView alloc] initWithFrame:CGRectMake(12, 5, 38, 38)];
     avatarView.layer.cornerRadius = 19;
