@@ -15,6 +15,8 @@
 #define str_Common_Tips1 @"请到“设置”-“隐私”-“照片”中找到”我有计划“，将按钮打开，允许访问相册"
 #define str_Common_Tips2 @"请到“设置”-“隐私”-“相机”中找到”我有计划“，将按钮打开，允许使用摄像头"
 #define str_Common_Tips3 @"至少写点什么吧"
+#define str_Common_Tips4 @"已保存到手机相册";
+#define str_Common_Tips5 @"图片加载失败";
 
 #define str_Common_Time1 @"刚刚"
 #define str_Common_Time2 @"今天"
@@ -80,6 +82,7 @@
 #define str_Author @"楼主"
 #define str_Like @"赞"
 #define str_Reply @"回复"
+#define str_Save @"保存"
 #define str_Notify_Later @"稍后提醒"
 #define str_Delete_Plan @"删除该计划"
 #define str_NoPlan_EveryDay @"暂无每日计划内容"
@@ -166,6 +169,7 @@
 #define str_Settings_LogOut @"注销登录"
 #define str_Settings_LogOut_Success @"注销成功"
 #define str_Settings_LogOut_Fail @"注销失败"
+#define str_Settings_ChangePassword @"修改密码："
 #define str_Settings_AutoSync @"自动同步："
 #define str_Settings_Gesture @"手势解锁："
 #define str_Settings_ShowGesture @"显示手势："

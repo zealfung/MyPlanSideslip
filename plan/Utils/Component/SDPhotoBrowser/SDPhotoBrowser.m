@@ -69,7 +69,7 @@
     
     // 2.保存按钮
     UIButton *saveButton = [[UIButton alloc] init];
-    [saveButton setTitle:@"保存" forState:UIControlStateNormal];
+    [saveButton setTitle:str_Save forState:UIControlStateNormal];
     [saveButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     saveButton.backgroundColor = [UIColor colorWithRed:0.1f green:0.1f blue:0.1f alpha:0.90f];
     saveButton.layer.cornerRadius = 5;
@@ -108,9 +108,9 @@
     [[UIApplication sharedApplication].keyWindow addSubview:label];
     [[UIApplication sharedApplication].keyWindow bringSubviewToFront:label];
     if (error) {
-        label.text = SDPhotoBrowserSaveImageFailText;
+        label.text = str_Save_Fail;
     }   else {
-        label.text = SDPhotoBrowserSaveImageSuccessText;
+        label.text = str_Common_Tips4;
     }
     [label performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
 }

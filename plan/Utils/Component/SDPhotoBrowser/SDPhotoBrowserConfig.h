@@ -12,12 +12,6 @@ typedef enum {
     SDWaitingViewModePieDiagram // 饼型
 } SDWaitingViewMode;
 
-// 图片保存成功提示文字
-#define SDPhotoBrowserSaveImageSuccessText @"保存成功";
-
-// 图片保存失败提示文字
-#define SDPhotoBrowserSaveImageFailText @"保存失败";
-
 // browser背景颜色
 #define SDPhotoBrowserBackgrounColor [UIColor colorWithRed:0 green:0 blue:0 alpha:0.95]
 
