@@ -30,8 +30,8 @@
     self.txtEmail.text = self.email;
     self.txtEmail.placeholder = str_Register_Tips1;
     [self.txtEmail becomeFirstResponder];
-    self.btnSumbit.layer.cornerRadius = 5;
-    [self.btnSumbit setAllTitle:str_ForgotPassword_Tips1];
+    self.btnSubmit.layer.cornerRadius = 5;
+    [self.btnSubmit setAllTitle:str_ForgotPassword_Tips1];
 }
 
 - (IBAction)submitAction:(id)sender {

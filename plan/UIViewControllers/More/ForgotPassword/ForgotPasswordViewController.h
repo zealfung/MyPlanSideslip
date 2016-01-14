@@ -12,6 +12,6 @@
 
 @property (nonatomic, strong) NSString *email;
 @property (strong, nonatomic) IBOutlet UITextField *txtEmail;
-@property (strong, nonatomic) IBOutlet UIButton *btnSumbit;
+@property (strong, nonatomic) IBOutlet UIButton *btnSubmit;
 
 @end
