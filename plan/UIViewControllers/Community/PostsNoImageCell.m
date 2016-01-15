@@ -59,13 +59,19 @@
 
     [self.subViewNickName setLeftButtonSelectBlock:leftBlock centerButtonSelectBlock:centerBlock rightButtonSelectBlock:rightBlock];
     self.subViewNickName.backgroundColor = [UIColor clearColor];
-
+    
     self.subViewNickName.fixCenterWidth = 20;
+    self.subViewNickName.centerButton.enabled = NO;
+    self.subViewNickName.centerButton.adjustsImageWhenDisabled = NO;
     self.subViewNickName.fixRightWidth = self.subViewNickName.frame.size.width - self.subViewNickName.fixLeftWidth - self.subViewNickName.fixCenterWidth;
     
+    self.subViewNickName.leftButton.enabled = NO;
+    self.subViewNickName.leftButton.adjustsImageWhenDisabled = NO;
     self.subViewNickName.leftButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     self.subViewNickName.leftButton.titleLabel.font = font_Normal_16;
     self.subViewNickName.leftButton.titleLabel.textAlignment = NSTextAlignmentLeft;
+    
+    self.subViewNickName.rightButton.enabled = NO;
 }
 
 - (void)getBtnSubViewForLeftBlock:(ButtonSelectBlock)leftBlock centerBlock:(ButtonSelectBlock)centerBlock rightBlock:(ButtonSelectBlock)rightBlock {
