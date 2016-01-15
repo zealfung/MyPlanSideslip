@@ -17,6 +17,7 @@
 #define str_Common_Tips3 @"至少写点什么吧"
 #define str_Common_Tips4 @"已保存到手机相册";
 #define str_Common_Tips5 @"图片加载失败";
+#define str_Common_Tips6 @"暂无内容";
 
 #define str_Common_Time1 @"刚刚"
 #define str_Common_Time2 @"今天"
@@ -42,6 +43,7 @@
 #define str_ViewTitle_13 @"消息详情"
 #define str_ViewTitle_14 @"小区"
 #define str_ViewTitle_15 @"修改密码"
+#define str_ViewTitle_16 @"用户身份标识说明"
 #define str_NickName @"昵称"
 #define str_FirstView_1 @"假如你可以活到"
 #define str_FirstView_2 @"岁"

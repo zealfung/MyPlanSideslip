@@ -29,7 +29,6 @@
 		1310C3731C47292200A2A404 /* ChangePasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1310C3711C47292200A2A404 /* ChangePasswordViewController.m */; };
 		1310C3741C47292200A2A404 /* ChangePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3721C47292200A2A404 /* ChangePasswordViewController.xib */; };
 		1310C37B1C47AD2C00A2A404 /* UserLevelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1310C37A1C47AD2C00A2A404 /* UserLevelViewController.m */; };
-		1310C37E1C47AE7000A2A404 /* UserLevel.m in Sources */ = {isa = PBXBuildFile; fileRef = 1310C37D1C47AE7000A2A404 /* UserLevel.m */; };
 		1310C3801C47D3A300A2A404 /* Btn_M@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1310C37F1C47D3A300A2A404 /* Btn_M@2x.png */; };
 		131D69E81BF37614009FDD72 /* Statistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D69E71BF37614009FDD72 /* Statistics.m */; };
 		131D69F51BF466D2009FDD72 /* StatisticsCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D69F41BF466D2009FDD72 /* StatisticsCenter.m */; };
@@ -282,8 +281,6 @@
 		1310C3721C47292200A2A404 /* ChangePasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangePasswordViewController.xib; sourceTree = "<group>"; };
 		1310C3791C47AD2C00A2A404 /* UserLevelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLevelViewController.h; sourceTree = "<group>"; };
 		1310C37A1C47AD2C00A2A404 /* UserLevelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLevelViewController.m; sourceTree = "<group>"; };
-		1310C37C1C47AE7000A2A404 /* UserLevel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLevel.h; sourceTree = "<group>"; };
-		1310C37D1C47AE7000A2A404 /* UserLevel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLevel.m; sourceTree = "<group>"; };
 		1310C37F1C47D3A300A2A404 /* Btn_M@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_M@2x.png"; sourceTree = "<group>"; };
 		131D69E61BF37614009FDD72 /* Statistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Statistics.h; sourceTree = "<group>"; };
 		131D69E71BF37614009FDD72 /* Statistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Statistics.m; sourceTree = "<group>"; };
@@ -1022,8 +1019,6 @@
 				137470C71C0AE75900B7822A /* Task.m */,
 				137470C91C0AEB0300B7822A /* TaskRecord.h */,
 				137470CA1C0AEB0300B7822A /* TaskRecord.m */,
-				1310C37C1C47AE7000A2A404 /* UserLevel.h */,
-				1310C37D1C47AE7000A2A404 /* UserLevel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1812,7 +1807,6 @@
 				136DF57E1BEC2F7D001D6496 /* ImageBrowser.m in Sources */,
 				13A6ACCD1BC6A82C005A02F9 /* FullScreenImageViewController.m in Sources */,
 				135B218C1B900394005CE84A /* AppDelegate.m in Sources */,
-				1310C37E1C47AE7000A2A404 /* UserLevel.m in Sources */,
 				137470921C07E66B00B7822A /* CLLockNavVC.m in Sources */,
 				133B08431BA458610015E752 /* PlanCell.m in Sources */,
 				137700E51B9534A4008C83FD /* SettingsViewController.m in Sources */,

@@ -10,4 +10,6 @@
 
 @interface UserLevelViewController : FatherTableViewController
 
+@property (nonatomic, strong) NSArray *userTagsArray;
+
 @end
