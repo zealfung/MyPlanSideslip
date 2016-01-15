@@ -457,18 +457,49 @@
 #pragma mark - SDCycleScrollViewDelegate
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index {
     NSLog(@"---点击了第%ld张图片", index);
-    if (headerDetailURLArray.count > index) {
-        NSString *url = headerDetailURLArray[index];
-        WebViewController *controller = [[WebViewController alloc] init];
-        controller.url = url;
-        controller.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:controller animated:YES];
-    }
-    
+
     if (bannerObjArray.count > index) {
         //记录点击数
         BmobObject *obj = bannerObjArray[index];
         [self incrementBannerReadTimes:obj];
+        //根据类型做不同处理
+        NSString *bannerType = [obj objectForKey:@"bannerType"];
+        if (bannerType) {
+            switch ([bannerType integerValue]) {
+                case 1://内部帖子
+                {
+                    NSString *postsObjectId = [obj objectForKey:@"postsObjectId"];
+                    if (!postsObjectId) return;//如果帖子id为空就不用往下了
+                    
+                    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
+                    [bquery includeKey:@"author"];//声明该次查询需要将author关联对象信息一并查询出来
+                    [bquery whereKey:@"objectId" equalTo:postsObjectId];
+                    __weak typeof(self) weakSelf = self;
+                    isLoadingPosts = YES;
+                    [self showHUD];
+                    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+                        [weakSelf hideHUD];
+                        isLoadingPosts = NO;
+                        if (!error && array.count > 0) {
+                            BmobObject *obj = array[0];
+                            [weakSelf toPostsDetail:obj];
+                        }
+                    }];
+                }
+                    break;
+                case 2://网页URL
+                {
+                    NSString *detailURL = [obj objectForKey:@"detailURL"];
+                    WebViewController *controller = [[WebViewController alloc] init];
+                    controller.url = detailURL;
+                    controller.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:controller animated:YES];
+                }
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
 
