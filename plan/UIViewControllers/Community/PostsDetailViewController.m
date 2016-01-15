@@ -278,9 +278,9 @@ NSInteger const kDeleteTag = 20160110;
     }
     [tsViewNickname.leftButton setAllTitle:nickName];
     tsViewNickname.leftButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-    tsViewNickname.centerButton.enabled = NO;
     if (level) {
-        [tsViewNickname.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+        tsViewNickname.centerButton.selected = YES;
+        [tsViewNickname.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateSelected];
     }
     
     tsViewNickname.fixCenterWidth = 18;
@@ -348,9 +348,9 @@ NSInteger const kDeleteTag = 20160110;
     [tsViewNickname.centerButton.titleLabel setFont:font_Normal_11];
     [tsViewNickname.centerButton setAllTitleColor:color_666666];
     tsViewNickname.centerButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-    tsViewNickname.centerButton.enabled = NO;
     if (level) {
-        [tsViewNickname.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+        tsViewNickname.centerButton.selected = YES;
+        [tsViewNickname.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateSelected];
         tsViewNickname.fixCenterWidth = 15;
     } else {
         tsViewNickname.fixCenterWidth = 0;

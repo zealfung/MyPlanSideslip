@@ -239,7 +239,8 @@
                     [cell.subViewNickName.leftButton setAllTitleColor:color_Pink];
                 }
                 if (level) {
-                    [cell.subViewNickName.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+                    cell.subViewNickName.centerButton.selected = YES;
+                    [cell.subViewNickName.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateSelected];
                 }
                 [cell.subViewNickName autoLayout];
                 
@@ -300,7 +301,8 @@
                     [cell.subViewNickName.leftButton setAllTitleColor:color_Pink];
                 }
                 if (level) {
-                    [cell.subViewNickName.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+                    cell.subViewNickName.centerButton.selected = YES;
+                    [cell.subViewNickName.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateSelected];
                 }
                 [cell.subViewNickName autoLayout];
                 
@@ -363,7 +365,8 @@
                 [cell.subViewNickName.leftButton setAllTitleColor:color_Pink];
             }
             if (level) {
-                [cell.subViewNickName.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+                cell.subViewNickName.centerButton.selected = YES;
+                [cell.subViewNickName.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateSelected];
             }
             [cell.subViewNickName autoLayout];
             
