@@ -389,11 +389,8 @@ NSInteger const kDeleteTag = 20160110;
     }];
     tsViewLikes.fixLeftWidth = 30;
     [tsViewLikes.leftButton.titleLabel setFont:font_Normal_11];
-    [tsViewLikes.leftButton setAllTitleColor:color_666666];
+    [tsViewLikes.leftButton setAllTitleColor:color_8f8f8f];
     [tsViewLikes.leftButton setAllTitle:str_Report];
-    tsViewLikes.leftButton.layer.cornerRadius = 5;
-    tsViewLikes.leftButton.layer.borderWidth = 0.5;
-    tsViewLikes.leftButton.layer.borderColor = [color_666666 CGColor];
     tsViewLikes.leftButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     
     tsViewLikes.fixCenterWidth = 20;
