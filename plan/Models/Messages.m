@@ -14,6 +14,7 @@ NSString *const kMessages_Content = @"content";
 NSString *const kMessages_DetailURL = @"detailURL";
 NSString *const kMessages_ImgURLArray = @"imgURLArray";
 NSString *const kMessages_HasRead = @"hasRead";
+NSString *const kMessages_CanShare = @"canShare";
 NSString *const kMessages_ReadTimes = @"readTimes";
 NSString *const kMessages_CreateTime = @"createTime";
 
@@ -25,6 +26,7 @@ NSString *const kMessages_CreateTime = @"createTime";
 @synthesize detailURL = _detailURL;
 @synthesize imgURLArray = _imgURLArray;
 @synthesize hasRead = _hasRead;
+@synthesize canShare = _canShare;
 @synthesize readTimes = _readTimes;
 @synthesize createTime = _createTime;
 
@@ -37,6 +39,7 @@ NSString *const kMessages_CreateTime = @"createTime";
         self.detailURL = [dict objectOrNilForKey:kMessages_DetailURL];
         self.imgURLArray = [dict objectOrNilForKey:kMessages_ImgURLArray];
         self.hasRead = [dict objectOrNilForKey:kMessages_HasRead];
+        self.canShare = [dict objectOrNilForKey:kMessages_CanShare];
         self.readTimes = [dict objectOrNilForKey:kMessages_ReadTimes];
         self.createTime = [dict objectOrNilForKey:kMessages_CreateTime];
     }
@@ -52,6 +55,7 @@ NSString *const kMessages_CreateTime = @"createTime";
     self.detailURL = [aDecoder decodeObjectForKey:kMessages_DetailURL];
     self.imgURLArray = [aDecoder decodeObjectForKey:kMessages_ImgURLArray];
     self.hasRead = [aDecoder decodeObjectForKey:kMessages_HasRead];
+    self.canShare = [aDecoder decodeObjectForKey:kMessages_CanShare];
     self.readTimes = [aDecoder decodeObjectForKey:kMessages_ReadTimes];
     self.createTime = [aDecoder decodeObjectForKey:kMessages_CreateTime];
     return self;
@@ -64,6 +68,7 @@ NSString *const kMessages_CreateTime = @"createTime";
     [aCoder encodeObject:_detailURL forKey:kMessages_DetailURL];
     [aCoder encodeObject:_imgURLArray forKey:kMessages_ImgURLArray];
     [aCoder encodeObject:_hasRead forKey:kMessages_HasRead];
+    [aCoder encodeObject:_canShare forKey:kMessages_CanShare];
     [aCoder encodeObject:_readTimes forKey:kMessages_ReadTimes];
     [aCoder encodeObject:_createTime forKey:kMessages_CreateTime];
 }
@@ -76,6 +81,7 @@ NSString *const kMessages_CreateTime = @"createTime";
     copy.detailURL = [self.detailURL copyWithZone:zone];
     copy.imgURLArray = [self.imgURLArray copyWithZone:zone];
     copy.hasRead = [self.hasRead copyWithZone:zone];
+    copy.canShare = [self.canShare copyWithZone:zone];
     copy.readTimes = [self.readTimes copyWithZone:zone];
     copy.createTime = [self.createTime copyWithZone:zone];
     return copy;
