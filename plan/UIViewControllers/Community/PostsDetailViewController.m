@@ -155,6 +155,7 @@ NSInteger const kDeleteTag = 20160110;
         return NO;
     }
 }
+
 - (void)createDetailView {
     [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
@@ -609,34 +610,39 @@ NSInteger const kDeleteTag = 20160110;
     imgURLArray = [NSArray arrayWithArray:[self.posts objectForKey:@"imgURLArray"]];
     if (imgURLArray && imgURLArray.count > 0) {
         
-        if (!imgArray) {
-            imgArray = [NSMutableArray array];
-            for (NSInteger i=0; i < imgURLArray.count; i++) {
-                NSURL *URL = nil;
-                if ([imgURLArray[i] isKindOfClass:[NSString class]]) {
-                    
-                    UIImage *imgDefault = [UIImage imageNamed:png_ImageDefault_Rectangle];
-                    [imgArray addObject:imgDefault];
-                    URL = [NSURL URLWithString:imgURLArray[i]];
-                    
-                    CGFloat kWidth = WIDTH_FULL_SCREEN - 10;
-                    CGFloat kHeight = WIDTH_FULL_SCREEN * imgDefault.size.height / imgDefault.size.width;
-                    
-                    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 0, kWidth, kHeight)];
-                    __weak typeof(self) weakSelf = self;
-                    [imageView sd_setImageWithURL:URL placeholderImage:imgArray[i] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-                        if (!error && image) {
-                            postImgDownloadCount ++;
-                            imgArray[i] = image;
-                            if (postImgDownloadCount == imgURLArray.count) {
-                                [weakSelf createDetailView];
-                            }
-                        }
-                    }];
-                }
+        imgArray = [NSMutableArray array];
+        postImgDownloadCount = 0;
+        for (NSInteger i=0; i < imgURLArray.count; i++) {
+
+            if ([imgURLArray[i] isKindOfClass:[NSString class]]) {
+                
+                [self downloadImages:imgURLArray[i] index:i];
             }
         }
     }
+}
+
+- (void)downloadImages:(NSString *)imgURL index:(NSInteger)index {
+    UIImage *imgDefault = [UIImage imageNamed:png_ImageDefault_Rectangle];
+    [imgArray addObject:imgDefault];
+    NSURL *URL = [NSURL URLWithString:imgURLArray[index]];
+    
+    CGFloat kWidth = WIDTH_FULL_SCREEN - 10;
+    CGFloat kHeight = WIDTH_FULL_SCREEN * imgDefault.size.height / imgDefault.size.width;
+    
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, 0, kWidth, kHeight)];
+    __weak typeof(self) weakSelf = self;
+    [imageView sd_setImageWithURL:URL placeholderImage:imgArray[index] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+        postImgDownloadCount ++;
+        
+        if (!error && image) {
+            imgArray[index] = image;
+        }
+        if (postImgDownloadCount == imgURLArray.count) {
+            [weakSelf createDetailView];
+        }
+    }];
 }
 
 - (void)likeAction {
