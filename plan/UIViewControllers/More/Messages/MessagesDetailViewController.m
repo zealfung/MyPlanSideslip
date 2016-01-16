@@ -6,13 +6,14 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
-#import "PagedFlowView.h"
+#import "SDPhotoBrowser.h"
+#import "SDWebImageManager.h"
 #import "WebViewController.h"
 #import "MessagesDetailViewController.h"
-#import "FullScreenImageArrayViewController.h"
 
-@interface MessagesDetailViewController () <PagedFlowViewDataSource, PagedFlowViewDelegate> {
-    
+@interface MessagesDetailViewController () <SDPhotoBrowserDelegate> {
+    NSMutableArray *imgArray;
+    NSInteger postImgDownloadCount;
     UIScrollView *scrollView;
 }
 
@@ -37,11 +38,23 @@
         scrollView.showsVerticalScrollIndicator = NO;
         [self.view addSubview:scrollView];
         
-        [self loadCustomView];
+        if (self.message.imgURLArray && self.message.imgURLArray.count > 0) {
+            [self showHUD];
+            imgArray = [NSMutableArray array];
+            postImgDownloadCount = 0;
+            for (NSInteger i=0; i < self.message.imgURLArray.count; i++) {
+                if ([self.message.imgURLArray[i] isKindOfClass:[NSString class]]) {
+                    [self downloadImages:self.message.imgURLArray[i] index:i];
+                }
+            }
+        } else {
+            [self loadCustomView];
+        }
     }
 }
 
 - (void)loadCustomView {
+    [self hideHUD];
     [scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     UILabel *labelTitle = [[UILabel alloc] initWithFrame:CGRectMake(12, 10, WIDTH_FULL_SCREEN - 24, 50)];
@@ -56,29 +69,43 @@
     labelTime.font = font_Normal_13;
     labelTime.text = self.message.createTime;
     [scrollView addSubview:labelTime];
-    
+
     NSString *content = self.message.content;
-    UILabel *labelContent = [[UILabel alloc] initWithFrame:CGRectMake(0,0,0,0)];
-    [labelContent setNumberOfLines:0];
-    labelContent.lineBreakMode = NSLineBreakByWordWrapping;
-    [labelContent setTextColor:color_666666];
-    [labelContent setFont:font_Normal_16];
-    [labelContent setText:content];
-    CGSize size = CGSizeMake(WIDTH_FULL_SCREEN - 24, 2000);
-    CGSize labelsize = [content sizeWithFont:font_Normal_16 constrainedToSize:size lineBreakMode:NSLineBreakByWordWrapping];
+    CGFloat yOffset = 80;
+    if (content && content.length > 0) {
+        UITextView *contentView = [[UITextView alloc] initWithFrame:CGRectMake(5, yOffset, WIDTH_FULL_SCREEN - 10, 240)];
+        contentView.textColor = color_333333;
+        contentView.font = font_Normal_16;
+        contentView.editable = NO;
+        contentView.scrollEnabled = NO;
+        contentView.text = content;
+        [contentView sizeToFit];
+        [scrollView addSubview:contentView];
+        
+        yOffset += contentView.frame.size.height + 20;
+    }
     
-    UITextView *txtViewContent = [[UITextView alloc] initWithFrame:CGRectMake(12, 80, labelsize.width, labelsize.height + 50)];
-    txtViewContent.showsVerticalScrollIndicator = NO;
-    txtViewContent.showsHorizontalScrollIndicator = NO;
-    txtViewContent.editable = NO;
-    txtViewContent.scrollEnabled = NO;
-    txtViewContent.selectable = NO;
-    txtViewContent.font = font_Normal_16;
-    txtViewContent.textColor = color_666666;
-    txtViewContent.text = content;
-    [scrollView addSubview:txtViewContent];
-    
-    CGFloat yOffset = CGRectGetMaxY(txtViewContent.frame) + 10;
+    if (imgArray && imgArray.count > 0) {
+        for (NSInteger i=0; i < imgArray.count; i++) {
+            UIImage *image = imgArray[i];
+            CGFloat kWidth = WIDTH_FULL_SCREEN - 10;
+            CGFloat kHeight = WIDTH_FULL_SCREEN * image.size.height / image.size.width;
+            
+            UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(5, yOffset, kWidth, kHeight)];
+            imageView.backgroundColor = [UIColor clearColor];
+            imageView.clipsToBounds = YES;
+            imageView.contentMode = UIViewContentModeScaleAspectFit;
+            imageView.tag = i;
+            imageView.image = image;
+            imageView.userInteractionEnabled = YES;
+            UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(clickedImageAction:)];
+            [imageView addGestureRecognizer:singleTap];
+            
+            [scrollView addSubview:imageView];
+            yOffset += kHeight + 3;
+        }
+    }
+
     if (self.message.detailURL && self.message.detailURL.length > 0) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         button.frame = CGRectMake(12, yOffset, 150, 30);
@@ -89,56 +116,58 @@
         [button addTarget:self action:@selector(detailAction:) forControlEvents:UIControlEventTouchUpInside];
         [scrollView addSubview:button];
         
-        yOffset += 40;
+        yOffset += 150;
     }
-
-    if (self.message.imgURLArray.count > 0) {
-        PagedFlowView *pageFlowView = [[PagedFlowView alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, 100)];
-        pageFlowView.backgroundColor = color_e9eff1;
-        pageFlowView.minimumPageAlpha = 0.7;
-        pageFlowView.minimumPageScale = 0.9;
-        pageFlowView.delegate = self;
-        pageFlowView.dataSource = self;
-        [scrollView addSubview:pageFlowView];
-        scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, CGRectGetMaxY(pageFlowView.frame) + 64);
-    } else {
-        scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, CGRectGetMaxY(txtViewContent.frame) + 64);
-    }
+    
+    scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, yOffset);
 }
 
-#pragma mark - PagedFlowView Datasource
-- (NSInteger)numberOfPagesInFlowView:(PagedFlowView *)flowView {
-    return self.message.imgURLArray.count;
+- (void)downloadImages:(NSString *)imgURL index:(NSInteger)index {
+    UIImage *imgDefault = [UIImage imageNamed:png_ImageDefault_Rectangle];
+    [imgArray addObject:imgDefault];
+    NSURL *URL = [NSURL URLWithString:imgURL];
+    __weak typeof(self) weakSelf = self;
+    [[SDWebImageManager sharedManager] downloadImageWithURL:URL options:SDWebImageLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
+        
+    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+        
+        postImgDownloadCount ++;
+        
+        if (!error && image) {
+            imgArray[index] = image;
+        }
+        
+        if (postImgDownloadCount == self.message.imgURLArray.count) {
+            [weakSelf loadCustomView];
+        }
+    }];
 }
 
-- (UIView *)flowView:(PagedFlowView *)flowView cellForPageAtIndex:(NSInteger)index {
-    [flowView dequeueReusableCell]; //必须要调用否则会内存泄漏
-    UIImageView *imageView = [[UIImageView alloc] init];
-    imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [imageView sd_setImageWithURL:[NSURL URLWithString:self.message.imgURLArray[index]] placeholderImage:[UIImage imageNamed:png_Bg_LaunchImage]];
-//    imageView.image = self.message.imgURLArray[index];
-    return imageView;
+#pragma mark - photobrowser代理方法
+// 返回临时占位图片（即原来的小图）
+- (UIImage *)photoBrowser:(SDPhotoBrowser *)browser placeholderImageForIndex:(NSInteger)index {
+    return imgArray[index];
 }
 
-#pragma mark - PagedFlowView Delegate
-- (CGSize)sizeForPageInFlowView:(PagedFlowView *)flowView {
-    CGFloat width = 100 * 185.4 / 300;
-    return CGSizeMake(width, 100);
+// 返回高质量图片的url
+- (NSURL *)photoBrowser:(SDPhotoBrowser *)browser highQualityImageURLForIndex:(NSInteger)index {
+    NSString *urlStr = self.message.imgURLArray[index];
+    return [NSURL URLWithString:urlStr];
 }
 
-- (void)flowView:(PagedFlowView *)flowView didScrollToPageAtIndex:(NSInteger)index {
-
-}
-
-- (void)flowView:(PagedFlowView *)flowView didTapPageAtIndex:(NSInteger)index {
-//    FullScreenImageArrayViewController *controller = [[FullScreenImageArrayViewController alloc] init];
-//    controller.imgArray = self.message.imgURLArray;
-//    controller.defaultIndex = index;
-//    [self.navigationController pushViewController:controller animated:YES];
+- (void)clickedImageAction:(id)sender {
+    UITapGestureRecognizer *tap = (UITapGestureRecognizer *)sender;
+    UIImageView *imgView = (UIImageView *)tap.view;
+    
+    SDPhotoBrowser *browser = [[SDPhotoBrowser alloc] init];
+    browser.sourceImagesContainerView = scrollView;
+    browser.imageCount = self.message.imgURLArray.count; //图片总数
+    browser.currentImageIndex = imgView.tag;
+    browser.delegate = self;
+    [browser show];
 }
 
 - (void)detailAction:(UIButton *)button {
-//    [[UIApplication sharedApplication] openURL:[NSURL URLWithString:self.message.detailURL]];
     WebViewController *controller = [[WebViewController alloc] init];
     controller.url = self.message.detailURL;
     [self.navigationController pushViewController:controller animated:YES];

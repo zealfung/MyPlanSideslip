@@ -1036,6 +1036,8 @@ static BOOL finishPhoto;
             message.title = [obj objectForKey:@"title"];
             message.content = [obj objectForKey:@"content"];
             message.detailURL = [obj objectForKey:@"detailURL"];
+            message.imgURLArray = [obj objectForKey:@"imgURLArray"];
+            message.canShare = [obj objectForKey:@"canShare"];
             message.createTime = [CommonFunction NSDateToNSString:obj.createdAt formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
             
             [PlanCache storeMessages:message];
