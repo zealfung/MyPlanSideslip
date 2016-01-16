@@ -25,6 +25,7 @@
 #define png_Btn_LeftMenu @"Btn_LeftMenu"
 #define png_Btn_Share @"Btn_Share"
 #define png_Btn_Share66 @"Btn_Share66"
+#define png_Btn_Share_circle @"Btn_Share_circle"
 #define png_Btn_Sync @"Btn_Sync"
 #define png_Btn_Clean @"Btn_Clean"
 #define png_Btn_More @"Btn_More"

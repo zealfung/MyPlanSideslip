@@ -6,6 +6,7 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
+#import "ShareCenter.h"
 #import "SDPhotoBrowser.h"
 #import "SDWebImageManager.h"
 #import "WebViewController.h"
@@ -24,6 +25,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.title = str_ViewTitle_13;
+    if ([self.message.canShare isEqualToString:@"1"]) {
+        [self createNavBarButton];
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -51,6 +55,14 @@
             [self loadCustomView];
         }
     }
+}
+
+- (void)createNavBarButton {
+    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Share_circle selectedImageName:png_Btn_Share_circle selector:@selector(shareAction)];
+}
+
+- (void)shareAction {
+    [ShareCenter showShareActionSheet:self.view title:str_Share_Tips3 content:self.message.content shareUrl:self.message.detailURL sharedImageURL:@""];
 }
 
 - (void)loadCustomView {
