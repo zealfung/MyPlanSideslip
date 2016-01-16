@@ -52,7 +52,6 @@
 
 - (void)webViewDidStartLoad:(UIWebView *)webView {
     //开始加载
-    [self hideHUD];
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
@@ -63,6 +62,8 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     //加载出错
     [self hideHUD];
+    [self alertToastMessage:str_Common_Tips7];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

@@ -15,9 +15,10 @@
 #define str_Common_Tips1 @"请到“设置”-“隐私”-“照片”中找到”我有计划“，将按钮打开，允许访问相册"
 #define str_Common_Tips2 @"请到“设置”-“隐私”-“相机”中找到”我有计划“，将按钮打开，允许使用摄像头"
 #define str_Common_Tips3 @"至少写点什么吧"
-#define str_Common_Tips4 @"已保存到手机相册";
-#define str_Common_Tips5 @"图片加载失败";
-#define str_Common_Tips6 @"暂无内容";
+#define str_Common_Tips4 @"已保存到手机相册"
+#define str_Common_Tips5 @"图片加载失败"
+#define str_Common_Tips6 @"暂无内容"
+#define str_Common_Tips7 @"内容加载失败"
 
 #define str_Common_Time1 @"刚刚"
 #define str_Common_Time2 @"今天"
