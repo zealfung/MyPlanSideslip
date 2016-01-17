@@ -35,6 +35,7 @@
     self.btnRegister.layer.cornerRadius = 5;
     [self.btnRegister setAllTitle:str_Register];
     [self.btnforgotPwd setAllTitle:str_ForgotPassword];
+    self.labelTips.text = str_Register_Tips8;
 }
 
 - (IBAction)registerAction:(id)sender {

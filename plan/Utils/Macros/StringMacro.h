@@ -181,12 +181,13 @@
 #define str_Settings_Tips1 @"手势密码设置成功"
 
 #define str_Register_Tips1 @"邮箱地址Email"
-#define str_Register_Tips7 @"密码Password"
 #define str_Register_Tips2 @"请输入邮箱地址"
 #define str_Register_Tips3 @"邮箱地址格式不正确"
 #define str_Register_Tips4 @"请输入密码"
 #define str_Register_Tips5 @"该邮箱账号已经注册，如果密码丢失，可通过“忘记密码”找回"
 #define str_Register_Tips6 @"我们给你的邮箱发了一封验证邮件，请先验证邮件后再登录使用"
+#define str_Register_Tips7 @"密码Password"
+#define str_Register_Tips8 @"温馨提示：注册邮箱需要接收系统的验证邮件，请填写真实有效的邮箱地址。"
 
 #define str_LogIn_Tips1 @"账号或密码不正确"
 #define str_LogIn_Tips2 @"你的账号邮箱还没通过验证，请先登录账号邮箱查看验证邮件"

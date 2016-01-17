@@ -14,5 +14,6 @@
 @property (strong, nonatomic) IBOutlet UITextField *txtPassword;
 @property (strong, nonatomic) IBOutlet UIButton *btnRegister;
 @property (strong, nonatomic) IBOutlet UIButton *btnforgotPwd;
+@property (strong, nonatomic) IBOutlet UILabel *labelTips;
 
 @end

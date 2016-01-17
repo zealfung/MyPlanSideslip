@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="RegisterViewController">
             <connections>
                 <outlet property="btnRegister" destination="lYS-ys-J0L" id="gmX-q9-KBn"/>
                 <outlet property="btnforgotPwd" destination="3c0-b5-zHk" id="Y0d-NX-laT"/>
+                <outlet property="labelTips" destination="Kyi-NL-6gm" id="bBZ-nj-dp7"/>
                 <outlet property="txtEmail" destination="ahz-q4-2o6" id="rrh-jI-kgT"/>
                 <outlet property="txtPassword" destination="3ql-S5-0co" id="oQu-AH-nW1"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -63,6 +64,15 @@
                         <action selector="forgotPwdAction:" destination="-1" eventType="touchUpInside" id="c6O-lV-Odj"/>
                     </connections>
                 </button>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kyi-NL-6gm">
+                    <rect key="frame" x="12" y="220" width="296" height="60"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="60" id="HfZ-jj-Hku"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <color key="textColor" red="0.66666666666666663" green="0.66666666666666663" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
             <constraints>
@@ -70,7 +80,10 @@
                 <constraint firstAttribute="trailing" secondItem="lYS-ys-J0L" secondAttribute="trailing" constant="12" id="7Xh-e7-8Z6"/>
                 <constraint firstItem="ahz-q4-2o6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="7te-Wa-9zo"/>
                 <constraint firstItem="3ql-S5-0co" firstAttribute="top" secondItem="ahz-q4-2o6" secondAttribute="bottom" constant="10" id="AKF-Iu-3xU"/>
+                <constraint firstAttribute="trailing" secondItem="Kyi-NL-6gm" secondAttribute="trailing" constant="12" id="BY6-lE-2Lk"/>
                 <constraint firstItem="lYS-ys-J0L" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="Jwc-xm-WEm"/>
+                <constraint firstItem="Kyi-NL-6gm" firstAttribute="top" secondItem="3c0-b5-zHk" secondAttribute="bottom" constant="10" id="Lau-6x-1um"/>
+                <constraint firstItem="Kyi-NL-6gm" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="adz-LB-zfr"/>
                 <constraint firstItem="3c0-b5-zHk" firstAttribute="top" secondItem="lYS-ys-J0L" secondAttribute="bottom" constant="20" id="cQr-ou-TcB"/>
                 <constraint firstItem="lYS-ys-J0L" firstAttribute="top" secondItem="3ql-S5-0co" secondAttribute="bottom" constant="20" id="g9f-Ir-G8c"/>
                 <constraint firstAttribute="trailing" secondItem="3c0-b5-zHk" secondAttribute="trailing" constant="12" id="hca-PX-5nh"/>
