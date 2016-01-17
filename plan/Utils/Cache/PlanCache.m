@@ -1450,7 +1450,7 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT messageId, title, content, detailURL, imgURLArray, hasRead, canShare, createTime FROM %@ WHERE account=? ORDER BY createTime DESC", str_TableName_Messages];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT messageId, title, content, detailURL, imgURLArray, hasRead, canShare, createTime FROM %@ WHERE account=? ORDER BY hasRead ASC, createTime DESC", str_TableName_Messages];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
