@@ -39,7 +39,6 @@
     [NotificationCenter addObserver:self selector:@selector(reload) name:Notify_Messages_Save object:nil];
     
     [self setMenuArray];
-    [DataCenter getMessagesFromServer];
 }
 
 - (void)didReceiveMemoryWarning {

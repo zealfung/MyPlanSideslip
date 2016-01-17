@@ -78,6 +78,9 @@
     // 清除推送图标标记
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     
+    //加载系统消息
+    [DataCenter getMessagesFromServer];
+    
     //自动同步数据
 //    if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"]) {
 //        [DataCenter startSyncData];
