@@ -110,8 +110,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     if (indexPath.row < photoArray.count) {
-        tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         Photo *photo = photoArray[indexPath.row];
         PhotoCell *cell = [PhotoCell cellView:photo];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -130,7 +130,6 @@
             cell.textLabel.textColor = [UIColor lightGrayColor];
             cell.textLabel.font = font_Bold_16;
         }
-        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         
         if (indexPath.row == 4) {
             cell.textLabel.text = str_Photo_Tips1;
