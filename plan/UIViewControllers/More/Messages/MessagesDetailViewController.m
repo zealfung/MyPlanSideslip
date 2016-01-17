@@ -127,9 +127,8 @@
         [button setAllTitleColor:[CommonFunction getGenderColor]];
         [button addTarget:self action:@selector(detailAction:) forControlEvents:UIControlEventTouchUpInside];
         [scrollView addSubview:button];
-        
-        yOffset += 150;
     }
+    yOffset += 150;
     
     scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, yOffset);
 }
