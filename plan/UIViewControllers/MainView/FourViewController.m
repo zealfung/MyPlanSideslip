@@ -11,6 +11,7 @@
 #import "MJRefresh.h"
 #import "BmobQuery.h"
 #import "BmobRelation.h"
+#import "WZLBadgeImport.h"
 #import "PostsNoImageCell.h"
 #import "WebViewController.h"
 #import "PostsOneImageCell.h"
@@ -60,6 +61,7 @@
     headerImagesURLArray = [NSMutableArray array];
     headerDetailURLArray = [NSMutableArray array];
     
+    [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:Notify_Messages_Save object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshPostsList) name:Notify_LogIn object:nil];
     [NotificationCenter addObserver:self selector:@selector(reloadPostsData) name:Notify_Posts_New object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshPostsList) name:Notify_Posts_Refresh object:nil];
@@ -78,10 +80,10 @@
     //计算最近一次加载数据时间是否已经超过十分钟，如果是，就自动刷新一次数据
     NSDate *lastUpdatedTime = [UserDefaults objectForKey:str_PostsList_UpdatedTime];
     if (lastUpdatedTime) {
-        NSTimeInterval late = [lastUpdatedTime timeIntervalSince1970]*1;
-        NSTimeInterval now=[[NSDate date] timeIntervalSince1970]*1;
+        NSTimeInterval last = [lastUpdatedTime timeIntervalSince1970];
+        NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
 
-        if ((now-late)/3600 > 10) {//大于十分钟，自动重载一次数据
+        if ((now-last)/60 > 10) {//大于十分钟，自动重载一次数据
             [self reloadBannerData];
             [self reloadPostsData];
         }
@@ -92,9 +94,24 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self refreshRedDot];
+}
+
 - (void)createNavBarButton {
     self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction:)];
     self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
+}
+
+- (void)refreshRedDot {
+    //小红点
+    if ([PlanCache hasUnreadMessages]) {
+        [self.leftBarButtonItem showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
+        self.leftBarButtonItem.badgeCenterOffset = CGPointMake(-8, 0);
+    } else {
+        [self.leftBarButtonItem clearBadge];
+    }
 }
 
 - (void)initTableView {
