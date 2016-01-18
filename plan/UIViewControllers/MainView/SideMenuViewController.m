@@ -74,7 +74,6 @@
     [headerView addSubview:avatar];
     UIImage *image = [UIImage imageNamed:@"avatarDefault1"];
     if ([Config shareInstance].settings.avatar) {
-//        avatar.image = [Config shareInstance].settings.avatar;
         image = [Config shareInstance].settings.avatar;
     }
     avatar.image = image;
@@ -127,7 +126,8 @@
     cell.textLabel.font = font_Normal_16;
     cell.textLabel.textColor = [UIColor whiteColor];
     if (indexPath.row == 5 && [PlanCache hasUnreadMessages]) {
-        [cell.imageView showBadge];
+        [cell.imageView showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
+        cell.imageView.badgeCenterOffset = CGPointMake(20, 0);
     }
     
     return cell;

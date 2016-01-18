@@ -162,7 +162,8 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 - (void)refreshRedDot {
     //小红点
     if ([PlanCache hasUnreadMessages]) {
-        [self.leftBarButtonItem showBadge];
+        [self.leftBarButtonItem showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
+        self.leftBarButtonItem.badgeCenterOffset = CGPointMake(-8, 0);
     } else {
         [self.leftBarButtonItem clearBadge];
     }
