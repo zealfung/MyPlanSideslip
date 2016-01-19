@@ -137,9 +137,9 @@
 }
 
 - (void)createBack2TopButton {
-    btnBackToTop = [[UIButton alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - 40, HEIGHT_FULL_VIEW - 100, 30, 30)];
+    btnBackToTop = [[UIButton alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - 60, HEIGHT_FULL_VIEW - 120, 50, 50)];
     [btnBackToTop setBackgroundImage:[UIImage imageNamed:png_Btn_BackToTop] forState:UIControlStateNormal];
-    btnBackToTop.layer.cornerRadius = 15;
+    btnBackToTop.layer.cornerRadius = 25;
     [btnBackToTop.layer setMasksToBounds:YES];
     btnBackToTop.alpha = 0.0;
     [btnBackToTop addTarget:self action:@selector(backToTop:) forControlEvents:UIControlEventTouchUpInside];
