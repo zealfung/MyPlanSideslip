@@ -79,7 +79,7 @@
     [self.subViewButton setLeftButtonSelectBlock:leftBlock centerButtonSelectBlock:centerBlock rightButtonSelectBlock:rightBlock];
     
     self.subViewButton.backgroundColor = [UIColor clearColor];
-    CGFloat btnWidth = self.bounds.size.width / 3;
+    CGFloat btnWidth = WIDTH_FULL_SCREEN / 3;
     
     self.subViewButton.fixLeftWidth = btnWidth;
     self.subViewButton.fixCenterWidth = btnWidth;
