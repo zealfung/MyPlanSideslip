@@ -59,7 +59,6 @@ NSUInteger const kToolBarHeight = 44;
 }
 
 - (void)loadCustomView {
-    
     yOffset = kEdgeInset;
     {
         CGFloat txtViewHeight = HEIGHT_FULL_SCREEN / 4;
@@ -72,73 +71,62 @@ NSUInteger const kToolBarHeight = 44;
         detailTextView.textColor = color_Black;
         detailTextView.delegate = self;
         detailTextView.inputAccessoryView = [self getInputAccessoryView];
-        
         [self.view addSubview:detailTextView];
+        self.textNoteDetail = detailTextView;
         
         yOffset += txtViewHeight + kEdgeInset;
-        
-        self.textNoteDetail = detailTextView;
     }
+    CGFloat iconSize = 30;
+    CGFloat switchWidth = 20;
     {
-        CGFloat alarmSize = 30;
-        CGFloat switchWidth = 20;
-
-        UISwitch *btnSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, switchWidth, alarmSize)];
+        UIImageView *alarm = [[UIImageView alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, iconSize, iconSize)];
+        alarm.image = [UIImage imageNamed:png_Icon_Alarm];
+        [self.view addSubview:alarm];
+        
+        UISwitch *btnSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kEdgeInset + iconSize, yOffset, switchWidth, iconSize)];
         [btnSwitch setOn:NO];
         [btnSwitch addTarget:self action:@selector(alarmSwitchAction:) forControlEvents:UIControlEventValueChanged];
-        
-        UIImageView *alarm = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(btnSwitch.frame), yOffset, alarmSize, alarmSize)];
-        alarm.image = [UIImage imageNamed:png_Icon_Alarm];
-        
         switchBtnAlarm = btnSwitch;
-        [self.view addSubview:alarm];
         [self.view addSubview:btnSwitch];
         
-        UILabel *labelTime = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(alarm.frame) + kEdgeInset, yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 3 - alarmSize - switchWidth, alarmSize)];
+        UILabel *labelTime = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(btnSwitch.frame) + kEdgeInset, yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 3 - iconSize - switchWidth, iconSize)];
         labelTime.textColor = color_Black;
         labelTime.font = font_Normal_18;
         labelTime.userInteractionEnabled = YES;
         UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelTouchUpInside:)];
         [labelTime addGestureRecognizer:labelTapGestureRecognizer];
-        
         labelNotifyTime = labelTime;
         [self.view addSubview:labelTime];
         
-        yOffset += alarmSize + kEdgeInset;
+        yOffset += iconSize + kEdgeInset;
     }
     //设为明天计划
     if (self.planType == PlanEveryday
         && self.operationType == Add) {
-        CGFloat alarmSize = 30;
-        CGFloat switchWidth = 20;
         
-        UISwitch *btnSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, switchWidth, alarmSize)];
-        [btnSwitch setOn:NO];
-        [btnSwitch addTarget:self action:@selector(tomorrowSwitchAction:) forControlEvents:UIControlEventValueChanged];
-        
-        switchBtnTomorrow = btnSwitch;
-        [self.view addSubview:btnSwitch];
-        
-        UIImageView *tomorrow = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(btnSwitch.frame) + 2, yOffset, alarmSize, alarmSize)];
+        UIImageView *tomorrow = [[UIImageView alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, iconSize, iconSize)];
         tomorrow.image = [UIImage imageNamed:png_Icon_Tomorrow];
         [self.view addSubview:tomorrow];
         
-        UILabel *labelTomorrow = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(tomorrow.frame) + kEdgeInset, yOffset, 150, alarmSize)];
+        UISwitch *btnSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kEdgeInset + iconSize + 2, yOffset, switchWidth, iconSize)];
+        [btnSwitch setOn:NO];
+        [btnSwitch addTarget:self action:@selector(tomorrowSwitchAction:) forControlEvents:UIControlEventValueChanged];
+        switchBtnTomorrow = btnSwitch;
+        [self.view addSubview:btnSwitch];
+
+        UILabel *labelTomorrow = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(btnSwitch.frame) + kEdgeInset - 2, yOffset, 150, iconSize)];
         labelTomorrow.textColor = color_Black;
         labelTomorrow.font = font_Normal_18;
         labelTomorrow.text = str_Plan_Tomorrow;
         [self.view addSubview:labelTomorrow];
     }
-    
     if (self.operationType == Edit) {
-        
         self.textNoteDetail.text = self.plan.content;
         if ([self.plan.isnotify isEqualToString:@"1"]) {
             [switchBtnAlarm setOn:YES];
             labelNotifyTime.text = self.plan.notifytime;
         }
     } else {
-        
         [self.textNoteDetail becomeFirstResponder];
     }
 }
@@ -149,7 +137,6 @@ NSUInteger const kToolBarHeight = 44;
     
     UIView *pickerView = [[UIView alloc] initWithFrame:self.view.bounds];
     pickerView.backgroundColor = [UIColor clearColor];
-    
     {
         UIView *bgView = [[UIView alloc] initWithFrame:pickerView.bounds];
         bgView.backgroundColor = [UIColor blackColor];
@@ -173,21 +160,17 @@ NSUInteger const kToolBarHeight = 44;
         picker.locale = [NSLocale currentLocale];
         picker.datePickerMode = UIDatePickerModeDateAndTime;
         picker.minimumDate = [NSDate date];
-        
         NSDate *defaultDate = [[NSDate date] dateByAddingTimeInterval:5 * 60];
         picker.date = defaultDate;
-
         [pickerView addSubview:picker];
         datePicker = picker;
     }
-    
     pickerView.tag = kDatePickerBgViewTag;
     [self.view addSubview:pickerView];
 }
 
 #pragma mark - action
 - (void)saveAction:(UIButton *)button {
-    
     NSString *title = [self.textNoteTitle.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     NSString *detail = [self.textNoteDetail.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if (title.length == 0 && detail.length == 0) {
@@ -201,11 +184,8 @@ NSUInteger const kToolBarHeight = 44;
     UISwitch *btnSwitch = (UISwitch*)sender;
     BOOL isButtonOn = [btnSwitch isOn];
     if (isButtonOn) {
-
         [self showDatePicker];
-        
     } else {
-
         labelNotifyTime.text = @"";
         [self onPickerCancelBtn];
     }
