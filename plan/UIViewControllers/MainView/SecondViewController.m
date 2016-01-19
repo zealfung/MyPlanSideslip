@@ -501,15 +501,14 @@ NSUInteger const kPlanCellDeleteTag = 9527;
         NSString *date = dateKeyArray[section];
         NSArray *planArray = [planEverydayDic objectForKey:date];
         BOOL isAllDone = [self isAllDone:planArray];
-        date = [self isToday:date];
-        
+        date = [self getSectionTitle:date];
+
         view = [[PlanSectionView alloc] initWithTitle:date isAllDone:isAllDone];
         view.sectionIndex = section;
         if (self.flag[section])
             [view toggleArrow];
         [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sectionClickedAction:)]];
         return view;
-        
     } else {
         return nil;
     }
@@ -535,17 +534,31 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     }
 }
 
-- (NSString *)isToday:(NSString *)date {
+- (NSString *)getSectionTitle:(NSString *)date {
     NSDate *today = [NSDate date];
     NSDate *yesterday = [today dateByAddingTimeInterval:-24 * 3600];
+    NSDate *tomorrow = [today dateByAddingTimeInterval:24 * 3600];
     NSString *todayString = [CommonFunction NSDateToNSString:today formatter:str_DateFormatter_yyyy_MM_dd];
     NSString *yesterdayString = [CommonFunction NSDateToNSString:yesterday formatter:str_DateFormatter_yyyy_MM_dd];
+    NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:str_DateFormatter_yyyy_MM_dd];
     if ([date isEqualToString:todayString]) {
         return [NSString stringWithFormat:@"%@ • %@", date, str_Common_Time2];
     } else if ([date isEqualToString:yesterdayString]) {
         return [NSString stringWithFormat:@"%@ • %@", date, str_Common_Time3];
+    } else if ([date isEqualToString:tomorrowString]) {
+        return [NSString stringWithFormat:@"%@ • %@", date, str_Common_Time9];
     } else {
         return date;
+    }
+}
+
+- (BOOL)isToday:(NSString *)date {
+    NSDate *today = [NSDate date];
+    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:str_DateFormatter_yyyy_MM_dd];
+    if ([date isEqualToString:todayString]) {
+        return YES;
+    } else {
+        return NO;
     }
 }
 

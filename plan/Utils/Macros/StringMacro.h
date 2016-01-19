@@ -28,6 +28,7 @@
 #define str_Common_Time6 @"%ld小时前"
 #define str_Common_Time7 @"%ld天前"
 #define str_Common_Time8 @"%ld个月前"
+#define str_Common_Time9 @"明天"
 
 #define str_ViewTitle_1 @"我的"
 #define str_ViewTitle_2 @"计划"
@@ -94,6 +95,7 @@
 #define str_Alert_GetIt @"确定"
 #define str_Plan_Add @"新增计划"
 #define str_Plan_Edit @"编辑计划"
+#define str_Plan_Tomorrow @"设为明天计划"
 
 #define str_Photo_Add @"新增影像"
 #define str_Photo_Edit @"编辑影像"

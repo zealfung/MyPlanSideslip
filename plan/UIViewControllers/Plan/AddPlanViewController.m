@@ -18,8 +18,10 @@ NSUInteger const kToolBarHeight = 44;
     
     NSUInteger yOffset;
     UIDatePicker *datePicker;
-    UISwitch *switchButton;
+    UISwitch *switchBtnAlarm;
+    UISwitch *switchBtnTomorrow;
     UILabel *labelNotifyTime;
+    BOOL isTomorrowPlan;
 }
 
 @property (strong, nonatomic) UITextField *textNoteTitle;
@@ -60,7 +62,8 @@ NSUInteger const kToolBarHeight = 44;
     
     yOffset = kEdgeInset;
     {
-        UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2, HEIGHT_FULL_SCREEN / 3)];
+        CGFloat txtViewHeight = HEIGHT_FULL_SCREEN / 4;
+        UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2, txtViewHeight)];
         detailTextView.backgroundColor = [UIColor clearColor];
         detailTextView.layer.borderWidth = 1;
         detailTextView.layer.borderColor = [color_GrayLight CGColor];
@@ -72,26 +75,26 @@ NSUInteger const kToolBarHeight = 44;
         
         [self.view addSubview:detailTextView];
         
-        yOffset += HEIGHT_FULL_SCREEN / 3 + kEdgeInset;
+        yOffset += txtViewHeight + kEdgeInset;
         
         self.textNoteDetail = detailTextView;
     }
     {
-        NSInteger alarmSize = 30;
-        NSInteger switchWidth = 20;
+        CGFloat alarmSize = 30;
+        CGFloat switchWidth = 20;
+
+        UISwitch *btnSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, switchWidth, alarmSize)];
+        [btnSwitch setOn:NO];
+        [btnSwitch addTarget:self action:@selector(alarmSwitchAction:) forControlEvents:UIControlEventValueChanged];
         
-        UIImageView *alarm = [[UIImageView alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, alarmSize, alarmSize)];
+        UIImageView *alarm = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(btnSwitch.frame), yOffset, alarmSize, alarmSize)];
         alarm.image = [UIImage imageNamed:png_Icon_Alarm];
         
-        UISwitch *btnSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kEdgeInset + alarmSize, yOffset, switchWidth, alarmSize)];
-        [btnSwitch setOn:NO];
-        [btnSwitch addTarget:self action:@selector(switchAction:) forControlEvents:UIControlEventValueChanged];
-        
-        switchButton = btnSwitch;
+        switchBtnAlarm = btnSwitch;
         [self.view addSubview:alarm];
         [self.view addSubview:btnSwitch];
         
-        UILabel *labelTime = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(btnSwitch.frame) + kEdgeInset, yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 3 - alarmSize - switchWidth, alarmSize)];
+        UILabel *labelTime = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(alarm.frame) + kEdgeInset, yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 3 - alarmSize - switchWidth, alarmSize)];
         labelTime.textColor = color_Black;
         labelTime.font = font_Normal_18;
         labelTime.userInteractionEnabled = YES;
@@ -100,13 +103,38 @@ NSUInteger const kToolBarHeight = 44;
         
         labelNotifyTime = labelTime;
         [self.view addSubview:labelTime];
+        
+        yOffset += alarmSize + kEdgeInset;
+    }
+    //设为明天计划
+    if (self.planType == PlanEveryday
+        && self.operationType == Add) {
+        CGFloat alarmSize = 30;
+        CGFloat switchWidth = 20;
+        
+        UISwitch *btnSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, switchWidth, alarmSize)];
+        [btnSwitch setOn:NO];
+        [btnSwitch addTarget:self action:@selector(tomorrowSwitchAction:) forControlEvents:UIControlEventValueChanged];
+        
+        switchBtnTomorrow = btnSwitch;
+        [self.view addSubview:btnSwitch];
+        
+        UIImageView *tomorrow = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetMaxX(btnSwitch.frame) + 2, yOffset, alarmSize, alarmSize)];
+        tomorrow.image = [UIImage imageNamed:png_Icon_Tomorrow];
+        [self.view addSubview:tomorrow];
+        
+        UILabel *labelTomorrow = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(tomorrow.frame) + kEdgeInset, yOffset, 150, alarmSize)];
+        labelTomorrow.textColor = color_Black;
+        labelTomorrow.font = font_Normal_18;
+        labelTomorrow.text = str_Plan_Tomorrow;
+        [self.view addSubview:labelTomorrow];
     }
     
     if (self.operationType == Edit) {
         
         self.textNoteDetail.text = self.plan.content;
         if ([self.plan.isnotify isEqualToString:@"1"]) {
-            [switchButton setOn:YES];
+            [switchBtnAlarm setOn:YES];
             labelNotifyTime.text = self.plan.notifytime;
         }
     } else {
@@ -169,7 +197,7 @@ NSUInteger const kToolBarHeight = 44;
     [self savePlan];
 }
 
-- (void)switchAction:(id)sender {
+- (void)alarmSwitchAction:(id)sender {
     UISwitch *btnSwitch = (UISwitch*)sender;
     BOOL isButtonOn = [btnSwitch isOn];
     if (isButtonOn) {
@@ -183,8 +211,18 @@ NSUInteger const kToolBarHeight = 44;
     }
 }
 
+- (void)tomorrowSwitchAction:(id)sender {
+    UISwitch *btnSwitch = (UISwitch*)sender;
+    BOOL isButtonOn = [btnSwitch isOn];
+    if (isButtonOn) {
+        isTomorrowPlan = YES;
+    } else {
+        isTomorrowPlan = NO;
+    }
+}
+
 - (void)labelTouchUpInside:(UITapGestureRecognizer *)recognizer {
-    if ([switchButton isOn]) {
+    if ([switchBtnAlarm isOn]) {
         [self showDatePicker];
     }
 }
@@ -202,15 +240,21 @@ NSUInteger const kToolBarHeight = 44;
     
     NSString *time = labelNotifyTime.text;
     if (!time || [time isEqualToString:@""]) {
-        [switchButton setOn:NO];
+        [switchBtnAlarm setOn:NO];
     }
 }
 
 - (void)savePlan {
     [self.view endEditing:YES];
-    NSString *timeNow = [CommonFunction getTimeNowString];
-    NSString* planid = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyyMMddHHmmss];
+    NSString *timeNow = @"";
+    NSString *planid = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyyMMddHHmmss];
     
+    if (self.planType == PlanEveryday
+        && isTomorrowPlan) {//明天计划
+        timeNow = [CommonFunction getTomorrowTimeNowString];
+    } else {//今天计划
+        timeNow = [CommonFunction getTimeNowString];
+    }
     if (self.operationType == Add) {
         self.plan = [[Plan alloc]init];
         self.plan.planid = planid;
@@ -221,8 +265,7 @@ NSUInteger const kToolBarHeight = 44;
     } else {
         self.plan.updatetime = timeNow;
     }
-    
-    if ([switchButton isOn]) {
+    if ([switchBtnAlarm isOn]) {
         self.plan.isnotify = @"1";
         self.plan.notifytime = labelNotifyTime.text;
     } else {
@@ -235,12 +278,9 @@ NSUInteger const kToolBarHeight = 44;
     
     BOOL result = [PlanCache storePlan:self.plan];
     if (result) {
-        
         [self alertToastMessage:str_Save_Success];
         [self.navigationController popViewControllerAnimated:YES];
-        
     } else {
-        
         [self alertButtonMessage:str_Save_Fail];
     }
 }

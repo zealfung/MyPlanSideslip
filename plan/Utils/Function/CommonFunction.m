@@ -41,6 +41,15 @@ static NSString * const kKeyMinutes = @"minutes";
     return timeNow;
 }
 
+//获取明天当前时间字符串：yyyy-MM-dd HH:mm:ss
++ (NSString *)getTomorrowTimeNowString {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmmss];
+    NSDate *tomorrow = [[NSDate date] dateByAddingTimeInterval:60 * 60 *24];
+    NSString *tomorrowTimeNow = [dateFormatter stringFromDate:tomorrow];
+    return tomorrowTimeNow;
+}
+
 + (NSDateComponents *)getDateTime:(NSDate *)date {
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitWeekday |
