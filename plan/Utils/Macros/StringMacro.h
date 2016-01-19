@@ -235,7 +235,7 @@
 #define str_CheckIn_Tips1 @"签到"
 #define str_CheckIn_Tips2 @"已签到"
 
-#define str_Sync_Begin @"开始同步数据..."
+#define str_Sync_Begin @"正在同步数据..."
 #define str_Sync_End @"同步数据完成"
 
 #define str_Tmp_Flag @"kTmpFlag"

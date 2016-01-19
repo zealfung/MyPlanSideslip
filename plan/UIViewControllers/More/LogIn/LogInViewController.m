@@ -7,6 +7,7 @@
 //
 
 #import "LogIn.h"
+#import "DataCenter.h"
 #import "AppDelegate.h"
 #import <BmobSDK/BmobUser.h>
 #import "RootViewController.h"
@@ -95,8 +96,10 @@
                     delegate.window.rootViewController = controller;
                     [delegate.window reloadInputViews];
                 } else {
-                    //登录后自动关联本地没有对应账号的数据
-                    [PlanCache linkedLocalDataToAccount];
+                    //登录后自动同步一次数据
+//                    [PlanCache linkedLocalDataToAccount];
+                    [AlertCenter alertNavBarYellowMessage:str_Sync_Begin];
+                    [DataCenter startSyncData];
                     [NotificationCenter postNotificationName:Notify_LogIn object:nil];
                     [weakSelf.navigationController popViewControllerAnimated:YES];
                 }

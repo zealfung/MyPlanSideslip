@@ -1679,8 +1679,8 @@ static NSMutableDictionary * __contactsOnlineState;
         [bquery whereKey:@"userObjectId" equalTo:user.objectId];
         [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
             if (array.count > 0) {
-                BmobObject *obj = array[0];
-                [DataCenter syncServerToLocalForSettings:obj];
+//                BmobObject *obj = array[0];
+//                [DataCenter syncServerToLocalForSettings:obj];
             } else {
                 /*
                  *说明：只要在本地没有已登录账号的设置数据时才关联
