@@ -29,6 +29,7 @@
 - (void)setControls {
     self.txtEmail.text = self.email;
     self.txtEmail.placeholder = str_Register_Tips1;
+    self.txtEmail.inputAccessoryView = [self getInputAccessoryView];
     [self.txtEmail becomeFirstResponder];
     self.btnSubmit.layer.cornerRadius = 5;
     [self.btnSubmit setAllTitle:str_ForgotPassword_Tips1];

@@ -30,8 +30,10 @@
 
 - (void)setControls {
     self.txtEmail.placeholder = str_Register_Tips1;
+    self.txtEmail.inputAccessoryView = [self getInputAccessoryView];
     [self.txtEmail becomeFirstResponder];
     self.txtPassword.placeholder = str_Register_Tips7;
+    self.txtPassword.inputAccessoryView = [self getInputAccessoryView];
     self.btnRegister.layer.cornerRadius = 5;
     [self.btnRegister setAllTitle:str_Register];
     [self.btnforgotPwd setAllTitle:str_ForgotPassword];
