@@ -631,30 +631,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     return button;
 }
 
-- (CGFloat)showLineView:(CGFloat)yOffset {
-    CGFloat xEdgeInset = kSettingsViewEdgeInset * 2;
-    CGFloat labelWidth = 80;
-    CGFloat labelHeight = 25;
-    CGFloat lineWidth = (WIDTH_FULL_SCREEN - labelWidth - xEdgeInset * 4) / 2;
-    
-    UILabel *tipsLabel = [[UILabel alloc] initWithFrame:CGRectMake(xEdgeInset * 2 + lineWidth, yOffset, labelWidth, labelHeight)];
-    tipsLabel.font = font_Normal_16;
-    tipsLabel.text = str_Settings_LogIn;
-    tipsLabel.textColor = color_GrayDark;
-    tipsLabel.textAlignment = NSTextAlignmentCenter;
-    
-    UIView *leftLine = [[UIView alloc] initWithFrame:CGRectMake(xEdgeInset, yOffset + labelHeight / 2, lineWidth, 1)];
-    leftLine.backgroundColor = color_GrayLight;
-    
-    UIView *rightLine = [[UIView alloc] initWithFrame:CGRectMake(xEdgeInset * 3 + lineWidth + labelWidth, yOffset + labelHeight / 2, lineWidth, 1)];
-    rightLine.backgroundColor = color_GrayLight;
-    
-    [scrollView addSubview:leftLine];
-    [scrollView addSubview:tipsLabel];
-    [scrollView addSubview:rightLine];
-    return yOffset + labelHeight * 2;
-}
-
 - (ThreeSubView *)getThreeSubViewForCenterBlock:(ButtonSelectBlock)centerBlock rightBlock:(ButtonSelectBlock)rightBlock {
     CGRect frame = CGRectZero;
     frame.size = [self cellSize];
