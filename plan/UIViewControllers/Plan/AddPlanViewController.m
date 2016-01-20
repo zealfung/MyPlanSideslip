@@ -131,7 +131,7 @@ NSUInteger const kToolBarHeight = 44;
         view.backgroundColor = [UIColor whiteColor];
         view.hidden = YES;
         
-        UIImageView *everyday = [[UIImageView alloc] initWithFrame:CGRectMake(kEdgeInset, 0, iconSize, iconSize)];
+        UIImageView *everyday = [[UIImageView alloc] initWithFrame:CGRectMake(kEdgeInset, 1, iconSize, iconSize - 2)];
         everyday.image = [UIImage imageNamed:png_Icon_EverydayNotify];
         [view addSubview:everyday];
         
