@@ -29,6 +29,20 @@ typedef enum : NSUInteger {
 + (void)createLocalNotification:(NSDate*)fireDate userInfo:(NSDictionary*)userDic alertBody:(NSString*)body;
 
 /**
+ *  添加本地通知
+ *
+ *  @param fireDate 通知提醒时间（准时提醒）
+ *  @param userDic  对应该通知的详细字典数据。必须要包含三个字段：
+ *          1、tag：提醒源的ID表示，如计划ID
+ *          2、time：firDate的日期秒数
+ *          3、type：所属分类。目前有两类，详见：NotificationType
+ *
+ *  @param body     提醒内容
+ *  @param body     提醒重复类型
+ */
++ (void)createLocalNotification:(NSDate*)fireDate userInfo:(NSDictionary*)userDic alertBody:(NSString*)body repeatInterval:(NSCalendarUnit)repeatInterval;
+
+/**
  *  取消指定的通知
  *
  *  @param tag 提醒源的ID表示，如计划ID

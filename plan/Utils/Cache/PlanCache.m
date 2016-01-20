@@ -1611,7 +1611,11 @@ static NSMutableDictionary * __contactsOnlineState;
     [destDic setObject:plan.completetime forKey:@"completetime"];
     [destDic setObject:plan.content forKey:@"content"];
     [destDic setObject:plan.notifytime forKey:@"notifytime"];
-    [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
+    if (plan.isEverydayNotify) {
+        [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content repeatInterval:NSCalendarUnitDay];
+    } else {
+        [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
+    }
 }
 
 + (void)updateLocalNotification:(Plan *)plan {

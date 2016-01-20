@@ -96,6 +96,7 @@
 #define str_Plan_Add @"新增计划"
 #define str_Plan_Edit @"编辑计划"
 #define str_Plan_Tomorrow @"设为明天计划"
+#define str_Plan_EverydayNotify @"设为每天提醒"
 
 #define str_Photo_Add @"新增影像"
 #define str_Photo_Edit @"编辑影像"

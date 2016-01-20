@@ -19,6 +19,7 @@ NSString *const kPlan_PlanType = @"plantype";
 NSString *const kPlan_IsNotify = @"isnotify";
 NSString *const kPlan_NotifyTime = @"notifytime";
 NSString *const kPlan_IsDeleted = @"isdeleted";
+NSString *const kPlan_IsEverydayNotify = @"isEverydayNotify";
 
 
 @implementation Plan
@@ -34,6 +35,7 @@ NSString *const kPlan_IsDeleted = @"isdeleted";
 @synthesize isnotify = _isnotify;
 @synthesize notifytime = _notifytime;
 @synthesize isdeleted = _isdeleted;
+@synthesize isEverydayNotify = _isEverydayNotify;
 
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
@@ -50,6 +52,7 @@ NSString *const kPlan_IsDeleted = @"isdeleted";
         self.isnotify = [dict objectOrNilForKey:kPlan_IsNotify];
         self.notifytime = [dict objectOrNilForKey:kPlan_NotifyTime];
         self.isdeleted = [dict objectOrNilForKey:kPlan_IsDeleted];
+        self.isEverydayNotify = [[dict objectOrNilForKey:kPlan_IsEverydayNotify] boolValue];
     }
     return self;
 }
@@ -68,6 +71,7 @@ NSString *const kPlan_IsDeleted = @"isdeleted";
     self.isnotify = [aDecoder decodeObjectForKey:kPlan_IsNotify];
     self.notifytime = [aDecoder decodeObjectForKey:kPlan_NotifyTime];
     self.isdeleted = [aDecoder decodeObjectForKey:kPlan_IsDeleted];
+    self.isEverydayNotify = [aDecoder decodeBoolForKey:kPlan_IsEverydayNotify];
     return self;
 }
 
@@ -83,6 +87,7 @@ NSString *const kPlan_IsDeleted = @"isdeleted";
     [aCoder encodeObject:_isnotify forKey:kPlan_IsNotify];
     [aCoder encodeObject:_notifytime forKey:kPlan_NotifyTime];
     [aCoder encodeObject:_isdeleted forKey:kPlan_IsDeleted];
+    [aCoder encodeBool:_isEverydayNotify forKey:kPlan_IsEverydayNotify];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -98,6 +103,7 @@ NSString *const kPlan_IsDeleted = @"isdeleted";
     copy.isnotify = [self.isnotify copyWithZone:zone];
     copy.notifytime = [self.notifytime copyWithZone:zone];
     copy.isdeleted = [self.isdeleted copyWithZone:zone];
+    copy.isEverydayNotify = self.isEverydayNotify;
     return copy;
 }
 

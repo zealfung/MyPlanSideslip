@@ -20,8 +20,11 @@ NSUInteger const kToolBarHeight = 44;
     UIDatePicker *datePicker;
     UISwitch *switchBtnAlarm;
     UISwitch *switchBtnTomorrow;
+    UISwitch *switchBtnEveryday;
     UILabel *labelNotifyTime;
+    UIView *viewEverydayNotify;
     BOOL isTomorrowPlan;
+    BOOL isEverydayNotify;
 }
 
 @property (strong, nonatomic) UITextField *textNoteTitle;
@@ -119,6 +122,35 @@ NSUInteger const kToolBarHeight = 44;
         labelTomorrow.font = font_Normal_18;
         labelTomorrow.text = str_Plan_Tomorrow;
         [self.view addSubview:labelTomorrow];
+        
+        yOffset += iconSize + kEdgeInset;
+    }
+    //每天提醒
+    {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, iconSize)];
+        view.backgroundColor = [UIColor whiteColor];
+        view.hidden = YES;
+        
+        UIImageView *everyday = [[UIImageView alloc] initWithFrame:CGRectMake(kEdgeInset, 0, iconSize, iconSize)];
+        everyday.image = [UIImage imageNamed:png_Icon_EverydayNotify];
+        [view addSubview:everyday];
+        
+        UISwitch *btnSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kEdgeInset + iconSize, 0, switchWidth, iconSize)];
+        [btnSwitch setOn:NO];
+        [btnSwitch addTarget:self action:@selector(everydaySwitchAction:) forControlEvents:UIControlEventValueChanged];
+        switchBtnEveryday = btnSwitch;
+        [view addSubview:btnSwitch];
+        
+        UILabel *labelEveryday = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(btnSwitch.frame) + kEdgeInset, 0, WIDTH_FULL_SCREEN - kEdgeInset * 3 - iconSize - switchWidth, iconSize)];
+        labelEveryday.textColor = color_Black;
+        labelEveryday.font = font_Normal_18;
+        labelEveryday.text = str_Plan_EverydayNotify;
+        [view addSubview:labelEveryday];
+        
+        [self.view addSubview:view];
+        viewEverydayNotify = view;
+        
+        yOffset += iconSize + kEdgeInset;
     }
     if (self.operationType == Edit) {
         self.textNoteDetail.text = self.plan.content;
@@ -184,8 +216,16 @@ NSUInteger const kToolBarHeight = 44;
     UISwitch *btnSwitch = (UISwitch*)sender;
     BOOL isButtonOn = [btnSwitch isOn];
     if (isButtonOn) {
+        //显示每天提醒设置开关
+        viewEverydayNotify.hidden = NO;
+        //显示时间设置器
         [self showDatePicker];
     } else {
+        //----联动处理每天提醒开关----------
+        isEverydayNotify = NO;
+        [switchBtnEveryday setOn:NO];
+        viewEverydayNotify.hidden = YES;
+        //-------------End--------------
         labelNotifyTime.text = @"";
         [self onPickerCancelBtn];
     }
@@ -198,6 +238,16 @@ NSUInteger const kToolBarHeight = 44;
         isTomorrowPlan = YES;
     } else {
         isTomorrowPlan = NO;
+    }
+}
+
+- (void)everydaySwitchAction:(id)sender {
+    UISwitch *btnSwitch = (UISwitch*)sender;
+    BOOL isButtonOn = [btnSwitch isOn];
+    if (isButtonOn) {
+        isEverydayNotify = YES;
+    } else {
+        isEverydayNotify = NO;
     }
 }
 
@@ -248,6 +298,7 @@ NSUInteger const kToolBarHeight = 44;
     if ([switchBtnAlarm isOn]) {
         self.plan.isnotify = @"1";
         self.plan.notifytime = labelNotifyTime.text;
+        self.plan.isEverydayNotify = isEverydayNotify;
     } else {
         self.plan.isnotify = @"0";
         self.plan.notifytime = @"";

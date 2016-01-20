@@ -55,6 +55,7 @@
 #define png_Icon_Gender_M_Selected @"Icon_Gender_M_Selected"
 #define png_Icon_Alarm @"Icon_Alarm"
 #define png_Icon_Tomorrow @"Icon_Tomorrow"
+#define png_Icon_EverydayNotify @"Icon_EverydayNotify"
 #define png_Icon_Menu_About @"Icon_Menu_About"
 #define png_Icon_Menu_Feedback @"Icon_Menu_Feedback"
 #define png_Icon_Menu_FiveStar @"Icon_Menu_FiveStar"

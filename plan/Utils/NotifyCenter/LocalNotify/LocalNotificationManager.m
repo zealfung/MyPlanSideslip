@@ -14,6 +14,10 @@ static LocalNotificationManager * instance = nil;
 
 
 + (void)createLocalNotification:(NSDate*)fireDate userInfo:(NSDictionary*)userDic alertBody:(NSString*)body {
+    [LocalNotificationManager createLocalNotification:fireDate userInfo:userDic alertBody:body repeatInterval:0];
+}
+
++ (void)createLocalNotification:(NSDate*)fireDate userInfo:(NSDictionary*)userDic alertBody:(NSString*)body repeatInterval:(NSCalendarUnit)repeatInterval {
     UILocalNotification *localNotif = [[UILocalNotification alloc] init];
     //如果时间已到，则不继续添加通知
     if (!fireDate || [fireDate compare:[NSDate date]] == NSOrderedAscending) {
@@ -39,6 +43,7 @@ static LocalNotificationManager * instance = nil;
     localNotif.alertAction = str_Show;
     localNotif.soundName = UILocalNotificationDefaultSoundName;
     localNotif.userInfo = userDic;
+    localNotif.repeatInterval = repeatInterval;
     localNotif.applicationIconBadgeNumber = 1;
     [[UIApplication sharedApplication] scheduleLocalNotification:localNotif];
 }
