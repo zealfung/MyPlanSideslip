@@ -21,14 +21,14 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qIM-m7-sM7" customClass="ThreeSubView">
-                    <rect key="frame" x="0.0" y="528" width="320" height="40"/>
+                    <rect key="frame" x="0.0" y="518" width="320" height="50"/>
                     <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="tCn-EP-NpC"/>
+                        <constraint firstAttribute="height" constant="50" id="tCn-EP-NpC"/>
                     </constraints>
                 </view>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="boL-mW-3VH">
-                    <rect key="frame" x="0.0" y="48" width="320" height="480"/>
+                    <rect key="frame" x="0.0" y="48" width="320" height="470"/>
                 </scrollView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Llo-Ml-sc4">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="48"/>
