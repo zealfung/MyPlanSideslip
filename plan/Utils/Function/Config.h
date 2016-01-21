@@ -12,6 +12,7 @@
 @interface Config : NSObject
 
 @property (nonatomic, strong) Settings *settings;
+@property (nonatomic, assign) BOOL isSyncingData;//正在同步数据
 @property (nonatomic, assign) BOOL unreadPlan;//未读计划提醒
 @property (nonatomic, assign) BOOL unreadMessage;//未读消息提醒
 

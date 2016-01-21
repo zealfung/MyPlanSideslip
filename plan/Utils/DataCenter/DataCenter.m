@@ -15,7 +15,6 @@
 #import <BmobSDK/BmobProFile.h>
 #import "SDWebImageDownloader.h"
 
-static BOOL isSyncingData;//同步中
 static BOOL finishSettings;
 static BOOL finishUploadAvatar;
 static BOOL finishUploadCenterTop;
@@ -27,7 +26,8 @@ static BOOL finishPhoto;
 
 + (void)startSyncData {
     
-    if (![LogIn isLogin] || isSyncingData) return;
+    if (![LogIn isLogin]
+        || [Config shareInstance].isSyncingData) return;
     
     //重置完成标识
     [self resetUploadFlag];
@@ -39,8 +39,8 @@ static BOOL finishPhoto;
     NSString *tmp = [UserDefaults objectForKey:str_Tmp_Flag];
     if (!tmp || ![tmp isEqualToString:@"1"]) {
         [Config shareInstance].settings.syntime = @"2015-09-01 09:09:09";
-        [UserDefaults setObject:@"1" forKey:str_Tmp_Flag];
-        [UserDefaults synchronize];
+//        [UserDefaults setObject:@"1" forKey:str_Tmp_Flag];
+//        [UserDefaults synchronize];
     }
 
     //同步计划
@@ -53,17 +53,23 @@ static BOOL finishPhoto;
     [self startSyncPhoto];
     
     //同步个人设置 (一定要最后同步个人设置，因为需要更新同步时间)
-    [self compareSyncTime];
+    [self startSyncSettings];
 }
 
 + (void)resetUploadFlag {
-    isSyncingData = YES;
+    [Config shareInstance].isSyncingData = YES;
     finishSettings = NO;
     finishUploadAvatar = NO;
     finishUploadCenterTop = NO;
     finishPlan = NO;
     finishTask = NO;
     finishPhoto = NO;
+    //优化同步逻辑后，把本地数据都过一遍，防止之前同步落下的数据
+    NSString *tmp = [UserDefaults objectForKey:str_Tmp_Flag];
+    if (!tmp || ![tmp isEqualToString:@"1"]) {
+        [UserDefaults setObject:@"1" forKey:str_Tmp_Flag];
+        [UserDefaults synchronize];
+    }
 }
 
 + (void)IsAllUploadFinished {
@@ -73,12 +79,12 @@ static BOOL finishPhoto;
         && finishPlan
         && finishTask
         && finishPhoto) {
-        isSyncingData = NO;
+        [Config shareInstance].isSyncingData = NO;
         [AlertCenter alertNavBarGreenMessage:str_Sync_End];
     }
 }
 
-+ (void)compareSyncTime {
++ (void)startSyncSettings {
     BmobUser *user = [BmobUser getCurrentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
@@ -555,8 +561,14 @@ static BOOL finishPhoto;
 }
 
 + (void)startSyncPhoto {
-    [self syncLocalToServerForPhoto];
-    [self syncServerToLocalForPhoto];
+    //优化同步逻辑后，把本地数据都过一遍，防止之前同步落下的数据
+    NSString *tmp = [UserDefaults objectForKey:str_Tmp_Flag];
+    if (!tmp || ![tmp isEqualToString:@"1"]) {
+        [self syncLocalToServerForPhoto];
+    } else {
+        [self syncLocalToServerForPhoto];
+        [self syncServerToLocalForPhoto];
+    }
 }
 
 + (void)syncLocalToServerForPhoto {
@@ -575,15 +587,21 @@ static BOOL finishPhoto;
         [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
             if (array.count > 0) {
                 BmobObject *obj = array[0];
-                NSString *serverUpdatedTime = [obj objectForKey:@"updatedTime"];
-                NSDate *localDate = [CommonFunction NSStringDateToNSDate:photo.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                
-                if ([localDate compare:serverDate] == NSOrderedAscending) {
-
-                } else if ([localDate compare:serverDate] == NSOrderedDescending) {
-                    //本地的设置较新
+                //优化同步逻辑后，把本地数据都过一遍，防止之前同步落下的数据
+                NSString *tmp = [UserDefaults objectForKey:str_Tmp_Flag];
+                if (!tmp || ![tmp isEqualToString:@"1"]) {
                     [weakSelf updatePhotoForServer:photo obj:obj];
+                } else {
+                    NSString *serverUpdatedTime = [obj objectForKey:@"updatedTime"];
+                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:photo.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    
+                    if ([localDate compare:serverDate] == NSOrderedAscending) {
+                        
+                    } else if ([localDate compare:serverDate] == NSOrderedDescending) {
+                        //本地的设置较新
+                        [weakSelf updatePhotoForServer:photo obj:obj];
+                    }
                 }
             } else {
                 BmobObject *newPhoto = [BmobObject objectWithClassName:@"Photo"];
@@ -1014,11 +1032,57 @@ static BOOL finishPhoto;
             message.detailURL = [obj objectForKey:@"detailURL"];
             message.imgURLArray = [obj objectForKey:@"imgURLArray"];
             message.canShare = [obj objectForKey:@"canShare"];
+            message.messageType = @"1";
             message.createTime = [CommonFunction NSDateToNSString:obj.createdAt formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
             
             [PlanCache storeMessages:message];
         }
     }];
+
+    //加载回复和点赞通知
+    if ([LogIn isLogin]) {
+        BmobUser *user = [BmobUser getCurrentUser];
+        BmobQuery *nquery = [BmobQuery queryWithClassName:@"Notices"];
+        [nquery includeKey:@"fromUser"];
+        [nquery whereKey:@"hasRead" equalTo:@"0"];
+        [nquery whereKey:@"toAuthorObjectId" equalTo:user.objectId];
+        [nquery orderByDescending:@"createdAt"];
+        [nquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+            
+            for (BmobObject *obj in array) {
+                BmobObject *author = [obj objectForKey:@"fromUser"];
+                NSString *noticeType = [obj objectForKey:@"noticeType"];
+                NSString *nickName = [author objectForKey:@"nickName"];
+                if (!nickName || nickName.length == 0) nickName = @"有人";
+                
+                Messages *message = [[Messages alloc] init];
+                message.messageId = obj.objectId;
+                switch ([noticeType integerValue]) {//通知类型：1赞帖子 2赞评论 3回复帖子 4回复评论
+                    case 1:
+                        message.title = [NSString stringWithFormat:@"%@ 赞了你的帖子", nickName];
+                        break;
+                    case 2:
+                        message.title = [NSString stringWithFormat:@"%@ 赞了你的评论", nickName];
+                        break;
+                    case 3:
+                        message.title = [NSString stringWithFormat:@"%@ 回复了你的帖子", nickName];
+                        break;
+                    case 4:
+                        message.title = [NSString stringWithFormat:@"%@ 回复了你的评论", nickName];
+                        break;
+                    default:
+                        break;
+                }
+                message.content = [obj objectForKey:@"noticeForContent"];
+                message.detailURL = [obj objectForKey:@"postsObjectId"];
+                message.canShare = @"0";
+                message.messageType = @"2";
+                message.createTime = [CommonFunction NSDateToNSString:obj.createdAt formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                
+                [PlanCache storeMessages:message];
+            }
+        }];
+    }
 }
 
 @end

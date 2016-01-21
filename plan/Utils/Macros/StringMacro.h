@@ -241,7 +241,7 @@
 #define str_Sync_Begin @"正在同步数据..."
 #define str_Sync_End @"同步数据完成"
 
-#define str_Tmp_Flag @"kTmpFlag"
+#define str_Tmp_Flag @"kTmpFlag20160120"
 #define str_PostsList_UpdatedTime @"kPostsListLastLoadDataTime"
 #define str_TableName_Settings @"t_settings"
 #define str_TableName_Plan @"t_plan"
