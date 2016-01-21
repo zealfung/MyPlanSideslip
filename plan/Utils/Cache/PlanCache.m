@@ -334,12 +334,22 @@ static NSMutableDictionary * __contactsOnlineState;
     //系统消息
     if (![__db tableExists:str_TableName_Messages]) {
         
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, messageId TEXT, title TEXT, content TEXT, detailURL TEXT, imgURLArray BLOB, hasRead TEXT, canShare TEXT, createTime TEXT)", str_TableName_Messages];
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, messageId TEXT, title TEXT, content TEXT, detailURL TEXT, imgURLArray BLOB, hasRead TEXT, canShare TEXT, messageType TEXT, createTime TEXT)", str_TableName_Messages];
         
         BOOL b = [__db executeUpdate:sqlString];
         
         FMDBQuickCheck(b, sqlString, __db);
     } else {
+        //新增消息类型字段2016-01-20
+        NSString *messageType = @"messageType";//1系统消息 2回复点赞消息
+        if (![__db columnExists:messageType inTableWithName:str_TableName_Messages]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Messages, messageType];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
         //新增图片URL数组字段2016-01-16
         NSString *imgURLArray = @"imgURLArray";
         if (![__db columnExists:imgURLArray inTableWithName:str_TableName_Messages]) {
@@ -571,7 +581,9 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
-            [self updateSettingsUpdatedTime];
+            if (![Config shareInstance].isSyncingData) {
+                [self updateSettingsUpdatedTime];
+            }
         }
         return b;
     }
@@ -648,7 +660,9 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
-            [self updateSettingsUpdatedTime];
+            if (![Config shareInstance].isSyncingData) {
+                [self updateSettingsUpdatedTime];
+            }
         }
         return b;
     }
@@ -783,7 +797,9 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
-            [self updateSettingsUpdatedTime];
+            if (![Config shareInstance].isSyncingData) {
+                [self updateSettingsUpdatedTime];
+            }
         }
         return b;
     }
@@ -809,7 +825,9 @@ static NSMutableDictionary * __contactsOnlineState;
         
         if (b) {
             [NotificationCenter postNotificationName:Notify_TaskRecord_Save object:nil];
-            [self updateSettingsUpdatedTime];
+            if (![Config shareInstance].isSyncingData) {
+                [self updateSettingsUpdatedTime];
+            }
         }
         return b;
     }
@@ -847,6 +865,9 @@ static NSMutableDictionary * __contactsOnlineState;
         if (!message.canShare) {
             message.canShare = @"0";
         }
+        if (!message.messageType) {
+            message.messageType = @"1";
+        }
         if (!message.createTime) {
             message.createTime = [CommonFunction getTimeNowString];
         }
@@ -862,9 +883,9 @@ static NSMutableDictionary * __contactsOnlineState;
         BOOL b = NO;
         if (!hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, messageId, title, content, detailURL, imgURLArray, hasRead, canShare, createTime) values(?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Messages];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, messageId, title, content, detailURL, imgURLArray, hasRead, canShare, messageType, createTime) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Messages];
             
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[account, message.messageId, message.title, message.content, message.detailURL, imgURLArrayData, @"0", message.canShare, message.createTime]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[account, message.messageId, message.title, message.content, message.detailURL, imgURLArrayData, @"0", message.canShare, message.messageType, message.createTime]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
@@ -953,7 +974,9 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
-            [self updateSettingsUpdatedTime];
+            if (![Config shareInstance].isSyncingData) {
+                [self updateSettingsUpdatedTime];
+            }
         }
         return b;
     }
@@ -993,7 +1016,9 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
-            [self updateSettingsUpdatedTime];
+            if (![Config shareInstance].isSyncingData) {
+                [self updateSettingsUpdatedTime];
+            }
         }
         return b;
     }
@@ -1030,16 +1055,12 @@ static NSMutableDictionary * __contactsOnlineState;
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.updateTime, task.taskId, task.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
-            
-//            //取消提醒
-//            if (b && [task.isNotify isEqualToString:@"1"]) {
-//                
-//                [self cancelLocalNotification:task.taskId];
-//            }
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
-            [self updateSettingsUpdatedTime];
+            if (![Config shareInstance].isSyncingData) {
+                [self updateSettingsUpdatedTime];
+            }
         }
         return b;
     }
@@ -1450,7 +1471,7 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT messageId, title, content, detailURL, imgURLArray, hasRead, canShare, createTime FROM %@ WHERE account=? ORDER BY hasRead ASC, createTime DESC", str_TableName_Messages];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT messageId, title, content, detailURL, imgURLArray, hasRead, canShare, messageType, createTime FROM %@ WHERE account=? ORDER BY hasRead ASC, createTime DESC", str_TableName_Messages];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
@@ -1463,6 +1484,7 @@ static NSMutableDictionary * __contactsOnlineState;
             message.detailURL = [rs stringForColumn:@"detailURL"];
             message.hasRead = [rs stringForColumn:@"hasRead"];
             message.canShare = [rs stringForColumn:@"canShare"];
+            message.messageType = [rs stringForColumn:@"messageType"];
             message.createTime = [rs stringForColumn:@"createTime"];
             NSData *imgURLArrayData = [rs dataForColumn:@"imgURLArray"];
             message.imgURLArray = [NSKeyedUnarchiver unarchiveObjectWithData:imgURLArrayData];

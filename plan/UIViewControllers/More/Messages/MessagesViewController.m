@@ -13,6 +13,7 @@
 #import "WZLBadgeImport.h"
 #import <BmobSDK/BmobUser.h>
 #import "MessagesViewController.h"
+#import "PostsDetailViewController.h"
 #import "MessagesDetailViewController.h"
 
 @interface MessagesViewController () <UITableViewDataSource, UITableViewDelegate> {
@@ -100,8 +101,6 @@
         if ([message.hasRead isEqualToString:@"0"]) {
             cell.textLabel.textColor = color_333333;
             cell.detailTextLabel.textColor = color_333333;
-            //        UIImage *image = [UIImage imageNamed:png_Icon_Alarm];
-            //        cell.imageView.image = image;
             [cell.detailTextLabel showBadgeWithStyle:WBadgeStyleNew value:0 animationType:WBadgeAnimTypeScale];
         } else {
             [cell.detailTextLabel clearBadge];
@@ -140,35 +139,65 @@
         
         Messages *message = messagesArray[indexPath.row];
         
-        if ([message.hasRead isEqualToString:@"0"]) {
-            //本地标识已读
-            [PlanCache setMessagesRead:message];
-            //网络登记已读
-            BmobObject *messages = [BmobObject objectWithoutDatatWithClassName:@"Messages" objectId:message.messageId];
-            //查看数加1
-            [messages incrementKey:@"readTimes"];
-            if ([LogIn isLogin]) {
-                //新建relation对象
-                BmobRelation *relation = [[BmobRelation alloc] init];
-                BmobUser *user = [BmobUser getCurrentUser];
-                [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"_User" objectId:user.objectId]];
-                //添加关联关系到hasRead列中
-                [messages addRelation:relation forKey:@"hasRead"];
-            }
-            //异步更新obj的数据
-            [messages updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-                if (isSuccessful) {
-                    NSLog(@"successful");
-                }else{
-                    NSLog(@"error %@",[error description]);
-                }
-            }];
+        if ([message.messageType isEqualToString:@"2"]) {
+            [self readNotice:message];
+        } else {
+            [self readSystemMessage:message];
         }
-        
-        MessagesDetailViewController *controller = [[MessagesDetailViewController alloc] init];
-        controller.message = message;
-        [self.navigationController pushViewController:controller animated:YES];
     }
+}
+
+- (void)readSystemMessage:(Messages *)message {
+    if ([message.hasRead isEqualToString:@"0"]) {
+        //本地标识已读
+        [PlanCache setMessagesRead:message];
+        //网络登记已读
+        BmobObject *messages = [BmobObject objectWithoutDatatWithClassName:@"Messages" objectId:message.messageId];
+        //查看数加1
+        [messages incrementKey:@"readTimes"];
+        if ([LogIn isLogin]) {
+            //新建relation对象
+            BmobRelation *relation = [[BmobRelation alloc] init];
+            BmobUser *user = [BmobUser getCurrentUser];
+            [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"_User" objectId:user.objectId]];
+            //添加关联关系到hasRead列中
+            [messages addRelation:relation forKey:@"hasRead"];
+        }
+        [messages updateInBackground];
+    }
+    
+    MessagesDetailViewController *controller = [[MessagesDetailViewController alloc] init];
+    controller.message = message;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)readNotice:(Messages *)notice {
+    if ([notice.hasRead isEqualToString:@"0"]) {
+        //本地标识已读
+        [PlanCache setMessagesRead:notice];
+        //网络登记已读
+        BmobObject *notices = [BmobObject objectWithoutDatatWithClassName:@"Notices" objectId:notice.messageId];
+        [notices setObject:@"1" forKey:@"hasRead"];
+        [notices updateInBackground];
+    }
+    [self showHUD];
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
+    [bquery getObjectInBackgroundWithId:notice.detailURL block:^(BmobObject *object,NSError *error){
+        [weakSelf hideHUD];
+        
+        if (error){
+            [weakSelf alertToastMessage:@"获取详情失败，请稍后再试"];
+        } else {
+            if (object) {
+                PostsDetailViewController *controller = [[PostsDetailViewController alloc] init];
+                controller.posts = object;
+                [self.navigationController pushViewController:controller animated:YES];
+            } else {
+                [weakSelf alertToastMessage:@"获取详情失败，请稍后再试"];
+            }
+        }
+    }];
 }
 
 @end

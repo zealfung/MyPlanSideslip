@@ -17,7 +17,7 @@
 @property (nonatomic, strong) NSArray *imgURLArray;//图片组链接
 @property (nonatomic, strong) NSString *hasRead;//0未读，1已读
 @property (nonatomic, strong) NSString *canShare;//0不可分享，1可分享
-@property (nonatomic, strong) NSString *readTimes; //阅读次数
+@property (nonatomic, strong) NSString *messageType; //1系统消息 2回复点赞消息
 @property (nonatomic, strong) NSString *createTime;
 
 @end
