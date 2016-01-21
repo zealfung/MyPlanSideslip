@@ -187,14 +187,14 @@
         [weakSelf hideHUD];
         
         if (error){
-            [weakSelf alertToastMessage:@"获取详情失败，请稍后再试"];
+            [weakSelf alertToastMessage:str_Messages_Tips4];
         } else {
             if (object) {
                 PostsDetailViewController *controller = [[PostsDetailViewController alloc] init];
                 controller.posts = object;
                 [self.navigationController pushViewController:controller animated:YES];
             } else {
-                [weakSelf alertToastMessage:@"获取详情失败，请稍后再试"];
+                [weakSelf alertToastMessage:str_Messages_Tips4];
             }
         }
     }];

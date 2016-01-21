@@ -234,6 +234,12 @@
 #define str_Messages_Tips1 @"暂无系统消息"
 #define str_Messages_Tips2 @"已读信息清理完毕"
 #define str_Messages_Tips3 @"查看更多详情>>>"
+#define str_Messages_Tips4 @"获取详情失败，请稍后再试"
+#define str_Messages_Tips5 @"有人"
+#define str_Messages_Tips6 @"赞了你的帖子"
+#define str_Messages_Tips7 @"赞了你的评论"
+#define str_Messages_Tips8 @"回复了你的帖子"
+#define str_Messages_Tips9 @"回复了你的评论"
 
 #define str_CheckIn_Tips1 @"签到"
 #define str_CheckIn_Tips2 @"已签到"

@@ -39,8 +39,6 @@ static BOOL finishPhoto;
     NSString *tmp = [UserDefaults objectForKey:str_Tmp_Flag];
     if (!tmp || ![tmp isEqualToString:@"1"]) {
         [Config shareInstance].settings.syntime = @"2015-09-01 09:09:09";
-//        [UserDefaults setObject:@"1" forKey:str_Tmp_Flag];
-//        [UserDefaults synchronize];
     }
 
     //同步计划
@@ -1053,22 +1051,22 @@ static BOOL finishPhoto;
                 BmobObject *author = [obj objectForKey:@"fromUser"];
                 NSString *noticeType = [obj objectForKey:@"noticeType"];
                 NSString *nickName = [author objectForKey:@"nickName"];
-                if (!nickName || nickName.length == 0) nickName = @"有人";
+                if (!nickName || nickName.length == 0) nickName = str_Messages_Tips5;
                 
                 Messages *message = [[Messages alloc] init];
                 message.messageId = obj.objectId;
                 switch ([noticeType integerValue]) {//通知类型：1赞帖子 2赞评论 3回复帖子 4回复评论
                     case 1:
-                        message.title = [NSString stringWithFormat:@"%@ 赞了你的帖子", nickName];
+                        message.title = [NSString stringWithFormat:@"%@ %@", nickName, str_Messages_Tips6];
                         break;
                     case 2:
-                        message.title = [NSString stringWithFormat:@"%@ 赞了你的评论", nickName];
+                        message.title = [NSString stringWithFormat:@"%@ %@", nickName, str_Messages_Tips7];
                         break;
                     case 3:
-                        message.title = [NSString stringWithFormat:@"%@ 回复了你的帖子", nickName];
+                        message.title = [NSString stringWithFormat:@"%@ %@", nickName, str_Messages_Tips8];
                         break;
                     case 4:
-                        message.title = [NSString stringWithFormat:@"%@ 回复了你的评论", nickName];
+                        message.title = [NSString stringWithFormat:@"%@ %@", nickName, str_Messages_Tips9];
                         break;
                     default:
                         break;
