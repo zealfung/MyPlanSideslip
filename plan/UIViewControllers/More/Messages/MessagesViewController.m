@@ -183,6 +183,7 @@
     [self showHUD];
     __weak typeof(self) weakSelf = self;
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
+    [bquery includeKey:@"author"];//声明该次查询需要将author关联对象信息一并查询出来
     [bquery getObjectInBackgroundWithId:notice.detailURL block:^(BmobObject *object,NSError *error){
         [weakSelf hideHUD];
         
