@@ -788,6 +788,7 @@ NSInteger const kDeleteTag = 20160110;
 - (void)likePosts:(BmobObject *)posts {
     if (isAnding) return;
     
+    __weak typeof(self) weakSelf = self;
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
     [obj incrementKey:@"likesCount"];
     BmobRelation *relation = [[BmobRelation alloc] init];
@@ -802,6 +803,7 @@ NSInteger const kDeleteTag = 20160110;
             [posts setObject:@(likesCount) forKey:@"likesCount"];
             [posts setObject:@(YES) forKey:@"isLike"];
             [NotificationCenter postNotificationName:Notify_Posts_Refresh object:nil];
+            [weakSelf addNoticesForLikesPosts:weakSelf.posts];
         }else{
             NSLog(@"error %@",[error description]);
         }
@@ -849,7 +851,7 @@ NSInteger const kDeleteTag = 20160110;
             [comment setObject:@(likesCount) forKey:@"likesCount"];
             [comment setObject:@(YES) forKey:@"isLike"];
             [weakSelf createDetailView];
-            NSLog(@"successful");
+            [weakSelf addNoticesForLikesComments:comment];
         }else{
             NSLog(@"error %@",[error description]);
         }
@@ -1056,6 +1058,12 @@ NSInteger const kDeleteTag = 20160110;
             
             [weakSelf alertToastMessage:str_Comment_Success];
             [weakSelf getCommets];
+            
+            if (selectedComment) {
+                [weakSelf addNoticesForReplyComments:selectedComment];
+            } else {
+                [weakSelf addNoticesForReplyPosts:weakSelf.posts];
+            }
         } else {
             [weakSelf alertButtonMessage:str_Comment_Fail];
             NSLog(@"%@",error);
@@ -1074,6 +1082,74 @@ NSInteger const kDeleteTag = 20160110;
     [post incrementKey:@"commentsCount"];
     [post setObject:[NSDate date] forKey:@"updatedTime"];
     [post updateInBackground];
+}
+
+- (void)addNoticesForLikesPosts:(BmobObject *)posts {
+    BmobObject *author = [posts objectForKey:@"author"];
+    NSString *userObjectId = [author objectForKey:@"userObjectId"];
+    BmobUser *user = [BmobUser getCurrentUser];
+    if ([user.objectId isEqualToString:userObjectId]) return;
+    
+    BmobObject *newNotice = [BmobObject objectWithClassName:@"Notices"];
+    [newNotice setObject:@"1" forKey:@"noticeType"];//通知类型：1赞帖子 2赞评论 3回复帖子 4回复评论
+    [newNotice setObject:posts.objectId forKey:@"postsObjectId"];//被评论或点赞的帖子id
+    [newNotice setObject:[posts objectForKey:@"content"] forKey:@"noticeForContent"];//被评论的帖子内容
+    BmobObject *fromUser = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
+    [newNotice setObject:fromUser forKey:@"fromUser"];
+    [newNotice setObject:userObjectId forKey:@"toAuthorObjectId"];//评论对象的ID
+    [newNotice setObject:@"0" forKey:@"hasRead"];// 0未读 1已读
+    [newNotice saveInBackground];
+}
+
+- (void)addNoticesForReplyPosts:(BmobObject *)posts {
+    BmobObject *author = [posts objectForKey:@"author"];
+    NSString *userObjectId = [author objectForKey:@"userObjectId"];
+    BmobUser *user = [BmobUser getCurrentUser];
+    if ([user.objectId isEqualToString:userObjectId]) return;
+    
+    BmobObject *newNotice = [BmobObject objectWithClassName:@"Notices"];
+    [newNotice setObject:@"3" forKey:@"noticeType"];//通知类型：1赞帖子 2赞评论 3回复帖子 4回复评论
+    [newNotice setObject:posts.objectId forKey:@"postsObjectId"];//被评论或点赞的帖子id
+    [newNotice setObject:[posts objectForKey:@"content"] forKey:@"noticeForContent"];//被评论的帖子内容
+    BmobObject *fromUser = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
+    [newNotice setObject:fromUser forKey:@"fromUser"];
+    [newNotice setObject:userObjectId forKey:@"toAuthorObjectId"];//评论对象的ID
+    [newNotice setObject:@"0" forKey:@"hasRead"];// 0未读 1已读
+    [newNotice saveInBackground];
+}
+
+- (void)addNoticesForLikesComments:(BmobObject *)comments {
+    BmobObject *commentAuthor = [comments objectForKey:@"author"];
+    NSString *userObjectId = [commentAuthor objectForKey:@"userObjectId"];
+    BmobUser *user = [BmobUser getCurrentUser];
+    if ([user.objectId isEqualToString:userObjectId]) return;
+    
+    BmobObject *newNotice = [BmobObject objectWithClassName:@"Notices"];
+    [newNotice setObject:@"2" forKey:@"noticeType"];//通知类型：1赞帖子 2赞评论 3回复帖子 4回复评论
+    [newNotice setObject:self.posts.objectId forKey:@"postsObjectId"];//被评论或点赞的帖子id
+    [newNotice setObject:[comments objectForKey:@"content"] forKey:@"noticeForContent"];//被评论的帖子内容
+    BmobObject *fromUser = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
+    [newNotice setObject:fromUser forKey:@"fromUser"];
+    [newNotice setObject:userObjectId forKey:@"toAuthorObjectId"];//评论对象的ID
+    [newNotice setObject:@"0" forKey:@"hasRead"];// 0未读 1已读
+    [newNotice saveInBackground];
+}
+
+- (void)addNoticesForReplyComments:(BmobObject *)comments {
+    BmobObject *commentAuthor = [comments objectForKey:@"author"];
+    NSString *userObjectId = [commentAuthor objectForKey:@"userObjectId"];
+    BmobUser *user = [BmobUser getCurrentUser];
+    if ([user.objectId isEqualToString:userObjectId]) return;
+    
+    BmobObject *newNotice = [BmobObject objectWithClassName:@"Notices"];
+    [newNotice setObject:@"4" forKey:@"noticeType"];//通知类型：1赞帖子 2赞评论 3回复帖子 4回复评论
+    [newNotice setObject:self.posts.objectId forKey:@"postsObjectId"];//被评论或点赞的帖子id
+    [newNotice setObject:[comments objectForKey:@"content"] forKey:@"noticeForContent"];//被评论的帖子内容
+    BmobObject *fromUser = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
+    [newNotice setObject:fromUser forKey:@"fromUser"];
+    [newNotice setObject:userObjectId forKey:@"toAuthorObjectId"];//评论对象的ID
+    [newNotice setObject:@"0" forKey:@"hasRead"];// 0未读 1已读
+    [newNotice saveInBackground];
 }
 
 @end

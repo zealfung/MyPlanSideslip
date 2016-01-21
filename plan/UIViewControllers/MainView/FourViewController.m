@@ -473,7 +473,7 @@
 
 #pragma mark - SDCycleScrollViewDelegate
 - (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index {
-    NSLog(@"---点击了第%ld张图片", index);
+    NSLog(@"banner被点击了第%ld张图片", (long)index);
 
     if (bannerObjArray.count > index) {
         //记录点击数
@@ -678,7 +678,7 @@
 
 - (void)likePosts:(BmobObject *)posts {
     if (isSendingLikes) return;
-    
+    __weak typeof(self) weakSelf = self;
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
     [obj incrementKey:@"likesCount"];
     BmobRelation *relation = [[BmobRelation alloc] init];
@@ -692,8 +692,8 @@
             likesCount += 1;
             [posts setObject:@(likesCount) forKey:@"likesCount"];
             [posts setObject:@(YES) forKey:@"isLike"];
-            NSLog(@"successful");
-        }else{
+            [weakSelf addNoticesForLikesPosts:posts];
+        } else {
             NSLog(@"error %@",[error description]);
         }
     }];
@@ -744,6 +744,23 @@
             [weakSelf.tableView reloadData];
         }
     }];
+}
+
+- (void)addNoticesForLikesPosts:(BmobObject *)posts {
+    BmobObject *author = [posts objectForKey:@"author"];
+    NSString *userObjectId = [author objectForKey:@"userObjectId"];
+    BmobUser *user = [BmobUser getCurrentUser];
+    if ([user.objectId isEqualToString:userObjectId]) return;
+    
+    BmobObject *newNotice = [BmobObject objectWithClassName:@"Notices"];
+    [newNotice setObject:@"1" forKey:@"noticeType"];//通知类型：1赞帖子 2赞评论 3回复帖子 4回复评论
+    [newNotice setObject:posts.objectId forKey:@"postsObjectId"];//被评论或点赞的帖子id
+    [newNotice setObject:[posts objectForKey:@"content"] forKey:@"noticeForContent"];//被评论的帖子内容
+    BmobObject *fromUser = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
+    [newNotice setObject:fromUser forKey:@"fromUser"];
+    [newNotice setObject:userObjectId forKey:@"toAuthorObjectId"];//评论对象的ID
+    [newNotice setObject:@"0" forKey:@"hasRead"];// 0未读 1已读
+    [newNotice saveInBackground];
 }
 
 - (void)toPostsDetail:(BmobObject *)posts {
