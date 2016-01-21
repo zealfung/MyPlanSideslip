@@ -84,6 +84,8 @@
             NSString *errorMsg = [error.userInfo objectForKey:@"error"];
             if ([errorMsg containsString:@"incorrect"]) {
                 [weakSelf alertButtonMessage:str_LogIn_Tips1];
+            } else if ([errorMsg containsString:@"connect failed"]) {
+                [weakSelf alertButtonMessage:@"登录超时，请稍后再试"];
             }
             
         } else if (user) {
@@ -97,7 +99,6 @@
                     [delegate.window reloadInputViews];
                 } else {
                     //登录后自动同步一次数据
-//                    [PlanCache linkedLocalDataToAccount];
                     [AlertCenter alertNavBarYellowMessage:str_Sync_Begin];
                     [DataCenter startSyncData];
                     [NotificationCenter postNotificationName:Notify_LogIn object:nil];
