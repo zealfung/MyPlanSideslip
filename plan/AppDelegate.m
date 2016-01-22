@@ -57,20 +57,16 @@
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
-    
     // 清除推送图标标记
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
-    
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
-    //自动同步数据
-    if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"]) {
-        [DataCenter startSyncData];
-    }
+
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
+
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
@@ -101,9 +97,14 @@
         }
     }
     
-    //同步个人设置
-    [Config shareInstance].isSyncSettingsOnly = YES;
-    [DataCenter startSyncSettings];
+    //自动同步数据
+    if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"]) {
+        [DataCenter startSyncData];
+    } else {
+        //同步个人设置
+        [Config shareInstance].isSyncSettingsOnly = YES;
+        [DataCenter startSyncSettings];
+    }
     
     //加载系统消息
     [DataCenter getMessagesFromServer];
