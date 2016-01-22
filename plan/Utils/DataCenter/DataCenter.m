@@ -82,6 +82,13 @@ static BOOL finishTask;
 }
 
 + (void)startSyncSettings {
+    if ([Config shareInstance].isSyncSettingsOnly) {
+        finishSettings = NO;
+        finishUploadAvatar = NO;
+        finishUploadCenterTop = NO;
+        finishPlan = NO;
+        finishTask = NO;
+    }
     __weak typeof(self) weakSelf = self;
     BmobUser *user = [BmobUser getCurrentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
@@ -133,7 +140,7 @@ static BOOL finishTask;
                     finishSettings = YES;
                     [weakSelf IsAllUploadFinished];
                 }
-        } else {
+        } else if (!error) {//防止网络超时也会新增
             //将本地的设置同步到服务器
             [weakSelf addSettingsToServer];
         }
@@ -163,7 +170,7 @@ static BOOL finishTask;
             SDWebImageDownloader *imageDownloader = [SDWebImageDownloader sharedDownloader];
             NSURL *url = [NSURL URLWithString: [Config shareInstance].settings.avatarURL];
             [imageDownloader downloadImageWithURL:url options:SDWebImageDownloaderLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                NSLog(@"下载头像图片进度： %ld/%ld",receivedSize , expectedSize);
+                NSLog(@"下载头像图片进度： %ld/%ld",(long)receivedSize , (long)expectedSize);
             } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
                 
                 if (image) {
@@ -183,7 +190,7 @@ static BOOL finishTask;
             SDWebImageDownloader *imageDownloader = [SDWebImageDownloader sharedDownloader];
             NSURL *url = [NSURL URLWithString: [Config shareInstance].settings.centerTopURL];
             [imageDownloader downloadImageWithURL:url options:SDWebImageDownloaderLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-                NSLog(@"下载个人中心图片进度： %ld/%ld",receivedSize , expectedSize);
+                NSLog(@"下载个人中心图片进度： %ld/%ld",(long)receivedSize , (long)expectedSize);
             } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
                 
                 if (image) {
@@ -207,7 +214,7 @@ static BOOL finishTask;
         if (array.count > 0) {
             BmobObject *obj = array[0];
             [weakSelf updateSettings:obj];
-        } else {
+        } else if (!error) {//防止网络请求失败也会新增
             [weakSelf addSettingsToServer];
         }
     }];
@@ -417,10 +424,8 @@ static BOOL finishTask;
 + (void)syncLocalToServerForPlan {
     NSArray *localNewArray = [NSArray array];
     if ([Config shareInstance].settings.syntime) {
-        
         localNewArray = [PlanCache getPlanForSync:[Config shareInstance].settings.syntime];
     } else {
-        
         localNewArray = [PlanCache getPlanForSync:nil];
     }
     __weak typeof(self) weakSelf = self;
@@ -452,7 +457,7 @@ static BOOL finishTask;
                         [weakSelf updatePlanForServer:plan obj:obj];
                     }
                 }
-            } else {
+            } else if (!error) {//防止网络超时也会新增
                 BmobObject *newPlan = [BmobObject objectWithClassName:@"Plan"];
                 NSDictionary *dic = @{@"userObjectId":plan.account,
                                       @"planId":plan.planid,
@@ -605,7 +610,7 @@ static BOOL finishTask;
                         [weakSelf updatePhotoForServer:photo obj:obj];
                     }
                 }
-            } else {
+            } else if (!error) {//防止网络超时也会新增
                 [weakSelf addPhotoToServer:photo];
             }
         }];
@@ -817,7 +822,7 @@ static BOOL finishTask;
                     //同时上传改任务的完成记录
                     [weakSelf syncTaskRecord:task.taskId syncTime:[Config shareInstance].settings.syntime];
                 }
-            } else {
+            } else if (!error) {
                 BmobObject *newTask = [BmobObject objectWithClassName:@"Task"];
                 NSDictionary *dic = @{@"userObjectId":task.account,
                                       @"taskId":task.taskId,
