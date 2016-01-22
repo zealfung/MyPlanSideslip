@@ -65,6 +65,7 @@ NSUInteger const kSecondsPerDay = 86400;
 
 - (void)viewWillAppear:(BOOL)animated {
     [self checkUnread:self.tabBarController.tabBar index:0];
+    [self refreshRedDot];
 }
 
 - (void)didReceiveMemoryWarning {
