@@ -86,6 +86,7 @@
         if ((now-last)/60 > 10) {//大于十分钟，自动重载一次数据
             [self reloadBannerData];
             [self reloadPostsData];
+            [self loadUserTagsData];
         }
     }
 }
