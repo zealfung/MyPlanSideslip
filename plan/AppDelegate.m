@@ -74,18 +74,9 @@
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
-    
     // 清除推送图标标记
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     
-    //加载系统消息
-    [DataCenter getMessagesFromServer];
-    
-    //自动同步数据
-//    if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"]) {
-//        [DataCenter startSyncData];
-//    }
-
     UIViewController *controller = self.window.rootViewController;
     if ([controller isKindOfClass:[RESideMenu class]]) {
         //加载个人设置
@@ -109,6 +100,13 @@
             }];
         }
     }
+    
+    //同步个人设置
+    [Config shareInstance].isSyncSettingsOnly = YES;
+    [DataCenter startSyncSettings];
+    
+    //加载系统消息
+    [DataCenter getMessagesFromServer];
 }
 
 /**

@@ -20,7 +20,7 @@ static BOOL finishUploadAvatar;
 static BOOL finishUploadCenterTop;
 static BOOL finishPlan;
 static BOOL finishTask;
-static BOOL finishPhoto;
+//static BOOL finishPhoto;
 
 @implementation DataCenter
 
@@ -41,27 +41,27 @@ static BOOL finishPhoto;
         [Config shareInstance].settings.syntime = @"2015-09-01 09:09:09";
     }
 
+    //同步影像
+    [self startSyncPhoto];
+    
     //同步计划
     [self startSyncPlan];
     
     //同步任务
     [self startSyncTask];
-    
-    //同步影像
-    [self startSyncPhoto];
-    
+
     //同步个人设置 (一定要最后同步个人设置，因为需要更新同步时间)
     [self startSyncSettings];
 }
 
 + (void)resetUploadFlag {
+    [Config shareInstance].isSyncSettingsOnly = NO;
     [Config shareInstance].isSyncingData = YES;
     finishSettings = NO;
     finishUploadAvatar = NO;
     finishUploadCenterTop = NO;
     finishPlan = NO;
     finishTask = NO;
-    finishPhoto = NO;
     //优化同步逻辑后，把本地数据都过一遍，防止之前同步落下的数据
     NSString *tmp = [UserDefaults objectForKey:str_Tmp_Flag];
     if (!tmp || ![tmp isEqualToString:@"1"]) {
@@ -75,14 +75,14 @@ static BOOL finishPhoto;
         && finishUploadAvatar
         && finishUploadCenterTop
         && finishPlan
-        && finishTask
-        && finishPhoto) {
+        && finishTask) {
         [Config shareInstance].isSyncingData = NO;
         [AlertCenter alertNavBarGreenMessage:str_Sync_End];
     }
 }
 
 + (void)startSyncSettings {
+    __weak typeof(self) weakSelf = self;
     BmobUser *user = [BmobUser getCurrentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
@@ -99,23 +99,23 @@ static BOOL finishPhoto;
                 && (![Config shareInstance].settings.nickname ||
                     [Config shareInstance].settings.nickname.length == 0)) {
                     //服务器上昵称不为空，本地昵称为空，用服务器配置覆盖本地的
-                    [DataCenter syncServerToLocalForSettings:obj];
+                    [weakSelf syncServerToLocalForSettings:obj];
                 } else if ((!serverNickName || serverNickName.length == 0)
                            && [Config shareInstance].settings.nickname
                            && [Config shareInstance].settings.nickname.length > 0) {
                     //服务器上昵称为空，本地昵称不为空，用本地的覆盖服务器的
-                    [DataCenter updateSettings:obj];
+                    [weakSelf updateSettings:obj];
                 } else if ([Config shareInstance].settings.updatetime
                            && [Config shareInstance].settings.updatetime.length > 0
                            && (!serverUpdatedTime || serverUpdatedTime.length == 0)) {
                     //服务器上更新时间为空，本地更新时间不为空，用本地的覆盖服务器的
-                    [DataCenter updateSettings:obj];
+                    [weakSelf updateSettings:obj];
                 } else if ((![Config shareInstance].settings.updatetime
                             || [Config shareInstance].settings.updatetime.length == 0)
                            && serverUpdatedTime
                            && serverUpdatedTime.length > 0) {
                     //服务器上更新时间不为空，本地更新时间为空，用服务器配置覆盖本地的
-                    [DataCenter syncServerToLocalForSettings:obj];
+                    [weakSelf syncServerToLocalForSettings:obj];
                 } else if ([Config shareInstance].settings.updatetime.length > 0
                            && serverUpdatedTime.length > 0) {
                     NSDate *localUpdatedTime = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
@@ -123,19 +123,19 @@ static BOOL finishPhoto;
                     
                     if ([localUpdatedTime compare:serverUpdatetime] == NSOrderedAscending) {
                         //服务器的设置较新
-                        [DataCenter syncServerToLocalForSettings:obj];
+                        [weakSelf syncServerToLocalForSettings:obj];
                         
                     } else if ([localUpdatedTime compare:serverUpdatetime] == NSOrderedDescending) {
                         //本地的设置较新
-                        [DataCenter syncLocalToServerForSettings];
+                        [weakSelf syncLocalToServerForSettings];
                     }
                 } else {
                     finishSettings = YES;
-                    [DataCenter IsAllUploadFinished];
+                    [weakSelf IsAllUploadFinished];
                 }
         } else {
             //将本地的设置同步到服务器
-            [DataCenter addSettingsToServer];
+            [weakSelf addSettingsToServer];
         }
     }];
 }
@@ -195,19 +195,20 @@ static BOOL finishPhoto;
     }
     [PlanCache storePersonalSettings:[Config shareInstance].settings];
     finishSettings = YES;
-    [DataCenter IsAllUploadFinished];
+    [self IsAllUploadFinished];
 }
 
 + (void)syncLocalToServerForSettings {
+    __weak typeof(self) weakSelf = self;
     BmobUser *user = [BmobUser getCurrentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
         if (array.count > 0) {
             BmobObject *obj = array[0];
-            [DataCenter updateSettings:obj];
+            [weakSelf updateSettings:obj];
         } else {
-            [DataCenter addSettingsToServer];
+            [weakSelf addSettingsToServer];
         }
     }];
 }
@@ -231,46 +232,54 @@ static BOOL finishPhoto;
     if ([Config shareInstance].settings.createtime) {
         [settingsObject setObject:[Config shareInstance].settings.createtime forKey:@"createdTime"];
     }
-    if ([Config shareInstance].settings.updatetime) {
-        [settingsObject setObject:[Config shareInstance].settings.updatetime forKey:@"updatedTime"];
+
+    //上传头像
+    NSString *avatarUrl = [settingsObject objectForKey:@"avatarURL"];
+    NSString *centerTopUrl = [settingsObject objectForKey:@"centerTopURL"];
+    if ([Config shareInstance].settings.avatar
+        && ![[Config shareInstance].settings.avatarURL isEqualToString:avatarUrl]) {
+        [self uploadAvatar:settingsObject];
+    } else {
+        finishUploadAvatar = YES;
     }
+    //上传个人中心顶部图片
+    if ([Config shareInstance].settings.centerTop
+        && ![[Config shareInstance].settings.centerTopURL isEqualToString:centerTopUrl]) {
+        [self uploadCenterTop:settingsObject];
+    } else {
+        finishUploadCenterTop = YES;
+    }
+    
     NSString *timeNow = [CommonFunction getTimeNowString];
-    if ([Config shareInstance].settings.syntime) {
-        [settingsObject setObject:timeNow forKey:@"syncTime"];
+    if (finishUploadAvatar
+        && finishUploadCenterTop
+        && [Config shareInstance].settings.updatetime) {
+        [settingsObject setObject:[Config shareInstance].settings.updatetime forKey:@"updatedTime"];
+        if (![Config shareInstance].isSyncSettingsOnly) {
+            [settingsObject setObject:timeNow forKey:@"syncTime"];
+        }
     }
+    __weak typeof(self) weakSelf = self;
     BmobACL *acl = [BmobACL ACL];
     [acl setPublicReadAccess];//设置所有人可读
     [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
     settingsObject.ACL = acl;
     [settingsObject updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
-            
-            [Config shareInstance].settings.syntime = timeNow;
-            [PlanCache storePersonalSettings:[Config shareInstance].settings];
-            
+            if (finishUploadAvatar
+                && finishUploadCenterTop) {
+                [Config shareInstance].settings.syntime = timeNow;
+                [PlanCache storePersonalSettings:[Config shareInstance].settings];
+            }
         } else if (error){
             NSLog(@"更新本地设置到服务器失败：%@",error);
         } else {
             NSLog(@"更新本地设置到服务器遇到未知错误");
         }
         finishSettings = YES;
-        [DataCenter IsAllUploadFinished];
+        [weakSelf IsAllUploadFinished];
     }];
-    //上传头像
-    NSString *avatarUrl = [settingsObject objectForKey:@"avatarURL"];
-    NSString *centerTopUrl = [settingsObject objectForKey:@"centerTopURL"];
-    if (![[Config shareInstance].settings.avatarURL isEqualToString:avatarUrl]) {
-        [DataCenter uploadAvatar:settingsObject];
-    } else {
-        finishUploadAvatar = YES;
-        [DataCenter IsAllUploadFinished];
-    }
-    if (![[Config shareInstance].settings.centerTopURL isEqualToString:centerTopUrl]) {
-        [DataCenter uploadCenterTop:settingsObject];
-    } else {
-        finishUploadCenterTop = YES;
-        [DataCenter IsAllUploadFinished];
-    }
+    
 }
 
 + (void)addSettingsToServer {
@@ -297,96 +306,107 @@ static BOOL finishPhoto;
     if ([Config shareInstance].settings.createtime) {
         [userSettings setObject:[Config shareInstance].settings.createtime forKey:@"createdTime"];
     }
-    if ([Config shareInstance].settings.updatetime) {
-        [userSettings setObject:[Config shareInstance].settings.updatetime forKey:@"updatedTime"];
-    }
     [userSettings setObject:@"2015-09-01 09:09:09" forKey:@"syncTime"];
     
+    //上传头像
+    if ([Config shareInstance].settings.avatar) {
+        [self uploadAvatar:userSettings];
+    } else {
+        finishUploadAvatar = YES;
+    }
+    //上传个人中心顶部图片
+    if ([Config shareInstance].settings.centerTop) {
+        [self uploadCenterTop:userSettings];
+    } else {
+        finishUploadCenterTop = YES;
+    }
+    
+    if (finishUploadAvatar
+        && finishUploadCenterTop
+        && [Config shareInstance].settings.updatetime) {
+        [userSettings setObject:[Config shareInstance].settings.updatetime forKey:@"updatedTime"];
+    }
+    __weak typeof(self) weakSelf = self;
     BmobACL *acl = [BmobACL ACL];
     [acl setPublicReadAccess];//设置所有人可读
     [acl setWriteAccessForUser:user];//设置只有当前用户可写
     userSettings.ACL = acl;
-    //异步保存
     [userSettings saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        
+        finishSettings = YES;
         if (isSuccessful) {
-            
             [Config shareInstance].settings.objectId = userSettings.objectId;
             [PlanCache storePersonalSettings:[Config shareInstance].settings];
-            
         } else if (error){
             NSLog(@"添加本地设置到服务器失败：%@",error);
         } else {
             NSLog(@"添加本地设置到服务器遇到未知错误");
         }
-        finishSettings = YES;
-        [DataCenter IsAllUploadFinished];
+        [weakSelf IsAllUploadFinished];
     }];
-    
-    //上传头像
-    [DataCenter uploadAvatar:userSettings];
-    [DataCenter uploadCenterTop:userSettings];
 }
 
 + (void)uploadAvatar:(BmobObject *)obj {
     //上传头像
+    __weak typeof(self) weakSelf = self;
     NSData *avatarData = UIImageJPEGRepresentation([Config shareInstance].settings.avatar, 1.0);
-    if (avatarData) {
-        //上传文件
-        [BmobProFile uploadFileWithFilename:@"avatar.png" fileData:avatarData block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
-            if (isSuccessful) {
-
-                //把上传完的文件保存到“头像”字段
-                [obj setObject:bmobFile.url forKey:@"avatarURL"];
-                [obj updateInBackground];
-                
-                //把avatarUrl保存到本地
+    [BmobProFile uploadFileWithFilename:@"avatar.png" fileData:avatarData block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
+        finishUploadAvatar = YES;
+        if (isSuccessful) {
+            NSString *timeNow = [CommonFunction getTimeNowString];
+            if (finishUploadAvatar
+                && finishUploadCenterTop
+                && [Config shareInstance].settings.updatetime) {
+                if (![Config shareInstance].isSyncSettingsOnly) {
+                    [obj setObject:[Config shareInstance].settings.updatetime forKey:@"updatedTime"];
+                    [obj setObject:timeNow forKey:@"syncTime"];
+                    [Config shareInstance].settings.syntime = timeNow;
+                }
                 [Config shareInstance].settings.avatarURL = bmobFile.url;
                 [PlanCache storePersonalSettings:[Config shareInstance].settings];
-                
-            } else if (error) {
-                NSLog(@"上传头像到服务器失败：%@",error);
             }
-            
-            finishUploadAvatar = YES;
-            [DataCenter IsAllUploadFinished];
-        } progress:^(CGFloat progress) {
-            //上传进度
-            NSLog(@"上传头像进度： %f",progress);
-        }];
-    } else {
-        finishUploadAvatar = YES;
-        [DataCenter IsAllUploadFinished];
-    }
+            //把上传完的文件保存到“头像”字段
+            [obj setObject:bmobFile.url forKey:@"avatarURL"];
+            [obj updateInBackground];
+        } else if (error) {
+            NSLog(@"上传头像到服务器失败：%@",error);
+        }
+        [weakSelf IsAllUploadFinished];
+    } progress:^(CGFloat progress) {
+        //上传进度
+        NSLog(@"上传头像进度： %f",progress);
+    }];
 }
 
 + (void)uploadCenterTop:(BmobObject *)obj {
+    __weak typeof(self) weakSelf = self;
     NSData *centerTopData = UIImageJPEGRepresentation([Config shareInstance].settings.centerTop, 1.0);
-    if (centerTopData) {
-        //上传文件
-        [BmobProFile uploadFileWithFilename:@"centerTop.png" fileData:centerTopData block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
-            if (isSuccessful) {
-                
-                //把上传完的文件保存到“头像”字段
-                [obj setObject:bmobFile.url forKey:@"centerTopURL"];
-                [obj updateInBackground];
-                
-                //把centerTopURL保存到本地
+    [BmobProFile uploadFileWithFilename:@"centerTop.png" fileData:centerTopData block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
+        finishUploadCenterTop = YES;
+        if (isSuccessful) {
+            NSString *timeNow = [CommonFunction getTimeNowString];
+            if (finishUploadAvatar
+                && finishUploadCenterTop
+                && [Config shareInstance].settings.updatetime) {
+                if (![Config shareInstance].isSyncSettingsOnly) {
+                    [obj setObject:[Config shareInstance].settings.updatetime forKey:@"updatedTime"];
+                    [obj setObject:timeNow forKey:@"syncTime"];
+                    [Config shareInstance].settings.syntime = timeNow;
+                }
                 [Config shareInstance].settings.centerTopURL = bmobFile.url;
                 [PlanCache storePersonalSettings:[Config shareInstance].settings];
-            } else if (error) {
-                NSLog(@"上传个人中心图片到服务器失败：%@",error);
             }
-            
-            finishUploadCenterTop = YES;
-            [DataCenter IsAllUploadFinished];
-        } progress:^(CGFloat progress) {
-            //上传进度
-            NSLog(@"上传个人中心图片进度： %f",progress);
-        }];
-    } else {
-        finishUploadCenterTop = YES;
-        [DataCenter IsAllUploadFinished];
-    }
+            //把上传完的文件保存到“头像”字段
+            [obj setObject:bmobFile.url forKey:@"centerTopURL"];
+            [obj updateInBackground];
+        } else if (error) {
+            NSLog(@"上传个人中心图片到服务器失败：%@",error);
+        }
+        [weakSelf IsAllUploadFinished];
+    } progress:^(CGFloat progress) {
+        //上传进度
+        NSLog(@"上传个人中心图片进度： %f",progress);
+    }];
 }
 
 + (void)startSyncPlan {
@@ -403,6 +423,7 @@ static BOOL finishPhoto;
         
         localNewArray = [PlanCache getPlanForSync:nil];
     }
+    __weak typeof(self) weakSelf = self;
     BmobUser *user = [BmobUser getCurrentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
     for (Plan *plan in localNewArray) {
@@ -416,7 +437,7 @@ static BOOL finishPhoto;
                 if (plan.updatetime.length == 0 && serverUpdatedTime.length == 0) {
 
                 } else if (plan.updatetime.length != 0 && serverUpdatedTime.length == 0) {
-                    [DataCenter updatePlanForServer:plan obj:obj];
+                    [weakSelf updatePlanForServer:plan obj:obj];
                 } else if (plan.updatetime.length == 0 && serverUpdatedTime.length != 0) {
                     
                 } else {
@@ -428,7 +449,7 @@ static BOOL finishPhoto;
                         
                     } else if ([localDate compare:serverDate] == NSOrderedDescending) {
                         //本地的设置较新
-                        [DataCenter updatePlanForServer:plan obj:obj];
+                        [weakSelf updatePlanForServer:plan obj:obj];
                     }
                 }
             } else {
@@ -449,17 +470,7 @@ static BOOL finishPhoto;
                 [acl setReadAccessForUser:user];//设置只有当前用户可读
                 [acl setWriteAccessForUser:user];//设置只有当前用户可写
                 newPlan.ACL = acl;
-                //异步保存
-                [newPlan saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-                    if (isSuccessful) {
-                        //创建成功后的动作
-                    } else if (error){
-                        //发生错误后的动作
-                        NSLog(@"%@",error);
-                    } else {
-                        NSLog(@"Unknow error");
-                    }
-                }];
+                [newPlan saveInBackground];
             }
         }];
     }
@@ -491,14 +502,7 @@ static BOOL finishPhoto;
     [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
     [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
     obj.ACL = acl;
-    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-        if (isSuccessful) {
-        } else if (error){
-            NSLog(@"更新本地设置到服务器失败：%@",error);
-        } else {
-            NSLog(@"更新本地设置到服务器遇到未知错误");
-        }
-    }];
+    [obj updateInBackground];
 }
 
 + (void)syncServerToLocalForPlan {
@@ -527,13 +531,13 @@ static BOOL finishPhoto;
                     
                     if ([localDate compare:serverDate] == NSOrderedAscending) {
                         //服务器的较新
-                        [DataCenter updatePlanForLocal:plan obj:obj];
+                        [weakSelf updatePlanForLocal:plan obj:obj];
                         
                     } else if ([localDate compare:serverDate] == NSOrderedDescending) {
                         //本地的设置较新
                     }
                 } else {
-                    [DataCenter updatePlanForLocal:plan obj:obj];
+                    [weakSelf updatePlanForLocal:plan obj:obj];
                 }
             }
         }
@@ -602,37 +606,39 @@ static BOOL finishPhoto;
                     }
                 }
             } else {
-                BmobObject *newPhoto = [BmobObject objectWithClassName:@"Photo"];
-                NSDictionary *dic = @{@"userObjectId":photo.account,
-                                      @"photoId":photo.photoid,
-                                      @"content":photo.content,
-                                      @"location":photo.location,
-                                      @"createdTime":photo.createtime,
-                                      @"photoTime":photo.phototime,
-                                      @"updatedTime":@"2015-09-09 09:09:09",
-                                      @"isDeleted":photo.isdeleted};
-                [newPhoto saveAllWithDictionary:dic];
-                BmobACL *acl = [BmobACL ACL];
-                [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
-                [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
-                newPhoto.ACL = acl;
-                //异步保存
-                [newPhoto saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-                    if (isSuccessful) {
-                        //创建成功后的动作
-                    } else if (error){
-                        //发生错误后的动作
-                        NSLog(@"%@",error);
-                    } else {
-                        NSLog(@"Unknow error");
-                    }
-                }];
-                for (NSInteger i = 0; i < photo.photoArray.count; i++) {
-                    [DataCenter uploadPhoto:photo index:i obj:newPhoto];
-                }
+                [weakSelf addPhotoToServer:photo];
             }
         }];
     }
+}
+
++ (void)addPhotoToServer:(Photo *)photo {
+    BmobObject *newPhoto = [BmobObject objectWithClassName:@"Photo"];
+    NSDictionary *dic = @{@"userObjectId":photo.account,
+                          @"photoId":photo.photoid,
+                          @"content":photo.content,
+                          @"location":photo.location,
+                          @"createdTime":photo.createtime,
+                          @"photoTime":photo.phototime,
+                          @"updatedTime":@"2015-09-09 09:09:09",
+                          @"isDeleted":photo.isdeleted};
+    [newPhoto saveAllWithDictionary:dic];
+    __weak typeof(self) weakSelf = self;
+    BmobACL *acl = [BmobACL ACL];
+    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
+    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    newPhoto.ACL = acl;
+    [newPhoto saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        if (isSuccessful) {
+            for (NSInteger i = 0; i < photo.photoArray.count; i++) {
+                [weakSelf uploadPhoto:photo index:i obj:newPhoto];
+            }
+        } else if (error){
+            NSLog(@"新增岁月影像到服务器失败：%@",error);
+        } else {
+            NSLog(@"新增岁月影像到服务器失败：Unknow error");
+        }
+    }];
 }
 
 + (void)updatePhotoForServer:(Photo *)photo obj:(BmobObject *)obj {
@@ -643,37 +649,23 @@ static BOOL finishPhoto;
     if (photo.phototime) {
         [obj setObject:photo.phototime forKey:@"photoTime"];
     }
-    if (photo.updatetime) {
-        [obj setObject:photo.updatetime forKey:@"updatedTime"];
-    }
     if (photo.location) {
         [obj setObject:photo.location forKey:@"location"];
     }
-    BmobACL *acl = [BmobACL ACL];
-    [acl setReadAccessForUser:user];//设置只有当前用户可读
-    [acl setWriteAccessForUser:user];//设置只有当前用户可写
-    obj.ACL = acl;
-    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-        if (isSuccessful) {
-        } else if (error){
-            NSLog(@"更新本地影像到服务器失败：%@",error);
-        } else {
-            NSLog(@"更新本地影像到服务器遇到未知错误");
-        }
-    }];
     if (photo.photoArray.count < 9) {
         for (NSInteger i = photo.photoArray.count; i < 9; i++) {
             NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", (long)(i+1)];
             [obj setObject:@"" forKey:urlName];
         }
-        BmobACL *acl = [BmobACL ACL];
-        [acl setReadAccessForUser:user];//设置只有当前用户可读
-        [acl setWriteAccessForUser:user];//设置只有当前用户可写
-        obj.ACL = acl;
-        [obj updateInBackground];
     }
+    BmobACL *acl = [BmobACL ACL];
+    [acl setReadAccessForUser:user];//设置只有当前用户可读
+    [acl setWriteAccessForUser:user];//设置只有当前用户可写
+    obj.ACL = acl;
+    [obj updateInBackground];
+
     for (NSInteger i = 0; i < photo.photoArray.count; i++) {
-        [DataCenter uploadPhoto:photo index:i obj:obj];
+        [self uploadPhoto:photo index:i obj:obj];
     }
 }
 
@@ -695,8 +687,6 @@ static BOOL finishPhoto;
                 
                 photo.photoURLArray[index] = bmobFile.url;
                 [PlanCache storePhoto:photo];
-            } else if (error) {
-                //
             }
         } progress:^(CGFloat progress) {
             //上传进度
@@ -717,6 +707,7 @@ static BOOL finishPhoto;
     } else {
         bquery.limit = 999;
     }
+    __weak typeof(self) weakSelf = self;
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
         if (!error && array.count > 0) {
             for (BmobObject *obj in array) {
@@ -727,20 +718,15 @@ static BOOL finishPhoto;
                     
                     if ([localDate compare:serverDate] == NSOrderedAscending) {
                         //服务器的较新
-                        [DataCenter updatePhotoForLocal:photo obj:obj];
+                        [weakSelf updatePhotoForLocal:photo obj:obj];
                         
                     } else if ([localDate compare:serverDate] == NSOrderedDescending) {
                         //本地的设置较新
                     }
                 } else {
-                    [DataCenter updatePhotoForLocal:photo obj:obj];
+                    [weakSelf updatePhotoForLocal:photo obj:obj];
                 }
             }
-            finishPhoto = YES;
-            [DataCenter IsAllUploadFinished];
-        } else {
-            finishPhoto = YES;
-            [DataCenter IsAllUploadFinished];
         }
     }];
 }
@@ -770,7 +756,7 @@ static BOOL finishPhoto;
             && serverPhotoURL.length > 0
             && ![photo.photoURLArray[i] isEqualToString:serverPhotoURL]) {
             //本地与服务器的URL不一样，需要更新本地图片
-            [DataCenter downloadPhoto:photo index:i url:serverPhotoURL];
+            [self downloadPhoto:photo index:i url:serverPhotoURL];
         }
     }
     [PlanCache storePhoto:photo];
@@ -801,6 +787,7 @@ static BOOL finishPhoto;
 }
 
 + (void)syncLocalToServerForTask {
+    __weak typeof(self) weakSelf = self;
     BmobUser *user = [BmobUser getCurrentUser];
     NSArray *localNewArray = [NSArray array];
     if ([Config shareInstance].settings.syntime.length > 0) {
@@ -826,9 +813,9 @@ static BOOL finishPhoto;
                     
                 } else if ([localDate compare:serverDate] == NSOrderedDescending) {
                     //本地的设置较新
-                    [DataCenter updateTaskForServer:task obj:obj];
+                    [weakSelf updateTaskForServer:task obj:obj];
                     //同时上传改任务的完成记录
-                    [DataCenter syncTaskRecord:task.taskId syncTime:[Config shareInstance].settings.syntime];
+                    [weakSelf syncTaskRecord:task.taskId syncTime:[Config shareInstance].settings.syntime];
                 }
             } else {
                 BmobObject *newTask = [BmobObject objectWithClassName:@"Task"];
@@ -847,19 +834,9 @@ static BOOL finishPhoto;
                 [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
                 [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
                 newTask.ACL = acl;
-                //异步保存
-                [newTask saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-                    if (isSuccessful) {
-                        //创建成功后的动作
-                    } else if (error){
-                        //发生错误后的动作
-                        NSLog(@"%@",error);
-                    } else {
-                        NSLog(@"Unknow error");
-                    }
-                }];
+                [newTask saveInBackground];
                 //同时上传改任务的完成记录
-                [DataCenter syncTaskRecord:task.taskId syncTime:[Config shareInstance].settings.syntime];
+                [weakSelf syncTaskRecord:task.taskId syncTime:[Config shareInstance].settings.syntime];
             }
         }];
     }
@@ -868,10 +845,8 @@ static BOOL finishPhoto;
 + (void)syncTaskRecord:(NSString *)taskId syncTime:(NSString *)syncTime {
     NSArray *localNewArray = [NSArray array];
     if (syncTime.length > 0) {
-        
         localNewArray = [PlanCache getTeaskRecordForSyncByTaskId:taskId syntime:syncTime];
     } else {
-        
         localNewArray = [PlanCache getTeaskRecordForSyncByTaskId:taskId syntime:nil];
     }
     BmobUser *user = [BmobUser getCurrentUser];
@@ -886,17 +861,7 @@ static BOOL finishPhoto;
         [acl setReadAccessForUser:user];//设置只有当前用户可读
         [acl setWriteAccessForUser:user];//设置只有当前用户可写
         newTaskRecord.ACL = acl;
-        //异步保存
-        [newTaskRecord saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-            if (isSuccessful) {
-                //创建成功后的动作
-            } else if (error){
-                //发生错误后的动作
-                NSLog(@"%@",error);
-            } else {
-                NSLog(@"Unknow error");
-            }
-        }];
+        [newTaskRecord saveInBackground];
     }
 }
 
@@ -926,17 +891,11 @@ static BOOL finishPhoto;
     [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
     [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
     obj.ACL = acl;
-    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-        if (isSuccessful) {
-        } else if (error){
-            NSLog(@"更新本地任务到服务器失败：%@",error);
-        } else {
-            NSLog(@"更新本地任务到服务器遇到未知错误");
-        }
-    }];
+    [obj updateInBackground];
 }
 
 + (void)syncServerToLocalForTask {
+    __weak typeof(self) weakSelf = self;
     BmobUser *user = [BmobUser getCurrentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Task"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
@@ -955,18 +914,18 @@ static BOOL finishPhoto;
                     
                     if ([localDate compare:serverDate] == NSOrderedAscending) {
                         //服务器的较新
-                        [DataCenter updateTaskForLocal:task obj:obj];
+                        [weakSelf updateTaskForLocal:task obj:obj];
                         
                     } else if ([localDate compare:serverDate] == NSOrderedDescending) {
                         //本地的设置较新
                     }
                 } else {
-                    [DataCenter updateTaskForLocal:task obj:obj];
+                    [weakSelf updateTaskForLocal:task obj:obj];
                 }
             }
         }
         finishTask = YES;
-        [DataCenter IsAllUploadFinished];
+        [weakSelf IsAllUploadFinished];
     }];
 }
 

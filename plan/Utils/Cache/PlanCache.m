@@ -1704,10 +1704,7 @@ static NSMutableDictionary * __contactsOnlineState;
         BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
         [bquery whereKey:@"userObjectId" equalTo:user.objectId];
         [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-            if (array.count > 0) {
-//                BmobObject *obj = array[0];
-//                [DataCenter syncServerToLocalForSettings:obj];
-            } else {
+            if (array.count == 0) {
                 /*
                  *说明：只要在本地没有已登录账号的设置数据时才关联
                  *     如果本地已经有已登录账号的设置数据，则不关联
@@ -1727,8 +1724,6 @@ static NSMutableDictionary * __contactsOnlineState;
                     FMDBQuickCheck(b, sqlString, __db);
                 }
                 [NotificationCenter postNotificationName:Notify_Settings_Save object:nil];
-                //同时自动将本地设置同步到服务器
-                [DataCenter addSettingsToServer];
             }
         }];
     }

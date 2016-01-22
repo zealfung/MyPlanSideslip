@@ -12,11 +12,7 @@
 
 + (void)startSyncData;
 
-+ (void)IsAllUploadFinished;
-
-+ (void)syncServerToLocalForSettings:(BmobObject *)obj;
-
-+ (void)addSettingsToServer;
++ (void)startSyncSettings;
 
 + (void)getMessagesFromServer;
 
