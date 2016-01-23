@@ -29,8 +29,8 @@ extern NSUInteger const kPlanCellHeight;
 }
 
 @property (nonatomic, strong) IBOutlet UIView *moveContentView;
+@property (strong, nonatomic) IBOutlet UIButton *btnDoneNew;
 @property (nonatomic, assign) id<PlanCellDelegate> delegate;
-//@property (nonatomic, strong) UILabel *labelContent;
 @property (nonatomic, strong) NSString *isDone; //1是 0否
 @property (nonatomic, strong) Plan *plan;
 

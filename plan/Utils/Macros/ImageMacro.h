@@ -43,7 +43,9 @@
 
 #define png_Btn_SectionUp @"Btn_SectionUp"
 #define png_Btn_Plan_Doing @"Btn_Plan_Doing"
+#define png_Btn_Plan_Doing64 @"Btn_Plan_Doing64"
 #define png_Btn_Plan_Done @"Btn_Plan_Done"
+#define png_Btn_Plan_Done64 @"Btn_Plan_Done64"
 #define png_Btn_Plan_Delete @"Btn_Plan_Delete"
 #define png_Btn_Photo_Delete @"Btn_Photo_Delete"
 

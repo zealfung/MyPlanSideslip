@@ -202,6 +202,8 @@
 		13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */; };
 		13CC6F321C4E4280001D290F /* Icon_Tomorrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13CC6F311C4E4280001D290F /* Icon_Tomorrow@2x.png */; };
 		13CC6F341C4F1874001D290F /* Icon_EverydayNotify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13CC6F331C4F1874001D290F /* Icon_EverydayNotify@2x.png */; };
+		13CC6F611C530583001D290F /* Btn_Plan_Doing64@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13CC6F5F1C530583001D290F /* Btn_Plan_Doing64@2x.png */; };
+		13CC6F621C530583001D290F /* Btn_Plan_Done64@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13CC6F601C530583001D290F /* Btn_Plan_Done64@2x.png */; };
 		13D1AD6B1C3E71EA007734F6 /* Btn_More@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD6A1C3E71EA007734F6 /* Btn_More@2x.png */; };
 		13D1AD6D1C3E7670007734F6 /* Btn_Refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD6C1C3E7670007734F6 /* Btn_Refresh@2x.png */; };
 		13D1AD6F1C3E7930007734F6 /* Btn_Report@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD6E1C3E7930007734F6 /* Btn_Report@2x.png */; };
@@ -560,6 +562,8 @@
 		13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Settings@2x.png"; sourceTree = "<group>"; };
 		13CC6F311C4E4280001D290F /* Icon_Tomorrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Tomorrow@2x.png"; sourceTree = "<group>"; };
 		13CC6F331C4F1874001D290F /* Icon_EverydayNotify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_EverydayNotify@2x.png"; sourceTree = "<group>"; };
+		13CC6F5F1C530583001D290F /* Btn_Plan_Doing64@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Plan_Doing64@2x.png"; sourceTree = "<group>"; };
+		13CC6F601C530583001D290F /* Btn_Plan_Done64@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Plan_Done64@2x.png"; sourceTree = "<group>"; };
 		13D1AD6A1C3E71EA007734F6 /* Btn_More@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_More@2x.png"; sourceTree = "<group>"; };
 		13D1AD6C1C3E7670007734F6 /* Btn_Refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Refresh@2x.png"; sourceTree = "<group>"; };
 		13D1AD6E1C3E7930007734F6 /* Btn_Report@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Report@2x.png"; sourceTree = "<group>"; };
@@ -1045,7 +1049,9 @@
 				13A6ACAC1BC551EE005A02F9 /* Btn_Photo_Delete@2x.png */,
 				135B222D1B9301C9005CE84A /* Btn_Plan_Delete@2x.png */,
 				135B222E1B9301C9005CE84A /* Btn_Plan_Doing@2x.png */,
+				13CC6F5F1C530583001D290F /* Btn_Plan_Doing64@2x.png */,
 				135B222C1B9301C9005CE84A /* Btn_Plan_Done@2x.png */,
+				13CC6F601C530583001D290F /* Btn_Plan_Done64@2x.png */,
 				13D4061E1C301E5A0089D702 /* Btn_Posts_Comment@2x.png */,
 				13D406221C3020BF0089D702 /* Btn_Posts_Like@2x.png */,
 				13D406261C3024860089D702 /* Btn_Posts_More@2x.png */,
@@ -1652,6 +1658,7 @@
 				135B22361B932C45005CE84A /* Btn_Save@2x.png in Resources */,
 				13D405FD1C2D13360089D702 /* Icon_Posts_Praise_Selected@2x.png in Resources */,
 				1361AFCB1BCBB52E00DD5FFB /* Bg_Line@2x.png in Resources */,
+				13CC6F611C530583001D290F /* Btn_Plan_Doing64@2x.png in Resources */,
 				1361AFD71BCBB54800DD5FFB /* Btn_Up@2x.png in Resources */,
 				137701091B95DF67008C83FD /* Icon_Gender_M_Selected@2x.png in Resources */,
 				1310C36E1C465BA100A2A404 /* Icon_UserLevel_8@2x.png in Resources */,
@@ -1707,6 +1714,7 @@
 				137470B01C09490B00B7822A /* Icon_GestureTrack_Hide@2x.png in Resources */,
 				137701071B95DF67008C83FD /* Icon_Gender_F_Selected@2x.png in Resources */,
 				1310C3591C4542FC00A2A404 /* WeiboSDK.bundle in Resources */,
+				13CC6F621C530583001D290F /* Btn_Plan_Done64@2x.png in Resources */,
 				13D1AD6D1C3E7670007734F6 /* Btn_Refresh@2x.png in Resources */,
 				13D406251C3020BF0089D702 /* Btn_Posts_Unlike@2x.png in Resources */,
 				13AF64BB1C214253008E8A9E /* Btn_Clean@2x.png in Resources */,
