@@ -104,7 +104,7 @@ NSUInteger const kToolBarHeight = 44;
         yOffset += iconSize + kEdgeInset;
     }
     //设为明天计划
-    if (self.planType == PlanEveryday
+    if (self.planType == EverydayPlan
         && self.operationType == Add) {
         
         UIImageView *tomorrow = [[UIImageView alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, iconSize, iconSize)];
@@ -279,10 +279,10 @@ NSUInteger const kToolBarHeight = 44;
     NSString *timeNow = @"";
     NSString *planid = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyyMMddHHmmss];
     
-    if (self.planType == PlanEveryday
+    if (self.planType == EverydayPlan
         && isTomorrowPlan) {//明天计划
         timeNow = [CommonFunction getTomorrowTimeNowString];
-    } else {//今天计划
+    } else {//每日计划
         timeNow = [CommonFunction getTimeNowString];
     }
     if (self.operationType == Add) {
@@ -305,7 +305,7 @@ NSUInteger const kToolBarHeight = 44;
     }
     
     self.plan.content = self.textNoteDetail.text;
-    self.plan.plantype = self.planType == PlanEveryday ? @"1" : @"0";
+    self.plan.plantype = self.planType == EverydayPlan ? @"1" : @"0";
     
     BOOL result = [PlanCache storePlan:self.plan];
     if (result) {

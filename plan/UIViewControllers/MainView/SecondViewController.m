@@ -20,8 +20,8 @@
 
 NSUInteger const kPlan_MenuHeight = 44;
 NSUInteger const kPlan_MenuLineHeight = 3;
-NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 NSUInteger const kPlanCellDeleteTag = 9527;
+NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 @interface SecondViewController ()<UITableViewDataSource, UITableViewDelegate, PlanCellDelegate, HitViewDelegate> {
     
@@ -31,20 +31,21 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     NSInteger lifeTotal;
     NSInteger dayStart;
     NSInteger lifeStart;
+    BOOL *flag;
+    BOOL canCustomEditNow;
     BOOL isLoadMore;
-    NSMutableArray *planLifeArray;
+    PlanType planType;
+    Plan *deletePlan;
+    NSMutableArray *longPlanArray;
     NSMutableArray *dateKeyArray;
-    NSMutableDictionary *planEverydayDic;
+    NSMutableDictionary *everydayPlanDict;
+    
+    UITableView *tableViewEveryday;
+    UITableView *tableViewLong;
 }
 
-@property (nonatomic, assign) PlanType planType;
 @property (nonatomic, weak) ThreeSubView *threeSubView;
 @property (nonatomic, weak) UIView *underLineView;
-@property (nonatomic, strong) UITableView *planEverydayTableView;
-@property (nonatomic, strong) UITableView *planLifeTableView;
-@property (nonatomic, strong) Plan *deletePlan;
-@property (nonatomic, assign) BOOL *flag;
-@property (nonatomic, assign) BOOL canCustomEdit;
 
 @end
 
@@ -52,7 +53,6 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.title = str_ViewTitle_2;
     self.tabBarItem.title = str_ViewTitle_2;
     [self createNavBarButton];
@@ -67,6 +67,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     [super viewWillAppear:animated];
     [self checkUnread:self.tabBarController.tabBar index:1];
     [self refreshRedDot];
+    [self getPlanData];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -83,7 +84,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 }
 
 - (void)getPlanData {
-    if (self.planType == PlanLife) {
+    if (planType == LongPlan) {
         [self getLongPlan];
     } else {
         [self getDayPlan];
@@ -95,7 +96,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     if (!isLoadMore) {//重头开始加载
         dayStart = 0;
         dateKeyArray = [NSMutableArray array];
-        planEverydayDic = [NSMutableDictionary dictionary];
+        everydayPlanDict = [NSMutableDictionary dictionary];
     }
     NSArray *array = [NSArray arrayWithArray:[PlanCache getPlanByPlantype:@"1" startIndex:dayStart]];
     NSMutableArray *dateKeyArrayTmp = [NSMutableArray array];
@@ -105,10 +106,10 @@ NSUInteger const kPlanCellDeleteTag = 9527;
         NSArray *spitArray = [plan.createtime componentsSeparatedByString:@" "];
         NSString *date = spitArray[0];
         
-        NSMutableArray * dateArray = [planEverydayDic objectForKey:date];
+        NSMutableArray * dateArray = [everydayPlanDict objectForKey:date];
         if (!dateArray) {
             dateArray = [[NSMutableArray alloc] init];
-            [planEverydayDic setValue:dateArray forKey:date];
+            [everydayPlanDict setValue:dateArray forKey:date];
             [dateKeyArrayTmp addObject:date];
         }
         
@@ -118,18 +119,18 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     //日期降序排列
     dateKeyArray = [NSMutableArray arrayWithArray:[CommonFunction arraySort:dateKeyArray ascending:NO]];
     
-    NSUInteger sections = planEverydayDic.count;
-    self.flag = (BOOL *)malloc(sections * sizeof(BOOL));
-    memset((void *)self.flag, NO, sections * sizeof(BOOL));
-    self.flag[0] = !self.flag[0];
+    NSUInteger sections = everydayPlanDict.count;
+    flag = (BOOL *)malloc(sections * sizeof(BOOL));
+    memset((void *)flag, NO, sections * sizeof(BOOL));
+    flag[0] = !flag[0];
     
     isLoadMore = NO;
     if (dayStart < dayTotal) {
         dayStart += kPlanLoadMax;
     } else {
-        [self.planEverydayTableView.mj_footer endRefreshingWithNoMoreData];
+        [tableViewEveryday.mj_footer endRefreshingWithNoMoreData];
     }
-    [self.planEverydayTableView.mj_footer endRefreshing];
+    [tableViewEveryday.mj_footer endRefreshing];
     [self reloadTableViewData];
 }
 
@@ -137,25 +138,25 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     lifeTotal = [[PlanCache getPlanTotalCountByPlantype:@"0"] integerValue];
     if (!isLoadMore) {//重头开始加载
         lifeStart = 0;
-        planLifeArray = [NSMutableArray array];
+        longPlanArray = [NSMutableArray array];
     }
-    [planLifeArray addObjectsFromArray:[PlanCache getPlanByPlantype:@"0" startIndex:lifeStart]];
+    [longPlanArray addObjectsFromArray:[PlanCache getPlanByPlantype:@"0" startIndex:lifeStart]];
 
     isLoadMore = NO;
     if (lifeStart < lifeTotal) {
         lifeStart += kPlanLoadMax;
     } else {
-        [self.planLifeTableView.mj_footer endRefreshingWithNoMoreData];
+        [tableViewLong.mj_footer endRefreshingWithNoMoreData];
     }
-    [self.planLifeTableView.mj_footer endRefreshing];
+    [tableViewLong.mj_footer endRefreshing];
     [self reloadTableViewData];
 }
 
 - (void)reloadTableViewData {
-    if (self.planEverydayTableView && self.planType == PlanEveryday) {
-        [self.planEverydayTableView reloadData];
-    } else if (self.planLifeTableView && self.planType == PlanLife) {
-        [self.planLifeTableView reloadData];
+    if (tableViewEveryday && planType == EverydayPlan) {
+        [tableViewEveryday reloadData];
+    } else if (tableViewLong && planType == LongPlan) {
+        [tableViewLong reloadData];
     }
 }
 
@@ -169,13 +170,13 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     }
 }
 
-#pragma mark -初始化自定义界面
+//初始化自定义界面
 - (void)loadCustomView {
     if (!self.underLineView) {
         [self showMenuView];
         [self showUnderLineView];
     }
-    self.planType = PlanEveryday;
+    self.planType = EverydayPlan;
     [self showListView];
 }
 
@@ -183,11 +184,11 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     __weak typeof(self) weakSelf = self;
     ThreeSubView *threeSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), kPlan_MenuHeight) leftButtonSelectBlock: ^{
         
-        weakSelf.planType = PlanEveryday;
+        weakSelf.planType = EverydayPlan;
         
     } centerButtonSelectBlock: ^{
         
-        weakSelf.planType = PlanLife;
+        weakSelf.planType = LongPlan;
         
     } rightButtonSelectBlock:nil];
     
@@ -235,42 +236,42 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     frame.size.width = CGRectGetWidth(self.view.bounds);
     frame.size.height = tableHeight;
     
-    if (!self.planEverydayTableView && self.planType == PlanEveryday) {
+    if (!tableViewEveryday && planType == EverydayPlan) {
         UITableView *tableView = [self createTableView];
         tableView.frame = frame;
         [self.view addSubview:tableView];
-        self.planEverydayTableView = tableView;
-    } else if (!self.planLifeTableView && self.planType == PlanLife) {
+        tableViewEveryday = tableView;
+    } else if (!tableViewLong && planType == LongPlan) {
         UITableView *tableView = [self createTableView];
         tableView.frame = frame;
         [self.view addSubview:tableView];
-        self.planLifeTableView = tableView;
+        tableViewLong = tableView;
     } else {
-        [self.planEverydayTableView reloadData];
-        [self.planLifeTableView reloadData];
+        [tableViewEveryday reloadData];
+        [tableViewLong reloadData];
     }
 }
 
 - (void)moveUnderLineViewToLeft {
     [self moveUnderLineViewToButton:self.threeSubView.leftButton];
-    self.planLifeTableView.hidden = YES;
-    self.planEverydayTableView.hidden = NO;
+    tableViewLong.hidden = YES;
+    tableViewEveryday.hidden = NO;
 
     [self getPlanData];
     
-    if (!self.planEverydayTableView) {
+    if (!tableViewEveryday) {
         [self showListView];
     }
 }
 
 - (void)moveUnderLineViewToRight {
     [self moveUnderLineViewToButton:self.threeSubView.centerButton];
-    self.planLifeTableView.hidden = NO;
-    self.planEverydayTableView.hidden = YES;
+    tableViewLong.hidden = NO;
+    tableViewEveryday.hidden = YES;
     
     [self getPlanData];
     
-    if (!self.planLifeTableView) {
+    if (!tableViewLong) {
         [self showListView];
     }
 }
@@ -292,15 +293,15 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 }
 
 
-- (void)setPlanType:(PlanType)planType {
-    _planType = planType;
+- (void)setPlanType:(PlanType)type {
+    planType = type;
     switch (planType) {
-        case PlanEveryday:
+        case EverydayPlan:
         {
             [self moveUnderLineViewToLeft];
         }
             break;
-        case PlanLife:
+        case LongPlan:
         {
             [self moveUnderLineViewToRight];
         }
@@ -341,13 +342,13 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (self.planType == PlanEveryday) {
-        if (planEverydayDic.count > 0) {
-            return planEverydayDic.count;
+    if (planType == EverydayPlan) {
+        if (everydayPlanDict.count > 0) {
+            return everydayPlanDict.count;
         } else {
             return 1;
         }
-    } else if (self.planType == PlanLife) {
+    } else if (planType == LongPlan) {
         return 1;
     } else {
         return 0;
@@ -355,11 +356,11 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (self.planType == PlanEveryday) {
-        if (self.flag[section]) {
+    if (planType == EverydayPlan) {
+        if (flag[section]) {
             if(dateKeyArray.count > 0) {
                 NSString *key = dateKeyArray[section];
-                NSArray *dateArray = [planEverydayDic objectForKey:key];
+                NSArray *dateArray = [everydayPlanDict objectForKey:key];
                 return dateArray.count;
             } else {
                 return 3;
@@ -367,11 +368,11 @@ NSUInteger const kPlanCellDeleteTag = 9527;
         } else {
             return 0;
         }
-    } else if (self.planType == PlanLife) {
-        if (planLifeArray.count == 0) {
+    } else if (planType == LongPlan) {
+        if (longPlanArray.count == 0) {
             return 3;
         } else {
-            return planLifeArray.count;
+            return longPlanArray.count;
         }
     } else {
         return 0;
@@ -379,12 +380,12 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (self.planType == PlanEveryday) {
+    if (planType == EverydayPlan) {
         if(indexPath.section < dateKeyArray.count) {
             NSString *dateKey = dateKeyArray[indexPath.section];
-            NSArray *planArray = [planEverydayDic objectForKey:dateKey];
+            NSArray *planArray = [everydayPlanDict objectForKey:dateKey];
             if (indexPath.row < planArray.count) {
-                self.planEverydayTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+                tableViewEveryday.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 static NSString *PlanTodayCellIdentifier = @"PlanTodayCellIdentifier";
                 
                 PlanCell *cell = [tableView dequeueReusableCellWithIdentifier:PlanTodayCellIdentifier];
@@ -405,7 +406,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                 return cell;
             }
         } else {
-            self.planEverydayTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+            tableViewEveryday.separatorStyle = UITableViewCellSeparatorStyleNone;
             static NSString *noticeCellIdentifier = @"noTodayCellIdentifier";
             
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noticeCellIdentifier];
@@ -428,10 +429,10 @@ NSUInteger const kPlanCellDeleteTag = 9527;
             }
             return cell;
         }
-    } else if (self.planType == PlanLife) {
-        NSUInteger planCount = planLifeArray.count;
+    } else if (planType == LongPlan) {
+        NSUInteger planCount = longPlanArray.count;
         if (indexPath.row < planCount) {
-            self.planLifeTableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+            tableViewLong.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
             static NSString *PlanLifeCellIdentifier = @"PlanLifeCellIdentifier";
             
             PlanCell *cell = [tableView dequeueReusableCellWithIdentifier:PlanLifeCellIdentifier];
@@ -439,7 +440,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                 cell = [[PlanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:PlanLifeCellIdentifier];
             }
             
-            Plan *plan = planLifeArray[indexPath.row];
+            Plan *plan = longPlanArray[indexPath.row];
             cell.plan = plan;
             cell.isDone = plan.iscompleted;
             if ([plan.iscompleted isEqualToString:@"1"]) {
@@ -452,7 +453,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
             cell.delegate = self;
             return cell;
         } else {
-            self.planLifeTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+            tableViewLong.separatorStyle = UITableViewCellSeparatorStyleNone;
             static NSString *noticeCellIdentifier = @"noLifeCellIdentifier";
             
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noticeCellIdentifier];
@@ -482,13 +483,13 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (self.planType == PlanEveryday) {
+    if (planType == EverydayPlan) {
         if (dateKeyArray.count > 0) {
             return kPlanSectionViewHeight;
         } else {
             return 0;
         }
-    } else if (self.planType == PlanLife) {
+    } else if (planType == LongPlan) {
         return 0;
     } else {
         return 0;
@@ -497,15 +498,15 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
     PlanSectionView *view;
-    if (self.planType == PlanEveryday && dateKeyArray.count > 0) {
+    if (planType == EverydayPlan && dateKeyArray.count > 0) {
         NSString *date = dateKeyArray[section];
-        NSArray *planArray = [planEverydayDic objectForKey:date];
+        NSArray *planArray = [everydayPlanDict objectForKey:date];
         BOOL isAllDone = [self isAllDone:planArray];
         date = [self getSectionTitle:date];
 
         view = [[PlanSectionView alloc] initWithTitle:date isAllDone:isAllDone];
         view.sectionIndex = section;
-        if (self.flag[section])
+        if (flag[section])
             [view toggleArrow];
         [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sectionClickedAction:)]];
         return view;
@@ -516,20 +517,20 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ((self.planType == PlanEveryday
+    if ((planType == EverydayPlan
          && indexPath.section >= dateKeyArray.count)
-        || (self.planType == PlanLife
-            && indexPath.row >= planLifeArray.count)) {
+        || (planType == LongPlan
+            && indexPath.row >= longPlanArray.count)) {
         return;
     }
     Plan *selectedPlan = nil;
-    if (self.planType == PlanEveryday) {
+    if (planType == EverydayPlan) {
         NSString *dateKey = dateKeyArray[indexPath.section];
-        NSArray *planArray = [planEverydayDic objectForKey:dateKey];
+        NSArray *planArray = [everydayPlanDict objectForKey:dateKey];
         selectedPlan = planArray[indexPath.row];
         [self toPlanDetailWithPlan:selectedPlan];
-    } else if (self.planType == PlanLife) {
-        selectedPlan = planLifeArray[indexPath.row];
+    } else if (planType == LongPlan) {
+        selectedPlan = longPlanArray[indexPath.row];
         [self toPlanDetailWithPlan:selectedPlan];
     }
 }
@@ -578,11 +579,11 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 
 - (void)addAction:(UIButton *)button {
     AddPlanViewController *controller = [[AddPlanViewController alloc] init];
-    controller.planType = self.planType;
+    controller.planType = planType;
     controller.operationType = Add;
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
     self.navigationItem.backBarButtonItem = backItem;
-    if (self.planType == PlanEveryday) {
+    if (planType == EverydayPlan) {
         backItem.title = str_FirstView_11;
     } else {
         backItem.title = str_FirstView_12;
@@ -595,23 +596,23 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     PlanSectionView *view = (PlanSectionView *) sender.view;
     [view toggleArrow];
     
-    self.flag[view.sectionIndex] = !self.flag[view.sectionIndex];
+    flag[view.sectionIndex] = !flag[view.sectionIndex];
 
-    [self.planEverydayTableView reloadSections:[NSIndexSet indexSetWithIndex:view.sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
+    [tableViewEveryday reloadSections:[NSIndexSet indexSetWithIndex:view.sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
     //section自动上移
-    if (self.flag[view.sectionIndex]) {
+    if (flag[view.sectionIndex]) {
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:view.sectionIndex];
-        [self.planEverydayTableView scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+        [tableViewEveryday scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
     }
 }
 
 - (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
     if (alertView.tag == kPlanCellDeleteTag) {
         if (buttonIndex == 0) {
-            self.deletePlan = nil;
+            deletePlan = nil;
             [planCell hideMenuView:YES Animated:YES];
         } else {
-            [self deletePlanWithPlan:self.deletePlan];
+            [self deletePlanWithPlan:deletePlan];
         }
     }
 }
@@ -619,20 +620,20 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 - (void)toPlanDetailWithPlan:(Plan *)plan {
     UIBarButtonItem *backItem = [[UIBarButtonItem alloc] init];
     self.navigationItem.backBarButtonItem = backItem;
-    if (self.planType == PlanEveryday) {
+    if (planType == EverydayPlan) {
         backItem.title = str_FirstView_11;
     } else {
         backItem.title = str_FirstView_12;
     }
     AddPlanViewController *controller = [[AddPlanViewController alloc]init];
-    controller.planType = self.planType;
+    controller.planType = planType;
     controller.operationType = Edit;
     controller.plan = plan;
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-#pragma mark -修改计划完成状态
+//修改计划完成状态
 - (void)changePlanCompleteStatus:(Plan *)plan {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmmss];
@@ -649,14 +650,14 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     
     [PlanCache storePlan:plan];
     
-    if (self.planType == PlanEveryday) {
-        [self.planEverydayTableView reloadData];
+    if (planType == EverydayPlan) {
+        [tableViewEveryday reloadData];
     } else {
-        [self.planLifeTableView reloadData];
+        [tableViewLong reloadData];
     }
 }
 
-#pragma mark -删除计划
+//删除计划
 - (void)deletePlanWithPlan:(Plan *)plan {
     BOOL result = [PlanCache deletePlan:plan];
     if (result) {
@@ -667,11 +668,11 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 }
 
 -(void)setCanCustomEdit:(BOOL)canCustomEdit {
-    if (_canCustomEdit != canCustomEdit) {
-        _canCustomEdit = canCustomEdit;
+    if (canCustomEditNow != canCustomEdit) {
+        canCustomEditNow = canCustomEdit;
         
-        CGRect frame = self.planType == PlanEveryday ? self.planEverydayTableView.frame : self.planLifeTableView.frame;
-        if (_canCustomEdit) {
+        CGRect frame = planType == EverydayPlan ? tableViewEveryday.frame : tableViewLong.frame;
+        if (canCustomEditNow) {
             if (hitView == nil) {
                 hitView = [[HitView alloc] init];
                 hitView.delegate = self;
@@ -680,19 +681,19 @@ NSUInteger const kPlanCellDeleteTag = 9527;
             hitView.frame = frame;
             [self.view addSubview:hitView];
             
-            if (self.planType == PlanEveryday) {
-                self.planEverydayTableView.scrollEnabled = NO;
+            if (planType == EverydayPlan) {
+                tableViewEveryday.scrollEnabled = NO;
             } else {
-                self.planLifeTableView.scrollEnabled = NO;
+                tableViewLong.scrollEnabled = NO;
             }
         } else {
             planCell = nil;
             [hitView removeFromSuperview];
             
-            if (self.planType == PlanEveryday) {
-                self.planEverydayTableView.scrollEnabled = YES;
+            if (planType == EverydayPlan) {
+                tableViewEveryday.scrollEnabled = YES;
             } else {
-                self.planLifeTableView.scrollEnabled = YES;
+                tableViewLong.scrollEnabled = YES;
             }
         }
     }
@@ -709,10 +710,10 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 - (UIView *)hitViewClicked:(CGPoint)point event:(UIEvent *)event touchView:(UIView *)touchView {
     BOOL vCloudReceiveTouch = NO;
     CGRect vSlidedCellRect;
-    if (self.planType == PlanEveryday) {
-        vSlidedCellRect = [hitView convertRect:planCell.frame fromView:self.planEverydayTableView];
+    if (planType == EverydayPlan) {
+        vSlidedCellRect = [hitView convertRect:planCell.frame fromView:tableViewEveryday];
     } else {
-        vSlidedCellRect = [hitView convertRect:planCell.frame fromView:self.planLifeTableView];
+        vSlidedCellRect = [hitView convertRect:planCell.frame fromView:tableViewLong];
     }
     vCloudReceiveTouch = CGRectContainsPoint(vSlidedCellRect, point);
     if (!vCloudReceiveTouch) {
@@ -753,7 +754,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 
 - (void)didCellClickedDeleteButton:(id)aSender {
     PlanCell *cell = (PlanCell *)aSender;
-    self.deletePlan = cell.plan;
+    deletePlan = cell.plan;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Delete_Plan
                                                     message:nil
                                                    delegate:self

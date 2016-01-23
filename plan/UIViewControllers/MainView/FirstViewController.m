@@ -121,7 +121,7 @@ NSUInteger const kSecondsPerDay = 86400;
     }
 
     AddPlanViewController *controller = [[AddPlanViewController alloc]init];
-    controller.planType = [plan.plantype isEqualToString:@"1"] ? PlanEveryday : PlanLife;
+    controller.planType = [plan.plantype isEqualToString:@"1"] ? EverydayPlan : LongPlan;
     controller.operationType = Edit;
     controller.plan = plan;
     controller.hidesBottomBarWhenPushed = YES;
