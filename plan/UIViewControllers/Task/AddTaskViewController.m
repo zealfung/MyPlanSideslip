@@ -9,8 +9,6 @@
 #import "TaskRecord.h"
 #import "AddTaskViewController.h"
 
-NSUInteger const kTaskDeleteTag = 20151201;
-
 @interface AddTaskViewController () <UITextViewDelegate, UIActionSheetDelegate> {
     BOOL isTomato;
     BOOL isAlarm;
@@ -125,6 +123,15 @@ NSUInteger const kTaskDeleteTag = 20151201;
         [self alertButtonMessage:str_Common_Tips3];
         return;
     }
+    if (isTomato) {
+        if (self.txtMinute.text.length == 0) {
+            [self alertButtonMessage:@"请输入番茄工作法的时间"];
+            return;
+        } else if ([self.txtMinute.text integerValue] == 0) {
+            [self alertButtonMessage:@"每次番茄工作法的时间必须大于0分钟"];
+            return;
+        }
+    }
     NSString *timeNow = [CommonFunction getTimeNowString];
     NSString *taskId = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyyMMddHHmmss];
     if (self.operationType == Add) {
@@ -135,6 +142,22 @@ NSUInteger const kTaskDeleteTag = 20151201;
         self.task.updateTime = timeNow;
     }
     self.task.content = content;
+    if (isAlarm) {
+        self.task.isNotify = @"1";
+    } else {
+        self.task.isNotify = @"0";
+    }
+    if (isTomato) {
+        self.task.isTomato = @"1";
+        self.task.tomatoMinute = self.txtMinute.text;
+    } else {
+        self.task.isTomato = @"0";
+    }
+    if (isRepeat) {
+        self.task.isRepeat = @"1";
+    } else {
+        self.task.isRepeat = @"0";
+    }
 
     BOOL result = [PlanCache storeTask:self.task];
     if (result) {
@@ -142,41 +165,6 @@ NSUInteger const kTaskDeleteTag = 20151201;
         [self.navigationController popViewControllerAnimated:YES];
     } else {
         [self alertButtonMessage:str_Save_Fail];
-    }
-}
-
-- (void)editAction:(UIButton *)button {
-    self.operationType = Edit;
-    [self setControls];
-}
-
-- (void)deleteAction:(UIButton *)button {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Task_Delete_Tips
-                                                    message:nil
-                                                   delegate:self
-                                          cancelButtonTitle:str_Cancel
-                                          otherButtonTitles:str_OK,
-                          nil];
-    alert.tag = kTaskDeleteTag;
-    [alert show];
-}
-
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (alertView.tag == kTaskDeleteTag) {
-        
-        if (buttonIndex == 1) {
-            
-            BOOL result = [PlanCache deleteTask:self.task];
-            if (result) {
-                
-                [self alertToastMessage:str_Delete_Success];
-                [self.navigationController popViewControllerAnimated:YES];
-                
-            } else {
-                
-                [self alertButtonMessage:str_Delete_Fail];
-            }
-        }
     }
 }
 
@@ -306,7 +294,8 @@ NSUInteger const kTaskDeleteTag = 20151201;
 - (void)onPickerCertainBtn {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
-    self.labelAlarmTime.text = [dateFormatter stringFromDate:datePicker.date];
+    self.task.notifyTime = [dateFormatter stringFromDate:datePicker.date];
+    self.labelAlarmTime.text = self.task.notifyTime;
     [self onPickerCancelBtn];
 }
 
@@ -316,6 +305,8 @@ NSUInteger const kTaskDeleteTag = 20151201;
     
     NSString *time = self.labelAlarmTime.text;
     if (!time || [time isEqualToString:@""]) {
+        isAlarm = NO;
+        self.task.notifyTime = @"";
         [self.switchAlarm setOn:NO];
     }
 }
