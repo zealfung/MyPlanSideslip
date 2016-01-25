@@ -122,6 +122,7 @@
 #define str_Task_AddRecord @"点我"
 #define str_Task_Tips1 @"暂无任务内容"
 #define str_Task_Delete_Tips @"删除该任务"
+#define str_Task_Delete_Tips10 @"番茄工作法是简单易行的时间管理方法，选择一个待完成的任务，将番茄时间设为25分钟，专注工作，中途不允许做任何与该任务无关的事，直到番茄时钟响起。番茄工作法极大地提高了工作的效率，还会有意想不到的成就感。"
 
 #define str_Posts_Add @"发帖"
 #define str_Posts_Delete @"删除帖子"

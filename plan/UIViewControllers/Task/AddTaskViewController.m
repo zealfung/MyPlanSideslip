@@ -11,9 +11,12 @@
 
 NSUInteger const kTaskDeleteTag = 20151201;
 
-@interface AddTaskViewController () <UITextViewDelegate, UITableViewDataSource, UITableViewDelegate> {
-    
-    NSArray *finishRecordArray;
+@interface AddTaskViewController () <UITextViewDelegate, UIActionSheetDelegate> {
+    BOOL isTomato;
+    BOOL isAlarm;
+    BOOL isRepeat;
+    UIDatePicker *datePicker;
+    UIActionSheet *repeatActionSheet;
 }
 
 @end
@@ -31,69 +34,88 @@ NSUInteger const kTaskDeleteTag = 20151201;
 
 - (void)setControls {
     if (self.operationType == Add) {
-        
         self.title = str_Task_Add;
-        
     } else if (self.operationType == Edit) {
-        
         self.title = str_Task_Edit;
-        
-    } else if (self.operationType == View) {
-        
-        self.title = str_Task_Detail;
     }
     [self createRightBarButton];
     
     self.txtView.layer.borderWidth = 1;
-    self.txtView.layer.borderColor = [color_GrayLight CGColor];
     self.txtView.layer.cornerRadius = 5;
-    self.tableView.layer.borderWidth = 1;
-    self.tableView.layer.borderColor = [color_GrayLight CGColor];
-    self.tableView.tableFooterView = [[UIView alloc] init];
-    finishRecordArray = [NSArray array];
+    self.txtView.layer.borderColor = [color_GrayLight CGColor];
+    self.txtView.editable = YES;
+    self.txtView.delegate = self;
+    self.txtView.inputAccessoryView = [self getInputAccessoryView];
     
-    if (self.operationType == Add || self.operationType == Edit) {
-        
-        self.txtView.editable = YES;
-        self.txtView.inputAccessoryView = [self getInputAccessoryView];
-        self.txtView.delegate = self;
-        if (self.task) {
-            self.txtView.text = self.task.content;
-        }
+    self.labelTomatoTips1.hidden = YES;
+    self.labelTomatoTips2.hidden = YES;
+    self.labelTomatoTips3.hidden = YES;
+    self.txtMinute.hidden = YES;
+    self.txtMinute.text = @"25";
+    self.txtMinute.inputAccessoryView = [self getInputAccessoryView];
+    self.labelTomatoTips1.text = @"每次";
+    self.labelTomatoTips2.text = @"分钟";
+    self.labelTomatoTips3.text = str_Task_Delete_Tips10;
+    
+    self.labelAlarmTime.hidden = YES;
+    self.labelAlarmTime.userInteractionEnabled = YES;
+    UITapGestureRecognizer *alarmTimeTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelAlarmTimeTouchUpInside:)];
+    [self.labelAlarmTime addGestureRecognizer:alarmTimeTapGestureRecognizer];
+    
+    self.imgViewRepeat.hidden = YES;
+    self.switchRepeat.hidden = YES;
+    self.labelRepeat.hidden = YES;
+    self.labelRepeat.userInteractionEnabled = YES;
+    UITapGestureRecognizer *repeatTypeTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelRepeatTypeTouchUpInside:)];
+    [self.labelRepeat addGestureRecognizer:repeatTypeTapGestureRecognizer];
+    
+    if (self.operationType == Add) {
+        self.task = [[Task alloc]init];
         [self.txtView becomeFirstResponder];
-        
-        self.labelCountTips.hidden = YES;
-        self.btnCount.hidden = YES;
-        self.tableView.hidden = YES;
-        
-    } else if (self.operationType == View) {
-        
-        self.txtView.editable = NO;
+    } else if (self.operationType == Edit) {
         self.txtView.text = self.task.content;
-        
-        self.labelCountTips.hidden = NO;
-        self.btnCount.layer.cornerRadius = 25;
-        self.btnCount.hidden = NO;
-        [self.btnCount setAllTitle:self.task.totalCount];
-        self.tableView.hidden = NO;
-        self.tableView.dataSource = self;
-        self.tableView.delegate = self;
-        
-        finishRecordArray = [PlanCache getTeaskRecord:self.task.taskId];
-        [self.tableView reloadData];
+        if ([self.task.isTomato isEqualToString:@"1"]) {
+            [self.switchTomato setOn:YES];
+            isTomato = YES;
+            self.labelTomatoTips1.hidden = NO;
+            self.labelTomatoTips2.hidden = NO;
+            self.labelTomatoTips3.hidden = NO;
+            self.txtMinute.hidden = NO;
+            self.txtMinute.text = self.task.tomatoMinute;
+        }
+        if ([self.task.isNotify isEqualToString:@"1"]) {
+            [self.switchAlarm setOn:YES];
+            isAlarm = YES;
+            self.labelAlarmTime.hidden = NO;
+            self.labelAlarmTime.text = self.task.notifyTime;
+        }
+        if ([self.task.isRepeat isEqualToString:@"1"]) {
+            [self.switchRepeat setOn:YES];
+            isRepeat = YES;
+            self.labelRepeat.hidden = YES;
+            switch ([self.task.repeatType integerValue]) {
+                case 0:
+                    self.labelRepeat.text = @"每天重复提醒";
+                    break;
+                case 1:
+                    self.labelRepeat.text = @"每周重复提醒";
+                    break;
+                case 2:
+                    self.labelRepeat.text = @"每月重复提醒";
+                    break;
+                case 3:
+                    self.labelRepeat.text = @"每年重复提醒";
+                    break;
+                default:
+                    break;
+            }
+        }
     }
 }
 
 - (void)createRightBarButton {
     if (self.operationType == Add || self.operationType == Edit) {
-        
         self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Save selectedImageName:png_Btn_Save selector:@selector(saveAction:)];
-        
-    } else if (self.operationType == View) {
-        
-        self.rightBarButtonItems = [NSArray arrayWithObjects:
-                                    [self createBarButtonItemWithNormalImageName:png_Btn_Edit selectedImageName:png_Btn_Edit selector:@selector(editAction:)],
-                                    [self createBarButtonItemWithNormalImageName:png_Btn_Delete selectedImageName:png_Btn_Delete selector:@selector(deleteAction:)], nil];
     }
 }
 
@@ -103,34 +125,22 @@ NSUInteger const kTaskDeleteTag = 20151201;
         [self alertButtonMessage:str_Common_Tips3];
         return;
     }
-    
     NSString *timeNow = [CommonFunction getTimeNowString];
     NSString *taskId = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyyMMddHHmmss];
-    
     if (self.operationType == Add) {
-        self.task = [[Task alloc]init];
         self.task.taskId = taskId;
         self.task.createTime = timeNow;
         self.task.updateTime = timeNow;
     } else {
         self.task.updateTime = timeNow;
     }
-    
     self.task.content = content;
 
     BOOL result = [PlanCache storeTask:self.task];
     if (result) {
-        
         [self alertToastMessage:str_Save_Success];
-        
-        if (self.operationType == Add) {
-            [self.navigationController popViewControllerAnimated:YES];
-        } else if (self.operationType == Edit) {
-            self.operationType = View;
-            [self setControls];
-        }
+        [self.navigationController popViewControllerAnimated:YES];
     } else {
-        
         [self alertButtonMessage:str_Save_Fail];
     }
 }
@@ -147,7 +157,6 @@ NSUInteger const kTaskDeleteTag = 20151201;
                                           cancelButtonTitle:str_Cancel
                                           otherButtonTitles:str_OK,
                           nil];
-    
     alert.tag = kTaskDeleteTag;
     [alert show];
 }
@@ -188,78 +197,186 @@ NSUInteger const kTaskDeleteTag = 20151201;
     }
 }
 
-#pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (finishRecordArray.count > 0) {
-        
-        return finishRecordArray.count;
-        
-    } else {
-        
-        return 4;
+- (void)labelAlarmTimeTouchUpInside:(UITapGestureRecognizer *)recognizer {
+    if (isAlarm) {
+        [self showDatePicker];
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 44.f;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row < finishRecordArray.count) {
-        
-        tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        static NSString *taskRecordCellIdentifier = @"taskRecordCellIdentifier";
-        
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:taskRecordCellIdentifier];
-        if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:taskRecordCellIdentifier];
-            cell.backgroundColor = [UIColor clearColor];
-            cell.contentView.backgroundColor = [UIColor clearColor];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = @"";
-            cell.textLabel.frame = cell.contentView.bounds;
-            cell.textLabel.textAlignment = NSTextAlignmentLeft;
-            cell.textLabel.textColor = [UIColor lightGrayColor];
-            cell.textLabel.font = font_Normal_13;
-        }
-        TaskRecord *taskRecord = finishRecordArray[indexPath.row];
-        cell.textLabel.text = [NSString stringWithFormat:@"完成时间：%@", taskRecord.createTime];
-        return cell;
-        
-    } else {
-        
-        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        static NSString *noTaskRecordCellIdentifier = @"noTaskRecordCellIdentifier";
-        
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noTaskRecordCellIdentifier];
-        if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noTaskRecordCellIdentifier];
-            cell.backgroundColor = [UIColor clearColor];
-            cell.contentView.backgroundColor = [UIColor clearColor];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = @"";
-            cell.textLabel.frame = cell.contentView.bounds;
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-            cell.textLabel.textColor = [UIColor lightGrayColor];
-            cell.textLabel.font = font_Bold_16;
-        }
-
-        if (indexPath.row == 3) {
-            cell.textLabel.text = @"暂无完成记录";
-        } else {
-            cell.textLabel.text = nil;
-        }
-        
-        return cell;
+- (void)labelRepeatTypeTouchUpInside:(UITapGestureRecognizer *)recognizer {
+    if (isRepeat) {
+        [self showRepeatActionSheet];
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+- (IBAction)switchTomatoAction:(id)sender {
+    [self.view endEditing:YES];
+    UISwitch *btnSwitch = (UISwitch*)sender;
+    BOOL isButtonOn = [btnSwitch isOn];
+    isTomato = isButtonOn;
+    if (isButtonOn) {
+        self.labelTomatoTips1.hidden = NO;
+        self.labelTomatoTips2.hidden = NO;
+        self.labelTomatoTips3.hidden = NO;
+        self.txtMinute.hidden = NO;
+    } else {
+        self.labelTomatoTips1.hidden = YES;
+        self.labelTomatoTips2.hidden = YES;
+        self.labelTomatoTips3.hidden = YES;
+        self.txtMinute.hidden = YES;
+        self.txtMinute.text = @"25";
+    }
+}
+
+- (IBAction)switchAlarmAction:(id)sender {
+    [self.view endEditing:YES];
+    UISwitch *btnSwitch = (UISwitch*)sender;
+    BOOL isButtonOn = [btnSwitch isOn];
+    isAlarm = isButtonOn;
+    if (isButtonOn) {
+        self.labelAlarmTime.hidden = NO;
+        self.imgViewRepeat.hidden = NO;
+        self.switchRepeat.hidden = NO;
+        self.labelRepeat.hidden = NO;
+        [self showDatePicker];
+    } else {
+        self.labelAlarmTime.hidden = YES;
+        self.labelAlarmTime.text = @"";
+        self.imgViewRepeat.hidden = YES;
+        self.switchRepeat.hidden = YES;
+        self.labelRepeat.hidden = YES;
+        self.labelRepeat.text = @"";
+        isRepeat = NO;
+        [self onPickerCancelBtn];
+    }
+}
+
+- (IBAction)switchRepeatAction:(id)sender {
+    [self.view endEditing:YES];
+    UISwitch *btnSwitch = (UISwitch*)sender;
+    BOOL isButtonOn = [btnSwitch isOn];
+    isRepeat = isButtonOn;
+    if (isButtonOn) {
+        self.labelRepeat.hidden = NO;
+        [self showRepeatActionSheet];
+    } else {
+        self.task.repeatType = @"4";
+        self.labelRepeat.hidden = YES;
+        self.labelRepeat.text = @"";
+    }
+}
+
+- (void)showDatePicker {
+    [self.view endEditing:YES];
+    
+    UIView *pickerView = [[UIView alloc] initWithFrame:self.view.bounds];
+    pickerView.backgroundColor = [UIColor clearColor];
+    {
+        UIView *bgView = [[UIView alloc] initWithFrame:pickerView.bounds];
+        bgView.backgroundColor = [UIColor blackColor];
+        bgView.alpha = 0.3;
+        [pickerView addSubview:bgView];
+    }
+    {
+        UIToolbar *toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, pickerView.frame.size.height - kDatePickerHeight - kToolBarHeight, CGRectGetWidth(pickerView.bounds), kToolBarHeight)];
+        toolbar.barStyle = UIBarStyleBlack;
+        toolbar.translucent = YES;
+        UIBarButtonItem* item1 = [[UIBarButtonItem alloc] initWithTitle:str_OK style:UIBarButtonItemStylePlain target:nil action:@selector(onPickerCertainBtn)];
+        UIBarButtonItem* item2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        UIBarButtonItem* item3 = [[UIBarButtonItem alloc] initWithTitle:str_Cancel style:UIBarButtonItemStylePlain target:nil action:@selector(onPickerCancelBtn)];
+        NSArray* toolbarItems = [NSArray arrayWithObjects:item3, item2, item1, nil];
+        [toolbar setItems:toolbarItems];
+        [pickerView addSubview:toolbar];
+    }
+    {
+        UIDatePicker *picker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, pickerView.frame.size.height - kDatePickerHeight, CGRectGetWidth(pickerView.bounds), kDatePickerHeight)];
+        picker.backgroundColor = [UIColor whiteColor];
+        picker.locale = [NSLocale currentLocale];
+        picker.datePickerMode = UIDatePickerModeDateAndTime;
+        picker.minimumDate = [NSDate date];
+        NSDate *defaultDate = [[NSDate date] dateByAddingTimeInterval:5 * 60];
+        picker.date = defaultDate;
+        [pickerView addSubview:picker];
+        datePicker = picker;
+    }
+    pickerView.tag = kDatePickerBgViewTag;
+    [self.view addSubview:pickerView];
+}
+
+- (void)onPickerCertainBtn {
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
+    self.labelAlarmTime.text = [dateFormatter stringFromDate:datePicker.date];
+    [self onPickerCancelBtn];
+}
+
+- (void)onPickerCancelBtn {
+    UIView *pickerView = [self.view viewWithTag:kDatePickerBgViewTag];
+    [pickerView removeFromSuperview];
+    
+    NSString *time = self.labelAlarmTime.text;
+    if (!time || [time isEqualToString:@""]) {
+        [self.switchAlarm setOn:NO];
+    }
+}
+
+- (void)showRepeatActionSheet {
+    repeatActionSheet = [[UIActionSheet alloc] initWithTitle:@"设置重复提醒" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"每天重复提醒", @"每周重复提醒", @"每月重复提醒", @"每年重复提醒", nil];
+    [repeatActionSheet showInView:self.view];
+}
+
+#pragma mark actionSheet点击事件
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    UIAlertView *alertView;
+    switch (buttonIndex) {
+        case 0://每天
+        {
+            self.task.repeatType = @"0";
+            self.labelRepeat.text = @"每天重复提醒";
+            [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];
+        }
+            break;
+        case 1://每周
+        {
+            self.task.repeatType = @"1";
+            self.labelRepeat.text = @"每周重复提醒";
+            [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];
+        }
+            break;
+        case 2://每月
+        {
+            self.task.repeatType = @"2";
+            self.labelRepeat.text = @"每月重复提醒";
+            [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];
+        }
+            break;
+        case 3://每年
+        {
+            self.task.repeatType = @"3";
+            self.labelRepeat.text = @"每年重复提醒";
+            [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];
+        }
+            break;
+        case 4://取消
+        {
+            [self.switchRepeat setOn:NO];
+            isRepeat = NO;
+            self.task.repeatType = @"4";
+            self.labelRepeat.text = @"";
+            [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+#pragma mark 让alertView消失
+- (void)dismissAlertView:(UIAlertView *)alertView {
+    if (alertView) {
+        [alertView dismissWithClickedButtonIndex:[alertView cancelButtonIndex] animated:YES];
+        alertView.hidden = YES;
+    }
 }
 
 @end

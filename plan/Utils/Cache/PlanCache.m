@@ -314,11 +314,52 @@ static NSMutableDictionary * __contactsOnlineState;
     //任务
     if (![__db tableExists:str_TableName_Task]) {
         
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, taskId TEXT, content TEXT, totalCount TEXT, completionDate TEXT, createTime TEXT, updateTime TEXT, isNotify TEXT, notifyTime TEXT, isDeleted TEXT)", str_TableName_Task];
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, taskId TEXT, content TEXT, totalCount TEXT, completionDate TEXT, createTime TEXT, updateTime TEXT, isNotify TEXT, notifyTime TEXT, isTomato TEXT, tomatoMinute TEXT, isRepeat TEXT, repeatType TEXT, isDeleted TEXT)", str_TableName_Task];
         
         BOOL b = [__db executeUpdate:sqlString];
         
         FMDBQuickCheck(b, sqlString, __db);
+    } else { //新增字段
+        //是否番茄任务: 1是 0否2016-1-24
+        NSString *isTomato = @"isTomato";
+        if (![__db columnExists:isTomato inTableWithName:str_TableName_Task]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Task, isTomato];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        //番茄时间（分钟）2016-1-24
+        NSString *tomatoMinute = @"tomatoMinute";
+        if (![__db columnExists:tomatoMinute inTableWithName:str_TableName_Task]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Task, tomatoMinute];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        //是否重复提醒: 1是 0否2016-1-24
+        NSString *isRepeat = @"isRepeat";
+        if (![__db columnExists:isRepeat inTableWithName:str_TableName_Task]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Task, isRepeat];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        //重复类型: 0每天 1每周 2每月 3每年 4不重复2016-1-24
+        NSString *repeatType = @"repeatType";
+        if (![__db columnExists:repeatType inTableWithName:str_TableName_Task]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Task, repeatType];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
     }
 
     //任务记录
@@ -771,6 +812,18 @@ static NSMutableDictionary * __contactsOnlineState;
         if (!task.isDeleted) {
             task.isDeleted = @"0";
         }
+        if (!task.isTomato) {
+            task.isTomato = @"0";
+        }
+        if (!task.tomatoMinute) {
+            task.tomatoMinute = @"";
+        }
+        if (!task.isRepeat) {
+            task.isRepeat = @"0";
+        }
+        if (!task.repeatType) {
+            task.repeatType = @"4";
+        }
         
         BOOL hasRec = NO;
         NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", str_TableName_Task];
@@ -780,20 +833,32 @@ static NSMutableDictionary * __contactsOnlineState;
         [rs close];
         BOOL b = NO;
         if (hasRec) {
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, totalCount=?, completionDate=?, updateTime=?, isNotify=?, notifyTime=?, isTomato=?, tomatoMinute=?, isRepeat=?, repeatType=? WHERE taskId=? AND account=?", str_TableName_Task];
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, totalCount=?, completionDate=?, updateTime=?, isNotify=?, notifyTime=? WHERE taskId=? AND account=?", str_TableName_Task];
-            
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.content, task.totalCount, task.completionDate, task.updateTime, task.isNotify, task.notifyTime, task.taskId, task.account]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.content, task.totalCount, task.completionDate, task.updateTime, task.isNotify, task.notifyTime, task.isTomato, task.tomatoMinute, task.isRepeat, task.repeatType, task.taskId, task.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
+            //更新提醒
+            if (b && [task.isNotify isEqualToString:@"1"]) {
+                [self updateTaskNotification:task];
+            } else {
+                [self cancelTaskNotification:task.taskId];
+            }
         } else {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Task];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, isDeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Task];
             
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.account, task.taskId, task.content, task.totalCount, task.completionDate, task.createTime, task.updateTime, task.isNotify, task.notifyTime, @"0"]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.account, task.taskId, task.content, task.totalCount, task.completionDate, task.createTime, task.updateTime, task.isNotify, task.notifyTime, task.isTomato, task.tomatoMinute, task.isRepeat, task.repeatType, @"0"]];
             
             FMDBQuickCheck(b, sqlString, __db);
+            
+            //添加提醒
+            if (b && [task.isNotify isEqualToString:@"1"]) {
+                [self addTaskNotification:task];
+            }
+            //更新5天没有新建计划的提醒时间
+            [self setFiveDayNotification];
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
@@ -1055,6 +1120,11 @@ static NSMutableDictionary * __contactsOnlineState;
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.updateTime, task.taskId, task.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
+            
+            //取消提醒
+            if (b && [task.isNotify isEqualToString:@"1"]) {
+                [self cancelTaskNotification:task.taskId];
+            }
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
@@ -1401,7 +1471,7 @@ static NSMutableDictionary * __contactsOnlineState;
         }
 
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime FROM %@ WHERE account=? AND isDeleted=0 ORDER BY createTime DESC", str_TableName_Task];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType FROM %@ WHERE account=? AND isDeleted=0 ORDER BY createTime DESC", str_TableName_Task];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
@@ -1417,8 +1487,24 @@ static NSMutableDictionary * __contactsOnlineState;
             task.updateTime = [rs stringForColumn:@"updateTime"];
             task.isNotify = [rs stringForColumn:@"isNotify"];
             task.notifyTime = [rs stringForColumn:@"notifyTime"];
+            task.isTomato = [rs stringForColumn:@"isTomato"];
+            task.tomatoMinute = [rs stringForColumn:@"tomatoMinute"];
+            task.isRepeat = [rs stringForColumn:@"isRepeat"];
+            task.repeatType = [rs stringForColumn:@"repeatType"];
             task.isDeleted = @"0";
             
+            if (!task.isTomato) {
+                task.isTomato = @"0";
+            }
+            if (!task.tomatoMinute) {
+                task.tomatoMinute = @"";
+            }
+            if (!task.isRepeat) {
+                task.isRepeat = @"0";
+            }
+            if (!task.repeatType) {
+                task.repeatType = @"4";
+            }
             [array addObject:task];
         }
         [rs close];
@@ -1650,6 +1736,58 @@ static NSMutableDictionary * __contactsOnlineState;
 + (void)cancelLocalNotification:(NSString*)planid {
     //取消该计划的本地所有通知
     NSArray *array = [LocalNotificationManager getNotificationWithTag:planid type:NotificationTypePlan];
+    for (UILocalNotification *item in array) {
+        [LocalNotificationManager cancelNotification:item];
+    }
+}
+
++ (void)addTaskNotification:(Task *)task {
+    //时间格式：yyyy-MM-dd HH:mm
+    NSDate *date = [CommonFunction NSStringDateToNSDate:task.notifyTime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
+    
+    if (!date) return;
+    
+    NSMutableDictionary *destDic = [NSMutableDictionary dictionary];
+    [destDic setObject:task.taskId forKey:@"tag"];
+    [destDic setObject:@([date timeIntervalSince1970]) forKey:@"time"];
+    [destDic setObject:@(NotificationTypeTask) forKey:@"type"];
+    [destDic setObject:task.createTime forKey:@"createTime"];
+    [destDic setObject:task.content forKey:@"content"];
+    [destDic setObject:task.notifyTime forKey:@"notifyTime"];
+    if ([task.isRepeat isEqualToString:@"1"]) {
+        NSCalendarUnit repeatUnit = NSCalendarUnitEra;
+        switch ([task.repeatType integerValue]) {
+            case 0://每日
+                repeatUnit = NSCalendarUnitDay;
+                break;
+            case 1://每周
+                repeatUnit = NSCalendarUnitWeekday;
+                break;
+            case 2://每月
+                repeatUnit = NSCalendarUnitMonth;
+                break;
+            case 3://每年
+                repeatUnit = NSCalendarUnitYear;
+                break;
+            default:
+                break;
+        }
+        [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:task.content repeatInterval:repeatUnit];
+    } else {
+        [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:task.content];
+    }
+}
+
++ (void)updateTaskNotification:(Task *)task {
+    //首先取消该任务的本地所有通知
+    [self cancelTaskNotification:task.taskId];
+    //重新添加新的通知
+    [self addTaskNotification:task];
+}
+
++ (void)cancelTaskNotification:(NSString*)taskId {
+    //取消该任务的本地所有通知
+    NSArray *array = [LocalNotificationManager getNotificationWithTag:taskId type:NotificationTypeTask];
     for (UILocalNotification *item in array) {
         [LocalNotificationManager cancelNotification:item];
     }

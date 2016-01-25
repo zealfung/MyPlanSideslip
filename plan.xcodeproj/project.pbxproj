@@ -174,6 +174,8 @@
 		137C60831BBB6EEA00725662 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 133B07EB1BA133100015E752 /* libicucore.dylib */; };
 		137C60841BBB6F0B00725662 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 133B07EF1BA133480015E752 /* libstdc++.dylib */; };
 		137C60851BBB6F1300725662 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 133B07F11BA133590015E752 /* JavaScriptCore.framework */; };
+		138038ED1C53C17300E98C5F /* Icon_Task_Tomato@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 138038EC1C53C17300E98C5F /* Icon_Task_Tomato@2x.png */; };
+		138038EF1C53C67900E98C5F /* Icon_Tomato@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 138038EE1C53C67900E98C5F /* Icon_Tomato@2x.png */; };
 		1385B47C1BC9E50D00CB208C /* Btn_Edit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1385B47B1BC9E50D00CB208C /* Btn_Edit@2x.png */; };
 		1385B4801BC9EF9900CB208C /* Btn_AddPhoto@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1385B47F1BC9EF9900CB208C /* Btn_AddPhoto@2x.png */; };
 		1385B4821BCA712400CB208C /* Btn_Delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1385B4811BCA712400CB208C /* Btn_Delete@2x.png */; };
@@ -520,6 +522,8 @@
 		137701121B9683E3008C83FD /* CommonFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonFunction.m; sourceTree = "<group>"; };
 		137701141B96E1D6008C83FD /* NotificationMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationMacro.h; sourceTree = "<group>"; };
 		137C60911BBFD43200725662 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		138038EC1C53C17300E98C5F /* Icon_Task_Tomato@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Task_Tomato@2x.png"; sourceTree = "<group>"; };
+		138038EE1C53C67900E98C5F /* Icon_Tomato@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Tomato@2x.png"; sourceTree = "<group>"; };
 		1385B47B1BC9E50D00CB208C /* Btn_Edit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Edit@2x.png"; sourceTree = "<group>"; };
 		1385B47F1BC9EF9900CB208C /* Btn_AddPhoto@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_AddPhoto@2x.png"; sourceTree = "<group>"; };
 		1385B4811BCA712400CB208C /* Btn_Delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Delete@2x.png"; sourceTree = "<group>"; };
@@ -1361,6 +1365,8 @@
 				13D405F81C2D13360089D702 /* Icon_Posts_Eyes@2x.png */,
 				13D405F91C2D13360089D702 /* Icon_Posts_Praise_Normal@2x.png */,
 				13D405FA1C2D13360089D702 /* Icon_Posts_Praise_Selected@2x.png */,
+				138038EC1C53C17300E98C5F /* Icon_Task_Tomato@2x.png */,
+				138038EE1C53C67900E98C5F /* Icon_Tomato@2x.png */,
 				13CC6F311C4E4280001D290F /* Icon_Tomorrow@2x.png */,
 				1310C3651C465BA100A2A404 /* Icon_UserLevel_4@2x.png */,
 				1310C3661C465BA100A2A404 /* Icon_UserLevel_5@2x.png */,
@@ -1687,6 +1693,7 @@
 				135B21971B900394005CE84A /* Images.xcassets in Resources */,
 				131D6A2A1BF5B0D4009FDD72 /* Icon_Menu_Feedback@2x.png in Resources */,
 				1361AFC91BCBA5E700DD5FFB /* DoPhotoCell.xib in Resources */,
+				138038EF1C53C67900E98C5F /* Icon_Tomato@2x.png in Resources */,
 				13A6ACAD1BC551EE005A02F9 /* Btn_Photo_Delete@2x.png in Resources */,
 				131D6A721BFC0994009FDD72 /* Bg_SideTop@2x.png in Resources */,
 				13D405FF1C2E3E960089D702 /* Btn_BackToTop@2x.png in Resources */,
@@ -1714,6 +1721,7 @@
 				137470B01C09490B00B7822A /* Icon_GestureTrack_Hide@2x.png in Resources */,
 				137701071B95DF67008C83FD /* Icon_Gender_F_Selected@2x.png in Resources */,
 				1310C3591C4542FC00A2A404 /* WeiboSDK.bundle in Resources */,
+				138038ED1C53C17300E98C5F /* Icon_Task_Tomato@2x.png in Resources */,
 				13CC6F621C530583001D290F /* Btn_Plan_Done64@2x.png in Resources */,
 				13D1AD6D1C3E7670007734F6 /* Btn_Refresh@2x.png in Resources */,
 				13D406251C3020BF0089D702 /* Btn_Posts_Unlike@2x.png in Resources */,

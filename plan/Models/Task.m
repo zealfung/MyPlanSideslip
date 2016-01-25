@@ -18,6 +18,10 @@ NSString *const kTask_UpdateTime = @"updateTime";
 NSString *const kTask_IsNotify = @"isNotify";
 NSString *const kTask_NotifyTime = @"notifyTime";
 NSString *const kTask_IsDeleted = @"isDeleted";
+NSString *const kTask_IsTomato = @"isTomato";
+NSString *const kTask_TomatoMinute = @"tomatoMinute";
+NSString *const kTask_IsRepeat = @"isRepeat";
+NSString *const kTask_RepeatType = @"repeatType";
 
 @implementation Task
 
@@ -31,6 +35,10 @@ NSString *const kTask_IsDeleted = @"isDeleted";
 @synthesize isNotify = _isNotify;
 @synthesize notifyTime = _notifyTime;
 @synthesize isDeleted = _isDeleted;
+@synthesize isTomato = _isTomato;
+@synthesize tomatoMinute = _tomatoMinute;
+@synthesize isRepeat = _isRepeat;
+@synthesize repeatType = _repeatType;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
@@ -45,6 +53,10 @@ NSString *const kTask_IsDeleted = @"isDeleted";
         self.isNotify = [dict objectOrNilForKey:kTask_IsNotify];
         self.notifyTime = [dict objectOrNilForKey:kTask_NotifyTime];
         self.isDeleted = [dict objectOrNilForKey:kTask_IsDeleted];
+        self.isTomato = [dict objectOrNilForKey:kTask_IsTomato];
+        self.tomatoMinute = [dict objectOrNilForKey:kTask_TomatoMinute];
+        self.isRepeat = [dict objectOrNilForKey:kTask_IsRepeat];
+        self.repeatType = [dict objectOrNilForKey:kTask_RepeatType];
     }
     return self;
 }
@@ -62,6 +74,10 @@ NSString *const kTask_IsDeleted = @"isDeleted";
     self.isNotify = [aDecoder decodeObjectForKey:kTask_IsNotify];
     self.notifyTime = [aDecoder decodeObjectForKey:kTask_NotifyTime];
     self.isDeleted = [aDecoder decodeObjectForKey:kTask_IsDeleted];
+    self.isTomato = [aDecoder decodeObjectForKey:kTask_IsTomato];
+    self.tomatoMinute = [aDecoder decodeObjectForKey:kTask_TomatoMinute];
+    self.isRepeat = [aDecoder decodeObjectForKey:kTask_IsRepeat];
+    self.repeatType = [aDecoder decodeObjectForKey:kTask_RepeatType];
     return self;
 }
 
@@ -76,6 +92,10 @@ NSString *const kTask_IsDeleted = @"isDeleted";
     [aCoder encodeObject:_isNotify forKey:kTask_IsNotify];
     [aCoder encodeObject:_notifyTime forKey:kTask_NotifyTime];
     [aCoder encodeObject:_isDeleted forKey:kTask_IsDeleted];
+    [aCoder encodeObject:_isTomato forKey:kTask_IsTomato];
+    [aCoder encodeObject:_tomatoMinute forKey:kTask_TomatoMinute];
+    [aCoder encodeObject:_isRepeat forKey:kTask_IsRepeat];
+    [aCoder encodeObject:_repeatType forKey:kTask_RepeatType];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -90,6 +110,10 @@ NSString *const kTask_IsDeleted = @"isDeleted";
     copy.isNotify = [self.isNotify copyWithZone:zone];
     copy.notifyTime = [self.notifyTime copyWithZone:zone];
     copy.isDeleted = [self.isDeleted copyWithZone:zone];
+    copy.isTomato = [self.isTomato copyWithZone:zone];
+    copy.tomatoMinute = [self.tomatoMinute copyWithZone:zone];
+    copy.isRepeat = [self.isRepeat copyWithZone:zone];
+    copy.repeatType = [self.repeatType copyWithZone:zone];
     return copy;
 }
 
