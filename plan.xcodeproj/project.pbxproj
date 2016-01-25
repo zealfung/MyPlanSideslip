@@ -176,6 +176,8 @@
 		137C60851BBB6F1300725662 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 133B07F11BA133590015E752 /* JavaScriptCore.framework */; };
 		138038ED1C53C17300E98C5F /* Icon_Task_Tomato@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 138038EC1C53C17300E98C5F /* Icon_Task_Tomato@2x.png */; };
 		138038EF1C53C67900E98C5F /* Icon_Tomato@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 138038EE1C53C67900E98C5F /* Icon_Tomato@2x.png */; };
+		138038F31C55FA7700E98C5F /* TaskDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 138038F11C55FA7700E98C5F /* TaskDetailViewController.m */; };
+		138038F41C55FA7700E98C5F /* TaskDetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 138038F21C55FA7700E98C5F /* TaskDetailViewController.xib */; };
 		1385B47C1BC9E50D00CB208C /* Btn_Edit@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1385B47B1BC9E50D00CB208C /* Btn_Edit@2x.png */; };
 		1385B4801BC9EF9900CB208C /* Btn_AddPhoto@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1385B47F1BC9EF9900CB208C /* Btn_AddPhoto@2x.png */; };
 		1385B4821BCA712400CB208C /* Btn_Delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1385B4811BCA712400CB208C /* Btn_Delete@2x.png */; };
@@ -524,6 +526,9 @@
 		137C60911BBFD43200725662 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		138038EC1C53C17300E98C5F /* Icon_Task_Tomato@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Task_Tomato@2x.png"; sourceTree = "<group>"; };
 		138038EE1C53C67900E98C5F /* Icon_Tomato@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Tomato@2x.png"; sourceTree = "<group>"; };
+		138038F01C55FA7700E98C5F /* TaskDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskDetailViewController.h; sourceTree = "<group>"; };
+		138038F11C55FA7700E98C5F /* TaskDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskDetailViewController.m; sourceTree = "<group>"; };
+		138038F21C55FA7700E98C5F /* TaskDetailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskDetailViewController.xib; sourceTree = "<group>"; };
 		1385B47B1BC9E50D00CB208C /* Btn_Edit@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Edit@2x.png"; sourceTree = "<group>"; };
 		1385B47F1BC9EF9900CB208C /* Btn_AddPhoto@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_AddPhoto@2x.png"; sourceTree = "<group>"; };
 		1385B4811BCA712400CB208C /* Btn_Delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Delete@2x.png"; sourceTree = "<group>"; };
@@ -747,6 +752,9 @@
 				137470C11C0AE72A00B7822A /* TaskCell.h */,
 				137470C21C0AE72A00B7822A /* TaskCell.m */,
 				137470C31C0AE72A00B7822A /* TaskCell.xib */,
+				138038F01C55FA7700E98C5F /* TaskDetailViewController.h */,
+				138038F11C55FA7700E98C5F /* TaskDetailViewController.m */,
+				138038F21C55FA7700E98C5F /* TaskDetailViewController.xib */,
 			);
 			path = Task;
 			sourceTree = "<group>";
@@ -1702,6 +1710,7 @@
 				1377010F1B9680AC008C83FD /* Bg_Input_Blue@2x.png in Resources */,
 				137470721C05F1DC00B7822A /* Icon_AutoSync_Selected@2x.png in Resources */,
 				1385B4821BCA712400CB208C /* Btn_Delete@2x.png in Resources */,
+				138038F41C55FA7700E98C5F /* TaskDetailViewController.xib in Resources */,
 				135B22281B92F4C1005CE84A /* Btn_SectionUp@2x.png in Resources */,
 				1374708F1C07E66B00B7822A /* CLLockVC.xib in Resources */,
 				1310C36A1C465BA100A2A404 /* Icon_UserLevel_4@2x.png in Resources */,
@@ -1840,6 +1849,7 @@
 				1374713A1C1909C500B7822A /* Messages.m in Sources */,
 				135B21B31B900FFE005CE84A /* ThreeSubView.m in Sources */,
 				137470BF1C0ABCFE00B7822A /* AddTaskViewController.m in Sources */,
+				138038F31C55FA7700E98C5F /* TaskDetailViewController.m in Sources */,
 				137701131B9683E3008C83FD /* CommonFunction.m in Sources */,
 				13AF64C11C255BB7008E8A9E /* FourViewController.m in Sources */,
 				135B21DC1B90A145005CE84A /* UIButton+Util.m in Sources */,

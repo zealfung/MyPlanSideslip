@@ -12,6 +12,7 @@
 #import "ThreeViewController.h"
 #import "AddTaskViewController.h"
 #import <RESideMenu/RESideMenu.h>
+#import "TaskDetailViewController.h"
 
 @interface ThreeViewController () {
     
@@ -35,6 +36,7 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
     
     taskArray = [NSArray array];
+    [NotificationCenter addObserver:self selector:@selector(toTask:) name:Notify_Push_LocalNotify object:nil];
     [NotificationCenter addObserver:self selector:@selector(reloadTaskData) name:Notify_Task_Save object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:Notify_Messages_Save object:nil];
 }
@@ -86,48 +88,63 @@
     }
 }
 
+- (void)toTask:(NSNotification*)notification {
+    NSDictionary *dict = notification.userInfo;
+    NSInteger type = [[dict objectForKey:@"type"] integerValue];
+    if (type != 1) {//非任务提醒
+        return;
+    }
+    Task *task = [[Task alloc] init];
+    task.account = [dict objectForKey:@"account"];
+    task.taskId = [dict objectForKey:@"tag"];
+    task.content = [dict objectForKey:@"content"];
+    task.totalCount = [dict objectForKey:@"totalCount"];
+    task.completionDate = [dict objectForKey:@"completionDate"];
+    task.createTime = [dict objectForKey:@"createTime"];
+    task.updateTime = [dict objectForKey:@"updateTime"];
+    task.isNotify = [dict objectForKey:@"isNotify"];
+    task.notifyTime = [dict objectForKey:@"notifyTime"];
+    task.isTomato = [dict objectForKey:@"isTomato"];
+    task.tomatoMinute = [dict objectForKey:@"tomatoMinute"];
+    task.isRepeat = [dict objectForKey:@"isRepeat"];
+    task.repeatType = [dict objectForKey:@"repeatType"];
+    task.isDeleted = @"0";
+    
+    TaskDetailViewController *controller = [[TaskDetailViewController alloc]init];
+    controller.task = task;
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-
     return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
     if (taskArray.count > 0) {
-        
         return taskArray.count;
-        
     } else {
-        
         return 5;
     }
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     if (taskArray.count > 0) {
-        
         return 60.f;
-        
     } else {
-        
         return 44.f;
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     if (indexPath.row < taskArray.count) {
-        
         tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         Task *task = taskArray[indexPath.row];
         TaskCell *cell = [TaskCell cellView:task];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
-        
     } else {
-        
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         static NSString *noTaskCellIdentifier = @"noTaskCellIdentifier";
         
@@ -143,23 +160,18 @@
             cell.textLabel.textColor = [UIColor lightGrayColor];
             cell.textLabel.font = font_Bold_16;
         }
-        
         if (indexPath.row == 4) {
             cell.textLabel.text = str_Task_Tips1;
         } else {
             cell.textLabel.text = nil;
         }
-        
         return cell;
     }
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    
     if (indexPath.row < taskArray.count) {
-        
-        AddTaskViewController *controller = [[AddTaskViewController alloc] init];
-        controller.operationType = View;
+        TaskDetailViewController *controller = [[TaskDetailViewController alloc]init];
         controller.task = taskArray[indexPath.row];
         controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
