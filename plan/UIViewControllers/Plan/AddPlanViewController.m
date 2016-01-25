@@ -9,10 +9,7 @@
 #import "PlanCache.h"
 #import "AddPlanViewController.h"
 
-NSUInteger const kDatePickerBgViewTag = 20150907;
 NSUInteger const kEdgeInset = 10;
-NSUInteger const kDatePickerHeight = 216;
-NSUInteger const kToolBarHeight = 44;
 
 @interface AddPlanViewController () <UITextFieldDelegate, UITextViewDelegate> {
     
