@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9059" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1509" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -34,20 +34,44 @@
                             <action selector="addAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="7iW-zo-ZMo"/>
                         </connections>
                     </button>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon_Alarm.png" translatesAutoresizingMaskIntoConstraints="NO" id="A8c-dB-sLT">
+                        <rect key="frame" x="255" y="0.0" width="20" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="20" id="5el-aa-iIz"/>
+                            <constraint firstAttribute="height" constant="20" id="ai4-lo-umh"/>
+                        </constraints>
+                    </imageView>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon_Tomato.png" translatesAutoresizingMaskIntoConstraints="NO" id="9bd-Ji-rJH">
+                        <rect key="frame" x="301" y="0.0" width="16" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="16" id="hwl-Ok-dr8"/>
+                            <constraint firstAttribute="height" constant="16" id="jiP-fU-CBl"/>
+                        </constraints>
+                    </imageView>
                 </subviews>
                 <constraints>
                     <constraint firstItem="03R-xg-Vk4" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="7Dr-HL-de9"/>
                     <constraint firstAttribute="trailing" secondItem="03R-xg-Vk4" secondAttribute="trailing" constant="12" id="Gmt-36-6Z0"/>
+                    <constraint firstItem="9bd-Ji-rJH" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="KaH-Pk-4Wd"/>
+                    <constraint firstAttribute="trailing" secondItem="A8c-dB-sLT" secondAttribute="trailing" constant="45" id="T5N-R7-WNu"/>
                     <constraint firstItem="03R-xg-Vk4" firstAttribute="leading" secondItem="idY-cN-hlh" secondAttribute="trailing" id="Wp2-al-EJV"/>
+                    <constraint firstAttribute="trailing" secondItem="9bd-Ji-rJH" secondAttribute="trailing" constant="3" id="Xoy-Gj-44i"/>
                     <constraint firstItem="idY-cN-hlh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="a8o-54-Kn5"/>
                     <constraint firstItem="idY-cN-hlh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="bl3-eo-nVV"/>
+                    <constraint firstItem="A8c-dB-sLT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="l64-0C-oqJ"/>
                     <constraint firstAttribute="bottom" secondItem="idY-cN-hlh" secondAttribute="bottom" constant="0.5" id="nwu-B4-5cf"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
                 <outlet property="btnCount" destination="03R-xg-Vk4" id="kN9-Lh-Yhq"/>
+                <outlet property="imgViewAlarm" destination="A8c-dB-sLT" id="aQj-Vs-vdp"/>
+                <outlet property="imgViewTomato" destination="9bd-Ji-rJH" id="Aii-LH-Ukc"/>
                 <outlet property="labelTask" destination="idY-cN-hlh" id="jJP-CX-pe4"/>
             </connections>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="Icon_Alarm.png" width="24" height="24"/>
+        <image name="Icon_Tomato.png" width="24" height="24"/>
+    </resources>
 </document>

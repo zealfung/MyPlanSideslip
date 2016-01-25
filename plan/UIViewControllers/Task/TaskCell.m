@@ -23,18 +23,31 @@
     cellView.btnCount.layer.cornerRadius = 20;
     cellView.labelTask.text = task.content;
     cellView.task = task;
-    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
-    if ([task.completionDate isEqualToString:date]) {
-        cellView.btnCount.enabled = NO;
-        [cellView.btnCount setAllTitle:task.totalCount];
-        [cellView.btnCount setBackgroundColor:color_0BA32A];
-        cellView.btnCount.titleLabel.font = font_Bold_23;
-    } else {
-        cellView.btnCount.enabled = YES;
+    if (![task.isNotify isEqualToString:@"1"]) {
+        cellView.imgViewAlarm.hidden = YES;
+    }
+    if ([task.isTomato isEqualToString:@"1"]) {
         [cellView.btnCount setAllTitle:str_Task_AddRecord];
         [cellView.btnCount setBackgroundColor:[CommonFunction getGenderColor]];
         cellView.btnCount.titleLabel.font = font_Bold_16;
+    } else {
+        cellView.imgViewTomato.hidden = YES;
+        [cellView.btnCount setAllTitle:@"加一"];
+        [cellView.btnCount setBackgroundColor:[CommonFunction getGenderColor]];
+        cellView.btnCount.titleLabel.font = font_Bold_16;
     }
+//    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+//    if ([task.completionDate isEqualToString:date]) {
+//        cellView.btnCount.enabled = NO;
+//        [cellView.btnCount setAllTitle:task.totalCount];
+//        [cellView.btnCount setBackgroundColor:color_0BA32A];
+//        cellView.btnCount.titleLabel.font = font_Bold_23;
+//    } else {
+//        cellView.btnCount.enabled = YES;
+//        [cellView.btnCount setAllTitle:str_Task_AddRecord];
+//        [cellView.btnCount setBackgroundColor:[CommonFunction getGenderColor]];
+//        cellView.btnCount.titleLabel.font = font_Bold_16;
+//    }
     
     return cellView;
 }
