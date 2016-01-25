@@ -10,6 +10,7 @@
 
 typedef enum : NSUInteger {
     NotificationTypePlan,       //计划通知
+    NotificationTypeTask,       //任务通知
     NotificationTypeOthers,     //其他通知
 } NotificationType;
 
