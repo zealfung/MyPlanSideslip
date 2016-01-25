@@ -137,9 +137,9 @@
 }
 
 - (void)checkFiveDayNotification {
-    
     NSDictionary *dict = lastNotification.userInfo;
     Plan *plan = [[Plan alloc] init];
+    plan.account = [dict objectForKey:@"account"];
     plan.planid = [dict objectForKey:@"tag"];
     plan.createtime = [dict objectForKey:@"createtime"];
     plan.content = [dict objectForKey:@"content"];
@@ -150,18 +150,22 @@
     plan.notifytime = [dict objectForKey:@"notifytime"];
     
     if ([plan.planid isEqualToString:Notify_FiveDay_Tag]) {
-        
         //如果还是没有新建计划，每天提醒一次
         NSDate *tomorrow = [[NSDate date] dateByAddingTimeInterval:24 * 3600];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
         NSString *fiveDayTomorrow = [dateFormatter stringFromDate:tomorrow];
         plan.notifytime = fiveDayTomorrow;
-        
         [PlanCache updateLocalNotification:plan];
-        
     } else {
-        
+        BmobUser *user = [BmobUser getCurrentUser];
+        NSString *account = @"";
+        if (user) {
+            account = user.objectId;
+        }
+        if (![plan.account isEqualToString:account]) {//非该账号的提醒，不显示
+            return;
+        }
         UIApplicationState state = [UIApplication sharedApplication].applicationState;
         if (state == UIApplicationStateInactive) {
             //程序在后台或者已关闭

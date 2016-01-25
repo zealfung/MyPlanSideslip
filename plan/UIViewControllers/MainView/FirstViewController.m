@@ -103,9 +103,13 @@ NSUInteger const kSecondsPerDay = 86400;
 }
 
 - (void)toPlan:(NSNotification*)notification {
-    
     NSDictionary *dict = notification.userInfo;
+    NSInteger type = [[dict objectForKey:@"type"] integerValue];
+    if (type != 0) {//非计划提醒
+        return;
+    }
     Plan *plan = [[Plan alloc] init];
+    plan.account = [dict objectForKey:@"account"];
     plan.planid = [dict objectForKey:@"tag"];
     plan.createtime = [dict objectForKey:@"createtime"];
     plan.content = [dict objectForKey:@"content"];
@@ -114,12 +118,10 @@ NSUInteger const kSecondsPerDay = 86400;
     plan.completetime = [dict objectForKey:@"completetime"];
     plan.isnotify = @"1";
     plan.notifytime = [dict objectForKey:@"notifytime"];
-    
     if ([plan.planid isEqualToString:Notify_FiveDay_Tag]) {
         //5天未新建计划提醒，不需要跳转到计划详情
         return;
     }
-
     AddPlanViewController *controller = [[AddPlanViewController alloc]init];
     controller.planType = [plan.plantype isEqualToString:@"1"] ? EverydayPlan : LongPlan;
     controller.operationType = Edit;
