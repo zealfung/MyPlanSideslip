@@ -24,5 +24,6 @@
 @property (nonatomic, strong) NSString *tomatoMinute; //番茄时间（分钟）
 @property (nonatomic, strong) NSString *isRepeat; //是否重复提醒: 1是 0否
 @property (nonatomic, strong) NSString *repeatType; //重复类型: 0每天 1每周 2每月 3每年 4不重复
+@property (nonatomic, strong) NSString *taskOrder; //序号
 
 @end

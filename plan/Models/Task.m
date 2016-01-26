@@ -22,6 +22,7 @@ NSString *const kTask_IsTomato = @"isTomato";
 NSString *const kTask_TomatoMinute = @"tomatoMinute";
 NSString *const kTask_IsRepeat = @"isRepeat";
 NSString *const kTask_RepeatType = @"repeatType";
+NSString *const kTask_TaskOrder = @"taskOrder";
 
 @implementation Task
 
@@ -39,6 +40,7 @@ NSString *const kTask_RepeatType = @"repeatType";
 @synthesize tomatoMinute = _tomatoMinute;
 @synthesize isRepeat = _isRepeat;
 @synthesize repeatType = _repeatType;
+@synthesize taskOrder = _taskOrder;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
@@ -57,6 +59,7 @@ NSString *const kTask_RepeatType = @"repeatType";
         self.tomatoMinute = [dict objectOrNilForKey:kTask_TomatoMinute];
         self.isRepeat = [dict objectOrNilForKey:kTask_IsRepeat];
         self.repeatType = [dict objectOrNilForKey:kTask_RepeatType];
+        self.taskOrder = [dict objectOrNilForKey:kTask_TaskOrder];
     }
     return self;
 }
@@ -78,6 +81,7 @@ NSString *const kTask_RepeatType = @"repeatType";
     self.tomatoMinute = [aDecoder decodeObjectForKey:kTask_TomatoMinute];
     self.isRepeat = [aDecoder decodeObjectForKey:kTask_IsRepeat];
     self.repeatType = [aDecoder decodeObjectForKey:kTask_RepeatType];
+    self.taskOrder = [aDecoder decodeObjectForKey:kTask_TaskOrder];
     return self;
 }
 
@@ -96,6 +100,7 @@ NSString *const kTask_RepeatType = @"repeatType";
     [aCoder encodeObject:_tomatoMinute forKey:kTask_TomatoMinute];
     [aCoder encodeObject:_isRepeat forKey:kTask_IsRepeat];
     [aCoder encodeObject:_repeatType forKey:kTask_RepeatType];
+    [aCoder encodeObject:_taskOrder forKey:kTask_TaskOrder];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -114,6 +119,7 @@ NSString *const kTask_RepeatType = @"repeatType";
     copy.tomatoMinute = [self.tomatoMinute copyWithZone:zone];
     copy.isRepeat = [self.isRepeat copyWithZone:zone];
     copy.repeatType = [self.repeatType copyWithZone:zone];
+    copy.taskOrder = [self.taskOrder copyWithZone:zone];
     return copy;
 }
 
