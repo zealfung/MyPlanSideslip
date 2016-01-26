@@ -208,6 +208,7 @@
 		13CC6F341C4F1874001D290F /* Icon_EverydayNotify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13CC6F331C4F1874001D290F /* Icon_EverydayNotify@2x.png */; };
 		13CC6F611C530583001D290F /* Btn_Plan_Doing64@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13CC6F5F1C530583001D290F /* Btn_Plan_Doing64@2x.png */; };
 		13CC6F621C530583001D290F /* Btn_Plan_Done64@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13CC6F601C530583001D290F /* Btn_Plan_Done64@2x.png */; };
+		13D135CE1C577D9200E97D5F /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D135CD1C577D9200E97D5F /* KxMenu.m */; };
 		13D1AD6B1C3E71EA007734F6 /* Btn_More@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD6A1C3E71EA007734F6 /* Btn_More@2x.png */; };
 		13D1AD6D1C3E7670007734F6 /* Btn_Refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD6C1C3E7670007734F6 /* Btn_Refresh@2x.png */; };
 		13D1AD6F1C3E7930007734F6 /* Btn_Report@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD6E1C3E7930007734F6 /* Btn_Report@2x.png */; };
@@ -573,6 +574,8 @@
 		13CC6F331C4F1874001D290F /* Icon_EverydayNotify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_EverydayNotify@2x.png"; sourceTree = "<group>"; };
 		13CC6F5F1C530583001D290F /* Btn_Plan_Doing64@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Plan_Doing64@2x.png"; sourceTree = "<group>"; };
 		13CC6F601C530583001D290F /* Btn_Plan_Done64@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Plan_Done64@2x.png"; sourceTree = "<group>"; };
+		13D135CC1C577D9200E97D5F /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
+		13D135CD1C577D9200E97D5F /* KxMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KxMenu.m; sourceTree = "<group>"; };
 		13D1AD6A1C3E71EA007734F6 /* Btn_More@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_More@2x.png"; sourceTree = "<group>"; };
 		13D1AD6C1C3E7670007734F6 /* Btn_Refresh@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Refresh@2x.png"; sourceTree = "<group>"; };
 		13D1AD6E1C3E7930007734F6 /* Btn_Report@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Report@2x.png"; sourceTree = "<group>"; };
@@ -914,7 +917,6 @@
 		135B21B01B900FD9005CE84A /* Component */ = {
 			isa = PBXGroup;
 			children = (
-				13D1AD881C41FAC2007734F6 /* SDPhotoBrowser */,
 				1361AFB71BCBA5E700DD5FFB /* DoImagePicker */,
 				13D406971C3D00310089D702 /* DOPNavbarMenu */,
 				13D1AD721C3F411F007734F6 /* EditingBar */,
@@ -922,10 +924,12 @@
 				133B083C1BA439560015E752 /* HitView.m */,
 				136DF57C1BEC2F7D001D6496 /* ImageBrowser.h */,
 				136DF57D1BEC2F7D001D6496 /* ImageBrowser.m */,
+				13D135CB1C577D9200E97D5F /* KxMenu */,
 				13A6ACA61BC3FBF1005A02F9 /* PagedFlowView.h */,
 				13A6ACA71BC3FBF1005A02F9 /* PagedFlowView.m */,
 				13A6ACA31BC3E282005A02F9 /* PageScrollView.h */,
 				13A6ACA41BC3E282005A02F9 /* PageScrollView.m */,
+				13D1AD881C41FAC2007734F6 /* SDPhotoBrowser */,
 				135B21B11B900FFE005CE84A /* ThreeSubView.h */,
 				135B21B21B900FFE005CE84A /* ThreeSubView.m */,
 			);
@@ -1481,6 +1485,15 @@
 			path = Share;
 			sourceTree = "<group>";
 		};
+		13D135CB1C577D9200E97D5F /* KxMenu */ = {
+			isa = PBXGroup;
+			children = (
+				13D135CC1C577D9200E97D5F /* KxMenu.h */,
+				13D135CD1C577D9200E97D5F /* KxMenu.m */,
+			);
+			path = KxMenu;
+			sourceTree = "<group>";
+		};
 		13D1AD721C3F411F007734F6 /* EditingBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -1861,6 +1874,7 @@
 				135B22151B92C0D4005CE84A /* FatherViewController.m in Sources */,
 				135B21E01B9136A4005CE84A /* PlanCache.m in Sources */,
 				137470901C07E66B00B7822A /* CALayer+Anim.m in Sources */,
+				13D135CE1C577D9200E97D5F /* KxMenu.m in Sources */,
 				137470CB1C0AEB0300B7822A /* TaskRecord.m in Sources */,
 				131D6A6C1BFB5D9D009FDD72 /* PieceButton.m in Sources */,
 				131D6AC71C00AEB0009FDD72 /* UINavigationController+Util.m in Sources */,
