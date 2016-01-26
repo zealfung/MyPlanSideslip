@@ -54,7 +54,7 @@
 
 + (NSArray *)getPhoto:(NSInteger)startIndex;
 
-+ (NSArray *)getTeask;
++ (NSMutableArray *)getTeask;
 
 + (NSArray *)getTeaskRecord:(NSString *)recordId;
 

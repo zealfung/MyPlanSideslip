@@ -17,49 +17,41 @@
 #import "FMDatabaseAdditions.h"
 #import "LocalNotificationManager.h"
 
-
-
 #define FMDBQuickCheck(SomeBool, Title, Db) {\
 if (!(SomeBool)) { \
 NSLog(@"Failure on line %d, %@ error(%d): %@", __LINE__, Title, [Db lastErrorCode], [Db lastErrorMessage]);\
 }}
 
 
-NSString * dbFilePath(NSString * filename) {
-    NSArray * documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,  NSUserDomainMask,YES);
-    NSString * documentDirectory = [documentPaths objectAtIndex:0];
-    NSString * pathName = [documentDirectory stringByAppendingPathComponent:@"cache"];
+NSString *dbFilePath(NSString *filename) {
+    NSArray *documentPaths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,  NSUserDomainMask,YES);
+    NSString *documentDirectory = [documentPaths objectAtIndex:0];
+    NSString *pathName = [documentDirectory stringByAppendingPathComponent:@"cache"];
     
-    NSFileManager * fileManager = [NSFileManager defaultManager];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     if (![fileManager fileExistsAtPath:pathName])
         [fileManager createDirectoryAtPath:pathName withIntermediateDirectories:YES attributes:nil error:nil];
-    
     pathName = [pathName stringByAppendingPathComponent:filename];
-    
     return pathName;
 };
 
-NSData * encodePwd(NSString * pwd) {
-    
-    NSData * data = [pwd dataUsingEncoding:NSUTF8StringEncoding];
-    
+NSData *encodePwd(NSString *pwd) {
+    NSData *data = [pwd dataUsingEncoding:NSUTF8StringEncoding];
     return data;
 };
 
-NSString * decodePwd(NSData * data) {
-    
+NSString *decodePwd(NSData *data) {
     return [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
 };
 
 
 @implementation PlanCache
 
-
-static FMDatabase * __db;
+static FMDatabase *__db;
 static NSString *__currentPath;
 static NSString *__currentPlistPath;
 static NSString *__offlineMsgPlistPath;
-static NSMutableDictionary * __contactsOnlineState;
+static NSMutableDictionary *__contactsOnlineState;
 
 + (void)initialize {
     
@@ -94,7 +86,7 @@ static NSMutableDictionary * __contactsOnlineState;
     if (!account)
         return;
     
-    NSString * fileName = dbFilePath([NSString stringWithFormat:@"data_%@.db", account]);
+    NSString *fileName = dbFilePath([NSString stringWithFormat:@"data_%@.db", account]);
     
     __currentPath = [fileName copy];
     __db = [FMDatabase databaseWithPath:fileName];
@@ -360,6 +352,16 @@ static NSMutableDictionary * __contactsOnlineState;
             
             FMDBQuickCheck(b, sqlString, __db);
         }
+        //序号 2016-1-24
+        NSString *taskOrder = @"taskOrder";
+        if (![__db columnExists:taskOrder inTableWithName:str_TableName_Task]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Task, taskOrder];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
     }
 
     //任务记录
@@ -514,34 +516,34 @@ static NSMutableDictionary * __contactsOnlineState;
     }
 }
 
-+ (void)updateSettingsUpdatedTime {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
-                return ;
-            }
-        }
-        
-        NSString *account = @"";
-        if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
-            account = user.objectId;
-        }
-        NSString *timeNow = [CommonFunction getTimeNowString];
-
-        BOOL hasRec = NO;
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", str_TableName_Settings];
-        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
-        hasRec = [rs next];
-        [rs close];
-        if (hasRec) {
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET updatetime=? WHERE account=?", str_TableName_Settings];
-            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[timeNow, account]];
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-    }
-}
+//+ (void)updateSettingsUpdatedTime {
+//    @synchronized(__db) {
+//        
+//        if (!__db.open) {
+//            if (![__db open]) {
+//                return ;
+//            }
+//        }
+//        
+//        NSString *account = @"";
+//        if ([LogIn isLogin]) {
+//            BmobUser *user = [BmobUser getCurrentUser];
+//            account = user.objectId;
+//        }
+//        NSString *timeNow = [CommonFunction getTimeNowString];
+//
+//        BOOL hasRec = NO;
+//        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", str_TableName_Settings];
+//        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
+//        hasRec = [rs next];
+//        [rs close];
+//        if (hasRec) {
+//            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET updatetime=? WHERE account=?", str_TableName_Settings];
+//            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[timeNow, account]];
+//            FMDBQuickCheck(b, sqlString, __db);
+//        }
+//    }
+//}
 
 + (BOOL)storePlan:(Plan *)plan {
     @synchronized(__db) {
@@ -622,9 +624,9 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
-            if (![Config shareInstance].isSyncingData) {
-                [self updateSettingsUpdatedTime];
-            }
+//            if (![Config shareInstance].isSyncingData) {
+//                [self updateSettingsUpdatedTime];
+//            }
         }
         return b;
     }
@@ -701,9 +703,9 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
-            if (![Config shareInstance].isSyncingData) {
-                [self updateSettingsUpdatedTime];
-            }
+//            if (![Config shareInstance].isSyncingData) {
+//                [self updateSettingsUpdatedTime];
+//            }
         }
         return b;
     }
@@ -824,6 +826,9 @@ static NSMutableDictionary * __contactsOnlineState;
         if (!task.repeatType) {
             task.repeatType = @"4";
         }
+        if (!task.taskOrder) {
+            task.taskOrder = @"";
+        }
         
         BOOL hasRec = NO;
         NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", str_TableName_Task];
@@ -833,9 +838,9 @@ static NSMutableDictionary * __contactsOnlineState;
         [rs close];
         BOOL b = NO;
         if (hasRec) {
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, totalCount=?, completionDate=?, updateTime=?, isNotify=?, notifyTime=?, isTomato=?, tomatoMinute=?, isRepeat=?, repeatType=? WHERE taskId=? AND account=?", str_TableName_Task];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, totalCount=?, completionDate=?, updateTime=?, isNotify=?, notifyTime=?, isTomato=?, tomatoMinute=?, isRepeat=?, repeatType=?, taskOrder=? WHERE taskId=? AND account=?", str_TableName_Task];
             
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.content, task.totalCount, task.completionDate, task.updateTime, task.isNotify, task.notifyTime, task.isTomato, task.tomatoMinute, task.isRepeat, task.repeatType, task.taskId, task.account]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.content, task.totalCount, task.completionDate, task.updateTime, task.isNotify, task.notifyTime, task.isTomato, task.tomatoMinute, task.isRepeat, task.repeatType, task.taskOrder, task.taskId, task.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
@@ -847,9 +852,9 @@ static NSMutableDictionary * __contactsOnlineState;
             }
         } else {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, isDeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Task];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder, isDeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Task];
             
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.account, task.taskId, task.content, task.totalCount, task.completionDate, task.createTime, task.updateTime, task.isNotify, task.notifyTime, task.isTomato, task.tomatoMinute, task.isRepeat, task.repeatType, @"0"]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.account, task.taskId, task.content, task.totalCount, task.completionDate, task.createTime, task.updateTime, task.isNotify, task.notifyTime, task.isTomato, task.tomatoMinute, task.isRepeat, task.repeatType, task.taskOrder, @"0"]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
@@ -862,9 +867,9 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
-            if (![Config shareInstance].isSyncingData) {
-                [self updateSettingsUpdatedTime];
-            }
+//            if (![Config shareInstance].isSyncingData) {
+//                [self updateSettingsUpdatedTime];
+//            }
         }
         return b;
     }
@@ -890,9 +895,9 @@ static NSMutableDictionary * __contactsOnlineState;
         
         if (b) {
             [NotificationCenter postNotificationName:Notify_TaskRecord_Save object:nil];
-            if (![Config shareInstance].isSyncingData) {
-                [self updateSettingsUpdatedTime];
-            }
+//            if (![Config shareInstance].isSyncingData) {
+//                [self updateSettingsUpdatedTime];
+//            }
         }
         return b;
     }
@@ -1039,9 +1044,9 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
-            if (![Config shareInstance].isSyncingData) {
-                [self updateSettingsUpdatedTime];
-            }
+//            if (![Config shareInstance].isSyncingData) {
+//                [self updateSettingsUpdatedTime];
+//            }
         }
         return b;
     }
@@ -1081,9 +1086,9 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
-            if (![Config shareInstance].isSyncingData) {
-                [self updateSettingsUpdatedTime];
-            }
+//            if (![Config shareInstance].isSyncingData) {
+//                [self updateSettingsUpdatedTime];
+//            }
         }
         return b;
     }
@@ -1128,9 +1133,9 @@ static NSMutableDictionary * __contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
-            if (![Config shareInstance].isSyncingData) {
-                [self updateSettingsUpdatedTime];
-            }
+//            if (![Config shareInstance].isSyncingData) {
+//                [self updateSettingsUpdatedTime];
+//            }
         }
         return b;
     }
@@ -1455,7 +1460,7 @@ static NSMutableDictionary * __contactsOnlineState;
     }
 }
 
-+ (NSArray *)getTeask {
++ (NSMutableArray *)getTeask {
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1471,7 +1476,7 @@ static NSMutableDictionary * __contactsOnlineState;
         }
 
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType FROM %@ WHERE account=? AND isDeleted=0 ORDER BY createTime DESC", str_TableName_Task];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND isDeleted=0 ORDER BY taskOrder ASC, createTime DESC", str_TableName_Task];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
@@ -1491,6 +1496,7 @@ static NSMutableDictionary * __contactsOnlineState;
             task.tomatoMinute = [rs stringForColumn:@"tomatoMinute"];
             task.isRepeat = [rs stringForColumn:@"isRepeat"];
             task.repeatType = [rs stringForColumn:@"repeatType"];
+            task.taskOrder = [rs stringForColumn:@"taskOrder"];
             task.isDeleted = @"0";
             
             if (!task.isTomato) {
@@ -1710,6 +1716,7 @@ static NSMutableDictionary * __contactsOnlineState;
     if (!date) return;
     
     NSMutableDictionary *destDic = [NSMutableDictionary dictionary];
+    [destDic setObject:plan.account forKey:@"account"];
     [destDic setObject:plan.planid forKey:@"tag"];
     [destDic setObject:@([date timeIntervalSince1970]) forKey:@"time"];
     [destDic setObject:@(NotificationTypePlan) forKey:@"type"];
@@ -1746,14 +1753,24 @@ static NSMutableDictionary * __contactsOnlineState;
     NSDate *date = [CommonFunction NSStringDateToNSDate:task.notifyTime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
     
     if (!date) return;
-    
+
     NSMutableDictionary *destDic = [NSMutableDictionary dictionary];
+    [destDic setObject:task.account forKey:@"account"];
     [destDic setObject:task.taskId forKey:@"tag"];
     [destDic setObject:@([date timeIntervalSince1970]) forKey:@"time"];
     [destDic setObject:@(NotificationTypeTask) forKey:@"type"];
+    [destDic setObject:task.totalCount forKey:@"totalCount"];
     [destDic setObject:task.createTime forKey:@"createTime"];
+    [destDic setObject:task.updateTime forKey:@"updateTime"];
+    [destDic setObject:task.completionDate forKey:@"completionDate"];
     [destDic setObject:task.content forKey:@"content"];
+    [destDic setObject:task.isNotify forKey:@"isNotify"];
     [destDic setObject:task.notifyTime forKey:@"notifyTime"];
+    [destDic setObject:task.isTomato forKey:@"isTomato"];
+    [destDic setObject:task.tomatoMinute forKey:@"tomatoMinute"];
+    [destDic setObject:task.isRepeat forKey:@"isRepeat"];
+    [destDic setObject:task.repeatType forKey:@"repeatType"];
+    [destDic setObject:task.taskOrder forKey:@"taskOrder"];
     if ([task.isRepeat isEqualToString:@"1"]) {
         NSCalendarUnit repeatUnit = NSCalendarUnitEra;
         switch ([task.repeatType integerValue]) {
@@ -1803,7 +1820,6 @@ static NSMutableDictionary * __contactsOnlineState;
         NSDictionary *sourceN = item.userInfo;
         NSString *tag = [sourceN objectForKey:@"tag"];
         if ([tag longLongValue] == [Notify_FiveDay_Tag longLongValue]) {
-            
             hasFiveDayNotification = YES;
             break;
         }
@@ -1812,8 +1828,13 @@ static NSMutableDictionary * __contactsOnlineState;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
     NSString *fiveDayLater = [dateFormatter stringFromDate:[[NSDate date] dateByAddingTimeInterval:5 * 24 * 3600]];
-    
+    BmobUser *user = [BmobUser getCurrentUser];
+    NSString *account = @"";
+    if (!user) {
+        account = user.objectId;
+    }
     Plan *fiveDayPlan = [[Plan alloc] init];
+    fiveDayPlan.account = account;
     fiveDayPlan.planid = Notify_FiveDay_Tag;
     fiveDayPlan.createtime = Notify_FiveDay_Time;
     fiveDayPlan.plantype = @"2";
@@ -1823,10 +1844,8 @@ static NSMutableDictionary * __contactsOnlineState;
     fiveDayPlan.notifytime = fiveDayLater;
     
     if (hasFiveDayNotification) {//更新提醒时间
-        
         [self updateLocalNotification:fiveDayPlan];
     } else {//新建提醒
-        
         [self addLocalNotification:fiveDayPlan];
     }
 }
