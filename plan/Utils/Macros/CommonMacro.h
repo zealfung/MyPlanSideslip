@@ -39,6 +39,8 @@
 //影像分页，每批次加载数据行数
 #define kPhotoLoadMax (iPhone6 || iPhone6Plus || iPhone6S || iPhone6SPlus) ? 3 : 2
 
+//控件的边距
+#define kEdgeInset 10
 //时间选择器Tag
 #define kDatePickerBgViewTag 20150907
 //时间选择器高度
