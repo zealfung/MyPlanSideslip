@@ -22,9 +22,6 @@
 //获取当前时间字符串：yyyy-MM-dd HH:mm:ss
 + (NSString *)getTimeNowString;
 
-//获取明天当前时间字符串：yyyy-MM-dd HH:mm:ss
-+ (NSString *)getTomorrowTimeNowString;
-
 + (NSDateComponents *)getDateTime:(NSDate *)date;
 
 //判断是否为空白字符串
