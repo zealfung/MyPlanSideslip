@@ -16,4 +16,6 @@
 
 + (void)getMessagesFromServer;
 
++ (void)setPlanBeginDate;
+
 @end

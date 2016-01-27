@@ -9,23 +9,17 @@
 #import "PlanCache.h"
 #import "AddPlanViewController.h"
 
-NSUInteger const kEdgeInset = 10;
-
 @interface AddPlanViewController () <UITextFieldDelegate, UITextViewDelegate> {
-    
+    UITextView *txtViewContent;
     NSUInteger yOffset;
+    NSString *beginDate;//开始日期
+    NSString *notifyTime;//提醒时间
     UIDatePicker *datePicker;
     UISwitch *switchBtnAlarm;
-    UISwitch *switchBtnTomorrow;
-    UISwitch *switchBtnEveryday;
     UILabel *labelNotifyTime;
-    UIView *viewEverydayNotify;
-    BOOL isTomorrowPlan;
-    BOOL isEverydayNotify;
+    UILabel *labelBeginDate;
+    BOOL isSelectBeginDate;
 }
-
-@property (strong, nonatomic) UITextField *textNoteTitle;
-@property (strong, nonatomic) UITextView *textNoteDetail;
 
 @end
 
@@ -72,12 +66,25 @@ NSUInteger const kEdgeInset = 10;
         detailTextView.delegate = self;
         detailTextView.inputAccessoryView = [self getInputAccessoryView];
         [self.view addSubview:detailTextView];
-        self.textNoteDetail = detailTextView;
+        txtViewContent = detailTextView;
         
         yOffset += txtViewHeight + kEdgeInset;
     }
     CGFloat iconSize = 30;
     CGFloat switchWidth = 20;
+    {
+        beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+        UILabel *labelBeginTime = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2, iconSize)];
+        labelBeginTime.textColor = color_Black;
+        labelBeginTime.font = font_Normal_18;
+        labelBeginTime.userInteractionEnabled = YES;
+        labelBeginTime.text = [NSString stringWithFormat:@"开始时间：%@", @"今天"];
+        UITapGestureRecognizer *labelBeginTimeTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(beginDateTouchAction:)];
+        [labelBeginTime addGestureRecognizer:labelBeginTimeTapGestureRecognizer];
+        [self.view addSubview:labelBeginTime];
+        labelBeginDate = labelBeginTime;
+        yOffset += iconSize + kEdgeInset;
+    }
     {
         UIImageView *alarm = [[UIImageView alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, iconSize, iconSize)];
         alarm.image = [UIImage imageNamed:png_Icon_Alarm];
@@ -93,76 +100,29 @@ NSUInteger const kEdgeInset = 10;
         labelTime.textColor = color_Black;
         labelTime.font = font_Normal_18;
         labelTime.userInteractionEnabled = YES;
-        UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(labelTouchUpInside:)];
+        UITapGestureRecognizer *labelTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(notifyTimeTouchAction:)];
         [labelTime addGestureRecognizer:labelTapGestureRecognizer];
         labelNotifyTime = labelTime;
         [self.view addSubview:labelTime];
         
         yOffset += iconSize + kEdgeInset;
     }
-    //设为明天计划
-    if (self.planType == EverydayPlan
-        && self.operationType == Add) {
-        
-        UIImageView *tomorrow = [[UIImageView alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, iconSize, iconSize)];
-        tomorrow.image = [UIImage imageNamed:png_Icon_Tomorrow];
-        [self.view addSubview:tomorrow];
-        
-        UISwitch *btnSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kEdgeInset + iconSize + 2, yOffset, switchWidth, iconSize)];
-        [btnSwitch setOn:NO];
-        [btnSwitch addTarget:self action:@selector(tomorrowSwitchAction:) forControlEvents:UIControlEventValueChanged];
-        switchBtnTomorrow = btnSwitch;
-        [self.view addSubview:btnSwitch];
-
-        UILabel *labelTomorrow = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(btnSwitch.frame) + kEdgeInset - 2, yOffset, 150, iconSize)];
-        labelTomorrow.textColor = color_Black;
-        labelTomorrow.font = font_Normal_18;
-        labelTomorrow.text = str_Plan_Tomorrow;
-        [self.view addSubview:labelTomorrow];
-        
-        yOffset += iconSize + kEdgeInset;
-    }
-    //每天提醒
-    {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, iconSize)];
-        view.backgroundColor = [UIColor whiteColor];
-        view.hidden = YES;
-        
-        UIImageView *everyday = [[UIImageView alloc] initWithFrame:CGRectMake(kEdgeInset, 1, iconSize, iconSize - 2)];
-        everyday.image = [UIImage imageNamed:png_Icon_EverydayNotify];
-        [view addSubview:everyday];
-        
-        UISwitch *btnSwitch = [[UISwitch alloc] initWithFrame:CGRectMake(kEdgeInset + iconSize, 0, switchWidth, iconSize)];
-        [btnSwitch setOn:NO];
-        [btnSwitch addTarget:self action:@selector(everydaySwitchAction:) forControlEvents:UIControlEventValueChanged];
-        switchBtnEveryday = btnSwitch;
-        [view addSubview:btnSwitch];
-        
-        UILabel *labelEveryday = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(btnSwitch.frame) + kEdgeInset, 0, WIDTH_FULL_SCREEN - kEdgeInset * 3 - iconSize - switchWidth, iconSize)];
-        labelEveryday.textColor = color_Black;
-        labelEveryday.font = font_Normal_18;
-        labelEveryday.text = str_Plan_EverydayNotify;
-        [view addSubview:labelEveryday];
-        
-        [self.view addSubview:view];
-        viewEverydayNotify = view;
-        
-        yOffset += iconSize + kEdgeInset;
-    }
     if (self.operationType == Edit) {
-        self.textNoteDetail.text = self.plan.content;
+        txtViewContent.text = self.plan.content;
+        beginDate = self.plan.beginDate;
+        labelBeginDate.text = [NSString stringWithFormat:@"开始时间：%@", beginDate];
         if ([self.plan.isnotify isEqualToString:@"1"]) {
             [switchBtnAlarm setOn:YES];
             labelNotifyTime.text = self.plan.notifytime;
         }
     } else {
-        [self.textNoteDetail becomeFirstResponder];
+        [txtViewContent becomeFirstResponder];
     }
 }
 
 - (void)showDatePicker {
     //收起键盘
-    [self.textNoteDetail resignFirstResponder];
+    [self.view endEditing:YES];
     
     UIView *pickerView = [[UIView alloc] initWithFrame:self.view.bounds];
     pickerView.backgroundColor = [UIColor clearColor];
@@ -187,7 +147,11 @@ NSUInteger const kEdgeInset = 10;
         UIDatePicker *picker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, pickerView.frame.size.height - kDatePickerHeight, CGRectGetWidth(pickerView.bounds), kDatePickerHeight)];
         picker.backgroundColor = [UIColor whiteColor];
         picker.locale = [NSLocale currentLocale];
-        picker.datePickerMode = UIDatePickerModeDateAndTime;
+        if (isSelectBeginDate) {
+            picker.datePickerMode = UIDatePickerModeDate;
+        } else {
+            picker.datePickerMode = UIDatePickerModeDateAndTime;
+        }
         picker.minimumDate = [NSDate date];
         NSDate *defaultDate = [[NSDate date] dateByAddingTimeInterval:5 * 60];
         picker.date = defaultDate;
@@ -200,9 +164,8 @@ NSUInteger const kEdgeInset = 10;
 
 #pragma mark - action
 - (void)saveAction:(UIButton *)button {
-    NSString *title = [self.textNoteTitle.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    NSString *detail = [self.textNoteDetail.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if (title.length == 0 && detail.length == 0) {
+    NSString *content = [txtViewContent.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if (content.length == 0) {
         [self alertButtonMessage:str_Common_Tips3];
         return;
     }
@@ -210,54 +173,44 @@ NSUInteger const kEdgeInset = 10;
 }
 
 - (void)alarmSwitchAction:(id)sender {
+    //收起键盘
+    [self.view endEditing:YES];
+    
     UISwitch *btnSwitch = (UISwitch*)sender;
     BOOL isButtonOn = [btnSwitch isOn];
     if (isButtonOn) {
-        //显示每天提醒设置开关
-        viewEverydayNotify.hidden = NO;
+        isSelectBeginDate = NO;
         //显示时间设置器
         [self showDatePicker];
     } else {
-        //----联动处理每天提醒开关----------
-        isEverydayNotify = NO;
-        [switchBtnEveryday setOn:NO];
-        viewEverydayNotify.hidden = YES;
-        //-------------End--------------
         labelNotifyTime.text = @"";
         [self onPickerCancelBtn];
     }
 }
 
-- (void)tomorrowSwitchAction:(id)sender {
-    UISwitch *btnSwitch = (UISwitch*)sender;
-    BOOL isButtonOn = [btnSwitch isOn];
-    if (isButtonOn) {
-        isTomorrowPlan = YES;
-    } else {
-        isTomorrowPlan = NO;
-    }
+- (void)beginDateTouchAction:(UITapGestureRecognizer *)recognizer {
+    isSelectBeginDate = YES;
+    [self showDatePicker];
 }
 
-- (void)everydaySwitchAction:(id)sender {
-    UISwitch *btnSwitch = (UISwitch*)sender;
-    BOOL isButtonOn = [btnSwitch isOn];
-    if (isButtonOn) {
-        isEverydayNotify = YES;
-    } else {
-        isEverydayNotify = NO;
-    }
-}
-
-- (void)labelTouchUpInside:(UITapGestureRecognizer *)recognizer {
+- (void)notifyTimeTouchAction:(UITapGestureRecognizer *)recognizer {
     if ([switchBtnAlarm isOn]) {
+        isSelectBeginDate = NO;
         [self showDatePicker];
     }
 }
 
 - (void)onPickerCertainBtn {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
-    labelNotifyTime.text = [dateFormatter stringFromDate:datePicker.date];
+    if (isSelectBeginDate) {
+        [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd];
+        beginDate = [dateFormatter stringFromDate:datePicker.date];
+        labelBeginDate.text = [NSString stringWithFormat:@"开始时间：%@", [self getBeginDateStringForShow:beginDate]];
+    } else {
+        [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
+        notifyTime = [dateFormatter stringFromDate:datePicker.date];
+        labelNotifyTime.text = notifyTime;
+    }
     [self onPickerCancelBtn];
 }
 
@@ -271,17 +224,25 @@ NSUInteger const kEdgeInset = 10;
     }
 }
 
+- (NSString *)getBeginDateStringForShow:(NSString *)date {
+    NSDate *today = [NSDate date];
+    NSDate *tomorrow = [today dateByAddingTimeInterval:24 * 3600];
+    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:str_DateFormatter_yyyy_MM_dd];
+    NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:str_DateFormatter_yyyy_MM_dd];
+    if ([date isEqualToString:todayString]) {
+        return str_Common_Time2;
+    } else if ([date isEqualToString:tomorrowString]) {
+        return str_Common_Time9;
+    } else {
+        return date;
+    }
+}
+
 - (void)savePlan {
     [self.view endEditing:YES];
-    NSString *timeNow = @"";
+    NSString *timeNow = [CommonFunction getTimeNowString];
     NSString *planid = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyyMMddHHmmss];
-    
-    if (self.planType == EverydayPlan
-        && isTomorrowPlan) {//明天计划
-        timeNow = [CommonFunction getTomorrowTimeNowString];
-    } else {//每日计划
-        timeNow = [CommonFunction getTimeNowString];
-    }
+
     if (self.operationType == Add) {
         self.plan = [[Plan alloc]init];
         self.plan.planid = planid;
@@ -295,14 +256,12 @@ NSUInteger const kEdgeInset = 10;
     if ([switchBtnAlarm isOn]) {
         self.plan.isnotify = @"1";
         self.plan.notifytime = labelNotifyTime.text;
-        self.plan.isEverydayNotify = isEverydayNotify;
     } else {
         self.plan.isnotify = @"0";
         self.plan.notifytime = @"";
     }
-    
-    self.plan.content = self.textNoteDetail.text;
-    self.plan.plantype = self.planType == EverydayPlan ? @"1" : @"0";
+    self.plan.content = txtViewContent.text;
+    self.plan.beginDate = beginDate;
     
     BOOL result = [PlanCache storePlan:self.plan];
     if (result) {

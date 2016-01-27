@@ -16,6 +16,8 @@ static const NSUInteger kPlanSectionViewHeight = 50;
 
 - (id)initWithTitle:(NSString *)title isAllDone:(BOOL)isAllDone;
 
+- (id)initWithTitle:(NSString *)title;
+
 - (void)toggleArrow;
 
 @end

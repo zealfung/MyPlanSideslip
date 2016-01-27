@@ -12,7 +12,6 @@
 
 @interface AddPlanViewController : FatherViewController
 
-@property (nonatomic, assign) PlanType planType;
 @property (nonatomic, assign) OperationType operationType;
 @property (nonatomic, strong) Plan *plan;
 

@@ -229,8 +229,10 @@ NSUInteger const kBounceSpace = 20;
 - (void)setPlan:(Plan *)plan {
     _plan = plan;
     labelContent.text = plan.content;
-    if ([plan.plantype isEqualToString:@"0"]) {
-        labelCreateDate.text = [[plan.createtime componentsSeparatedByString:@" "] objectAtIndex:0];
+    NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:str_DateFormatter_yyyy_MM_dd];
+    if ([plan.iscompleted isEqualToString:@"0"]
+        && [beginDate compare:[NSDate date]] == NSOrderedDescending) {
+        labelCreateDate.text = plan.beginDate;
     }
     if ([plan.isnotify isEqualToString:@"1"]) {
         imgViewAlarm.hidden = NO;

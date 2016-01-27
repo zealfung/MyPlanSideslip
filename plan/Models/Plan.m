@@ -12,14 +12,13 @@ NSString *const kPlan_PlanId = @"planid";
 NSString *const kPlan_Account = @"account";
 NSString *const kPlan_Content = @"content";
 NSString *const kPlan_CreateTime = @"createtime";
+NSString *const kPlan_BeginDate = @"beginDate";
 NSString *const kPlan_CompleteTime = @"completetime";
 NSString *const kPlan_UpdateTime = @"updatetime";
 NSString *const kPlan_IsCompleted = @"iscompleted";
-NSString *const kPlan_PlanType = @"plantype";
 NSString *const kPlan_IsNotify = @"isnotify";
 NSString *const kPlan_NotifyTime = @"notifytime";
 NSString *const kPlan_IsDeleted = @"isdeleted";
-NSString *const kPlan_IsEverydayNotify = @"isEverydayNotify";
 
 
 @implementation Plan
@@ -28,14 +27,13 @@ NSString *const kPlan_IsEverydayNotify = @"isEverydayNotify";
 @synthesize account = _account;
 @synthesize content = _content;
 @synthesize createtime = _createtime;
+@synthesize beginDate = _beginDate;
 @synthesize completetime = _completetime;
 @synthesize updatetime = _updatetime;
 @synthesize iscompleted = _iscompleted;
-@synthesize plantype = _plantype;
 @synthesize isnotify = _isnotify;
 @synthesize notifytime = _notifytime;
 @synthesize isdeleted = _isdeleted;
-@synthesize isEverydayNotify = _isEverydayNotify;
 
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
@@ -45,14 +43,13 @@ NSString *const kPlan_IsEverydayNotify = @"isEverydayNotify";
         self.account = [dict objectOrNilForKey:kPlan_Account];
         self.content = [dict objectOrNilForKey:kPlan_Content];
         self.createtime = [dict objectOrNilForKey:kPlan_CreateTime];
+        self.beginDate = [dict objectOrNilForKey:kPlan_BeginDate];
         self.completetime = [dict objectOrNilForKey:kPlan_CompleteTime];
         self.updatetime = [dict objectOrNilForKey:kPlan_UpdateTime];
         self.iscompleted = [dict objectOrNilForKey:kPlan_IsCompleted];
-        self.plantype = [dict objectOrNilForKey:kPlan_PlanType];
         self.isnotify = [dict objectOrNilForKey:kPlan_IsNotify];
         self.notifytime = [dict objectOrNilForKey:kPlan_NotifyTime];
         self.isdeleted = [dict objectOrNilForKey:kPlan_IsDeleted];
-        self.isEverydayNotify = [[dict objectOrNilForKey:kPlan_IsEverydayNotify] boolValue];
     }
     return self;
 }
@@ -64,14 +61,13 @@ NSString *const kPlan_IsEverydayNotify = @"isEverydayNotify";
     self.account = [aDecoder decodeObjectForKey:kPlan_Account];
     self.content = [aDecoder decodeObjectForKey:kPlan_Content];
     self.createtime = [aDecoder decodeObjectForKey:kPlan_CreateTime];
+    self.beginDate = [aDecoder decodeObjectForKey:kPlan_BeginDate];
     self.completetime = [aDecoder decodeObjectForKey:kPlan_CompleteTime];
     self.updatetime = [aDecoder decodeObjectForKey:kPlan_UpdateTime];
     self.iscompleted = [aDecoder decodeObjectForKey:kPlan_IsCompleted];
-    self.plantype = [aDecoder decodeObjectForKey:kPlan_PlanType];
     self.isnotify = [aDecoder decodeObjectForKey:kPlan_IsNotify];
     self.notifytime = [aDecoder decodeObjectForKey:kPlan_NotifyTime];
     self.isdeleted = [aDecoder decodeObjectForKey:kPlan_IsDeleted];
-    self.isEverydayNotify = [aDecoder decodeBoolForKey:kPlan_IsEverydayNotify];
     return self;
 }
 
@@ -80,14 +76,13 @@ NSString *const kPlan_IsEverydayNotify = @"isEverydayNotify";
     [aCoder encodeObject:_account forKey:kPlan_Account];
     [aCoder encodeObject:_content forKey:kPlan_Content];
     [aCoder encodeObject:_createtime forKey:kPlan_CreateTime];
+    [aCoder encodeObject:_beginDate forKey:kPlan_BeginDate];
     [aCoder encodeObject:_completetime forKey:kPlan_CompleteTime];
     [aCoder encodeObject:_updatetime forKey:kPlan_UpdateTime];
     [aCoder encodeObject:_iscompleted forKey:kPlan_IsCompleted];
-    [aCoder encodeObject:_plantype forKey:kPlan_PlanType];
     [aCoder encodeObject:_isnotify forKey:kPlan_IsNotify];
     [aCoder encodeObject:_notifytime forKey:kPlan_NotifyTime];
     [aCoder encodeObject:_isdeleted forKey:kPlan_IsDeleted];
-    [aCoder encodeBool:_isEverydayNotify forKey:kPlan_IsEverydayNotify];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -96,14 +91,13 @@ NSString *const kPlan_IsEverydayNotify = @"isEverydayNotify";
     copy.account = [self.account copyWithZone:zone];
     copy.content = [self.content copyWithZone:zone];
     copy.createtime = [self.createtime copyWithZone:zone];
+    copy.beginDate = [self.beginDate copyWithZone:zone];
     copy.completetime = [self.completetime copyWithZone:zone];
     copy.updatetime = [self.updatetime copyWithZone:zone];
     copy.iscompleted = [self.iscompleted copyWithZone:zone];
-    copy.plantype = [self.plantype copyWithZone:zone];
     copy.isnotify = [self.isnotify copyWithZone:zone];
     copy.notifytime = [self.notifytime copyWithZone:zone];
     copy.isdeleted = [self.isdeleted copyWithZone:zone];
-    copy.isEverydayNotify = self.isEverydayNotify;
     return copy;
 }
 

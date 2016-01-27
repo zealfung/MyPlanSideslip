@@ -143,7 +143,7 @@
     plan.planid = [dict objectForKey:@"tag"];
     plan.createtime = [dict objectForKey:@"createtime"];
     plan.content = [dict objectForKey:@"content"];
-    plan.plantype = [dict objectForKey:@"plantype"];
+    plan.beginDate = [dict objectForKey:@"beginDate"];
     plan.iscompleted = [dict objectForKey:@"iscompleted"];
     plan.completetime = [dict objectForKey:@"completetime"];
     plan.isnotify = @"1";

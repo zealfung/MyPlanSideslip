@@ -46,11 +46,11 @@
 
 + (Settings *)getPersonalSettings;
 
-+ (NSArray *)getPlanByPlantype:(NSString *)plantype startIndex:(NSInteger)startIndex;
++ (NSArray *)getPlan:(BOOL)isEverydayPlan startIndex:(NSInteger)startIndex;
 
-+ (NSString *)getPlanTotalCountByPlantype:(NSString *)plantype;
++ (NSString *)getPlanTotalCount;
 
-+ (NSString *)getPlanCompletedCountByPlantype:(NSString *)plantype;
++ (NSString *)getPlanCompletedCount;
 
 + (NSArray *)getPhoto:(NSInteger)startIndex;
 

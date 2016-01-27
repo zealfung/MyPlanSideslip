@@ -24,6 +24,18 @@ static BOOL finishTask;
 
 @implementation DataCenter
 
++ (void)setPlanBeginDate {
+    NSString *flag = [UserDefaults objectForKey:str_SetBeginDate_Flag];
+    if (!flag || ![flag isEqualToString:@"1"]) {
+        NSArray *array = [PlanCache getPlanForSync:nil];
+        for (Plan *plan in array) {
+            [PlanCache storePlan:plan];
+        }
+        [UserDefaults setObject:@"1" forKey:str_SetBeginDate_Flag];
+        [UserDefaults synchronize];
+    }
+}
+
 + (void)startSyncData {
     
     if (![LogIn isLogin]
@@ -469,7 +481,7 @@ static BOOL finishTask;
                                       @"isCompleted":plan.iscompleted,
                                       @"isNotify":plan.isnotify,
                                       @"isDeleted":plan.isdeleted,
-                                      @"planType":plan.plantype};
+                                      @"beginDate":plan.beginDate};
                 [newPlan saveAllWithDictionary:dic];
                 BmobACL *acl = [BmobACL ACL];
                 [acl setReadAccessForUser:user];//设置只有当前用户可读
@@ -512,7 +524,7 @@ static BOOL finishTask;
 
 + (void)syncServerToLocalForPlan {
     BmobUser *user = [BmobUser getCurrentUser];
-    NSString *count = [PlanCache getPlanTotalCountByPlantype:@"1"];
+    NSString *count = [PlanCache getPlanTotalCount];
     __weak typeof(self) weakSelf = self;
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
@@ -563,7 +575,7 @@ static BOOL finishTask;
     plan.iscompleted = [obj objectForKey:@"isCompleted"];
     plan.isnotify = [obj objectForKey:@"isNotify"];
     plan.isdeleted = [obj objectForKey:@"isDeleted"];
-    plan.plantype = [obj objectForKey:@"planType"];
+    plan.beginDate = [obj objectForKey:@"beginDate"];
     [PlanCache storePlan:plan];
 }
 

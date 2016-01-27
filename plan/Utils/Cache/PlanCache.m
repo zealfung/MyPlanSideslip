@@ -173,12 +173,22 @@ static NSMutableDictionary *__contactsOnlineState;
     // 计划
     if (![__db tableExists:str_TableName_Plan]) {
         
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, planid TEXT, content TEXT, createtime TEXT, completetime TEXT, updatetime TEXT, iscompleted TEXT, isnotify TEXT, notifytime TEXT, plantype TEXT, isdeleted TEXT)", str_TableName_Plan];
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, planid TEXT, content TEXT, createtime TEXT, completetime TEXT, updatetime TEXT, iscompleted TEXT, isnotify TEXT, notifytime TEXT, beginDate TEXT, isdeleted TEXT)", str_TableName_Plan];
         
         BOOL b = [__db executeUpdate:sqlString];
         
         FMDBQuickCheck(b, sqlString, __db);
         
+    } else { //新增字段
+        NSString *beginDate = @"beginDate";//计划开始日期 2016-01-27
+        if (![__db columnExists:beginDate inTableWithName:str_TableName_Plan]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Plan, beginDate];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
     }
     
     //相册
@@ -572,8 +582,8 @@ static NSMutableDictionary *__contactsOnlineState;
         if (!plan.iscompleted) {
             plan.iscompleted = @"0";
         }
-        if (!plan.plantype) {
-            plan.plantype = @"";
+        if (!plan.beginDate) {
+            plan.beginDate = [[plan.createtime componentsSeparatedByString:@" "] objectAtIndex:0];
         }
         if (!plan.notifytime) {
             plan.notifytime = @"";
@@ -591,9 +601,9 @@ static NSMutableDictionary *__contactsOnlineState;
         BOOL b = NO;
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, createtime=?, completetime=?, updatetime=?, iscompleted=?, isnotify=?, notifytime=?, plantype=?, isdeleted=? WHERE planid=? AND account=?", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, createtime=?, completetime=?, updatetime=?, iscompleted=?, isnotify=?, notifytime=?, beginDate=?, isdeleted=? WHERE planid=? AND account=?", str_TableName_Plan];
             
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.plantype, plan.isdeleted, plan.planid, plan.account]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.beginDate, plan.isdeleted, plan.planid, plan.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
@@ -608,25 +618,31 @@ static NSMutableDictionary *__contactsOnlineState;
             }
         } else {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, plantype, isdeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Plan];
             
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.account, plan.planid, plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.plantype, plan.isdeleted]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.account, plan.planid, plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.beginDate, plan.isdeleted]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
             //添加提醒
             if (b && [plan.isnotify isEqualToString:@"1"]) {
                 
-                [self addLocalNotification:plan];
+                [self addPlanNotification:plan];
             }
             //更新5天没有新建计划的提醒时间
             [self setFiveDayNotification];
         }
         if (b) {
-            [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
+//            [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
 //            if (![Config shareInstance].isSyncingData) {
 //                [self updateSettingsUpdatedTime];
 //            }
+            NSString *flag = [UserDefaults objectForKey:str_SetBeginDate_Flag];
+            if (!flag || ![flag isEqualToString:@"1"]) {
+
+            } else {
+                [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
+            }
         }
         return b;
     }
@@ -1264,7 +1280,7 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSArray *)getPlanByPlantype:(NSString *)plantype startIndex:(NSInteger)startIndex {
++ (NSArray *)getPlan:(BOOL)isEverydayPlan startIndex:(NSInteger)startIndex {
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1279,10 +1295,20 @@ static NSMutableDictionary *__contactsOnlineState;
             account = user.objectId;
         }
         
-        NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, plantype, isdeleted FROM %@ WHERE plantype=? AND account=? AND isdeleted=0 ORDER BY iscompleted, createtime DESC Limit ? Offset ?", str_TableName_Plan];
+        NSString *condition = @"";
+        NSString *order = @"";
+        if (isEverydayPlan) {
+            condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd]];
+            order = @"DESC";
+        } else {
+            condition = [NSString stringWithFormat:@"datetime(beginDate)>datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd]];
+            order = @"ASC";
+        }
         
-        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[plantype, account, @(kPlanLoadMax), @(startIndex)]];
+        NSMutableArray *array = [NSMutableArray array];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE %@ AND account=? AND isdeleted=0 ORDER BY iscompleted, beginDate %@ Limit ? Offset ?", str_TableName_Plan, condition, order];
+        
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, @(kPlanLoadMax), @(startIndex)]];
         
         while ([rs next]) {
             
@@ -1296,8 +1322,14 @@ static NSMutableDictionary *__contactsOnlineState;
             plan.iscompleted = [rs stringForColumn:@"iscompleted"];
             plan.isnotify = [rs stringForColumn:@"isnotify"];
             plan.notifytime = [rs stringForColumn:@"notifytime"];
-            plan.plantype = [rs stringForColumn:@"plantype"];
+            plan.beginDate = [rs stringForColumn:@"beginDate"];
             plan.isdeleted = [rs stringForColumn:@"isdeleted"];
+            
+            if (!plan.beginDate
+                || plan.beginDate.length == 0) {
+                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:str_DateFormatter_yyyy_MM_dd];
+            }
             
             [array addObject:plan];
         }
@@ -1589,7 +1621,7 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSString *)getPlanTotalCountByPlantype:(NSString *)plantype {
++ (NSString *)getPlanTotalCount {
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1605,9 +1637,9 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         NSString *total = @"0";
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE plantype=? AND account=? AND isdeleted=0", str_TableName_Plan];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE account=? AND isdeleted=0", str_TableName_Plan];
         
-        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[plantype, account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
         if([rs next]) {
             
@@ -1619,7 +1651,7 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSString *)getPlanCompletedCountByPlantype:(NSString *)plantype {
++ (NSString *)getPlanCompletedCount {
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1635,9 +1667,9 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         NSString *completed = @"0";
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as completed FROM %@ WHERE plantype=? AND account=? AND iscompleted=1 AND isdeleted=0", str_TableName_Plan];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as completed FROM %@ WHERE account=? AND iscompleted=1 AND isdeleted=0", str_TableName_Plan];
         
-        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[plantype, account]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
         if([rs next]) {
             
@@ -1709,7 +1741,7 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (void)addLocalNotification:(Plan *)plan {
++ (void)addPlanNotification:(Plan *)plan {
     //时间格式：yyyy-MM-dd HH:mm
     NSDate *date = [CommonFunction NSStringDateToNSDate:plan.notifytime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
     
@@ -1721,23 +1753,19 @@ static NSMutableDictionary *__contactsOnlineState;
     [destDic setObject:@([date timeIntervalSince1970]) forKey:@"time"];
     [destDic setObject:@(NotificationTypePlan) forKey:@"type"];
     [destDic setObject:plan.createtime forKey:@"createtime"];
-    [destDic setObject:plan.plantype forKey:@"plantype"];
+    [destDic setObject:plan.beginDate forKey:@"beginDate"];
     [destDic setObject:plan.iscompleted forKey:@"iscompleted"];
     [destDic setObject:plan.completetime forKey:@"completetime"];
     [destDic setObject:plan.content forKey:@"content"];
     [destDic setObject:plan.notifytime forKey:@"notifytime"];
-    if (plan.isEverydayNotify) {
-        [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content repeatInterval:NSCalendarUnitDay];
-    } else {
-        [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
-    }
+    [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
 }
 
 + (void)updateLocalNotification:(Plan *)plan {
     //首先取消该计划的本地所有通知
     [self cancelLocalNotification:plan.planid];
     //重新添加新的通知
-    [self addLocalNotification:plan];
+    [self addPlanNotification:plan];
 }
 
 + (void)cancelLocalNotification:(NSString*)planid {
@@ -1837,7 +1865,8 @@ static NSMutableDictionary *__contactsOnlineState;
     fiveDayPlan.account = account;
     fiveDayPlan.planid = Notify_FiveDay_Tag;
     fiveDayPlan.createtime = Notify_FiveDay_Time;
-    fiveDayPlan.plantype = @"2";
+    [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd];
+    fiveDayPlan.beginDate = [dateFormatter stringFromDate:[[NSDate date] dateByAddingTimeInterval:5 * 24 * 3600]];
     fiveDayPlan.iscompleted = @"0";
     fiveDayPlan.completetime = Notify_FiveDay_Time;
     fiveDayPlan.content = str_Notify_Tips2;
@@ -1846,7 +1875,7 @@ static NSMutableDictionary *__contactsOnlineState;
     if (hasFiveDayNotification) {//更新提醒时间
         [self updateLocalNotification:fiveDayPlan];
     } else {//新建提醒
-        [self addLocalNotification:fiveDayPlan];
+        [self addPlanNotification:fiveDayPlan];
     }
 }
 
@@ -1953,9 +1982,9 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *sqlString = @"";
         if (syntime) {
-            sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, plantype, isdeleted FROM %@ WHERE account=? AND updatetime >=?", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=? AND updatetime >=?", str_TableName_Plan];
         } else {
-            sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, plantype, isdeleted FROM %@ WHERE account=?", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=?", str_TableName_Plan];
         }
         
         FMResultSet *rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[account]] : [__db executeQuery:sqlString withArgumentsInArray:@[account, syntime]];
@@ -1972,8 +2001,14 @@ static NSMutableDictionary *__contactsOnlineState;
             plan.iscompleted = [rs stringForColumn:@"iscompleted"] ? [rs stringForColumn:@"iscompleted"] : @"0";
             plan.isnotify = [rs stringForColumn:@"isnotify"] ? [rs stringForColumn:@"isnotify"] : @"0";
             plan.notifytime = [rs stringForColumn:@"notifytime"] ? [rs stringForColumn:@"notifytime"] : @"";
-            plan.plantype = [rs stringForColumn:@"plantype"];
+            plan.beginDate = [rs stringForColumn:@"beginDate"];
             plan.isdeleted = [rs stringForColumn:@"isdeleted"];
+            
+            if (!plan.beginDate
+                || plan.beginDate.length == 0) {
+                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:str_DateFormatter_yyyy_MM_dd];
+            }
             
             [array addObject:plan];
         }
@@ -1992,7 +2027,7 @@ static NSMutableDictionary *__contactsOnlineState;
             }
         }
         
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, plantype, isdeleted FROM %@ WHERE account=? AND planid =?", str_TableName_Plan];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=? AND planid =?", str_TableName_Plan];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, planid]];
         
@@ -2008,9 +2043,14 @@ static NSMutableDictionary *__contactsOnlineState;
             plan.iscompleted = [rs stringForColumn:@"iscompleted"];
             plan.isnotify = [rs stringForColumn:@"isnotify"];
             plan.notifytime = [rs stringForColumn:@"notifytime"];
-            plan.plantype = [rs stringForColumn:@"plantype"];
+            plan.beginDate = [rs stringForColumn:@"beginDate"];
             plan.isdeleted = [rs stringForColumn:@"isdeleted"];
             
+            if (!plan.beginDate
+                || plan.beginDate.length == 0) {
+                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:str_DateFormatter_yyyy_MM_dd];
+            }
         }
         [rs close];
         

@@ -6,6 +6,7 @@
 //  Copyright (c) 2015年 Fengzy. All rights reserved.
 //
 
+#import "DataCenter.h"
 #import "PlanCache.h"
 #import "ShareCenter.h"
 #import "ThreeSubView.h"
@@ -60,6 +61,8 @@ NSUInteger const kSecondsPerDay = 86400;
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:Notify_Plan_Save object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:Notify_Messages_Save object:nil];
     
+    [DataCenter setPlanBeginDate];
+    
     [self loadCustomView];
 }
 
@@ -113,7 +116,7 @@ NSUInteger const kSecondsPerDay = 86400;
     plan.planid = [dict objectForKey:@"tag"];
     plan.createtime = [dict objectForKey:@"createtime"];
     plan.content = [dict objectForKey:@"content"];
-    plan.plantype = [dict objectForKey:@"plantype"];
+    plan.beginDate = [dict objectForKey:@"beginDate"];
     plan.iscompleted = [dict objectForKey:@"iscompleted"];
     plan.completetime = [dict objectForKey:@"completetime"];
     plan.isnotify = @"1";
@@ -123,7 +126,6 @@ NSUInteger const kSecondsPerDay = 86400;
         return;
     }
     AddPlanViewController *controller = [[AddPlanViewController alloc]init];
-    controller.planType = [plan.plantype isEqualToString:@"1"] ? EverydayPlan : LongPlan;
     controller.operationType = Edit;
     controller.plan = plan;
     controller.hidesBottomBarWhenPushed = YES;
@@ -402,13 +404,13 @@ NSUInteger const kSecondsPerDay = 86400;
         ThreeSubView *everydayStatisticsView = [[ThreeSubView alloc] initWithFrame:CGRectMake(subviewWidth, subviewHeight, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
         
         //plantype 1 每日计划
-        float total = [[PlanCache getPlanTotalCountByPlantype:@"1"] floatValue];
+        float total = [[PlanCache getPlanTotalCount] floatValue];
         [everydayStatisticsView.leftButton.titleLabel setFont:font_Normal_16];
         [everydayStatisticsView.leftButton setAllTitleColor:color_Black];
         [everydayStatisticsView.leftButton setAllTitle:[NSString stringWithFormat:@"%.0f", total]];
         everydayStatisticsView.fixLeftWidth = subviewWidth;
         
-        float done = [[PlanCache getPlanCompletedCountByPlantype:@"1"] floatValue];
+        float done = [[PlanCache getPlanCompletedCount] floatValue];
         [everydayStatisticsView.centerButton.titleLabel setFont:font_Normal_16];
         [everydayStatisticsView.centerButton setAllTitleColor:color_Green_Emerald];
         [everydayStatisticsView.centerButton setAllTitle:[NSString stringWithFormat:@"%.0f", done]];
@@ -430,14 +432,14 @@ NSUInteger const kSecondsPerDay = 86400;
     {
         ThreeSubView *longtermStatisticsView = [[ThreeSubView alloc] initWithFrame:CGRectMake(subviewWidth, subviewHeight * 2, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
         
-        //plantype 0 长远计划
-        float total = [[PlanCache getPlanTotalCountByPlantype:@"0"] floatValue];
+        //plantype 0 未来计划
+        float total = [[PlanCache getPlanTotalCount] floatValue];
         [longtermStatisticsView.leftButton.titleLabel setFont:font_Normal_16];
         [longtermStatisticsView.leftButton setAllTitleColor:color_Black];
         [longtermStatisticsView.leftButton setAllTitle:[NSString stringWithFormat:@"%.0f", total]];
         longtermStatisticsView.fixLeftWidth = subviewWidth;
         
-        float done = [[PlanCache getPlanCompletedCountByPlantype:@"0"] floatValue];
+        float done = [[PlanCache getPlanCompletedCount] floatValue];
         [longtermStatisticsView.centerButton.titleLabel setFont:font_Normal_16];
         [longtermStatisticsView.centerButton setAllTitleColor:color_Green_Emerald];
         [longtermStatisticsView.centerButton setAllTitle:[NSString stringWithFormat:@"%.0f", done]];

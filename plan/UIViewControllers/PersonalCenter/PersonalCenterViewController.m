@@ -28,8 +28,8 @@
     PieceButton *pbMaxCheckInDates; //最大连续签到天数
     PieceButton *pbTotalEverydayPlan;//每日计划总数
     PieceButton *pbTotalEverydayPlanDone;//每日计划完成总数
-    PieceButton *pbTotalLongtermPlan;//长远计划总数
-    PieceButton *pbTotalLongtermPlanDone;//长远计划完成总数
+    PieceButton *pbTotalLongtermPlan;//未来计划总数
+    PieceButton *pbTotalLongtermPlanDone;//未来计划完成总数
     PieceButton *pbTotalTask;//任务总数
     PieceButton *pbTotalPhoto;//影像总数
     
@@ -197,10 +197,10 @@
         yOffset =  CGRectGetMaxY(btn.frame) + 10;
     }
     {
-        NSString *dayPlanTotalCount = [PlanCache getPlanTotalCountByPlantype:@"1"];
-        NSString *doneDayPlanTotalCount = [PlanCache getPlanCompletedCountByPlantype:@"1"];
-        NSString *longPlanTotalCount = [PlanCache getPlanTotalCountByPlantype:@"0"];
-        NSString *doneLongPlanTotalCount = [PlanCache getPlanCompletedCountByPlantype:@"0"];
+        NSString *dayPlanTotalCount = [PlanCache getPlanTotalCount];
+        NSString *doneDayPlanTotalCount = [PlanCache getPlanCompletedCount];
+        NSString *longPlanTotalCount = [PlanCache getPlanTotalCount];
+        NSString *doneLongPlanTotalCount = [PlanCache getPlanCompletedCount];
         NSString *taskTotalCount = [PlanCache getTaskTotalCount];
         NSString *photoTotalCount = [PlanCache getPhotoTotalCount];
         Statistics *statistics= [PlanCache getStatistics];
