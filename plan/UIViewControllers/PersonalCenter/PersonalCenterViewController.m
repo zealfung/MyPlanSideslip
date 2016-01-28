@@ -26,10 +26,8 @@
     UIView *viewPieces;
     PieceButton *pbRecentlyCheckInDates;//最近连续签到天数
     PieceButton *pbMaxCheckInDates; //最大连续签到天数
-    PieceButton *pbTotalEverydayPlan;//每日计划总数
-    PieceButton *pbTotalEverydayPlanDone;//每日计划完成总数
-    PieceButton *pbTotalLongtermPlan;//未来计划总数
-    PieceButton *pbTotalLongtermPlanDone;//未来计划完成总数
+    PieceButton *pbTotalPlan;//计划总数
+    PieceButton *pbTotalPlanDone;//计划完成总数
     PieceButton *pbTotalTask;//任务总数
     PieceButton *pbTotalPhoto;//影像总数
     
@@ -197,32 +195,26 @@
         yOffset =  CGRectGetMaxY(btn.frame) + 10;
     }
     {
-        NSString *dayPlanTotalCount = [PlanCache getPlanTotalCount:@"DAY"];
+        NSString *dayPlanTotalCount = [PlanCache getPlanTotalCount:@"ALL"];
         NSString *doneDayPlanTotalCount = [PlanCache getPlanCompletedCount];
-        NSString *longPlanTotalCount = [PlanCache getPlanTotalCount:@"FUTURE"];
-        NSString *doneLongPlanTotalCount = [PlanCache getPlanCompletedCount];
         NSString *taskTotalCount = [PlanCache getTaskTotalCount];
         NSString *photoTotalCount = [PlanCache getPhotoTotalCount];
         Statistics *statistics= [PlanCache getStatistics];
         
-        viewPieces = [[UIView alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, kPieceButtonHeight * 4)];
+        viewPieces = [[UIView alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, kPieceButtonHeight * 3)];
         
         pbRecentlyCheckInDates = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle1 content:statistics.recentMax icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
         pbMaxCheckInDates = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle2 content:statistics.recordMax icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F2F3F5];
-        pbTotalEverydayPlan = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle3 content:dayPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F2F3F5];
-        pbTotalEverydayPlanDone = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle4 content:doneDayPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
-        pbTotalLongtermPlan = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle5 content:longPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
-        pbTotalLongtermPlanDone = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle6 content:doneLongPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F2F3F5];
+        pbTotalPlan = [[PieceButton alloc] initWithTitle:str_FirstView_7 content:dayPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F2F3F5];
+        pbTotalPlanDone = [[PieceButton alloc] initWithTitle:str_FirstView_8 content:doneDayPlanTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
         pbTotalTask = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle7 content:taskTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F2F3F5];
         pbTotalPhoto = [[PieceButton alloc] initWithTitle:str_PersonalCenter_SubTitle8 content:photoTotalCount icon:[UIImage imageNamed:png_ImageDefault] bgColor:color_F9F2EA];
         
         NSMutableArray *array = [NSMutableArray array];
         [array addObject:pbRecentlyCheckInDates];
         [array addObject:pbMaxCheckInDates];
-        [array addObject:pbTotalEverydayPlan];
-        [array addObject:pbTotalEverydayPlanDone];
-        [array addObject:pbTotalLongtermPlan];
-        [array addObject:pbTotalLongtermPlanDone];
+        [array addObject:pbTotalPlan];
+        [array addObject:pbTotalPlanDone];
         [array addObject:pbTotalTask];
         [array addObject:pbTotalPhoto];
         
@@ -336,40 +328,31 @@
 
 #pragma mark - UIActionSheetDelegate
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
     if (buttonIndex==[actionSheet cancelButtonIndex]) {
         
     } else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:str_Settings_SetAvatar_Camera]) {
         //拍照
         if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            
             UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
             imagePickerController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor darkGrayColor]};
             imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
             imagePickerController.allowsEditing = YES;
             imagePickerController.delegate = self;
             [self presentViewController:imagePickerController animated:YES completion:nil];
-            
         } else {
-            
             [self alertButtonMessage:str_Common_Tips2];
         }
-        
     } else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:str_Settings_SetAvatar_Album]) {
         //从相册选择
         if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-            
             UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
             imagePickerController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor darkGrayColor]};
             imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
             imagePickerController.allowsEditing = YES;
             imagePickerController.delegate = self;
             [self presentViewController:imagePickerController animated:YES completion:nil];
-            
         } else {
-            
             [self alertButtonMessage:str_Common_Tips1];
-            
         }
     }
 }
@@ -380,7 +363,6 @@
 }
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo {
-    
     [picker dismissViewControllerAnimated:YES completion:nil];
     UIImage *img = [CommonFunction compressImage:image];
     [Config shareInstance].settings.centerTop = img;
