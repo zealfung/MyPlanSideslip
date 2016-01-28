@@ -77,4 +77,7 @@
 //用户等级icon图标
 + (UIImage *)getUserLevelIcon:(NSString *)level;
 
+//计划开始时间显示格式：今天，明天，或日期
++ (NSString *)getBeginDateStringForShow:(NSString *)date;
+
 @end

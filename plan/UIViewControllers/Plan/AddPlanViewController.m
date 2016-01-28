@@ -78,7 +78,7 @@
         labelBeginTime.textColor = color_Black;
         labelBeginTime.font = font_Normal_18;
         labelBeginTime.userInteractionEnabled = YES;
-        labelBeginTime.text = [NSString stringWithFormat:@"开始时间：%@", @"今天"];
+        labelBeginTime.text = [NSString stringWithFormat:@"开始时间：%@", [CommonFunction getBeginDateStringForShow:beginDate]];
         UITapGestureRecognizer *labelBeginTimeTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(beginDateTouchAction:)];
         [labelBeginTime addGestureRecognizer:labelBeginTimeTapGestureRecognizer];
         [self.view addSubview:labelBeginTime];
@@ -110,7 +110,7 @@
     if (self.operationType == Edit) {
         txtViewContent.text = self.plan.content;
         beginDate = self.plan.beginDate;
-        labelBeginDate.text = [NSString stringWithFormat:@"开始时间：%@", beginDate];
+        labelBeginDate.text = [NSString stringWithFormat:@"开始时间：%@", [CommonFunction getBeginDateStringForShow:beginDate]];
         if ([self.plan.isnotify isEqualToString:@"1"]) {
             [switchBtnAlarm setOn:YES];
             labelNotifyTime.text = self.plan.notifytime;
@@ -205,7 +205,7 @@
     if (isSelectBeginDate) {
         [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd];
         beginDate = [dateFormatter stringFromDate:datePicker.date];
-        labelBeginDate.text = [NSString stringWithFormat:@"开始时间：%@", [self getBeginDateStringForShow:beginDate]];
+        labelBeginDate.text = [NSString stringWithFormat:@"开始时间：%@", [CommonFunction getBeginDateStringForShow:beginDate]];
     } else {
         [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
         notifyTime = [dateFormatter stringFromDate:datePicker.date];
@@ -221,20 +221,6 @@
     NSString *time = labelNotifyTime.text;
     if (!time || [time isEqualToString:@""]) {
         [switchBtnAlarm setOn:NO];
-    }
-}
-
-- (NSString *)getBeginDateStringForShow:(NSString *)date {
-    NSDate *today = [NSDate date];
-    NSDate *tomorrow = [today dateByAddingTimeInterval:24 * 3600];
-    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:str_DateFormatter_yyyy_MM_dd];
-    NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:str_DateFormatter_yyyy_MM_dd];
-    if ([date isEqualToString:todayString]) {
-        return str_Common_Time2;
-    } else if ([date isEqualToString:tomorrowString]) {
-        return str_Common_Time9;
-    } else {
-        return date;
     }
 }
 

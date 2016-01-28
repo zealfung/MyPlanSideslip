@@ -325,4 +325,19 @@ static NSString * const kKeyMinutes = @"minutes";
     }
 }
 
+//计划开始时间显示格式：今天，明天，或日期
++ (NSString *)getBeginDateStringForShow:(NSString *)date {
+    NSDate *today = [NSDate date];
+    NSDate *tomorrow = [today dateByAddingTimeInterval:24 * 3600];
+    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:str_DateFormatter_yyyy_MM_dd];
+    NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:str_DateFormatter_yyyy_MM_dd];
+    if ([date isEqualToString:todayString]) {
+        return str_Common_Time2;
+    } else if ([date isEqualToString:tomorrowString]) {
+        return str_Common_Time9;
+    } else {
+        return date;
+    }
+}
+
 @end

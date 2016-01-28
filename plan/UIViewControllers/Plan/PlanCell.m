@@ -226,7 +226,7 @@ NSUInteger const kBounceSpace = 20;
     NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:str_DateFormatter_yyyy_MM_dd];
     if ([plan.iscompleted isEqualToString:@"0"]
         && [beginDate compare:[NSDate date]] == NSOrderedDescending) {
-        labelCreateDate.text = plan.beginDate;
+        labelCreateDate.text = [CommonFunction getBeginDateStringForShow:plan.beginDate];
     }
     if ([plan.isnotify isEqualToString:@"1"]) {
         imgViewAlarm.hidden = NO;
