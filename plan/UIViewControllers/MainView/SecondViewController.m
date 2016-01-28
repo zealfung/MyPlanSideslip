@@ -158,7 +158,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:str_DateFormatter_yyyy_MM_dd];
         NSInteger days = [self calculateDayFromDate:[NSDate date] toDate:beginDate];
         
-        if (days > 0 && days <= 7) {//一星期内开始
+        if (days >= 0 && days <= 7) {//一星期内开始
             key = str_Plan_FutureWeek;
         } else if (days > 7 && days <= 30) {//一个月内开始
             key = str_Plan_FutureMonth;
@@ -686,6 +686,12 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     if ([plan.iscompleted isEqualToString:@"0"]) {
         plan.iscompleted = @"1";
         plan.completetime = timeNow;
+        //如果预计开始时间是在今天之后的，属于提前完成，把预计开始时间设成今天
+        NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:str_DateFormatter_yyyy_MM_dd];
+        NSInteger days = [self calculateDayFromDate:[NSDate date] toDate:beginDate];
+        if (days > 0) {
+            plan.beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+        }
     } else {
         plan.iscompleted = @"0";
         plan.completetime = @"";
