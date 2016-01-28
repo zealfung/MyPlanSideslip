@@ -340,4 +340,10 @@ static NSString * const kKeyMinutes = @"minutes";
     }
 }
 
+//将整型数字转换成带千分号的格式
++ (NSString *)integerToDecimalStyle:(NSInteger)integer {
+    NSNumberFormatter *formatter = [NSNumberFormatter new];
+    [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
+    return [formatter stringFromNumber:[NSNumber numberWithInteger:integer]];
+}
 @end
