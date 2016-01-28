@@ -11,7 +11,7 @@
 @implementation GrowingTextView
 
 - (void)setUpWithPlaceholder:(NSString *)placeholder {
-    self.font = [UIFont systemFontOfSize:16];
+    self.font = font_Normal_16;
     self.scrollEnabled = NO;
     self.scrollsToTop = NO;
     self.showsHorizontalScrollIndicator = NO;
