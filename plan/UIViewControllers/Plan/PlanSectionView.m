@@ -34,14 +34,13 @@
         }
         titleLabel.font = font_Normal_18;
         titleLabel.text = title;
-        
-        NSInteger xOffset = 12;
+
         CGFloat arrowWidth = 7;
         CGFloat arrowHeight = 6;
         CGFloat titleWidth = 200;
         
-        toggleImageView.frame = CGRectMake(WIDTH_FULL_SCREEN - xOffset - arrowWidth, (kPlanSectionViewHeight - arrowHeight)/2, arrowWidth, arrowHeight);
-        titleLabel.frame = CGRectMake(xOffset, 0, titleWidth, kPlanSectionViewHeight);
+        toggleImageView.frame = CGRectMake(WIDTH_FULL_SCREEN - kEdgeInset - arrowWidth, (kPlanSectionViewHeight - arrowHeight)/2, arrowWidth, arrowHeight);
+        titleLabel.frame = CGRectMake(kEdgeInset, 0, titleWidth, kPlanSectionViewHeight);
         
         [self addSubview:toggleImageView];
         [self addSubview:titleLabel];
