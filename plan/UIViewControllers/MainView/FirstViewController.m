@@ -199,7 +199,6 @@ NSUInteger const kSecondsPerDay = 86400;
 }
 
 - (void)createLabelText {
-    
     NSString *nickname = str_NickName;
     NSInteger lifetime = 100;
     CGFloat labelHeight = HEIGHT_FULL_SCREEN / 62;
@@ -288,7 +287,7 @@ NSUInteger const kSecondsPerDay = 86400;
     [daysLeftSubView.centerButton.titleLabel setFont:font_Normal_24];
     [daysLeftSubView.centerButton setAllTitleColor:color_Red];
     if (![CommonFunction isEmptyString:[Config shareInstance].settings.birthday]) {
-        [daysLeftSubView.centerButton setAllTitle:[NSString stringWithFormat:@"%zd",daysLeft]];
+        [daysLeftSubView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:daysLeft]];
     } else {
         [daysLeftSubView.centerButton setAllTitle:@"X"];
     }
@@ -315,7 +314,7 @@ NSUInteger const kSecondsPerDay = 86400;
     [secondsLeftSubView.leftButton setAllTitle:str_FirstView_5];
     [secondsLeftSubView.centerButton.titleLabel setFont:font_Normal_24];
     [secondsLeftSubView.centerButton setAllTitleColor:color_Red];
-    [secondsLeftSubView.centerButton setAllTitle:[NSString stringWithFormat:@"%zd",kSecondsPerDay]];
+    [secondsLeftSubView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:kSecondsPerDay]];
     [secondsLeftSubView.rightButton.titleLabel setFont:font_Normal_16];
     [secondsLeftSubView.rightButton setAllTitleColor:color_Black];
     [secondsLeftSubView.rightButton setAllTitle:str_FirstView_6];
@@ -335,26 +334,26 @@ NSUInteger const kSecondsPerDay = 86400;
 }
 
 - (void)createStatisticsView {
-    
     BOOL isiPhone4oriPhone5 = iPhone4 || iPhone5;
     
     CGFloat xOffset = isiPhone4oriPhone5 ? WIDTH_FULL_SCREEN / 15 : WIDTH_FULL_SCREEN / 7;
     CGFloat viewWidth = WIDTH_FULL_SCREEN - xOffset * 2;
-    CGFloat subviewWidth = viewWidth / 4;
+    CGFloat subviewWidth = viewWidth / 3;
     CGFloat viewHeight = HEIGHT_FULL_SCREEN * 0.1875;
     CGFloat subviewHeight = viewHeight / 3;
     
     yOffset += iPhone4 ? ySpace : ySpace * 2;
     
-    UIView *statisticsBgView = [[UIView alloc] initWithFrame:CGRectMake(xOffset, yOffset, viewWidth, viewHeight)];
+    UIView *statisticsBgView = [[UIView alloc] initWithFrame:CGRectMake(xOffset, yOffset, viewWidth, subviewHeight * 2)];
     [self.view addSubview:statisticsBgView];
     [self addSeparatorForLeft:statisticsBgView];
+    [self addSeparatorForMiddleLeft:statisticsBgView];
+    [self addSeparatorForMiddleRight:statisticsBgView];
     [self addSeparatorForTop:statisticsBgView];
     [self addSeparatorForRight:statisticsBgView];
-    [self addSeparatorForBottom:statisticsBgView];
     statisticsView = statisticsBgView;
     
-    ThreeSubView *topTitleView = [[ThreeSubView alloc] initWithFrame:CGRectMake(subviewWidth, 0, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
+    ThreeSubView *topTitleView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, 0, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
     [topTitleView.leftButton.titleLabel setFont:font_Normal_16];
     [topTitleView.leftButton setAllTitleColor:color_Black];
     [topTitleView.leftButton setAllTitle:str_FirstView_7];
@@ -370,41 +369,12 @@ NSUInteger const kSecondsPerDay = 86400;
     [self addSeparatorForBottom:topTitleView];
     [topTitleView autoLayout];
     [statisticsView addSubview:topTitleView];
-    
-    ThreeSubView *topTitleView1 = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, 0, subviewWidth, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
-    [topTitleView1.leftButton.titleLabel setFont:font_Normal_16];
-    [topTitleView1.leftButton setAllTitleColor:color_Black];
-    [topTitleView1.leftButton setAllTitle:str_FirstView_10];
-    topTitleView1.fixLeftWidth = subviewWidth;
-    [self addSeparatorForRight:topTitleView1];
-    [self addSeparatorForBottom:topTitleView1];
-    [topTitleView1 autoLayout];
-    [statisticsView addSubview:topTitleView1];
-    
-    ThreeSubView *topTitleView2 = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight, subviewWidth, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
-    [topTitleView2.leftButton.titleLabel setFont:font_Normal_16];
-    [topTitleView2.leftButton setAllTitleColor:[CommonFunction getGenderColor]];
-    [topTitleView2.leftButton setAllTitle:str_FirstView_11];
-    topTitleView2.fixLeftWidth = subviewWidth;
-    [self addSeparatorForRight:topTitleView2];
-    [self addSeparatorForBottom:topTitleView2];
-    [topTitleView2 autoLayout];
-    [statisticsView addSubview:topTitleView2];
-    
-    ThreeSubView *topTitleView3 = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight * 2, subviewWidth, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
-    [topTitleView3.leftButton.titleLabel setFont:font_Normal_16];
-    [topTitleView3.leftButton setAllTitleColor:[CommonFunction getGenderColor]];
-    [topTitleView3.leftButton setAllTitle:str_FirstView_12];
-    topTitleView3.fixLeftWidth = subviewWidth;
-    [self addSeparatorForRight:topTitleView3];
-    [topTitleView3 autoLayout];
-    [statisticsView addSubview:topTitleView3];
-    
+
     {
-        ThreeSubView *everydayStatisticsView = [[ThreeSubView alloc] initWithFrame:CGRectMake(subviewWidth, subviewHeight, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
+        ThreeSubView *everydayStatisticsView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
         
         //plantype 1 每日计划
-        float total = [[PlanCache getPlanTotalCount:@"DAY"] floatValue];
+        float total = [[PlanCache getPlanTotalCount:@"ALL"] floatValue];
         [everydayStatisticsView.leftButton.titleLabel setFont:font_Normal_16];
         [everydayStatisticsView.leftButton setAllTitleColor:color_Black];
         [everydayStatisticsView.leftButton setAllTitle:[NSString stringWithFormat:@"%.0f", total]];
@@ -429,35 +399,7 @@ NSUInteger const kSecondsPerDay = 86400;
         [everydayStatisticsView autoLayout];
         [statisticsView addSubview:everydayStatisticsView];
     }
-    {
-        ThreeSubView *longtermStatisticsView = [[ThreeSubView alloc] initWithFrame:CGRectMake(subviewWidth, subviewHeight * 2, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
-        
-        //plantype 0 未来计划
-        float total = [[PlanCache getPlanTotalCount:@"FUTURE"] floatValue];
-        [longtermStatisticsView.leftButton.titleLabel setFont:font_Normal_16];
-        [longtermStatisticsView.leftButton setAllTitleColor:color_Black];
-        [longtermStatisticsView.leftButton setAllTitle:[NSString stringWithFormat:@"%.0f", total]];
-        longtermStatisticsView.fixLeftWidth = subviewWidth;
-        
-        float done = [[PlanCache getPlanCompletedCount] floatValue];
-        [longtermStatisticsView.centerButton.titleLabel setFont:font_Normal_16];
-        [longtermStatisticsView.centerButton setAllTitleColor:color_Green_Emerald];
-        [longtermStatisticsView.centerButton setAllTitle:[NSString stringWithFormat:@"%.0f", done]];
-        longtermStatisticsView.fixCenterWidth = subviewWidth;
-        
-        float percent = 0;
-        if (total > 0) {
-            percent = done*100 /total;
-        }
-        [longtermStatisticsView.rightButton.titleLabel setFont:font_Normal_16];
-        [longtermStatisticsView.rightButton setAllTitleColor:color_Red];
-        [longtermStatisticsView.rightButton setAllTitle:[NSString stringWithFormat:@"%.2f%%", percent]];
-        longtermStatisticsView.fixRightWidth = subviewWidth;
-        
-        [longtermStatisticsView autoLayout];
-        [statisticsView addSubview:longtermStatisticsView];
-    }
-    
+
     yOffset += viewHeight + 20;
 }
 
@@ -479,35 +421,42 @@ NSUInteger const kSecondsPerDay = 86400;
 }
 
 - (void)addSeparatorForTop:(UIView *)view {
-    
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(view.bounds) - 1, 1)];
     separator.backgroundColor = color_GrayLight;
     [view addSubview:separator];
 }
 
 - (void)addSeparatorForBottom:(UIView *)view {
-    
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(view.bounds) - 1, CGRectGetWidth(view.bounds) - 1, 1)];
     separator.backgroundColor = color_GrayLight;
     [view addSubview:separator];
 }
 
 - (void)addSeparatorForLeft:(UIView *)view {
-    
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, CGRectGetHeight(view.bounds))];
     separator.backgroundColor = color_GrayLight;
     [view addSubview:separator];
 }
 
+- (void)addSeparatorForMiddleLeft:(UIView *)view {
+    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(view.bounds) / 3, 0, 1, CGRectGetHeight(view.bounds))];
+    separator.backgroundColor = color_GrayLight;
+    [view addSubview:separator];
+}
+
+- (void)addSeparatorForMiddleRight:(UIView *)view {
+    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(view.bounds) * 2 / 3 + 1, 0, 1, CGRectGetHeight(view.bounds))];
+    separator.backgroundColor = color_GrayLight;
+    [view addSubview:separator];
+}
+
 - (void)addSeparatorForRight:(UIView *)view {
-    
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(view.bounds) - 1, 0, 1, CGRectGetHeight(view.bounds))];
     separator.backgroundColor = color_GrayLight;
     [view addSubview:separator];
 }
 
 - (void)secondsCountdown {
-    
     NSDate *now = [NSDate date];
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSUInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
@@ -517,7 +466,7 @@ NSUInteger const kSecondsPerDay = 86400;
     NSInteger second = [dateComponent second];
     NSInteger secondsLeft = kSecondsPerDay - hour*3600 - minute*60 -second;
     
-    [secondsLeftView.centerButton setAllTitle:[NSString stringWithFormat:@"%zd",secondsLeft]];
+    [secondsLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:secondsLeft]];
     [secondsLeftView autoLayout];
     CGRect frame = secondsLeftView.frame;
     frame.origin.x = self.view.frame.size.width / 2 - secondsLeftView.frame.size.width / 2;
@@ -531,7 +480,7 @@ NSUInteger const kSecondsPerDay = 86400;
             daysLeft = secondsBetweenDates/kSecondsPerDay;
         }
         
-        [daysLeftView.centerButton setAllTitle:[NSString stringWithFormat:@"%zd",daysLeft]];
+        [daysLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:daysLeft]];
         [daysLeftView autoLayout];
         CGRect frame = daysLeftView.frame;
         frame.origin.x = self.view.frame.size.width / 2 - daysLeftView.frame.size.width / 2;
@@ -539,8 +488,7 @@ NSUInteger const kSecondsPerDay = 86400;
     }
 }
 
--(void)toSettingsViewController {
-
+- (void)toSettingsViewController {
     SettingsViewController *controller = [[SettingsViewController alloc]init];
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
