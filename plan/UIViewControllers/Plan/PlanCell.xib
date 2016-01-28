@@ -16,24 +16,7 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="2pV-xP-E4R">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
-                        <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ufE-ox-tey">
-                                <rect key="frame" x="0.0" y="10" width="40" height="40"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="8La-ig-OOa"/>
-                                    <constraint firstAttribute="width" constant="40" id="Gt2-qD-s1M"/>
-                                </constraints>
-                                <state key="normal" backgroundImage="Btn_Plan_Done64.png"/>
-                                <connections>
-                                    <action selector="btnDoneAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="RXX-6C-SCN"/>
-                                </connections>
-                            </button>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="ufE-ox-tey" firstAttribute="top" secondItem="2pV-xP-E4R" secondAttribute="top" constant="10" id="eo3-iU-Sct"/>
-                            <constraint firstItem="ufE-ox-tey" firstAttribute="leading" secondItem="2pV-xP-E4R" secondAttribute="leading" id="fhx-dj-GvE"/>
-                        </constraints>
                     </view>
                 </subviews>
                 <constraints>
@@ -44,12 +27,8 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="btnDoneNew" destination="ufE-ox-tey" id="WVG-Im-AmD"/>
                 <outlet property="moveContentView" destination="2pV-xP-E4R" id="zvf-vw-Fk5"/>
             </connections>
         </tableViewCell>
     </objects>
-    <resources>
-        <image name="Btn_Plan_Done64.png" width="32" height="32"/>
-    </resources>
 </document>

@@ -57,13 +57,8 @@ NSUInteger const kBounceSpace = 20;
     [vBtnDelete setAllBackgroundImage:[UIImage imageNamed:png_Btn_Plan_Delete]];
     [vBtnDelete addTarget:self action:@selector(deleteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
     [vBtnDelete setTag:1002];
-    
-    self.btnDoneNew = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.btnDoneNew setAllBackgroundImage:[UIImage imageNamed:png_Btn_Plan_Done64]];
-    [self.btnDoneNew addTarget:self action:@selector(btnDoneAction:) forControlEvents:UIControlEventTouchUpInside];
-    [self.btnDoneNew setTag:1003];
-    
-    labelContent = [[UILabel alloc] initWithFrame:CGRectMake(40, 0, WIDTH_FULL_SCREEN - 52, kPlanCellHeight)];
+
+    labelContent = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset, 0, WIDTH_FULL_SCREEN - kEdgeInset * 2, kPlanCellHeight)];
     labelContent.textColor = color_333333;
     [labelContent setFont:font_Normal_20];
     [labelContent setNumberOfLines:1];
@@ -73,7 +68,7 @@ NSUInteger const kBounceSpace = 20;
     [labelContent addGestureRecognizer:tapGestureRecognizer];
     labelContent.userInteractionEnabled = YES;
     
-    imgViewAlarm = [[UIImageView alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - 52 - kPlanCellHeight / 3, kPlanCellHeight / 6, kPlanCellHeight / 3, kPlanCellHeight / 3)];
+    imgViewAlarm = [[UIImageView alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - kEdgeInset * 2 - kPlanCellHeight / 3, kPlanCellHeight / 6, kPlanCellHeight / 3, kPlanCellHeight / 3)];
     imgViewAlarm.image = [UIImage imageNamed:png_Icon_Alarm];
     imgViewAlarm.hidden = YES;
     [labelContent addSubview:imgViewAlarm];
@@ -87,7 +82,6 @@ NSUInteger const kBounceSpace = 20;
     [menuContetnView addSubview:vBtnDone];
     [menuContetnView addSubview:vBtnDelete];
     [_moveContentView addSubview:labelContent];
-    [_moveContentView addSubview:self.btnDoneNew];
     [self.contentView insertSubview:menuContetnView atIndex:0];
     
     UIPanGestureRecognizer *vPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
@@ -244,10 +238,8 @@ NSUInteger const kBounceSpace = 20;
 - (void)setIsDone:(NSString *)isDone {
     if ([isDone isEqualToString:@"1"]) {
         [btnDone setAllBackgroundImage:[UIImage imageNamed:png_Btn_Plan_Doing]];
-        [self.btnDoneNew setAllBackgroundImage:[UIImage imageNamed:png_Btn_Plan_Doing64]];
     } else {
         [btnDone setAllBackgroundImage:[UIImage imageNamed:png_Btn_Plan_Done]];
-        [self.btnDoneNew setAllBackgroundImage:[UIImage imageNamed:png_Btn_Plan_Done64]];
     }
 }
 
@@ -262,13 +254,6 @@ NSUInteger const kBounceSpace = 20;
         [_delegate didCellClickedDeleteButton:self];
     }
 }
-
-//- (void)btnDoneClicked:(id)sender {
-//    [self.superview sendSubviewToBack:self];
-//    if ([_delegate respondsToSelector:@selector(didCellClickedDoneButton:)]) {
-//        [_delegate didCellClickedDoneButton:self];
-//    }
-//}
 
 - (IBAction)btnDoneAction:(id)sender {
     [self.superview sendSubviewToBack:self];
