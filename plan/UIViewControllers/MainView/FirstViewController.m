@@ -404,7 +404,7 @@ NSUInteger const kSecondsPerDay = 86400;
         ThreeSubView *everydayStatisticsView = [[ThreeSubView alloc] initWithFrame:CGRectMake(subviewWidth, subviewHeight, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
         
         //plantype 1 每日计划
-        float total = [[PlanCache getPlanTotalCount] floatValue];
+        float total = [[PlanCache getPlanTotalCount:@"DAY"] floatValue];
         [everydayStatisticsView.leftButton.titleLabel setFont:font_Normal_16];
         [everydayStatisticsView.leftButton setAllTitleColor:color_Black];
         [everydayStatisticsView.leftButton setAllTitle:[NSString stringWithFormat:@"%.0f", total]];
@@ -433,7 +433,7 @@ NSUInteger const kSecondsPerDay = 86400;
         ThreeSubView *longtermStatisticsView = [[ThreeSubView alloc] initWithFrame:CGRectMake(subviewWidth, subviewHeight * 2, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
         
         //plantype 0 未来计划
-        float total = [[PlanCache getPlanTotalCount] floatValue];
+        float total = [[PlanCache getPlanTotalCount:@"FUTURE"] floatValue];
         [longtermStatisticsView.leftButton.titleLabel setFont:font_Normal_16];
         [longtermStatisticsView.leftButton setAllTitleColor:color_Black];
         [longtermStatisticsView.leftButton setAllTitle:[NSString stringWithFormat:@"%.0f", total]];

@@ -49,26 +49,6 @@
     return self;
 }
 
-- (id)initWithTitle:(NSString *)title {
-    self = [super initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, kPlanSectionViewHeight)];
-    if (self) {
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleBottomMargin | UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleRightMargin;
-        self.backgroundColor = color_Blue;
-
-        titleLabel = [[UILabel alloc] init];
-        titleLabel.textColor = [UIColor whiteColor];
-        titleLabel.font = font_Normal_18;
-        titleLabel.text = title;
-        
-        NSInteger xOffset = 12;
-        CGFloat titleWidth = 200;
-        
-        titleLabel.frame = CGRectMake(xOffset, 0, titleWidth, kPlanSectionViewHeight);
-        [self addSubview:titleLabel];
-    }
-    return self;
-}
-
 - (void)toggleArrow {
     CGFloat fl = (M_PI / 180) * 180;
     if (_toggle) {

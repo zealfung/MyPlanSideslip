@@ -1621,7 +1621,7 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSString *)getPlanTotalCount {
++ (NSString *)getPlanTotalCount:(NSString*)type {
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1637,7 +1637,20 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         NSString *total = @"0";
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE account=? AND isdeleted=0", str_TableName_Plan];
+        NSString *sqlString = @"";
+        if ([type isEqualToString:@"DAY"]) {
+            
+            NSString *condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd]];
+            sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE %@ AND account=? AND isdeleted=0", str_TableName_Plan, condition];
+            
+        } else if ([type isEqualToString:@"FUTURE"]) {
+            
+            NSString *condition = [NSString stringWithFormat:@"datetime(beginDate)>datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd]];
+            sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE %@ AND account=? AND isdeleted=0", str_TableName_Plan, condition];
+
+        } else {
+            sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE account=? AND isdeleted=0", str_TableName_Plan];
+        }
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         

@@ -197,9 +197,9 @@
         yOffset =  CGRectGetMaxY(btn.frame) + 10;
     }
     {
-        NSString *dayPlanTotalCount = [PlanCache getPlanTotalCount];
+        NSString *dayPlanTotalCount = [PlanCache getPlanTotalCount:@"DAY"];
         NSString *doneDayPlanTotalCount = [PlanCache getPlanCompletedCount];
-        NSString *longPlanTotalCount = [PlanCache getPlanTotalCount];
+        NSString *longPlanTotalCount = [PlanCache getPlanTotalCount:@"FUTURE"];
         NSString *doneLongPlanTotalCount = [PlanCache getPlanCompletedCount];
         NSString *taskTotalCount = [PlanCache getTaskTotalCount];
         NSString *photoTotalCount = [PlanCache getPhotoTotalCount];

@@ -524,7 +524,7 @@ static BOOL finishTask;
 
 + (void)syncServerToLocalForPlan {
     BmobUser *user = [BmobUser getCurrentUser];
-    NSString *count = [PlanCache getPlanTotalCount];
+    NSString *count = [PlanCache getPlanTotalCount:@"ALL"];
     __weak typeof(self) weakSelf = self;
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
