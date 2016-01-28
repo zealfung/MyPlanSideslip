@@ -527,7 +527,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                 cell.textLabel.font = font_Bold_16;
             }
             if (indexPath.row == 2) {
-                cell.textLabel.text = str_NoPlan_LongTerm;
+                cell.textLabel.text = str_NoPlan_Future;
             }
             return cell;
         }

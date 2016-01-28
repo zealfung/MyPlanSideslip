@@ -78,7 +78,7 @@
         labelBeginTime.textColor = color_Black;
         labelBeginTime.font = font_Normal_18;
         labelBeginTime.userInteractionEnabled = YES;
-        labelBeginTime.text = [NSString stringWithFormat:@"开始时间：%@", [CommonFunction getBeginDateStringForShow:beginDate]];
+        labelBeginTime.text = [NSString stringWithFormat:@"%@%@", str_Plan_BeginDate, [CommonFunction getBeginDateStringForShow:beginDate]];
         UITapGestureRecognizer *labelBeginTimeTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(beginDateTouchAction:)];
         [labelBeginTime addGestureRecognizer:labelBeginTimeTapGestureRecognizer];
         [self.view addSubview:labelBeginTime];
@@ -110,7 +110,7 @@
     if (self.operationType == Edit) {
         txtViewContent.text = self.plan.content;
         beginDate = self.plan.beginDate;
-        labelBeginDate.text = [NSString stringWithFormat:@"开始时间：%@", [CommonFunction getBeginDateStringForShow:beginDate]];
+        labelBeginDate.text = [NSString stringWithFormat:@"%@%@", str_Plan_BeginDate, [CommonFunction getBeginDateStringForShow:beginDate]];
         if ([self.plan.isnotify isEqualToString:@"1"]) {
             [switchBtnAlarm setOn:YES];
             labelNotifyTime.text = self.plan.notifytime;
@@ -205,7 +205,7 @@
     if (isSelectBeginDate) {
         [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd];
         beginDate = [dateFormatter stringFromDate:datePicker.date];
-        labelBeginDate.text = [NSString stringWithFormat:@"开始时间：%@", [CommonFunction getBeginDateStringForShow:beginDate]];
+        labelBeginDate.text = [NSString stringWithFormat:@"%@%@", str_Plan_BeginDate, [CommonFunction getBeginDateStringForShow:beginDate]];
     } else {
         [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
         notifyTime = [dateFormatter stringFromDate:datePicker.date];
