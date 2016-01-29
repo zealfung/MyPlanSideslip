@@ -94,6 +94,7 @@ static BOOL finishTask;
 }
 
 + (void)startSyncSettings {
+
     if ([Config shareInstance].isSyncSettingsOnly) {
         finishSettings = NO;
         finishUploadAvatar = NO;
@@ -185,8 +186,8 @@ static BOOL finishTask;
                 NSLog(@"下载头像图片进度： %ld/%ld",(long)receivedSize , (long)expectedSize);
             } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
                 
-                if (image) {
-                    [Config shareInstance].settings.avatar = image;
+                if (data) {
+                    [Config shareInstance].settings.avatar = data;
                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
                 }
             }];
@@ -205,8 +206,8 @@ static BOOL finishTask;
                 NSLog(@"下载个人中心图片进度： %ld/%ld",(long)receivedSize , (long)expectedSize);
             } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
                 
-                if (image) {
-                    [Config shareInstance].settings.centerTop = image;
+                if (data) {
+                    [Config shareInstance].settings.centerTop = data;
                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
                 }
             }];
@@ -368,8 +369,7 @@ static BOOL finishTask;
 + (void)uploadAvatar:(BmobObject *)obj {
     //上传头像
     __weak typeof(self) weakSelf = self;
-    NSData *avatarData = UIImageJPEGRepresentation([Config shareInstance].settings.avatar, 1.0);
-    [BmobProFile uploadFileWithFilename:@"avatar.png" fileData:avatarData block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
+    [BmobProFile uploadFileWithFilename:@"avatar.png" fileData:[Config shareInstance].settings.avatar block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
         finishUploadAvatar = YES;
         if (isSuccessful) {
             NSString *timeNow = [CommonFunction getTimeNowString];
@@ -399,8 +399,7 @@ static BOOL finishTask;
 
 + (void)uploadCenterTop:(BmobObject *)obj {
     __weak typeof(self) weakSelf = self;
-    NSData *centerTopData = UIImageJPEGRepresentation([Config shareInstance].settings.centerTop, 1.0);
-    [BmobProFile uploadFileWithFilename:@"centerTop.png" fileData:centerTopData block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
+    [BmobProFile uploadFileWithFilename:@"centerTop.png" fileData:[Config shareInstance].settings.centerTop block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
         finishUploadCenterTop = YES;
         if (isSuccessful) {
             NSString *timeNow = [CommonFunction getTimeNowString];
@@ -687,14 +686,14 @@ static BOOL finishTask;
 }
 
 + (void)uploadPhoto:(Photo *)photo index:(NSInteger)index obj:(BmobObject *)obj {
-    UIImage *image = photo.photoArray[index];
+    NSData *imgData = photo.photoArray[index];
     NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", (long)(index+1)];
     NSString *serverURL = [obj objectForKey:urlName];
     if ((!serverURL
          || serverURL.length == 0
          || ![photo.photoURLArray[index] isEqualToString:serverURL])
-        && image) {
-        NSData *imgData = UIImageJPEGRepresentation(image, 1.0);
+        && imgData) {
+
         [BmobProFile uploadFileWithFilename:@"imgPhoto.png" fileData:imgData block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
             if (isSuccessful) {
                 
@@ -787,11 +786,11 @@ static BOOL finishTask;
         NSLog(@"下载影像图片进度： %ld/%ld",receivedSize , expectedSize);
     } completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished) {
         
-        if (image) {
+        if (data) {
             if (index < photo.photoArray.count) {
-                photo.photoArray[index] = image;
+                photo.photoArray[index] = data;
             } else {
-                [photo.photoArray addObject:image];
+                [photo.photoArray addObject:data];
             }
             [PlanCache storePhoto:photo];
         }

@@ -2106,7 +2106,7 @@ static NSMutableDictionary *__contactsOnlineState;
                 NSString *photoName = [NSString stringWithFormat:@"photo%ld", (long)(m + 1)];
                 NSData *imageData = [rs dataForColumn:photoName];
                 if (imageData) {
-                    photo.photoArray[m] = [UIImage imageWithData:imageData];
+                    photo.photoArray[m] = imageData;
                 }
             }
             if (!photo.content) {
