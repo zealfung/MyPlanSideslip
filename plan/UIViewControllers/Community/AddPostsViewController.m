@@ -68,7 +68,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     self.textViewContent.text = @"";
     self.textViewContent.inputAccessoryView = [self getInputAccessoryView];
 
-    UIImage *addImage = [UIImage imageNamed:png_Btn_AddPhoto];
+    NSData *addImage = UIImageJPEGRepresentation([UIImage imageNamed:png_Btn_AddPhoto], 1);
     [photoArray addObject:addImage];
     
     CGFloat tipsHeight = 30;
@@ -152,14 +152,13 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     }
 }
 
-- (void)uploadImage:(UIImage *)image index:(NSInteger)index obj:(BmobObject *)obj {
+- (void)uploadImage:(NSData *)imgData index:(NSInteger)index obj:(BmobObject *)obj {
     if (index == 0) {
         uploadProgress1 = 0;
     } else {
         uploadProgress2 = 0;
     }
     __weak typeof(self) weakSelf = self;
-    NSData *imgData = UIImageJPEGRepresentation(image, 1.0);
     [BmobProFile uploadFileWithFilename:@"imgPhoto.png" fileData:imgData block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
         if (isSuccessful) {
             
@@ -215,7 +214,10 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 }
 
 - (UIView *)pageScrollView:(PageScrollView *)pageScrollView cellForPageIndex:(NSUInteger)index {
-    UIImage *photo = photoArray[index];
+    if (index >= photoArray.count)
+        return nil;
+    
+    UIImage *photo = [UIImage imageWithData:photoArray[index]];
 
     UIImageView *imageView = [[UIImageView alloc] init];
     imageView.userInteractionEnabled = YES;
@@ -293,7 +295,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     NSInteger index = btn.tag;
     [photoArray removeObjectAtIndex:index];
     
-    UIImage *addImage = [UIImage imageNamed:png_Btn_AddPhoto];
+    NSData *addImage = UIImageJPEGRepresentation([UIImage imageNamed:png_Btn_AddPhoto], 1);
     if (!canAddPhoto) {
         photoArray[imgMax - 1] = addImage;
         canAddPhoto = YES;
@@ -329,14 +331,14 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 }
 
 - (void)addImageToPhotoArray:(UIImage *)image {
-    UIImage *img = [CommonFunction compressImage:image];
+    NSData *imgData = [CommonFunction compressImage:image];
     
-    if (!img) return;
+    if (!imgData) return;
     
     if (photoArray.count < imgMax) {
-        [photoArray insertObject:img atIndex:photoArray.count - 1];
+        [photoArray insertObject:imgData atIndex:photoArray.count - 1];
     } else {
-        photoArray[imgMax - 1] = img;
+        photoArray[imgMax - 1] = imgData;
         canAddPhoto = NO;
     }
 }

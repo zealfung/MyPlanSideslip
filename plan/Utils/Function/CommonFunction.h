@@ -28,7 +28,7 @@
 + (BOOL)isEmptyString:(NSString *)original;
 
 //压缩图片
-+ (UIImage *)compressImage:(UIImage *)image;
++ (NSData *)compressImage:(UIImage *)image;
 
 //数组排序 yes升序排列，no,降序排列
 + (NSArray *)arraySort:(NSArray *)array ascending:(BOOL)ascending;

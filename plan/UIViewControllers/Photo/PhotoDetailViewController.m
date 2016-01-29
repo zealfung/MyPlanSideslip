@@ -187,7 +187,7 @@ NSUInteger const kPhotoDeleteTag = 20151011;
     [flowView dequeueReusableCell]; //必须要调用否则会内存泄漏
     UIImageView *imageView = [[UIImageView alloc] init];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
-    imageView.image = self.photo.photoArray[index];
+    imageView.image = [UIImage imageWithData:self.photo.photoArray[index]];
     return imageView;
 }
 

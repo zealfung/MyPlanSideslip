@@ -182,8 +182,7 @@ NSUInteger const kSecondsPerDay = 86400;
     {
         UIImage *image = [UIImage imageNamed:png_AvatarDefault];
         if ([Config shareInstance].settings.avatar) {
-            
-            image = [Config shareInstance].settings.avatar;
+            image = [UIImage imageWithData:[Config shareInstance].settings.avatar];
         }
         UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(ceilf((avatarBgSize - avatarSize)/2), ceilf((avatarBgSize - avatarSize)/2), avatarSize, avatarSize)];
         avatar.backgroundColor = [UIColor clearColor];

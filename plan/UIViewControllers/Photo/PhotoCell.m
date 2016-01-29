@@ -67,9 +67,7 @@ CGFloat kPhotoCellHeight;
     [btnAge setTitle:[self getAge:photoDate] forState:UIControlStateNormal];
     [btnAge setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [cell addSubview:btnAge];
-    
     if (photo.location && photo.location.length > 0) {
-        
         CGFloat locationWidth = WIDTH_FULL_SCREEN - xMargins - CGRectGetMaxX(btnAge.frame);
         UILabel *labelLocation = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(btnAge.frame), yOffset, locationWidth, dateHeight * 3 / 2)];
         labelLocation.textAlignment = NSTextAlignmentRight;
@@ -78,28 +76,21 @@ CGFloat kPhotoCellHeight;
         labelLocation.text = [NSString stringWithFormat:@"%@%@", str_Photo_Location, photo.location];
         [cell addSubview:labelLocation];
     }
-
     xOffset = CGRectGetMaxX(lineView.frame) + xMargins;
     yOffset = CGRectGetMaxY(btnAge.frame) - yMargins;
     CGFloat contentWidth = WIDTH_FULL_SCREEN - xOffset - xMargins;
     
     if (contentHeight > 0) {
-
         UILabel *labelContent = [[UILabel alloc] initWithFrame:CGRectMake(xOffset, yOffset, contentWidth, contentHeight)];
         labelContent.textAlignment = NSTextAlignmentLeft;
         labelContent.font = font_Normal_13;
         labelContent.textColor = color_333333;
         labelContent.text = photo.content;
         if (contentHeight < 30) {
-            
             labelContent.numberOfLines = 1;
-            
         } else if (contentHeight < 60) {
-            
             labelContent.numberOfLines = 2;
-            
         } else {
-            
             labelContent.numberOfLines = 3;
         }
         [cell addSubview:labelContent];
@@ -120,17 +111,14 @@ CGFloat kPhotoCellHeight;
     
     CGFloat pXOffset = 0;
     for (NSInteger i = 0; i < imageCount; i++) {
-        
-        UIImage *image = photo.photoArray[i];
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(pXOffset, 0, imageWidth, photoHeight)];
-        imageView.image = image;
+        imageView.image = [UIImage imageWithData:photo.photoArray[i]];
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.clipsToBounds = YES;
         imageView.layer.borderWidth = 1;
         imageView.layer.borderColor = [color_eeeeee CGColor];
         
         if (photo.photoArray.count > 3 && i == 2) {
-            
             NSString *totalImgCount = [NSString stringWithFormat:@"%ld", (unsigned long)photo.photoArray.count];
             NSInteger btnTotalSize = 20;
             CGFloat btnX = imageWidth - btnTotalSize - xMargins;
@@ -159,17 +147,11 @@ CGFloat kPhotoCellHeight;
         kPhotoCellHeight = 190;
     } else {
         CGFloat contentAutoHeight = [self autoContentHeight:content];
-        
         if (contentAutoHeight < 30) {
-            
             contentHeight = 25;
-            
         } else if (contentAutoHeight < 60) {
-            
             contentHeight = 50;
-            
         } else {
-            
             contentHeight = 75;
         }
         kPhotoCellHeight = 190 + contentHeight;
@@ -186,19 +168,13 @@ CGFloat kPhotoCellHeight;
     NSString *unknow = [NSString stringWithFormat:@"X%@", str_Photo_Age];
     if (![Config shareInstance].settings.birthday
         || [Config shareInstance].settings.birthday.length == 0) {
-        
         return unknow;
     }
-    
     NSDate *birthday = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.birthday formatter:str_DateFormatter_yyyy_MM_dd];
     NSTimeInterval secondsBetweenDates= [photoDate timeIntervalSinceDate:birthday];
-
     if(secondsBetweenDates < 0) {
-        
         return unknow;
-        
     } else {
-        
         long age = secondsBetweenDates / (365 * 24 * 60 * 60);
         return [NSString stringWithFormat:@"%ld%@", age, str_Photo_Age];
     }

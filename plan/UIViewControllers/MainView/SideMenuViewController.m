@@ -74,7 +74,7 @@
     [headerView addSubview:avatar];
     UIImage *image = [UIImage imageNamed:@"avatarDefault1"];
     if ([Config shareInstance].settings.avatar) {
-        image = [Config shareInstance].settings.avatar;
+        image = [UIImage imageWithData:[Config shareInstance].settings.avatar];
     }
     avatar.image = image;
 

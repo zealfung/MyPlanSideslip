@@ -489,16 +489,7 @@ static NSMutableDictionary *__contactsOnlineState;
             settings.createtime = timeNow;
         }
         settings.updatetime = timeNow;
-        
-        NSData *avatarData = [NSData data];
-        if (settings.avatar) {
-            avatarData = UIImageJPEGRepresentation(settings.avatar, 1.0);
-        }
-        NSData *centerTopData = [NSData data];
-        if (settings.centerTop) {
-            centerTopData = UIImageJPEGRepresentation(settings.centerTop, 1.0);
-        }
-        
+
         BOOL hasRec = NO;
         NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", str_TableName_Settings];
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[settings.account]];
@@ -508,7 +499,7 @@ static NSMutableDictionary *__contactsOnlineState;
             
             sqlString = [NSString stringWithFormat:@"UPDATE %@ SET objectId=?, nickname=?, birthday=?, email=?, gender=?, lifespan=?, avatar=?, avatarURL=?, centerTop=?, centerTopURL=?, isAutoSync=?, isUseGestureLock=?, isShowGestureTrack=?, gesturePasswod=?, createtime=?, updatetime=?, syntime=? WHERE account=?", str_TableName_Settings];
             
-            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.objectId, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, avatarData, settings.avatarURL, centerTopData, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.createtime, settings.updatetime, settings.syntime, settings.account]];
+            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.objectId, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, settings.avatar, settings.avatarURL, settings.centerTop, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.createtime, settings.updatetime, settings.syntime, settings.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
@@ -516,7 +507,7 @@ static NSMutableDictionary *__contactsOnlineState;
             
             sqlString = [NSString stringWithFormat:@"INSERT INTO %@(objectId, account, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, isUseGestureLock, isShowGestureTrack, gesturePasswod, createtime, updatetime, syntime) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Settings];
             
-            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.objectId, settings.account, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, avatarData, settings.avatarURL, centerTopData, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.createtime, settings.updatetime, settings.syntime]];
+            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.objectId, settings.account, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, settings.avatar, settings.avatarURL, settings.centerTop, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.createtime, settings.updatetime, settings.syntime]];
 
             FMDBQuickCheck(b, sqlString, __db);
         }
@@ -681,15 +672,9 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         NSMutableArray *photoDataArray = [NSMutableArray arrayWithCapacity:9];
         for (NSInteger i = 0; i < 9; i++) {
-            
             if (i < photo.photoArray.count) {
-                
-                UIImage *image = photo.photoArray[i];
-                NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
-                [photoDataArray addObject:imageData];
-                
+                [photoDataArray addObject:photo.photoArray[i]];
             } else {
-                
                 [photoDataArray addObject:[NSData data]];
             }
         }
@@ -1241,16 +1226,14 @@ static NSMutableDictionary *__contactsOnlineState;
             settings.email = [rs stringForColumn:@"email"];
             settings.gender = [rs stringForColumn:@"gender"];
             settings.lifespan = [rs stringForColumn:@"lifespan"];
-            NSData *imageData = [rs dataForColumn:@"avatar"];
-            if (imageData) {
-                
-                settings.avatar = [UIImage imageWithData:imageData];
+            settings.avatar = [rs dataForColumn:@"avatar"];
+            if (!settings.avatar) {
+                settings.avatar = UIImageJPEGRepresentation([UIImage imageNamed:png_AvatarDefault], 1);
             }
             settings.avatarURL = [rs stringForColumn:@"avatarURL"];
-            imageData = [rs dataForColumn:@"centerTop"];
-            if (imageData) {
-                
-                settings.centerTop = [UIImage imageWithData:imageData];
+            settings.centerTop = [rs dataForColumn:@"centerTop"];
+            if (!settings.centerTop) {
+                settings.centerTop = UIImageJPEGRepresentation([UIImage imageNamed:png_Bg_SideTop], 1);
             }
             settings.centerTopURL = [rs stringForColumn:@"centerTopURL"];
             settings.isAutoSync = [rs stringForColumn:@"isAutoSync"];
@@ -1384,7 +1367,7 @@ static NSMutableDictionary *__contactsOnlineState;
                 NSString *photoName = [NSString stringWithFormat:@"photo%ld", (long)(m + 1)];
                 NSData *imageData = [rs dataForColumn:photoName];
                 if (imageData) {
-                    photo.photoArray[m] = [UIImage imageWithData:imageData];
+                    photo.photoArray[m] = imageData;
                 }
             }
             
@@ -1441,7 +1424,7 @@ static NSMutableDictionary *__contactsOnlineState;
                 NSString *photoName = [NSString stringWithFormat:@"photo%ld", (long)(i + 1)];
                 NSData *imageData = [rs dataForColumn:photoName];
                 if (imageData) {
-                    photo.photoArray[i] = [UIImage imageWithData:imageData];
+                    photo.photoArray[i] = imageData;
                 }
             }
         }

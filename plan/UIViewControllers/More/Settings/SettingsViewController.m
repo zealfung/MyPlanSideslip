@@ -345,8 +345,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     
     UIImage *avatarImage = [UIImage imageNamed:png_AvatarDefault];
     if ([Config shareInstance].settings.avatar) {
-        
-        avatarImage = [Config shareInstance].settings.avatar;
+        avatarImage = [UIImage imageWithData:[Config shareInstance].settings.avatar];
     }
     CGFloat avatarSize = bgSize - yDistance;
     UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(ceilf((bgSize - avatarSize)/2), ceilf((bgSize - avatarSize)/2), avatarSize, avatarSize)];
@@ -924,12 +923,12 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     [pickerView removeFromSuperview];
 }
 
-- (void)saveAvatar:(UIImage *)icon {
+- (void)saveAvatar:(NSData *)icon {
     if (icon == nil) {
         return;
     }
     
-    avatarView.image = icon;
+    avatarView.image = [UIImage imageWithData:icon];
     avatarView.contentMode = UIViewContentModeScaleAspectFit;
 
     [Config shareInstance].settings.avatar = icon;
@@ -1002,8 +1001,8 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo {
     [picker dismissViewControllerAnimated:YES completion:nil];
-    UIImage *img = [CommonFunction compressImage:image];
-    [self saveAvatar:img];
+
+    [self saveAvatar:[CommonFunction compressImage:image]];
 }
 
 

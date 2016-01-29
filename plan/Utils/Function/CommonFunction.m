@@ -59,9 +59,16 @@ static NSString * const kKeyMinutes = @"minutes";
 }
 
 //压缩图片
-+ (UIImage *)compressImage:(UIImage *)image {
-    NSData *imgData = UIImageJPEGRepresentation(image, 0.5);
-    return [UIImage imageWithData:imgData];
++ (NSData *)compressImage:(UIImage *)image {
+    CGFloat compression = 0.9f;
+    CGFloat maxCompression = 0.1f;
+    int maxFileSize = 512*1024; //压缩到小于512KB
+    NSData *imageData = UIImageJPEGRepresentation(image, compression);
+    while ([imageData length]>maxFileSize && compression>maxCompression) {
+        compression -= 0.1;
+        imageData = UIImageJPEGRepresentation(image, compression);
+    }
+    return imageData;
 }
 
 //数组排序 yes升序排列，no,降序排列
@@ -346,4 +353,5 @@ static NSString * const kKeyMinutes = @"minutes";
     [formatter setNumberStyle:NSNumberFormatterDecimalStyle];
     return [formatter stringFromNumber:[NSNumber numberWithInteger:integer]];
 }
+
 @end

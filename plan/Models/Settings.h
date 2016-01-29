@@ -18,9 +18,9 @@
 @property (nonatomic, strong) NSString *gender; //性别：1男 0女
 @property (nonatomic, strong) NSString *lifespan;
 @property (nonatomic, strong) NSString *password;
-@property (nonatomic, strong) UIImage *avatar;
+@property (nonatomic, strong) NSData *avatar;
 @property (nonatomic, strong) NSString *avatarURL;
-@property (nonatomic, strong) UIImage *centerTop;
+@property (nonatomic, strong) NSData *centerTop;
 @property (nonatomic, strong) NSString *centerTopURL;
 @property (nonatomic, strong) NSString *isAutoSync;//是否自动同步数据 0否1是
 @property (nonatomic, strong) NSString *isUseGestureLock;//是否手势解锁 0否1是

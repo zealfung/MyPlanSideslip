@@ -73,8 +73,7 @@
         CGFloat imgSize = WIDTH_FULL_SCREEN * 0.618;
         UIImage *image = [UIImage imageNamed:png_Bg_SideTop];
         if ([Config shareInstance].settings.centerTop) {
-            
-            image = [Config shareInstance].settings.centerTop;
+            image = [UIImage imageWithData:[Config shareInstance].settings.centerTop];
         }
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, yOffset, WIDTH_FULL_SCREEN, imgSize)];
         imageView.image = image;
@@ -105,7 +104,7 @@
             UIImage *image = [UIImage imageNamed:png_AvatarDefault];
             if ([Config shareInstance].settings.avatar) {
                 
-                image = [Config shareInstance].settings.avatar;
+                image = [UIImage imageWithData:[Config shareInstance].settings.avatar];
             }
             UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(ceilf((avatarBgSize - avatarSize)/2), ceilf((avatarBgSize - avatarSize)/2), avatarSize, avatarSize)];
             avatar.backgroundColor = [UIColor clearColor];
@@ -364,8 +363,7 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo {
     [picker dismissViewControllerAnimated:YES completion:nil];
-    UIImage *img = [CommonFunction compressImage:image];
-    [Config shareInstance].settings.centerTop = img;
+    [Config shareInstance].settings.centerTop = [CommonFunction compressImage:image];
     [Config shareInstance].settings.centerTopURL = @"";
     [PlanCache storePersonalSettings:[Config shareInstance].settings];
 }

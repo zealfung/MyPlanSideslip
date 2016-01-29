@@ -166,7 +166,7 @@ NSInteger const kFullScreenImageArrayViewBaseTag = 20151121;
     ImageScrollView *imgView = [[ImageScrollView alloc] initWithFrame:[self getPhotoViewFrameForIndex:index]];
     imgView.tag = kFullScreenImageArrayViewBaseTag + index;
     imgView.imageView.contentMode = UIViewContentModeScaleAspectFit;//UIViewContentModeCenter;
-    imgView.imageView.image = self.imgArray[index];
+    imgView.imageView.image = [UIImage imageWithData:self.imgArray[index]];
     [myScrollView addSubview:imgView];
 }
 

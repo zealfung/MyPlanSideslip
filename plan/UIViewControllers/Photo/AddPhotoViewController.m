@@ -108,7 +108,7 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
     self.textFieldLocation.delegate = self;
     self.textFieldLocation.tag = 1;
     //照片
-    UIImage *addImage = [UIImage imageNamed:png_Btn_AddPhoto];
+    NSData *addImage = UIImageJPEGRepresentation([UIImage imageNamed:png_Btn_AddPhoto], 1);
     if (self.operationType == Edit) {
         
         self.photoArray = [NSMutableArray arrayWithArray:self.photo.photoArray];
@@ -348,7 +348,10 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
 }
 
 - (UIView *)pageScrollView:(PageScrollView *)pageScrollView cellForPageIndex:(NSUInteger)index {
-    UIImage *photo = self.photoArray[index];
+    if (index >= self.photoArray.count)
+        return nil;
+    
+    UIImage *photo = [UIImage imageWithData:self.photoArray[index]];
 
     UIImageView *imageView = [[UIImageView alloc] init];
     imageView.userInteractionEnabled = YES;
@@ -396,11 +399,8 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
 
 - (void)pageScrollView:(PageScrollView *)pageScrollView didScrollToPage:(NSInteger)pageNumber {
     if (self.photoArray.count == 1) {
-        
         self.tipsLabel.text = str_Photo_Add_Tips4;
-        
     } else if (self.photoArray.count > 1) {
-    
         long selectedCount = canAddPhoto ? self.photoArray.count - 1 : self.photoArray.count;
         long canSelectCount = photoMax - selectedCount;
         self.tipsLabel.text = [NSString stringWithFormat:str_Photo_Add_Tips6, selectedCount, canSelectCount];
@@ -446,7 +446,7 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
     NSInteger index = btn.tag;
     [self.photoArray removeObjectAtIndex:index];
     
-    UIImage *addImage = [UIImage imageNamed:png_Btn_AddPhoto];
+    NSData *addImage = UIImageJPEGRepresentation([UIImage imageNamed:png_Btn_AddPhoto], 1);
     if (!canAddPhoto) {
         self.photoArray[photoMax - 1] = addImage;
         canAddPhoto = YES;
@@ -486,14 +486,14 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
 }
 
 - (void)addImageToPhotoArray:(UIImage *)image {
-    UIImage *img = [CommonFunction compressImage:image];
-    
-    if (!img) return;
+    NSData *imgData = [CommonFunction compressImage:image];
+
+    if (!imgData) return;
     
     if (self.photoArray.count < photoMax) {
-        [self.photoArray insertObject:img atIndex:self.photoArray.count - 1];
+        [self.photoArray insertObject:imgData atIndex:self.photoArray.count - 1];
     } else {
-        self.photoArray[photoMax - 1] = img;
+        self.photoArray[photoMax - 1] = imgData;
         canAddPhoto = NO;
     }
 }
