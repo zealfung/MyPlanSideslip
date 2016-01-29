@@ -133,8 +133,6 @@
         
         if (indexPath.row == 4) {
             cell.textLabel.text = str_Photo_Tips1;
-        } else {
-            cell.textLabel.text = nil;
         }
         return cell;
     }
