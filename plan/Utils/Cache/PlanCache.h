@@ -69,7 +69,7 @@
 
 + (Statistics *)getStatistics;
 
-+ (void)updateLocalNotification:(Plan *)plan;
++ (void)updatePlanNotification:(Plan *)plan;
 
 + (void)linkedLocalDataToAccount;
 

@@ -601,11 +601,11 @@ static NSMutableDictionary *__contactsOnlineState;
             //更新提醒
             if (b && [plan.isnotify isEqualToString:@"1"]) {
                 
-                [self updateLocalNotification:plan];
+                [self updatePlanNotification:plan];
                 
             } else {
                 
-                [self cancelLocalNotification:plan.planid];
+                [self cancelPlanNotification:plan.planid];
             }
         } else {
             
@@ -1040,7 +1040,7 @@ static NSMutableDictionary *__contactsOnlineState;
             //取消提醒
             if (b && [plan.isnotify isEqualToString:@"1"]) {
                 
-                [self cancelLocalNotification:plan.planid];
+                [self cancelPlanNotification:plan.planid];
             }
         }
         if (b) {
@@ -1757,14 +1757,14 @@ static NSMutableDictionary *__contactsOnlineState;
     [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
 }
 
-+ (void)updateLocalNotification:(Plan *)plan {
++ (void)updatePlanNotification:(Plan *)plan {
     //首先取消该计划的本地所有通知
-    [self cancelLocalNotification:plan.planid];
+    [self cancelPlanNotification:plan.planid];
     //重新添加新的通知
     [self addPlanNotification:plan];
 }
 
-+ (void)cancelLocalNotification:(NSString*)planid {
++ (void)cancelPlanNotification:(NSString*)planid {
     //取消该计划的本地所有通知
     NSArray *array = [LocalNotificationManager getNotificationWithTag:planid type:NotificationTypePlan];
     for (UILocalNotification *item in array) {
@@ -1869,7 +1869,7 @@ static NSMutableDictionary *__contactsOnlineState;
     fiveDayPlan.notifytime = fiveDayLater;
     
     if (hasFiveDayNotification) {//更新提醒时间
-        [self updateLocalNotification:fiveDayPlan];
+        [self updatePlanNotification:fiveDayPlan];
     } else {//新建提醒
         [self addPlanNotification:fiveDayPlan];
     }

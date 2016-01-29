@@ -156,7 +156,7 @@
         [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
         NSString *fiveDayTomorrow = [dateFormatter stringFromDate:tomorrow];
         plan.notifytime = fiveDayTomorrow;
-        [PlanCache updateLocalNotification:plan];
+        [PlanCache updatePlanNotification:plan];
     } else {
         BmobUser *user = [BmobUser getCurrentUser];
         NSString *account = @"";
