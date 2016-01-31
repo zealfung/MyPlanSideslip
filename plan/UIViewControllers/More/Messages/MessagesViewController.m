@@ -185,19 +185,40 @@
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
     [bquery includeKey:@"author"];//声明该次查询需要将author关联对象信息一并查询出来
     [bquery getObjectInBackgroundWithId:notice.detailURL block:^(BmobObject *object,NSError *error){
-        [weakSelf hideHUD];
         
         if (error){
+            [weakSelf hideHUD];
             [weakSelf alertToastMessage:str_Messages_Tips4];
         } else {
             if (object) {
-                PostsDetailViewController *controller = [[PostsDetailViewController alloc] init];
-                controller.posts = object;
-                [self.navigationController pushViewController:controller animated:YES];
+                [weakSelf isLikedPost:object];
             } else {
+                [weakSelf hideHUD];
                 [weakSelf alertToastMessage:str_Messages_Tips4];
             }
         }
+    }];
+}
+
+- (void)isLikedPost:(BmobObject *)posts {
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
+    BmobQuery *inQuery = [BmobQuery queryWithClassName:@"UserSettings"];
+    BmobUser *user = [BmobUser getCurrentUser];
+    [inQuery whereKey:@"userObjectId" equalTo:user.objectId];
+    //匹配查询
+    [bquery whereKey:@"likes" matchesQuery:inQuery];//（查询所有有关联的数据）
+    [bquery whereKey:@"objectId" equalTo:posts.objectId];
+    __weak typeof(self) weakSelf = self;
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        [weakSelf hideHUD];
+        if (!error && array.count > 0) {
+            [posts setObject:@(YES) forKey:@"isLike"];
+        } else {
+            [posts setObject:@(NO) forKey:@"isLike"];
+        }
+        PostsDetailViewController *controller = [[PostsDetailViewController alloc] init];
+        controller.posts = posts;
+        [weakSelf.navigationController pushViewController:controller animated:YES];
     }];
 }
 
