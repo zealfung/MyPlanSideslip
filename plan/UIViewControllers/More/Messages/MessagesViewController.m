@@ -82,9 +82,8 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-
+    tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     if (indexPath.row < messagesArray.count) {
-        
         Messages *message = messagesArray[indexPath.row];
         static NSString *messageCellIdentifier = @"messageCellIdentifier";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:messageCellIdentifier];
@@ -106,9 +105,7 @@
             [cell.detailTextLabel clearBadge];
         }
         return cell;
-        
     } else {
-        
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         static NSString *noMessageCellIdentifier = @"noMessageCellIdentifier";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noMessageCellIdentifier];
@@ -123,11 +120,8 @@
             cell.textLabel.textColor = [UIColor lightGrayColor];
             cell.textLabel.font = font_Bold_16;
         }
-        
         if (indexPath.row == 4) {
             cell.textLabel.text = str_Messages_Tips1;
-        } else {
-            cell.textLabel.text = nil;
         }
         return cell;
     }
@@ -192,6 +186,13 @@
         } else {
             if (object) {
                 [weakSelf isLikedPost:object];
+                NSArray *imgURLArray = [NSArray arrayWithArray:[object objectForKey:@"imgURLArray"]];
+                if (imgURLArray && imgURLArray > 0) {
+                    for (NSString *imgURL in imgURLArray) {
+                        UIImageView *tmpImgView = [[UIImageView alloc] init];
+                        [tmpImgView sd_setImageWithURL:[NSURL URLWithString:imgURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
+                    }
+                }
             } else {
                 [weakSelf hideHUD];
                 [weakSelf alertToastMessage:str_Messages_Tips4];
