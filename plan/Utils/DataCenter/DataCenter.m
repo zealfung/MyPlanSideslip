@@ -173,6 +173,8 @@ static BOOL finishTask;
     
     NSString *serverAvatarURL = [obj objectForKey:@"avatarURL"];
     NSString *serverCenterTopURL = [obj objectForKey:@"centerTopURL"];
+    [Config shareInstance].settings.avatar = [NSData data];
+    [Config shareInstance].settings.centerTop = [NSData data];
     
     if (!serverAvatarURL || serverAvatarURL.length == 0) {
         [Config shareInstance].settings.avatarURL = @"";
@@ -373,6 +375,7 @@ static BOOL finishTask;
         finishUploadAvatar = YES;
         if (isSuccessful) {
             NSString *timeNow = [CommonFunction getTimeNowString];
+            [Config shareInstance].settings.avatarURL = bmobFile.url;
             if (finishUploadAvatar
                 && finishUploadCenterTop
                 && [Config shareInstance].settings.updatetime) {
@@ -381,9 +384,8 @@ static BOOL finishTask;
                     [obj setObject:timeNow forKey:@"syncTime"];
                     [Config shareInstance].settings.syntime = timeNow;
                 }
-                [Config shareInstance].settings.avatarURL = bmobFile.url;
-                [PlanCache storePersonalSettings:[Config shareInstance].settings];
             }
+            [PlanCache storePersonalSettings:[Config shareInstance].settings];
             //把上传完的文件保存到“头像”字段
             [obj setObject:bmobFile.url forKey:@"avatarURL"];
             [obj updateInBackground];
@@ -403,6 +405,7 @@ static BOOL finishTask;
         finishUploadCenterTop = YES;
         if (isSuccessful) {
             NSString *timeNow = [CommonFunction getTimeNowString];
+            [Config shareInstance].settings.centerTopURL = bmobFile.url;
             if (finishUploadAvatar
                 && finishUploadCenterTop
                 && [Config shareInstance].settings.updatetime) {
@@ -411,10 +414,9 @@ static BOOL finishTask;
                     [obj setObject:timeNow forKey:@"syncTime"];
                     [Config shareInstance].settings.syntime = timeNow;
                 }
-                [Config shareInstance].settings.centerTopURL = bmobFile.url;
-                [PlanCache storePersonalSettings:[Config shareInstance].settings];
             }
-            //把上传完的文件保存到“头像”字段
+
+            [PlanCache storePersonalSettings:[Config shareInstance].settings];
             [obj setObject:bmobFile.url forKey:@"centerTopURL"];
             [obj updateInBackground];
         } else if (error) {
