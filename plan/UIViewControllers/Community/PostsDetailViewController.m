@@ -785,7 +785,8 @@ NSInteger const kDeleteTag = 20160110;
 }
 
 - (void)likePosts:(BmobObject *)posts {
-    if (isAnding) return;
+    BOOL isLike = [[posts objectForKey:@"isLike"] boolValue];
+    if (isAnding || isLike) return;
     isAnding = YES;
     
     __weak typeof(self) weakSelf = self;
@@ -811,7 +812,8 @@ NSInteger const kDeleteTag = 20160110;
 
 - (void)unlikePosts:(BmobObject *)posts {
     NSInteger likesCount = [[posts objectForKey:@"likesCount"] integerValue];
-    if (isAnding || likesCount < 1) return;
+    BOOL isLike = [[posts objectForKey:@"isLike"] boolValue];
+    if (isAnding || likesCount < 1 || !isLike) return;
     isAnding = YES;
     
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
@@ -834,7 +836,8 @@ NSInteger const kDeleteTag = 20160110;
 }
 
 - (void)likeComment:(BmobObject *)comment {
-    if (isAnding) return;
+    BOOL isLike = [[comment objectForKey:@"isLike"] boolValue];
+    if (isAnding || isLike) return;
     isAnding = YES;
     
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Comments" objectId:comment.objectId];
@@ -860,7 +863,8 @@ NSInteger const kDeleteTag = 20160110;
 
 - (void)unlikeComment:(BmobObject *)comment {
     NSInteger likesCount = [[comment objectForKey:@"likesCount"] integerValue];
-    if (isAnding || likesCount < 1) return;
+    BOOL isLike = [[comment objectForKey:@"isLike"] boolValue];
+    if (isAnding || likesCount < 1 || !isLike) return;
     isAnding = YES;
 
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Comments" objectId:comment.objectId];

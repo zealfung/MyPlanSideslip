@@ -446,8 +446,6 @@
         }
         if (indexPath.row == 1) {
             cell.textLabel.text = isLoadEnd ? str_PostsList_Tips1 : @"";
-        } else {
-            cell.textLabel.text = nil;
         }
         return cell;
     }
@@ -678,7 +676,9 @@
 }
 
 - (void)likePosts:(BmobObject *)posts {
-    if (isSendingLikes) return;
+    BOOL isLike = [[posts objectForKey:@"isLike"] boolValue];
+    if (isSendingLikes && isLike) return;
+    
     __weak typeof(self) weakSelf = self;
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
     [obj incrementKey:@"likesCount"];
@@ -702,7 +702,8 @@
 
 - (void)unlikePosts:(BmobObject *)posts {
     NSInteger likesCount = [[posts objectForKey:@"likesCount"] integerValue];
-    if (isSendingLikes || likesCount < 1) return;
+    BOOL isLike = [[posts objectForKey:@"isLike"] boolValue];
+    if (isSendingLikes || likesCount < 1 || !isLike) return;
     
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
     [obj decrementKey:@"likesCount"];
