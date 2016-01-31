@@ -715,6 +715,7 @@ NSInteger const kDeleteTag = 20160110;
 
 - (void)deleteAction {
     if (isAnding) return;
+    isAnding = YES;
     
     [self showHUD];
     __weak typeof(self) weakSelf = self;
@@ -735,6 +736,7 @@ NSInteger const kDeleteTag = 20160110;
 
 - (void)reportPostsAction {
     if (isAnding) return;
+    isAnding = YES;
     
     [self showHUD];
     __weak typeof(self) weakSelf = self;
@@ -746,8 +748,6 @@ NSInteger const kDeleteTag = 20160110;
         BmobUser *user = [BmobUser getCurrentUser];
         [newPosts setObject:user.objectId forKey:@"reporterObjectId"];
     }
-    isAnding = YES;
-    //异步保存
     [newPosts saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         isAnding = NO;
         [weakSelf hideHUD];
@@ -761,6 +761,7 @@ NSInteger const kDeleteTag = 20160110;
 
 - (void)reportCommentAction:(BmobObject *)comment {
     if (isAnding) return;
+    isAnding = YES;
     
     [self showHUD];
     __weak typeof(self) weakSelf = self;
@@ -772,8 +773,6 @@ NSInteger const kDeleteTag = 20160110;
         BmobUser *user = [BmobUser getCurrentUser];
         [newPosts setObject:user.objectId forKey:@"reporterObjectId"];
     }
-    isAnding = YES;
-    //异步保存
     [newPosts saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         isAnding = NO;
         [weakSelf hideHUD];
@@ -787,6 +786,7 @@ NSInteger const kDeleteTag = 20160110;
 
 - (void)likePosts:(BmobObject *)posts {
     if (isAnding) return;
+    isAnding = YES;
     
     __weak typeof(self) weakSelf = self;
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
@@ -794,7 +794,6 @@ NSInteger const kDeleteTag = 20160110;
     BmobRelation *relation = [[BmobRelation alloc] init];
     [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
-    isAnding = YES;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         isAnding = NO;
         if (isSuccessful) {
@@ -811,14 +810,15 @@ NSInteger const kDeleteTag = 20160110;
 }
 
 - (void)unlikePosts:(BmobObject *)posts {
-    if (isAnding) return;
+    NSInteger likesCount = [[posts objectForKey:@"likesCount"] integerValue];
+    if (isAnding || likesCount < 1) return;
+    isAnding = YES;
     
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
     [obj decrementKey:@"likesCount"];
     BmobRelation *relation = [[BmobRelation alloc] init];
     [relation removeObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
-    isAnding = YES;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         isAnding = NO;
         if (isSuccessful) {
@@ -835,13 +835,13 @@ NSInteger const kDeleteTag = 20160110;
 
 - (void)likeComment:(BmobObject *)comment {
     if (isAnding) return;
+    isAnding = YES;
     
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Comments" objectId:comment.objectId];
     [obj incrementKey:@"likesCount"];
     BmobRelation *relation = [[BmobRelation alloc] init];
     [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
-    isAnding = YES;
     __weak typeof(self) weakSelf = self;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         isAnding = NO;
@@ -859,14 +859,15 @@ NSInteger const kDeleteTag = 20160110;
 }
 
 - (void)unlikeComment:(BmobObject *)comment {
-    if (isAnding) return;
-    
+    NSInteger likesCount = [[comment objectForKey:@"likesCount"] integerValue];
+    if (isAnding || likesCount < 1) return;
+    isAnding = YES;
+
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Comments" objectId:comment.objectId];
     [obj decrementKey:@"likesCount"];
     BmobRelation *relation = [[BmobRelation alloc] init];
     [relation removeObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
-    isAnding = YES;
     __weak typeof(self) weakSelf = self;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         isAnding = NO;

@@ -701,7 +701,8 @@
 }
 
 - (void)unlikePosts:(BmobObject *)posts {
-    if (isSendingLikes) return;
+    NSInteger likesCount = [[posts objectForKey:@"likesCount"] integerValue];
+    if (isSendingLikes || likesCount < 1) return;
     
     BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
     [obj decrementKey:@"likesCount"];
