@@ -150,15 +150,15 @@ static NSString * const kKeyMinutes = @"minutes";
     NSInteger hours = [[dic objectForKey:kKeyHours] integerValue];
     NSInteger minutes = [[dic objectForKey:kKeyMinutes] integerValue];
     
-    if (minutes < 1) {
+    if (months == 0 && days == 0 && hours == 0 && minutes < 1) {
         return str_Common_Time1;
-    } else if (minutes < 60) {
+    } else if (months == 0 && days == 0 && hours == 0 && minutes < 60) {
         return [NSString stringWithFormat:str_Common_Time5, (long)minutes];
-    } else if (hours < 24) {
+    } else if (months == 0 && days == 0 && hours < 24) {
         return [NSString stringWithFormat:str_Common_Time6, (long)hours];
-    } else if (hours < 48 && days == 1) {
+    } else if (months == 0 && days == 1 && hours < 48) {
         return str_Common_Time3;
-    } else if (days < 30) {
+    } else if (months == 0 && days < 30) {
         return [NSString stringWithFormat:str_Common_Time7, (long)days];
     } else if (days < 60) {
         return str_Common_Time4;
