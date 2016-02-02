@@ -14,10 +14,11 @@
 #import <RESideMenu/RESideMenu.h>
 #import "TaskDetailViewController.h"
 
-@interface ThreeViewController () {
+@interface ThreeViewController () <UIGestureRecognizerDelegate> {
     
     BOOL isTableEditing;
     NSMutableArray *taskArray;
+    UILongPressGestureRecognizer *longPress;
 }
 
 @end
@@ -58,9 +59,7 @@
 
 - (void)createNavBarButton {
     self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction:)];
-    self.rightBarButtonItems = [NSArray arrayWithObjects:
-                                [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)],
-                                [self createBarButtonItemWithNormalImageName:png_Btn_Delete selectedImageName:png_Btn_Delete selector:@selector(orderAction:)], nil];
+    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
 }
 
 #pragma mark - action
@@ -75,7 +74,7 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)orderAction:(UIButton *)button {
+- (void)orderAction {
     if (taskArray.count == 0) {
         return;
     }
@@ -93,21 +92,23 @@
         isTableEditing = NO;
     }
     //更换按钮icon
-    NSMutableArray *items = [[NSMutableArray alloc] initWithArray:self.rightBarButtonItems];
     if (flag) {
-        UIBarButtonItem *newButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:png_Btn_Save]  style:UIBarButtonItemStylePlain target:self action:@selector(orderAction:)];
-        [items replaceObjectAtIndex:1 withObject:newButton];
+        self.rightBarButtonItem = [self createBarButtonItemWithTitle:@"完成" titleColor:[UIColor whiteColor] font:font_Normal_16 selector:@selector(orderAction)];
     } else {
-        UIBarButtonItem *newButton = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:png_Btn_Delete]  style:UIBarButtonItemStylePlain target:self action:@selector(orderAction:)];
-        [items replaceObjectAtIndex:1 withObject:newButton];
+        self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
     }
-    self.rightBarButtonItems = items;
 }
 
 - (void)reloadTaskData {
     if (isTableEditing) return;
     
     taskArray = [PlanCache getTeask];
+    if (taskArray.count > 0) {
+        longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+        longPress.minimumPressDuration = 1.0;
+        longPress.delegate = self;
+        [self.tableView addGestureRecognizer:longPress];
+    }
     [self.tableView reloadData];
 }
 
@@ -171,6 +172,33 @@
     }
 }
 
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+    if (taskArray.count > 0) {
+        return 44.f;
+    } else {
+        return 0.00001f;
+    }
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
+    if (taskArray.count > 0) {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, 44.f)];
+        view.backgroundColor = [UIColor whiteColor];
+        UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset, 0, WIDTH_FULL_SCREEN - kEdgeInset * 2, 43.f)];
+        label.textAlignment = NSTextAlignmentRight;
+        label.text = @"长按任务可拖动排序";
+        label.textColor = color_8f8f8f;
+        [view addSubview:label];
+        
+        UILabel *labelLine = [[UILabel alloc] initWithFrame:CGRectMake(0, 43.f, WIDTH_FULL_SCREEN, 1)];
+        labelLine.backgroundColor = color_dedede;
+        [view addSubview:labelLine];
+        return view;
+    } else {
+        return nil;
+    }
+}
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row < taskArray.count) {
         tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
@@ -196,8 +224,6 @@
         }
         if (indexPath.row == 4) {
             cell.textLabel.text = str_Task_Tips1;
-        } else {
-            cell.textLabel.text = nil;
         }
         return cell;
     }
@@ -209,6 +235,13 @@
         controller.task = taskArray[indexPath.row];
         controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
+    }
+}
+
+- (void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
+    if(gestureRecognizer.state == UIGestureRecognizerStateBegan
+       && !self.tableView.editing) {
+        [self orderAction];
     }
 }
 
