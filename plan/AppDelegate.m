@@ -97,13 +97,15 @@
         }
     }
     
-    //自动同步数据
-    if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"]) {
-        [DataCenter startSyncData];
-    } else {
-        //同步个人设置
-        [Config shareInstance].isSyncSettingsOnly = YES;
-        [DataCenter startSyncSettings];
+    if ([LogIn isLogin]) {
+        //自动同步数据
+        if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"]) {
+            [DataCenter startSyncData];
+        } else {
+            //同步个人设置
+            [Config shareInstance].isSyncSettingsOnly = YES;
+            [DataCenter startSyncSettings];
+        }
     }
     
     //加载系统消息
