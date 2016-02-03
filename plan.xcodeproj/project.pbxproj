@@ -55,6 +55,7 @@
 		132263A21B9C7DC200D21637 /* LocalNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A11B9C7DC200D21637 /* LocalNotificationManager.m */; };
 		132263A81B9C809400D21637 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A51B9C809400D21637 /* FirstViewController.m */; };
 		132263A91B9C809400D21637 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A71B9C809400D21637 /* SecondViewController.m */; };
+		132819421C61D1D000FB8628 /* NSLayoutConstraint+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 132819411C61D1D000FB8628 /* NSLayoutConstraint+Util.m */; };
 		133B07A21B9FBCA30015E752 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 133B07A11B9FBCA30015E752 /* HelpViewController.m */; };
 		133B07AD1B9FC46A0015E752 /* Questions in Resources */ = {isa = PBXBuildFile; fileRef = 133B07AC1B9FC46A0015E752 /* Questions */; };
 		133B083D1BA439560015E752 /* HitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 133B083C1BA439560015E752 /* HitView.m */; };
@@ -330,6 +331,8 @@
 		132263A51B9C809400D21637 /* FirstViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
 		132263A61B9C809400D21637 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		132263A71B9C809400D21637 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		132819401C61D1D000FB8628 /* NSLayoutConstraint+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+Util.h"; sourceTree = "<group>"; };
+		132819411C61D1D000FB8628 /* NSLayoutConstraint+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+Util.m"; sourceTree = "<group>"; };
 		133B07A01B9FBCA30015E752 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
 		133B07A11B9FBCA30015E752 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		133B07AC1B9FC46A0015E752 /* Questions */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Questions; sourceTree = "<group>"; };
@@ -989,6 +992,8 @@
 			isa = PBXGroup;
 			children = (
 				135B220A1B92B1EB005CE84A /* Catagory.h */,
+				132819401C61D1D000FB8628 /* NSLayoutConstraint+Util.h */,
+				132819411C61D1D000FB8628 /* NSLayoutConstraint+Util.m */,
 				135B21E81B913F77005CE84A /* NSString+Util.h */,
 				135B21E91B913F77005CE84A /* NSString+Util.m */,
 				135B21DA1B90A145005CE84A /* UIButton+Util.h */,
@@ -1823,6 +1828,7 @@
 				1361AFC61BCBA5E700DD5FFB /* DoImagePickerController.m in Sources */,
 				131D6A6F1BFB5DDE009FDD72 /* PhotoViewController.m in Sources */,
 				135B21D21B909955005CE84A /* Config.m in Sources */,
+				132819421C61D1D000FB8628 /* NSLayoutConstraint+Util.m in Sources */,
 				133B07A21B9FBCA30015E752 /* HelpViewController.m in Sources */,
 				135B22091B92B126005CE84A /* UIViewController+Util.m in Sources */,
 				13D1AD921C41FAC2007734F6 /* SDWaitingView.m in Sources */,
