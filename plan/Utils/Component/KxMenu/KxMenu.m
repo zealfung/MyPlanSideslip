@@ -440,7 +440,7 @@ typedef enum {
         
         if (menuItem.image) {
             
-            const CGRect imageFrame = {kMarginX * 2, kMarginY, maxImageWidth, maxItemHeight - kMarginY * 2};
+            const CGRect imageFrame = {kMarginX, kMarginY, maxImageWidth, maxItemHeight - kMarginY * 2};
             UIImageView *imageView = [[UIImageView alloc] initWithFrame:imageFrame];
             imageView.image = menuItem.image;
             imageView.clipsToBounds = YES;
@@ -644,7 +644,7 @@ typedef enum {
     const CGRect bodyFrame = {X0, Y0, X1 - X0, Y1 - Y0};
     
     UIBezierPath *borderPath = [UIBezierPath bezierPathWithRoundedRect:bodyFrame
-                                                          cornerRadius:8];
+                                                          cornerRadius:2];
         
     const CGFloat locations[] = {0, 1};
     const CGFloat components[] = {
@@ -691,7 +691,8 @@ static UIFont *gTitleFont;
 @implementation KxMenu {
     
     KxMenuView *_menuView;
-    BOOL        _observing;
+    BOOL _observing;
+    BOOL _isShow;
 }
 
 + (instancetype)sharedMenu {
@@ -716,6 +717,9 @@ static UIFont *gTitleFont;
     if (_observing) {        
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
+    if (_isShow) {
+        _isShow = NO;
+    }
 }
 
 - (void)showMenuInView:(UIView *)view
@@ -739,8 +743,11 @@ static UIFont *gTitleFont;
                                                      name:UIApplicationWillChangeStatusBarOrientationNotification
                                                    object:nil];
     }
-
     
+    if (!_isShow) {
+        _isShow = YES;
+    }
+
     _menuView = [[KxMenuView alloc] init];
     [_menuView showMenuInView:view fromRect:rect menuItems:menuItems];    
 }
@@ -757,6 +764,14 @@ static UIFont *gTitleFont;
         _observing = NO;
         [[NSNotificationCenter defaultCenter] removeObserver:self];
     }
+    
+    if (_isShow) {
+        _isShow = NO;
+    }
+}
+
+- (BOOL)isShow {
+    return _isShow;
 }
 
 - (void)orientationWillChange: (NSNotification *)n {
@@ -771,6 +786,10 @@ static UIFont *gTitleFont;
 
 + (void)dismissMenu {
     [[self sharedMenu] dismissMenu];
+}
+
++ (BOOL)isShowMenu {
+    return [[self sharedMenu] isShow];
 }
 
 + (UIColor *)tintColor {

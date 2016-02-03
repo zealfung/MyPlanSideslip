@@ -24,6 +24,8 @@
 
 + (void)dismissMenu;
 
++ (BOOL)isShowMenu;
+
 + (UIColor *)tintColor;
 + (void)setTintColor:(UIColor *)tintColor;
 
