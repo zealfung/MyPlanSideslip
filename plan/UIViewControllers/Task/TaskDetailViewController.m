@@ -25,6 +25,8 @@ NSUInteger const kTaskDeleteTag = 20151201;
     self.title = @"任务详情";
     [self createRightBarButton];
     
+    [NotificationCenter addObserver:self selector:@selector(reloadTaskData) name:Notify_Task_Save object:nil];
+    
     [self setControls];
 }
 
@@ -36,6 +38,11 @@ NSUInteger const kTaskDeleteTag = 20151201;
     self.rightBarButtonItem =[self createBarButtonItemWithNormalImageName:png_Btn_More selectedImageName:png_Btn_More selector:@selector(showMenu:)];
 }
 
+- (void)reloadTaskData {
+    self.task = [PlanCache getTaskById:self.task.taskId];
+    [self setControls];
+}
+
 - (void)setControls {
     self.txtViewContent.layer.borderWidth = 1;
     self.txtViewContent.layer.cornerRadius = 5;
@@ -45,6 +52,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
     self.tableRecord.layer.cornerRadius = 5;
     self.tableRecord.layer.borderColor = [color_GrayLight CGColor];
     self.tableRecord.tableFooterView = [[UIView alloc] init];
+    self.btnStart.layer.cornerRadius = 5;
     finishRecordArray = [NSArray array];
     
     if ([self.task.isTomato isEqualToString:@"0"]) {
@@ -52,8 +60,10 @@ NSUInteger const kTaskDeleteTag = 20151201;
         self.labelTomato.hidden = YES;
         self.imgViewAlarmConstraint.constant = 10;
         self.labelAlarmConstraint.constant = 10;
+        [self.btnStart setAllTitle:@"完成一次"];
     } else {
         self.labelTomato.text = [NSString stringWithFormat:@"番茄时间每次 %@ 分钟", self.task.tomatoMinute];
+        [self.btnStart setAllTitle:@"开始番茄"];
     }
     if ([self.task.isNotify isEqualToString:@"0"]) {
         self.imgViewAlarm.hidden = YES;
@@ -94,7 +104,14 @@ NSUInteger const kTaskDeleteTag = 20151201;
     self.tableRecord.dataSource = self;
     self.tableRecord.delegate = self;
     
-    finishRecordArray = [PlanCache getTeaskRecord:self.task.taskId];
+    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+    if ([self.task.isTomato isEqualToString:@"0"]
+        && [self.task.completionDate isEqualToString:date]) {
+        self.btnStart.enabled = NO;
+        [self.btnStart setBackgroundColor:color_8f8f8f];
+    }
+
+    finishRecordArray = [PlanCache getTaskRecord:self.task.taskId];
     [self.tableRecord reloadData];
 }
 
@@ -169,7 +186,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
     if (finishRecordArray.count > 0) {
         return finishRecordArray.count;
     } else {
-        return 4;
+        return 2;
     }
 }
 
@@ -215,11 +232,8 @@ NSUInteger const kTaskDeleteTag = 20151201;
             cell.textLabel.textColor = [UIColor lightGrayColor];
             cell.textLabel.font = font_Bold_16;
         }
-        
-        if (indexPath.row == 3) {
+        if (indexPath.row == 1) {
             cell.textLabel.text = @"暂无完成记录";
-        } else {
-            cell.textLabel.text = nil;
         }
         
         return cell;
@@ -228,6 +242,70 @@ NSUInteger const kTaskDeleteTag = 20151201;
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
+- (IBAction)startAction:(id)sender {
+    if ([self.task.isTomato isEqualToString:@"1"]) {
+        [self startTomato];
+    } else {
+        [self finishOnce];
+    }
+}
+
+- (void)finishOnce {
+    self.btnStart.enabled = NO;
+    [self.btnStart setBackgroundColor:color_8f8f8f];
+    [self addRecord];
+}
+
+- (void)startTomato {
+    self.btnStart.enabled = NO;
+    [self.btnStart setBackgroundColor:color_8f8f8f];
+    __block NSInteger timeout = [self.task.tomatoMinute integerValue] * 60; //倒计时时间
+    dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+    dispatch_source_t _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+    dispatch_source_set_timer(_timer,dispatch_walltime(NULL, 0),1.0*NSEC_PER_SEC, 0); //每秒执行
+    dispatch_source_set_event_handler(_timer, ^{
+        if(timeout<=0) { //倒计时结束，关闭
+            dispatch_source_cancel(_timer);
+            dispatch_async(dispatch_get_main_queue(), ^{
+
+//                [self addRecord];
+                self.btnStart.enabled = YES;
+                [self.btnStart setAllTitle:@"开始番茄"];
+                [self.btnStart setBackgroundColor:color_0BA32A];
+            });
+        } else {
+            NSInteger minutes = timeout / 60;
+            NSInteger seconds = timeout % 60;
+            NSString *strTime = [NSString stringWithFormat:@"%ld:%.2ld",(long)minutes, (long)seconds];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.btnStart setAllTitle:strTime];
+            });
+            timeout--;
+        }  
+    });  
+    dispatch_resume(_timer);
+}
+
+- (void)addRecord {
+    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+    self.task.completionDate = date;
+    NSString *count = self.task.totalCount;
+    NSInteger totalCount = 0;
+    if (count.length > 0) {
+        totalCount = [count integerValue] + 1;
+    }
+    self.task.totalCount = [NSString stringWithFormat:@"%ld", (long)totalCount];
+    NSString *time = [CommonFunction getTimeNowString];
+    self.task.updateTime = time;
+    
+    TaskRecord *taskRecord = [[TaskRecord alloc] init];
+    taskRecord.recordId = self.task.taskId;
+    taskRecord.createTime = time;
+    
+    [PlanCache storeTask:self.task];
+    [PlanCache storeTaskRecord:taskRecord];
 }
 
 @end

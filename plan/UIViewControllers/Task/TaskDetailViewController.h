@@ -22,6 +22,7 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableRecord;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *imgViewAlarmConstraint;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *labelAlarmConstraint;
+@property (strong, nonatomic) IBOutlet UIButton *btnStart;
 @property (strong, nonatomic) Task *task;
 
 @end
