@@ -463,8 +463,14 @@ static NSMutableDictionary *__contactsOnlineState;
         if (!settings.password) {
             settings.password = @"";
         }
+        if (!settings.avatar) {
+            settings.avatar = [NSData data];
+        }
         if (!settings.avatarURL) {
             settings.avatarURL = @"";
+        }
+        if (!settings.centerTop) {
+            settings.centerTop = [NSData data];
         }
         if (!settings.centerTopURL) {
             settings.centerTopURL = @"";
@@ -1252,9 +1258,8 @@ static NSMutableDictionary *__contactsOnlineState;
             if (!settings.isShowGestureTrack) {
                 settings.isShowGestureTrack = @"1";
             }
-            
-            if (!settings.objectId || settings.objectId.length ==0) {
-                [self getUserSettingsObjectId];
+            if (!settings.objectId) {
+                settings.objectId = @"";
             }
         }
         [rs close];
@@ -2299,18 +2304,5 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (void)getUserSettingsObjectId {
-    BmobUser *user = [BmobUser getCurrentUser];
-    BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
-    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-
-        if (!error && array.count == 1) {
-            BmobObject *settings = array[0];
-            [Config shareInstance].settings.objectId = settings.objectId;
-            [PlanCache storePersonalSettings:[Config shareInstance].settings];
-        }
-    }];
-}
 
 @end
