@@ -55,9 +55,11 @@
 
 + (NSArray *)getPhoto:(NSInteger)startIndex;
 
-+ (NSMutableArray *)getTeask;
++ (NSMutableArray *)getTask;
 
-+ (NSArray *)getTeaskRecord:(NSString *)recordId;
++ (Task *)getTaskById:(NSString *)taskId;
+
++ (NSArray *)getTaskRecord:(NSString *)recordId;
 
 + (NSArray *)getMessages;
 
@@ -82,7 +84,7 @@
 
 + (NSArray *)getTaskForSync:(NSString *)syntime;
 
-+ (NSArray *)getTeaskRecordForSyncByTaskId:(NSString *)taskId syntime:(NSString *)syntime;
++ (NSArray *)getTaskRecordForSyncByTaskId:(NSString *)taskId syntime:(NSString *)syntime;
 
 + (Task *)findTask:(NSString *)account taskId:(NSString *)taskId;
 

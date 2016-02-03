@@ -523,35 +523,6 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-//+ (void)updateSettingsUpdatedTime {
-//    @synchronized(__db) {
-//        
-//        if (!__db.open) {
-//            if (![__db open]) {
-//                return ;
-//            }
-//        }
-//        
-//        NSString *account = @"";
-//        if ([LogIn isLogin]) {
-//            BmobUser *user = [BmobUser getCurrentUser];
-//            account = user.objectId;
-//        }
-//        NSString *timeNow = [CommonFunction getTimeNowString];
-//
-//        BOOL hasRec = NO;
-//        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", str_TableName_Settings];
-//        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
-//        hasRec = [rs next];
-//        [rs close];
-//        if (hasRec) {
-//            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET updatetime=? WHERE account=?", str_TableName_Settings];
-//            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[timeNow, account]];
-//            FMDBQuickCheck(b, sqlString, __db);
-//        }
-//    }
-//}
-
 + (BOOL)storePlan:(Plan *)plan {
     @synchronized(__db) {
         
@@ -630,10 +601,6 @@ static NSMutableDictionary *__contactsOnlineState;
             [self setFiveDayNotification];
         }
         if (b) {
-//            [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
-//            if (![Config shareInstance].isSyncingData) {
-//                [self updateSettingsUpdatedTime];
-//            }
             NSString *flag = [UserDefaults objectForKey:str_SetBeginDate_Flag];
             if (!flag || ![flag isEqualToString:@"1"]) {
 
@@ -710,9 +677,6 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
-//            if (![Config shareInstance].isSyncingData) {
-//                [self updateSettingsUpdatedTime];
-//            }
         }
         return b;
     }
@@ -874,9 +838,6 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
-//            if (![Config shareInstance].isSyncingData) {
-//                [self updateSettingsUpdatedTime];
-//            }
         }
         return b;
     }
@@ -902,9 +863,6 @@ static NSMutableDictionary *__contactsOnlineState;
         
         if (b) {
             [NotificationCenter postNotificationName:Notify_TaskRecord_Save object:nil];
-//            if (![Config shareInstance].isSyncingData) {
-//                [self updateSettingsUpdatedTime];
-//            }
         }
         return b;
     }
@@ -1051,9 +1009,6 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
-//            if (![Config shareInstance].isSyncingData) {
-//                [self updateSettingsUpdatedTime];
-//            }
         }
         return b;
     }
@@ -1093,9 +1048,6 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
-//            if (![Config shareInstance].isSyncingData) {
-//                [self updateSettingsUpdatedTime];
-//            }
         }
         return b;
     }
@@ -1140,9 +1092,6 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         if (b) {
             [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
-//            if (![Config shareInstance].isSyncingData) {
-//                [self updateSettingsUpdatedTime];
-//            }
         }
         return b;
     }
@@ -1480,7 +1429,7 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSMutableArray *)getTeask {
++ (NSMutableArray *)getTask {
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -1539,7 +1488,66 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSArray *)getTeaskRecord:(NSString *)recordId {
++ (Task *)getTaskById:(NSString *)taskId {
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return nil ;
+            }
+        }
+        
+        NSString *account = @"";
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser getCurrentUser];
+            account = user.objectId;
+        }
+
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND taskId=? ORDER BY taskOrder ASC, createTime DESC", str_TableName_Task];
+        
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, taskId]];
+        
+        Task *task = [[Task alloc] init];
+        
+        while ([rs next]) {
+            
+            task.account = account;
+            task.taskId = [rs stringForColumn:@"taskId"];
+            task.content = [rs stringForColumn:@"content"];
+            task.totalCount = [rs stringForColumn:@"totalCount"];
+            task.completionDate = [rs stringForColumn:@"completionDate"];
+            task.createTime = [rs stringForColumn:@"createTime"];
+            task.updateTime = [rs stringForColumn:@"updateTime"];
+            task.isNotify = [rs stringForColumn:@"isNotify"];
+            task.notifyTime = [rs stringForColumn:@"notifyTime"];
+            task.isTomato = [rs stringForColumn:@"isTomato"];
+            task.tomatoMinute = [rs stringForColumn:@"tomatoMinute"];
+            task.isRepeat = [rs stringForColumn:@"isRepeat"];
+            task.repeatType = [rs stringForColumn:@"repeatType"];
+            task.taskOrder = [rs stringForColumn:@"taskOrder"];
+            task.isDeleted = @"0";
+            
+            if (!task.isTomato) {
+                task.isTomato = @"0";
+            }
+            if (!task.tomatoMinute) {
+                task.tomatoMinute = @"";
+            }
+            if (!task.isRepeat) {
+                task.isRepeat = @"0";
+            }
+            if (!task.repeatType) {
+                task.repeatType = @"4";
+            }
+            return task;
+        }
+        [rs close];
+        
+        return task;
+    }
+}
+
++ (NSArray *)getTaskRecord:(NSString *)recordId {
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -2229,7 +2237,7 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSArray *)getTeaskRecordForSyncByTaskId:(NSString *)taskId syntime:(NSString *)syntime {
++ (NSArray *)getTaskRecordForSyncByTaskId:(NSString *)taskId syntime:(NSString *)syntime {
     @synchronized(__db) {
         
         if (!__db.open) {

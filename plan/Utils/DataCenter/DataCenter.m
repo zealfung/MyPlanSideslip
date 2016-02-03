@@ -20,7 +20,6 @@ static BOOL finishUploadAvatar;
 static BOOL finishUploadCenterTop;
 static BOOL finishPlan;
 static BOOL finishTask;
-//static BOOL finishPhoto;
 
 @implementation DataCenter
 
@@ -301,7 +300,6 @@ static BOOL finishTask;
         finishSettings = YES;
         [weakSelf IsAllUploadFinished];
     }];
-    
 }
 
 + (void)addSettingsToServer {
@@ -385,10 +383,10 @@ static BOOL finishTask;
                     [Config shareInstance].settings.syntime = timeNow;
                 }
             }
-            [PlanCache storePersonalSettings:[Config shareInstance].settings];
             //把上传完的文件保存到“头像”字段
             [obj setObject:bmobFile.url forKey:@"avatarURL"];
             [obj updateInBackground];
+            [PlanCache storePersonalSettings:[Config shareInstance].settings];
         } else if (error) {
             NSLog(@"上传头像到服务器失败：%@",error);
         }
@@ -416,9 +414,9 @@ static BOOL finishTask;
                 }
             }
 
-            [PlanCache storePersonalSettings:[Config shareInstance].settings];
             [obj setObject:bmobFile.url forKey:@"centerTopURL"];
             [obj updateInBackground];
+            [PlanCache storePersonalSettings:[Config shareInstance].settings];
         } else if (error) {
             NSLog(@"上传个人中心图片到服务器失败：%@",error);
         }
@@ -515,6 +513,9 @@ static BOOL finishTask;
     }
     if (plan.isdeleted) {
         [obj setObject:plan.isdeleted forKey:@"isDeleted"];
+    }
+    if (plan.beginDate) {
+        [obj setObject:plan.beginDate forKey:@"beginDate"];
     }
     BmobACL *acl = [BmobACL ACL];
     [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
@@ -846,6 +847,11 @@ static BOOL finishTask;
                                       @"updatedTime":task.updateTime,
                                       @"isNotify":task.isNotify,
                                       @"notifyTime":task.notifyTime,
+                                      @"isTomato":task.isTomato,
+                                      @"tomatoMinute":task.tomatoMinute,
+                                      @"isRepeat":task.isRepeat,
+                                      @"repeatType":task.repeatType,
+                                      @"taskOrder":task.taskOrder,
                                       @"isDeleted":task.isDeleted};
                 [newTask saveAllWithDictionary:dic];
                 BmobACL *acl = [BmobACL ACL];
@@ -863,9 +869,9 @@ static BOOL finishTask;
 + (void)syncTaskRecord:(NSString *)taskId syncTime:(NSString *)syncTime {
     NSArray *localNewArray = [NSArray array];
     if (syncTime.length > 0) {
-        localNewArray = [PlanCache getTeaskRecordForSyncByTaskId:taskId syntime:syncTime];
+        localNewArray = [PlanCache getTaskRecordForSyncByTaskId:taskId syntime:syncTime];
     } else {
-        localNewArray = [PlanCache getTeaskRecordForSyncByTaskId:taskId syntime:nil];
+        localNewArray = [PlanCache getTaskRecordForSyncByTaskId:taskId syntime:nil];
     }
     BmobUser *user = [BmobUser getCurrentUser];
     for (TaskRecord *taskrecord in localNewArray) {
@@ -901,6 +907,21 @@ static BOOL finishTask;
     }
     if (task.notifyTime) {
         [obj setObject:task.notifyTime forKey:@"notifyTime"];
+    }
+    if (task.isTomato) {
+        [obj setObject:task.isTomato forKey:@"isTomato"];
+    }
+    if (task.tomatoMinute) {
+        [obj setObject:task.tomatoMinute forKey:@"tomatoMinute"];
+    }
+    if (task.isRepeat) {
+        [obj setObject:task.isRepeat forKey:@"isRepeat"];
+    }
+    if (task.repeatType) {
+        [obj setObject:task.repeatType forKey:@"repeatType"];
+    }
+    if (task.taskOrder) {
+        [obj setObject:task.taskOrder forKey:@"taskOrder"];
     }
     if (task.isDeleted) {
         [obj setObject:task.isDeleted forKey:@"isDeleted"];
@@ -957,6 +978,11 @@ static BOOL finishTask;
     task.updateTime = [obj objectForKey:@"updatedTime"];
     task.isNotify = [obj objectForKey:@"isNotify"];
     task.notifyTime = [obj objectForKey:@"notifyTime"];
+    task.isTomato = [obj objectForKey:@"isTomato"];
+    task.tomatoMinute = [obj objectForKey:@"tomatoMinute"];
+    task.isRepeat = [obj objectForKey:@"isRepeat"];
+    task.repeatType = [obj objectForKey:@"repeatType"];
+    task.taskOrder = [obj objectForKey:@"taskOrder"];
     task.isDeleted = [obj objectForKey:@"isDeleted"];
     [self getNewTaskRecordFromServer:task.taskId];
     [PlanCache storeTask:task];

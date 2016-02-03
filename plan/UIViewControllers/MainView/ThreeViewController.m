@@ -88,7 +88,7 @@
             task.taskOrder = [NSString stringWithFormat:@"%ld", i];
             [PlanCache storeTask:task];
         }
-        taskArray = [PlanCache getTeask];
+        taskArray = [PlanCache getTask];
         isTableEditing = NO;
     }
     //更换按钮icon
@@ -102,7 +102,7 @@
 - (void)reloadTaskData {
     if (isTableEditing) return;
     
-    taskArray = [PlanCache getTeask];
+    taskArray = [PlanCache getTask];
     if (taskArray.count > 0) {
         longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
         longPress.minimumPressDuration = 1.0;
