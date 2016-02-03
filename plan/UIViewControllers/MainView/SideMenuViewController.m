@@ -153,8 +153,10 @@
             break;
         }
         case 3: {//五星鼓励
+            //到下载界面
 //            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/app/id983206049?mt=8"]];
-            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"itms-apps://ax.itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?type=Purple+Software&id=983206049"]];
+            //到评论界面
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=983206049&pageNumber=0&sortOrdering=2&type=Purple+Software&mt=8"]];
             [self.sideMenuViewController hideMenuViewController];
             break;
         }
