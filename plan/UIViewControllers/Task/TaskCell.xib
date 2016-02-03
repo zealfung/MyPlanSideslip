@@ -21,7 +21,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Icon_Alarm.png" translatesAutoresizingMaskIntoConstraints="NO" id="A8c-dB-sLT">
-                        <rect key="frame" x="280" y="0.0" width="20" height="20"/>
+                        <rect key="frame" x="278" y="0.0" width="20" height="20"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="20" id="5el-aa-iIz"/>
                             <constraint firstAttribute="height" constant="20" id="ai4-lo-umh"/>
@@ -38,12 +38,12 @@
                 <constraints>
                     <constraint firstItem="9bd-Ji-rJH" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="KaH-Pk-4Wd"/>
                     <constraint firstAttribute="trailing" secondItem="idY-cN-hlh" secondAttribute="trailing" constant="12" id="Kpy-Is-P42"/>
-                    <constraint firstAttribute="trailing" secondItem="A8c-dB-sLT" secondAttribute="trailing" constant="20" id="T5N-R7-WNu"/>
                     <constraint firstAttribute="trailing" secondItem="9bd-Ji-rJH" secondAttribute="trailing" constant="3" id="Xoy-Gj-44i"/>
                     <constraint firstItem="idY-cN-hlh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="a8o-54-Kn5"/>
                     <constraint firstItem="idY-cN-hlh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="bl3-eo-nVV"/>
                     <constraint firstItem="A8c-dB-sLT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="l64-0C-oqJ"/>
                     <constraint firstAttribute="bottom" secondItem="idY-cN-hlh" secondAttribute="bottom" constant="0.5" id="nwu-B4-5cf"/>
+                    <constraint firstItem="9bd-Ji-rJH" firstAttribute="leading" secondItem="A8c-dB-sLT" secondAttribute="trailing" constant="3" id="qa3-lm-ZOB"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

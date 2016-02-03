@@ -8,6 +8,7 @@
 
 #import "TaskCell.h"
 #import "TaskRecord.h"
+#import "UIView+Util.h"
 
 @implementation TaskCell
 
@@ -23,10 +24,10 @@
     cellView.labelTask.text = task.content;
     cellView.task = task;
     if (![task.isNotify isEqualToString:@"1"]) {
-        cellView.imgViewAlarm.hidden = YES;
+        [cellView.imgViewAlarm setVisibility:UIViewVisibilityGone affectedMarginDirections:UIViewMarginDirectionRight];
     }
     if (![task.isTomato isEqualToString:@"1"]) {
-        cellView.imgViewTomato.hidden = YES;
+        [cellView.imgViewTomato setVisibility:UIViewVisibilityGone affectedMarginDirections:UIViewMarginDirectionAll];
     }
     return cellView;
 }
