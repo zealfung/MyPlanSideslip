@@ -14,7 +14,6 @@
 @property (strong, nonatomic) IBOutlet UIImageView *imgViewAlarm;
 @property (strong, nonatomic) IBOutlet UIImageView *imgViewTomato;
 @property (strong, nonatomic) IBOutlet UILabel *labelTask;
-@property (strong, nonatomic) IBOutlet UIButton *btnCount;
 @property (strong, nonatomic) Task *task;
 
 + (TaskCell *)cellView:(Task *)task;
