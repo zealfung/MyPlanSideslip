@@ -6,6 +6,7 @@
 //  Copyright © 2016年 Fengzy. All rights reserved.
 //
 
+#import "KxMenu.h"
 #import "AddTaskViewController.h"
 #import "TaskDetailViewController.h"
 
@@ -32,9 +33,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
 }
 
 - (void)createRightBarButton {
-    self.rightBarButtonItems = [NSArray arrayWithObjects:
-                                [self createBarButtonItemWithNormalImageName:png_Btn_Edit selectedImageName:png_Btn_Edit selector:@selector(editAction:)],
-                                [self createBarButtonItemWithNormalImageName:png_Btn_Delete selectedImageName:png_Btn_Delete selector:@selector(deleteAction:)], nil];
+    self.rightBarButtonItem =[self createBarButtonItemWithNormalImageName:png_Btn_More selectedImageName:png_Btn_More selector:@selector(showMenu:)];
 }
 
 - (void)setControls {
@@ -99,14 +98,38 @@ NSUInteger const kTaskDeleteTag = 20151201;
     [self.tableRecord reloadData];
 }
 
-- (void)editAction:(UIButton *)button {
+- (void)showMenu:(UIButton *)sender {
+    NSArray *menuItems =
+    @[
+      [KxMenuItem menuItem:str_Edit
+                     image:[UIImage imageNamed:png_Btn_Edit]
+                    target:self
+                    action:@selector(editAction:)],
+      [KxMenuItem menuItem:str_Delete
+                     image:[UIImage imageNamed:png_Btn_Delete]
+                    target:self
+                    action:@selector(deleteAction:)],
+      ];
+    
+    if (![KxMenu isShowMenu]) {
+        CGRect frame = sender.frame;
+        frame.origin.y -= 30;
+        [KxMenu showMenuInView:self.view
+                      fromRect:frame
+                     menuItems:menuItems];
+    } else {
+        [KxMenu dismissMenu];
+    }
+}
+
+- (void)editAction:(UIButton *)sender {
     AddTaskViewController *controller = [[AddTaskViewController alloc]init];
     controller.operationType = Edit;
     controller.task = self.task;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)deleteAction:(UIButton *)button {
+- (void)deleteAction:(UIButton *)sender {
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Task_Delete_Tips
                                                     message:nil
                                                    delegate:self
