@@ -427,28 +427,28 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (planType == EverydayPlan) {
-        if (daySectionFlag[section]) {
-            if(dayDateKeyArray.count > 0) {
+        if(dayDateKeyArray.count > 0) {
+            if (daySectionFlag[section]) {
                 NSString *key = dayDateKeyArray[section];
                 NSArray *dateArray = [dayPlanDict objectForKey:key];
                 return dateArray.count;
             } else {
-                return 3;
+                return 0;
             }
         } else {
-            return 0;
+            return 3;
         }
     } else if (planType == FuturePlan) {
-        if (futureSectionFlag[section]) {
-            if(futureDateKeyArray.count > 0) {
+        if(futureDateKeyArray.count > 0) {
+            if (futureSectionFlag[section]) {
                 NSString *key = futureDateKeyArray[section];
                 NSArray *dateArray = [futurePlanDict objectForKey:key];
                 return dateArray.count;
             } else {
-                return 3;
+                return 0;
             }
         } else {
-            return 0;
+            return 3;
         }
     } else {
         return 0;
@@ -550,7 +550,11 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    return kPlanSectionViewHeight;
+    if (planType == FuturePlan && futureDateKeyArray.count == 0) {
+        return 0.00001f;
+    } else {
+        return kPlanSectionViewHeight;
+    }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
