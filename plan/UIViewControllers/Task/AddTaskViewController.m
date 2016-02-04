@@ -86,11 +86,14 @@
             isAlarm = YES;
             self.labelAlarmTime.hidden = NO;
             self.labelAlarmTime.text = self.task.notifyTime;
+            self.imgViewRepeat.hidden = NO;
+            self.switchRepeat.hidden = NO;
+            self.labelRepeat.hidden = NO;
         }
         if ([self.task.isRepeat isEqualToString:@"1"]) {
             [self.switchRepeat setOn:YES];
             isRepeat = YES;
-            self.labelRepeat.hidden = YES;
+            self.labelRepeat.hidden = NO;
             switch ([self.task.repeatType integerValue]) {
                 case 0:
                     self.labelRepeat.text = str_Common_Tips8;
