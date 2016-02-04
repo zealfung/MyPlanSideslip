@@ -83,9 +83,11 @@
     [self.tableView setEditing:flag animated:YES];
     if (!flag) {
         isTableEditing = YES;
+        NSString *timenow = [CommonFunction getTimeNowString];
         for (NSInteger i = 0; i < taskArray.count; i++) {
             Task *task = taskArray[i];
             task.taskOrder = [NSString stringWithFormat:@"%ld", i];
+            task.updateTime = timenow;
             [PlanCache storeTask:task];
         }
         taskArray = [PlanCache getTask];
