@@ -51,9 +51,9 @@
     self.txtMinute.hidden = YES;
     self.txtMinute.text = @"25";
     self.txtMinute.inputAccessoryView = [self getInputAccessoryView];
-    self.labelTomatoTips1.text = @"每次";
-    self.labelTomatoTips2.text = @"分钟";
-    self.labelTomatoTips3.text = str_Task_Delete_Tips10;
+    self.labelTomatoTips1.text = str_Task_Tips2;
+    self.labelTomatoTips2.text = str_Task_Tips3;
+    self.labelTomatoTips3.text = str_Task_Tips4;
     
     self.labelAlarmTime.hidden = YES;
     self.labelAlarmTime.userInteractionEnabled = YES;
@@ -93,16 +93,16 @@
             self.labelRepeat.hidden = YES;
             switch ([self.task.repeatType integerValue]) {
                 case 0:
-                    self.labelRepeat.text = @"每天重复提醒";
+                    self.labelRepeat.text = str_Common_Tips8;
                     break;
                 case 1:
-                    self.labelRepeat.text = @"每周重复提醒";
+                    self.labelRepeat.text = str_Common_Tips9;
                     break;
                 case 2:
-                    self.labelRepeat.text = @"每月重复提醒";
+                    self.labelRepeat.text = str_Common_Tips10;
                     break;
                 case 3:
-                    self.labelRepeat.text = @"每年重复提醒";
+                    self.labelRepeat.text = str_Common_Tips11;
                     break;
                 default:
                     break;
@@ -125,10 +125,10 @@
     }
     if (isTomato) {
         if (self.txtMinute.text.length == 0) {
-            [self alertButtonMessage:@"请输入番茄工作法的时间"];
+            [self alertButtonMessage:str_Task_Tips5];
             return;
         } else if ([self.txtMinute.text integerValue] == 0) {
-            [self alertButtonMessage:@"每次番茄工作法的时间必须大于0分钟"];
+            [self alertButtonMessage:str_Task_Tips6];
             return;
         }
     }
@@ -312,7 +312,7 @@
 }
 
 - (void)showRepeatActionSheet {
-    repeatActionSheet = [[UIActionSheet alloc] initWithTitle:@"设置重复提醒" delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"每天重复提醒", @"每周重复提醒", @"每月重复提醒", @"每年重复提醒", nil];
+    repeatActionSheet = [[UIActionSheet alloc] initWithTitle:str_Task_Tips7 delegate:self cancelButtonTitle:str_Cancel destructiveButtonTitle:nil otherButtonTitles:str_Common_Tips8, str_Common_Tips9, str_Common_Tips10, str_Common_Tips11, nil];
     [repeatActionSheet showInView:self.view];
 }
 
@@ -323,28 +323,28 @@
         case 0://每天
         {
             self.task.repeatType = @"0";
-            self.labelRepeat.text = @"每天重复提醒";
+            self.labelRepeat.text = str_Common_Tips8;
             [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];
         }
             break;
         case 1://每周
         {
             self.task.repeatType = @"1";
-            self.labelRepeat.text = @"每周重复提醒";
+            self.labelRepeat.text = str_Common_Tips9;
             [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];
         }
             break;
         case 2://每月
         {
             self.task.repeatType = @"2";
-            self.labelRepeat.text = @"每月重复提醒";
+            self.labelRepeat.text = str_Common_Tips10;
             [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];
         }
             break;
         case 3://每年
         {
             self.task.repeatType = @"3";
-            self.labelRepeat.text = @"每年重复提醒";
+            self.labelRepeat.text = str_Common_Tips11;
             [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];
         }
             break;

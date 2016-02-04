@@ -22,7 +22,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"任务详情";
+    self.title = str_Task_Detail;
     [self createRightBarButton];
     
     [NotificationCenter addObserver:self selector:@selector(reloadTaskData) name:Notify_Task_Save object:nil];
@@ -60,10 +60,10 @@ NSUInteger const kTaskDeleteTag = 20151201;
         self.labelTomato.hidden = YES;
         self.imgViewAlarmConstraint.constant = 10;
         self.labelAlarmConstraint.constant = 10;
-        [self.btnStart setAllTitle:@"完成一次"];
+        [self.btnStart setAllTitle:str_Task_Tips8];
     } else {
-        self.labelTomato.text = [NSString stringWithFormat:@"番茄时间每次 %@ 分钟", self.task.tomatoMinute];
-        [self.btnStart setAllTitle:@"开始番茄"];
+        self.labelTomato.text = [NSString stringWithFormat:@"%@ %@ %@", str_Task_Tips10, self.task.tomatoMinute, str_Task_Tips3];
+        [self.btnStart setAllTitle:str_Task_Tips9];
     }
     if ([self.task.isNotify isEqualToString:@"0"]) {
         self.imgViewAlarm.hidden = YES;
@@ -71,7 +71,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
         self.imgViewRepeat.hidden = YES;
         self.labelRepeat.hidden = YES;
     } else {
-        self.labelAlram.text = [NSString stringWithFormat:@"任务提醒时间：%@", self.task.notifyTime];
+        self.labelAlram.text = [NSString stringWithFormat:@"%@%@", str_Task_Tips11, self.task.notifyTime];
     }
     if ([self.task.isRepeat isEqualToString:@"0"]) {
         self.imgViewRepeat.hidden = YES;
@@ -79,16 +79,16 @@ NSUInteger const kTaskDeleteTag = 20151201;
     } else {
         switch ([self.task.repeatType integerValue]) {
             case 0:
-                self.labelRepeat.text = @"每天重复提醒";
+                self.labelRepeat.text = str_Common_Tips8;
                 break;
             case 1:
-                self.labelRepeat.text = @"每周重复提醒";
+                self.labelRepeat.text = str_Common_Tips9;
                 break;
             case 2:
-                self.labelRepeat.text = @"每月重复提醒";
+                self.labelRepeat.text = str_Common_Tips10;
                 break;
             case 3:
-                self.labelRepeat.text = @"每年重复提醒";
+                self.labelRepeat.text = str_Common_Tips11;
                 break;
             default:
                 break;
@@ -212,7 +212,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
             cell.textLabel.font = font_Normal_13;
         }
         TaskRecord *taskRecord = finishRecordArray[indexPath.row];
-        cell.textLabel.text = [NSString stringWithFormat:@"完成时间：%@", taskRecord.createTime];
+        cell.textLabel.text = [NSString stringWithFormat:@"%@%@", str_Task_Tips13, taskRecord.createTime];
         return cell;
         
     } else {
@@ -233,7 +233,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
             cell.textLabel.font = font_Bold_16;
         }
         if (indexPath.row == 1) {
-            cell.textLabel.text = @"暂无完成记录";
+            cell.textLabel.text = str_Task_Tips12;
         }
         
         return cell;
@@ -270,9 +270,9 @@ NSUInteger const kTaskDeleteTag = 20151201;
             dispatch_source_cancel(_timer);
             dispatch_async(dispatch_get_main_queue(), ^{
 
-//                [self addRecord];
+                [self addRecord];
                 self.btnStart.enabled = YES;
-                [self.btnStart setAllTitle:@"开始番茄"];
+                [self.btnStart setAllTitle:str_Task_Tips9];
                 [self.btnStart setBackgroundColor:color_0BA32A];
             });
         } else {
