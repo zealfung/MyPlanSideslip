@@ -316,7 +316,7 @@ static NSMutableDictionary *__contactsOnlineState;
     //任务
     if (![__db tableExists:str_TableName_Task]) {
         
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, taskId TEXT, content TEXT, totalCount TEXT, completionDate TEXT, createTime TEXT, updateTime TEXT, isNotify TEXT, notifyTime TEXT, isTomato TEXT, tomatoMinute TEXT, isRepeat TEXT, repeatType TEXT, isDeleted TEXT)", str_TableName_Task];
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, taskId TEXT, content TEXT, totalCount TEXT, completionDate TEXT, createTime TEXT, updateTime TEXT, isNotify TEXT, notifyTime TEXT, isTomato TEXT, tomatoMinute TEXT, isRepeat TEXT, repeatType TEXT, taskOrder TEXT, isDeleted TEXT)", str_TableName_Task];
         
         BOOL b = [__db executeUpdate:sqlString];
         
@@ -1867,7 +1867,7 @@ static NSMutableDictionary *__contactsOnlineState;
     NSString *fiveDayLater = [dateFormatter stringFromDate:[[NSDate date] dateByAddingTimeInterval:5 * 24 * 3600]];
     BmobUser *user = [BmobUser getCurrentUser];
     NSString *account = @"";
-    if (!user) {
+    if (user) {
         account = user.objectId;
     }
     Plan *fiveDayPlan = [[Plan alloc] init];
@@ -1991,12 +1991,13 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *sqlString = @"";
         if (syntime) {
-            sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=? AND updatetime >=?", str_TableName_Plan];
+            NSString *condition = [NSString stringWithFormat:@"datetime(updatetime)>=datetime('%@')", syntime];
+            sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=? AND %@", str_TableName_Plan, condition];
         } else {
             sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=?", str_TableName_Plan];
         }
         
-        FMResultSet *rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[account]] : [__db executeQuery:sqlString withArgumentsInArray:@[account, syntime]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
         while ([rs next]) {
             
@@ -2088,12 +2089,13 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *sqlString = @"";
         if (syntime) {
-            sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL, isdeleted FROM %@ WHERE account=? AND updatetime >=?", str_TableName_Photo];
+            NSString *condition = [NSString stringWithFormat:@"datetime(updatetime)>=datetime('%@')", syntime];
+            sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL, isdeleted FROM %@ WHERE account=? AND %@", str_TableName_Photo, condition];
         } else {
             sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL, isdeleted FROM %@ WHERE account=?", str_TableName_Photo];
         }
         
-        FMResultSet *rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[account]] : [__db executeQuery:sqlString withArgumentsInArray:@[account, syntime]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
         while ([rs next]) {
             Photo *photo = [[Photo alloc] init];
@@ -2200,12 +2202,13 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *sqlString = @"";
         if (syntime) {
-            sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted FROM %@ WHERE account=? AND updatetime >=?", str_TableName_Task];
+            NSString *condition = [NSString stringWithFormat:@"datetime(updatetime)>=datetime('%@')", syntime];
+            sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND %@", str_TableName_Task, condition];
         } else {
-            sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted FROM %@ WHERE account=?", str_TableName_Task];
+            sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=?", str_TableName_Task];
         }
         
-        FMResultSet *rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[account]] : [__db executeQuery:sqlString withArgumentsInArray:@[account, syntime]];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
 
         while ([rs next]) {
             
@@ -2220,14 +2223,34 @@ static NSMutableDictionary *__contactsOnlineState;
             task.isNotify = [rs stringForColumn:@"isNotify"];
             task.notifyTime = [rs stringForColumn:@"notifyTime"];
             task.isDeleted = [rs stringForColumn:@"isDeleted"];
+            task.isTomato = [rs stringForColumn:@"isTomato"];
+            task.tomatoMinute = [rs stringForColumn:@"tomatoMinute"];
+            task.isRepeat = [rs stringForColumn:@"isRepeat"];
+            task.repeatType = [rs stringForColumn:@"repeatType"];
+            task.taskOrder = [rs stringForColumn:@"taskOrder"];
             if (!task.completionDate) {
                 task.completionDate = @"";
             }
             if (!task.isNotify) {
-                task.isNotify = @"";
+                task.isNotify = @"0";
             }
             if (!task.notifyTime) {
                 task.notifyTime = @"";
+            }
+            if (!task.isTomato) {
+                task.isTomato = @"0";
+            }
+            if (!task.tomatoMinute) {
+                task.tomatoMinute = @"";
+            }
+            if (!task.isRepeat) {
+                task.isRepeat = @"0";
+            }
+            if (!task.repeatType) {
+                task.repeatType = @"";
+            }
+            if (!task.taskOrder) {
+                task.taskOrder = @"";
             }
             [array addObject:task];
         }
@@ -2280,7 +2303,7 @@ static NSMutableDictionary *__contactsOnlineState;
             }
         }
         
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted FROM %@ WHERE account=? AND taskId =?", str_TableName_Task];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND taskId =?", str_TableName_Task];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, taskId]];
         
@@ -2296,14 +2319,34 @@ static NSMutableDictionary *__contactsOnlineState;
             task.isNotify = [rs stringForColumn:@"isNotify"];
             task.notifyTime = [rs stringForColumn:@"notifyTime"];
             task.isDeleted = [rs stringForColumn:@"isDeleted"];
+            task.isTomato = [rs stringForColumn:@"isTomato"];
+            task.tomatoMinute = [rs stringForColumn:@"tomatoMinute"];
+            task.isRepeat = [rs stringForColumn:@"isRepeat"];
+            task.repeatType = [rs stringForColumn:@"repeatType"];
+            task.taskOrder = [rs stringForColumn:@"taskOrder"];
             if (!task.completionDate) {
                 task.completionDate = @"";
             }
             if (!task.isNotify) {
-                task.isNotify = @"";
+                task.isNotify = @"0";
             }
             if (!task.notifyTime) {
                 task.notifyTime = @"";
+            }
+            if (!task.isTomato) {
+                task.isTomato = @"0";
+            }
+            if (!task.tomatoMinute) {
+                task.tomatoMinute = @"";
+            }
+            if (!task.isRepeat) {
+                task.isRepeat = @"0";
+            }
+            if (!task.repeatType) {
+                task.repeatType = @"";
+            }
+            if (!task.taskOrder) {
+                task.taskOrder = @"";
             }
         }
         [rs close];
