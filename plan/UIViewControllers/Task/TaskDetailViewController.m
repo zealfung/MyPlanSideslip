@@ -26,7 +26,8 @@ NSUInteger const kTaskDeleteTag = 20151201;
     [self createRightBarButton];
     
     [NotificationCenter addObserver:self selector:@selector(reloadTaskData) name:Notify_Task_Save object:nil];
-    
+    [NotificationCenter addObserver:self selector:@selector(reloadTaskRecordData) name:Notify_TaskRecord_Save object:nil];
+
     [self setControls];
 }
 
@@ -41,6 +42,11 @@ NSUInteger const kTaskDeleteTag = 20151201;
 - (void)reloadTaskData {
     self.task = [PlanCache getTaskById:self.task.taskId];
     [self setControls];
+}
+
+- (void)reloadTaskRecordData {
+    finishRecordArray = [PlanCache getTaskRecord:self.task.taskId];
+    [self.tableRecord reloadData];
 }
 
 - (void)setControls {
@@ -62,6 +68,10 @@ NSUInteger const kTaskDeleteTag = 20151201;
         self.labelAlarmConstraint.constant = 10;
         [self.btnStart setAllTitle:str_Task_Tips8];
     } else {
+        self.imgViewTomato.hidden = NO;
+        self.labelTomato.hidden = NO;
+        self.imgViewAlarmConstraint.constant = 40;
+        self.labelAlarmConstraint.constant = 40;
         self.labelTomato.text = [NSString stringWithFormat:@"%@ %@ %@", str_Task_Tips10, self.task.tomatoMinute, str_Task_Tips3];
         [self.btnStart setAllTitle:str_Task_Tips9];
     }
@@ -71,12 +81,16 @@ NSUInteger const kTaskDeleteTag = 20151201;
         self.imgViewRepeat.hidden = YES;
         self.labelRepeat.hidden = YES;
     } else {
+        self.imgViewAlarm.hidden = NO;
+        self.labelAlram.hidden = NO;
         self.labelAlram.text = [NSString stringWithFormat:@"%@%@", str_Task_Tips11, self.task.notifyTime];
     }
     if ([self.task.isRepeat isEqualToString:@"0"]) {
         self.imgViewRepeat.hidden = YES;
         self.labelRepeat.hidden = YES;
     } else {
+        self.imgViewRepeat.hidden = NO;
+        self.labelRepeat.hidden = NO;
         switch ([self.task.repeatType integerValue]) {
             case 0:
                 self.labelRepeat.text = str_Common_Tips8;
@@ -109,6 +123,9 @@ NSUInteger const kTaskDeleteTag = 20151201;
         && [self.task.completionDate isEqualToString:date]) {
         self.btnStart.enabled = NO;
         [self.btnStart setBackgroundColor:color_8f8f8f];
+    } else {
+        self.btnStart.enabled = YES;
+        [self.btnStart setBackgroundColor:color_0BA32A];
     }
 
     finishRecordArray = [PlanCache getTaskRecord:self.task.taskId];
