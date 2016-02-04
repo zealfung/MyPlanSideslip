@@ -66,6 +66,9 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
+    [self refreshRedDot];
+    [self checkUnread:self.tabBarController.tabBar index:1];
+    
     //计算最近一次加载数据时间是否已经超过十分钟，如果是，就自动刷新一次数据
     NSDate *lastUpdatedTime = [UserDefaults objectForKey:str_PlanList_UpdatedTime];
     if (lastUpdatedTime) {
@@ -73,13 +76,18 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
         
         if ((now-last)/60 > 5) {//大于五分钟，自动重载一次数据
-            [self checkUnread:self.tabBarController.tabBar index:1];
-            [self refreshRedDot];
             [self getPlanData];
             //记录刷新时间
             [UserDefaults setObject:[NSDate date] forKey:str_PlanList_UpdatedTime];
             [UserDefaults synchronize];
         }
+    }
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    if (planType == EverydayPlan) {
+        [self moveUnderLineViewToButton:threeSubView.leftButton];
     }
 }
 
@@ -550,7 +558,10 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (planType == FuturePlan && futureDateKeyArray.count == 0) {
+    if ((planType == EverydayPlan
+         && dayDateKeyArray.count == 0)
+        || (planType == FuturePlan
+         && futureDateKeyArray.count == 0)) {
         return 0.00001f;
     } else {
         return kPlanSectionViewHeight;

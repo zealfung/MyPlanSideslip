@@ -75,6 +75,11 @@
     [self loadUserTagsData];
 }
 
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self refreshRedDot];
+}
+
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     //计算最近一次加载数据时间是否已经超过十分钟，如果是，就自动刷新一次数据
@@ -93,11 +98,6 @@
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self refreshRedDot];
 }
 
 - (void)createNavBarButton {
