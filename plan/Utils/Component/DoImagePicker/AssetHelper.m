@@ -150,9 +150,18 @@
 
 - (NSDictionary *)getGroupInfo:(NSInteger)nIndex
 {
-    return @{@"name" : [_assetGroups[nIndex] valueForProperty:ALAssetsGroupPropertyName],
-             @"count" : @([_assetGroups[nIndex] numberOfAssets]),
-             @"thumbnail" : [UIImage imageWithCGImage:[(ALAssetsGroup*)_assetGroups[nIndex] posterImage]]};
+    NSString *name = [_assetGroups[nIndex] valueForProperty:ALAssetsGroupPropertyName];
+    NSInteger count = [_assetGroups[nIndex] numberOfAssets];
+    UIImage *image = [UIImage imageWithCGImage:[(ALAssetsGroup*)_assetGroups[nIndex] posterImage]];
+    if (!name) {
+        name = @"";
+    }
+    if (!image) {
+        image = [UIImage imageNamed:png_ImageDefault];
+    }
+    return @{@"name" : name,
+             @"count" : @(count),
+             @"thumbnail" : image};
 }
 
 - (void)clearData
