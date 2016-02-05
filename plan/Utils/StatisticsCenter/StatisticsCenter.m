@@ -12,6 +12,8 @@
 #import "Statistics.h"
 #import "StatisticsCenter.h"
 
+static BOOL isCheckingIn;
+
 @implementation StatisticsCenter
 
 + (BOOL)isCheckInToday {
@@ -26,7 +28,8 @@
 
 + (void)checkIn {
     
-    if (![LogIn isLogin]) return;
+    if (![LogIn isLogin] || isCheckingIn) return;
+    isCheckingIn = YES;
     
     Statistics *statistics = [PlanCache getStatistics];
     if (statistics.updatetime && statistics.updatetime.length > 0) {
@@ -114,6 +117,7 @@
             statistics.recordMaxEndDate = [checkIn objectForKey:@"maxEnd"];
             statistics.updatetime = [CommonFunction getTimeNowString];
             [PlanCache storeStatistics:statistics];
+            isCheckingIn = NO;
             NSLog(@"签到成功objectid :%@",checkIn.objectId);
             
         } else if (error){
@@ -161,6 +165,7 @@
             statistics.recordMaxEndDate = [obj objectForKey:@"maxEnd"];
             statistics.updatetime = [CommonFunction getTimeNowString];
             [PlanCache storeStatistics:statistics];
+            isCheckingIn = NO;
             NSLog(@"更新签到成功objectid :%@", obj.objectId);
         } else if (error){
             NSLog(@"更新签到失败%@",error);
