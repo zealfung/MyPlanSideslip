@@ -14,6 +14,7 @@
 #import "ThreeSubView.h"
 #import "WZLBadgeImport.h"
 #import "PlanSectionView.h"
+#import <BmobSDK/BmobUser.h>
 #import "SecondViewController.h"
 #import "AddPlanViewController.h"
 #import <RESideMenu/RESideMenu.h>
@@ -706,18 +707,24 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     Plan *plan = [[Plan alloc] init];
     plan.account = [dict objectForKey:@"account"];
     plan.planid = [dict objectForKey:@"tag"];
-    plan.createtime = [dict objectForKey:@"createtime"];
-    plan.content = [dict objectForKey:@"content"];
-    plan.beginDate = [dict objectForKey:@"beginDate"];
-    plan.iscompleted = [dict objectForKey:@"iscompleted"];
-    plan.completetime = [dict objectForKey:@"completetime"];
-    plan.isnotify = @"1";
-    plan.notifytime = [dict objectForKey:@"notifytime"];
     if ([plan.planid isEqualToString:Notify_FiveDay_Tag]) {
         //5天未新建计划提醒，不需要跳转到计划详情
         return;
     }
-    [self toPlanDetailWithPlan:plan];
+    BmobUser *user = [BmobUser getCurrentUser];
+    if ((user && [plan.account isEqualToString:user.objectId])
+        || (!user && [plan.account isEqualToString:@""])) {
+        
+        plan.createtime = [dict objectForKey:@"createtime"];
+        plan.content = [dict objectForKey:@"content"];
+        plan.beginDate = [dict objectForKey:@"beginDate"];
+        plan.iscompleted = [dict objectForKey:@"iscompleted"];
+        plan.completetime = [dict objectForKey:@"completetime"];
+        plan.isnotify = @"1";
+        plan.notifytime = [dict objectForKey:@"notifytime"];
+        
+        [self toPlanDetailWithPlan:plan];
+    }
 }
 
 - (void)toPlanDetailWithPlan:(Plan *)plan {

@@ -131,10 +131,37 @@
         //显示
         [NotificationCenter postNotificationName:Notify_Push_LocalNotify object:nil userInfo:lastNotification.userInfo];
         
+        NSDictionary *dict = lastNotification.userInfo;
+        NSInteger type = [[dict objectForKey:@"type"] integerValue];
+        if (type == 0) {//计划提醒
+            Plan *plan = [[Plan alloc] init];
+            plan.account = [dict objectForKey:@"account"];
+            plan.planid = [dict objectForKey:@"tag"];
+            if ([plan.planid isEqualToString:Notify_FiveDay_Tag]) {
+                //5天未新建计划提醒，不需要跳转到计划详情
+                return;
+            }
+            //切换到计划栏
+            [self changeTabbarSelectedItem:1];
+            
+        } else if (type == 1) {//任务提醒
+            //切换到任务栏
+            [self changeTabbarSelectedItem:2];
+        }
+        
     } else if(buttonIndex == 2) {
         //5分钟后提醒
         NSDate *date = [[NSDate date] dateByAddingTimeInterval:5 * 60];
         [LocalNotificationManager updateNotificationWithTag:lastNotification fireDate:date userInfo:lastNotification.userInfo alertBody:lastNotification.alertBody];
+    }
+}
+
+- (void)changeTabbarSelectedItem:(NSInteger)index {
+    RESideMenu *rootView = (RESideMenu *)self.window.rootViewController;
+    UITabBarController *tabController = (UITabBarController *)rootView.contentViewController;
+    NSArray *array = tabController.viewControllers;
+    if (array) {
+        tabController.selectedViewController = array[index];
     }
 }
 
@@ -172,6 +199,25 @@
         if (state == UIApplicationStateInactive) {
             //程序在后台或者已关闭
             [NotificationCenter postNotificationName:Notify_Push_LocalNotify object:nil userInfo:lastNotification.userInfo];
+            
+            NSDictionary *dict = lastNotification.userInfo;
+            NSInteger type = [[dict objectForKey:@"type"] integerValue];
+            if (type == 0) {//计划提醒
+                Plan *plan = [[Plan alloc] init];
+                plan.account = [dict objectForKey:@"account"];
+                plan.planid = [dict objectForKey:@"tag"];
+                if ([plan.planid isEqualToString:Notify_FiveDay_Tag]) {
+                    //5天未新建计划提醒，不需要跳转到计划详情
+                    return;
+                }
+                //切换到计划栏
+                [self changeTabbarSelectedItem:1];
+                
+            } else if (type == 1) {//任务提醒
+                //切换到任务栏
+                [self changeTabbarSelectedItem:2];
+            }
+            
         } else {
             //程序正在运行
             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:lastNotification.alertTitle message:lastNotification.alertBody delegate:self cancelButtonTitle:str_Cancel otherButtonTitles:str_Show, str_Notify_Later, nil];

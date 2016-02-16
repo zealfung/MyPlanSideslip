@@ -9,6 +9,7 @@
 #import "Task.h"
 #import "TaskCell.h"
 #import "WZLBadgeImport.h"
+#import <BmobSDK/BmobUser.h>
 #import "ThreeViewController.h"
 #import "AddTaskViewController.h"
 #import <RESideMenu/RESideMenu.h>
@@ -86,7 +87,7 @@
         NSString *timenow = [CommonFunction getTimeNowString];
         for (NSInteger i = 0; i < taskArray.count; i++) {
             Task *task = taskArray[i];
-            task.taskOrder = [NSString stringWithFormat:@"%ld", i];
+            task.taskOrder = [NSString stringWithFormat:@"%ld", (long)i];
             task.updateTime = timenow;
             [PlanCache storeTask:task];
         }
@@ -132,25 +133,30 @@
     }
     Task *task = [[Task alloc] init];
     task.account = [dict objectForKey:@"account"];
-    task.taskId = [dict objectForKey:@"tag"];
-    task.content = [dict objectForKey:@"content"];
-    task.totalCount = [dict objectForKey:@"totalCount"];
-    task.completionDate = [dict objectForKey:@"completionDate"];
-    task.createTime = [dict objectForKey:@"createTime"];
-    task.updateTime = [dict objectForKey:@"updateTime"];
-    task.isNotify = [dict objectForKey:@"isNotify"];
-    task.notifyTime = [dict objectForKey:@"notifyTime"];
-    task.isTomato = [dict objectForKey:@"isTomato"];
-    task.tomatoMinute = [dict objectForKey:@"tomatoMinute"];
-    task.isRepeat = [dict objectForKey:@"isRepeat"];
-    task.repeatType = [dict objectForKey:@"repeatType"];
-    task.taskOrder = [dict objectForKey:@"taskOrder"];
-    task.isDeleted = @"0";
-    
-    TaskDetailViewController *controller = [[TaskDetailViewController alloc]init];
-    controller.task = task;
-    controller.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:controller animated:YES];
+    BmobUser *user = [BmobUser getCurrentUser];
+    if ((user && [task.account isEqualToString:user.objectId])
+        || (!user && [task.account isEqualToString:@""])) {
+        
+        task.taskId = [dict objectForKey:@"tag"];
+        task.content = [dict objectForKey:@"content"];
+        task.totalCount = [dict objectForKey:@"totalCount"];
+        task.completionDate = [dict objectForKey:@"completionDate"];
+        task.createTime = [dict objectForKey:@"createTime"];
+        task.updateTime = [dict objectForKey:@"updateTime"];
+        task.isNotify = [dict objectForKey:@"isNotify"];
+        task.notifyTime = [dict objectForKey:@"notifyTime"];
+        task.isTomato = [dict objectForKey:@"isTomato"];
+        task.tomatoMinute = [dict objectForKey:@"tomatoMinute"];
+        task.isRepeat = [dict objectForKey:@"isRepeat"];
+        task.repeatType = [dict objectForKey:@"repeatType"];
+        task.taskOrder = [dict objectForKey:@"taskOrder"];
+        task.isDeleted = @"0";
+        
+        TaskDetailViewController *controller = [[TaskDetailViewController alloc]init];
+        controller.task = task;
+        controller.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 
 #pragma mark - Table view data source
