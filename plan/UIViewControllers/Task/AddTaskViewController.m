@@ -237,6 +237,7 @@
         self.switchRepeat.hidden = YES;
         self.labelRepeat.hidden = YES;
         self.labelRepeat.text = @"";
+        [self.switchRepeat setOn:NO];
         isRepeat = NO;
         [self onPickerCancelBtn];
     }
@@ -248,6 +249,12 @@
     BOOL isButtonOn = [btnSwitch isOn];
     isRepeat = isButtonOn;
     if (isButtonOn) {
+        NSDate *notifyTime = [CommonFunction NSStringDateToNSDate:self.task.notifyTime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
+        if ([notifyTime compare:[NSDate date]] == NSOrderedAscending) {
+            [self.switchRepeat setOn:NO];
+            [self alertButtonMessage:@"提醒时间已经过期了，请先更新提醒时间再设置重复提醒"];
+            return;
+        }
         self.labelRepeat.hidden = NO;
         [self showRepeatActionSheet];
     } else {
