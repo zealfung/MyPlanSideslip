@@ -332,24 +332,32 @@
     } else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:str_Settings_SetAvatar_Camera]) {
         //拍照
         if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-            imagePickerController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor darkGrayColor]};
-            imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
-            imagePickerController.allowsEditing = YES;
-            imagePickerController.delegate = self;
-            [self presentViewController:imagePickerController animated:YES completion:nil];
+            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            picker.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor darkGrayColor]};
+            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            picker.allowsEditing = YES;
+            picker.delegate = self;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self presentViewController:picker animated:YES completion:nil];
+            });
+            
         } else {
             [self alertButtonMessage:str_Common_Tips2];
         }
     } else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:str_Settings_SetAvatar_Album]) {
         //从相册选择
         if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-            UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
-            imagePickerController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor darkGrayColor]};
-            imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            imagePickerController.allowsEditing = YES;
-            imagePickerController.delegate = self;
-            [self presentViewController:imagePickerController animated:YES completion:nil];
+            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            picker.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor darkGrayColor]};
+            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            picker.allowsEditing = YES;
+            picker.delegate = self;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{//如果不这样写，在iPad上会访问不了相册
+                [self presentViewController:picker animated:YES completion:nil];
+            });
+            
         } else {
             [self alertButtonMessage:str_Common_Tips1];
         }

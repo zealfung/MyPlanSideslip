@@ -417,18 +417,20 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
     //从相册选择
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         
-        DoImagePickerController *cont = [[DoImagePickerController alloc] initWithNibName:@"DoImagePickerController" bundle:nil];
-        cont.delegate = self;
-        cont.nResultType = DO_PICKER_RESULT_UIIMAGE;
-        cont.nMaxCount = photoMax + 1 - self.photoArray.count;
+        DoImagePickerController *picker = [[DoImagePickerController alloc] initWithNibName:@"DoImagePickerController" bundle:nil];
+        picker.delegate = self;
+        picker.nResultType = DO_PICKER_RESULT_UIIMAGE;
+        picker.nMaxCount = photoMax + 1 - self.photoArray.count;
 //        {
 //            cont.nMaxCount = DO_NO_LIMIT_SELECT;
 //            cont.nResultType = DO_PICKER_RESULT_ASSET;  // if you want to get lots photos, you'd better use this mode for memory!!!
 //        }
-        cont.nColumnCount = 4;
+        picker.nColumnCount = 4;
         
-        [self presentViewController:cont animated:YES completion:nil];
-        
+        dispatch_async(dispatch_get_main_queue(), ^{//如果不这样写，在iPad上会访问不了相册
+            [self presentViewController:picker animated:YES completion:nil];
+        });
+
     } else {
         
         [self alertButtonMessage:str_Common_Tips1];
