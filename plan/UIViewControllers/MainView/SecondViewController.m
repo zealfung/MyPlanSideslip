@@ -58,6 +58,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     self.tabBarItem.title = str_ViewTitle_2;
     [self createNavBarButton];
     
+    [NotificationCenter addObserver:self selector:@selector(toPlan:) name:Notify_Push_LocalNotify object:nil];
     [NotificationCenter addObserver:self selector:@selector(getPlanData) name:Notify_Plan_Save object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:Notify_Messages_Save object:nil];
     
@@ -694,6 +695,29 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
             [self deletePlanWithPlan:deletePlan];
         }
     }
+}
+
+- (void)toPlan:(NSNotification*)notification {
+    NSDictionary *dict = notification.userInfo;
+    NSInteger type = [[dict objectForKey:@"type"] integerValue];
+    if (type != 0) {//非计划提醒
+        return;
+    }
+    Plan *plan = [[Plan alloc] init];
+    plan.account = [dict objectForKey:@"account"];
+    plan.planid = [dict objectForKey:@"tag"];
+    plan.createtime = [dict objectForKey:@"createtime"];
+    plan.content = [dict objectForKey:@"content"];
+    plan.beginDate = [dict objectForKey:@"beginDate"];
+    plan.iscompleted = [dict objectForKey:@"iscompleted"];
+    plan.completetime = [dict objectForKey:@"completetime"];
+    plan.isnotify = @"1";
+    plan.notifytime = [dict objectForKey:@"notifytime"];
+    if ([plan.planid isEqualToString:Notify_FiveDay_Tag]) {
+        //5天未新建计划提醒，不需要跳转到计划详情
+        return;
+    }
+    [self toPlanDetailWithPlan:plan];
 }
 
 - (void)toPlanDetailWithPlan:(Plan *)plan {
