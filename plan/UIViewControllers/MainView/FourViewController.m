@@ -51,8 +51,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = str_ViewTitle_14;
-    self.tabBarItem.title = str_ViewTitle_14;
+    self.title = STRViewTitle14;
+    self.tabBarItem.title = STRViewTitle14;
     [self createNavBarButton];
     
     userTagsArray = [NSArray array];

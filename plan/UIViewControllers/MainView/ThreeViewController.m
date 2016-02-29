@@ -28,9 +28,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.title = str_ViewTitle_3;
-    self.tabBarItem.title = str_ViewTitle_3;
+    self.title = STRViewTitle3;
+    self.tabBarItem.title = STRViewTitle3;
     [self createNavBarButton];
     
     self.tableView.showsHorizontalScrollIndicator = NO;

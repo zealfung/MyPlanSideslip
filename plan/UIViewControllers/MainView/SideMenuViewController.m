@@ -29,7 +29,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     self.tableView.bounces = NO;
     self.tableView.backgroundColor = color_GrayDark;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -50,9 +49,8 @@
 }
 
 - (void)setMenuArray {
-    
     menuImgArray = [NSMutableArray arrayWithObjects:png_Icon_Menu_PersonalCenter, png_Icon_Menu_PhotoLine, png_Icon_Menu_Help, png_Icon_Menu_FiveStar, png_Icon_Menu_Feedback, png_Icon_Menu_Messages, png_Icon_Menu_About, nil];
-    menuArray = [NSMutableArray arrayWithObjects:str_ViewTitle_4, str_ViewTitle_5, str_ViewTitle_6, str_ViewTitle_7, str_ViewTitle_8, str_ViewTitle_12, str_ViewTitle_9, nil];
+    menuArray = [NSMutableArray arrayWithObjects:STRViewTitle4, STRViewTitle5, STRViewTitle6, STRViewTitle7, STRViewTitle8, STRViewTitle12, STRViewTitle9, nil];
 }
 
 #pragma mark - Table view data source

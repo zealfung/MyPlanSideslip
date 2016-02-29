@@ -26,7 +26,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = str_ViewTitle_5;
+    self.title = STRViewTitle5;
     [self createNavBarButton];
     
     self.tableView.showsHorizontalScrollIndicator = NO;

@@ -27,7 +27,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = str_ViewTitle_12;
+    self.title = STRViewTitle12;
     [self createNavBarButton];
     
     self.tableView.backgroundColor = [UIColor clearColor];

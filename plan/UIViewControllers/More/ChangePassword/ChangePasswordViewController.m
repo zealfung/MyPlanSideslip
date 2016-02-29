@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = str_ViewTitle_15;
+    self.title = STRViewTitle15;
     [self setControls];
 }
 
@@ -34,7 +34,7 @@
     self.txtNewPasswordAgain.inputAccessoryView = [self getInputAccessoryView];
     [self.txtOldPassword becomeFirstResponder];
     self.btnSubmit.layer.cornerRadius = 5;
-    [self.btnSubmit setAllTitle:str_ViewTitle_15];
+    [self.btnSubmit setAllTitle:STRViewTitle15];
 }
 
 - (IBAction)submitAction:(id)sender {

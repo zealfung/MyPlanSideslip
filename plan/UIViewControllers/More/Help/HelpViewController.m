@@ -18,11 +18,8 @@
 @implementation HelpViewController
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
-
-    self.title = str_ViewTitle_6;
-
+    self.title = STRViewTitle6;
 }
 
 - (void)didReceiveMemoryWarning {

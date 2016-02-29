@@ -50,8 +50,8 @@ NSUInteger const kSecondsPerDay = 86400;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = str_ViewTitle_1;
-    self.tabBarItem.title = str_ViewTitle_1;
+    self.title = STRViewTitle1;
+    self.tabBarItem.title = STRViewTitle1;
     [self createNavBarButton];
     
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:Notify_Settings_Save object:nil];

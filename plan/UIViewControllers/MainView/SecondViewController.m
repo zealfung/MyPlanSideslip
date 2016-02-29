@@ -55,8 +55,8 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = str_ViewTitle_2;
-    self.tabBarItem.title = str_ViewTitle_2;
+    self.title = STRViewTitle2;
+    self.tabBarItem.title = STRViewTitle2;
     [self createNavBarButton];
     
     [NotificationCenter addObserver:self selector:@selector(toPlan:) name:Notify_Push_LocalNotify object:nil];

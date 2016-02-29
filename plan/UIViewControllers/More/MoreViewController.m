@@ -17,16 +17,14 @@
     NSArray *rowTitles;
 }
 
-
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
     self.title = str_More;
     
     UIView *footer = [[UIView alloc] init];
     self.tableView.tableFooterView = footer;
     
-    rowTitles = @[str_ViewTitle_4, str_More_Settings, str_ViewTitle_6, str_ViewTitle_7, str_ViewTitle_8, str_ViewTitle_9];
+    rowTitles = @[STRViewTitle4, str_More_Settings, STRViewTitle6, STRViewTitle7, STRViewTitle8, STRViewTitle9];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {

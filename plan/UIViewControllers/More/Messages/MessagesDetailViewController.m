@@ -24,7 +24,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = str_ViewTitle_13;
+    self.title = STRViewTitle13;
     if ([self.message.canShare isEqualToString:@"1"]) {
         [self createNavBarButton];
     }

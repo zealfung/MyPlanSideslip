@@ -20,7 +20,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = str_ViewTitle_10;
+    self.title = STRViewTitle10;
     [self setControls];
 }
 
