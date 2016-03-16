@@ -124,15 +124,11 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     NSArray *array = [NSArray arrayWithArray:[PlanCache getPlan:YES startIndex:dayStart]];
     NSMutableArray *dayDateKeyArrayTmp = [NSMutableArray array];
     
-    NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
     NSString *key = @"";
     for (NSInteger i = 0; i < array.count; i++) {
         Plan *plan = array[i];
-        if ([plan.iscompleted isEqualToString:@"1"]) {//已完成的计划归到开始日期那天
-            key = plan.beginDate;
-        } else {//未完成的计划都归到今天里面
-            key = today;
-        }
+        key = plan.beginDate;
+
         NSMutableArray *dateArray = [dayPlanDict objectForKey:key];
         if (!dateArray) {
             dateArray = [[NSMutableArray alloc] init];
