@@ -1230,6 +1230,27 @@ static NSMutableDictionary *__contactsOnlineState;
         if ([LogIn isLogin]) {
             BmobUser *user = [BmobUser getCurrentUser];
             account = user.objectId;
+            //处理上次升级后本地数据显示不全的问题
+            NSString *tmp = [UserDefaults objectForKey:str_Tmp_Flag1];
+            if (!tmp || ![tmp isEqualToString:@"1"]) {
+                //计划
+                NSString *sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=?", str_TableName_Plan];
+                BOOL b1 = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId]];
+                FMDBQuickCheck(b1, sqlString, __db);
+                //影像
+                sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=?", str_TableName_Photo];
+                BOOL b2 = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId]];
+                FMDBQuickCheck(b2, sqlString, __db);
+                //任务
+                sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=?", str_TableName_Task];
+                BOOL b3 = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId]];
+                FMDBQuickCheck(b3, sqlString, __db);
+                
+                if (b1 && b2 && b3) {
+                    [UserDefaults setObject:@"1" forKey:str_Tmp_Flag1];
+                    [UserDefaults synchronize];
+                }
+            }
         }
         
         NSString *condition = @"";
