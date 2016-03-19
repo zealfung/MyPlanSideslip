@@ -111,48 +111,46 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     if (canAddPhoto) {
         [photoArray removeObjectAtIndex:photoArray.count - 1];
     }
-    
-    __weak typeof(self) weakSelf = self;
-
     BmobObject *newPosts = [BmobObject objectWithClassName:@"Posts"];
     [newPosts setObject:content forKey:@"content"];
     [newPosts setObject:[NSDate date] forKey:@"updatedTime"];
     [newPosts setObject:@"0" forKey:@"isDeleted"];
     [newPosts setObject:@"0" forKey:@"isTop"];
     [newPosts setObject:@"0" forKey:@"isHighlight"];
-
     //设置帖子关联的作者
     [Config shareInstance].settings = [PlanCache getPersonalSettings];
     BmobObject *author = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
     [newPosts setObject:author forKey:@"author"];
     isSending = YES;
-    //异步保存
-    [newPosts saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-        isSending = NO;
-        if (isSuccessful) {
-            if (photoArray.count == 0) {
-                [NotificationCenter postNotificationName:Notify_Posts_New object:nil];
-                [weakSelf alertToastMessage:str_Send_Success];
-                [weakSelf.navigationController popViewControllerAnimated:YES];
-            }
-        } else {
-            [weakSelf alertButtonMessage:str_Send_Fail];
-            NSLog(@"%@",error);
-        }
-    }];
     if (photoArray.count > 0) {
         uploadCount = 0;
         uploadPhotoArray = [NSMutableArray array];
         for (NSInteger i = 0; i < photoArray.count; i++) {
             [uploadPhotoArray addObject:@""];
-            [self uploadImage:photoArray[i] index:i obj:newPosts];
+            [self uploadImage:photoArray[i] index:i newPosts:newPosts];
         }
     } else {
-        [self hideHUD];
+        [self sendPosts:newPosts];
     }
 }
 
-- (void)uploadImage:(NSData *)imgData index:(NSInteger)index obj:(BmobObject *)obj {
+- (void)sendPosts:(BmobObject *)newPosts {
+    __weak typeof(self) weakSelf = self;
+    [newPosts saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        [self hideHUD];
+        isSending = NO;
+        if (isSuccessful) {
+            [NotificationCenter postNotificationName:Notify_Posts_New object:nil];
+            [weakSelf alertToastMessage:str_Send_Success];
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        } else {
+            [weakSelf alertButtonMessage:str_Send_Fail];
+            NSLog(@"%@",error);
+        }
+    }];
+}
+
+- (void)uploadImage:(NSData *)imgData index:(NSInteger)index newPosts:(BmobObject *)newPosts {
     if (index == 0) {
         uploadProgress1 = 0;
     } else {
@@ -165,13 +163,8 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
             uploadPhotoArray[index] = bmobFile.url;
             uploadCount += 1;
             if (uploadCount == photoArray.count) {
-                [obj addObjectsFromArray:uploadPhotoArray forKey:@"imgURLArray"];
-                [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-                    [weakSelf hideHUD];
-                    [NotificationCenter postNotificationName:Notify_Posts_New object:nil];
-                    [weakSelf alertToastMessage:str_Send_Success];
-                    [weakSelf.navigationController popViewControllerAnimated:YES];
-                }];
+                [newPosts addObjectsFromArray:uploadPhotoArray forKey:@"imgURLArray"];
+                [weakSelf sendPosts:newPosts];
             }
         } else if (error) {
             [weakSelf hideHUD];
@@ -288,7 +281,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
         
     } else {
         
-        [self alertButtonMessage:str_Common_Tips1];
+        [self alertButtonMessage:STRCommonTip1];
     }
 }
 
