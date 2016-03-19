@@ -8,6 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
+/** 理想生活，我有计划 */
+UIKIT_EXTERN NSString *const STRAppSlogan;
+
+/** 请到“设置”-“隐私”-“照片”中找到”我有计划“，将按钮打开，允许访问相册 */
+UIKIT_EXTERN NSString *const STRCommonTip1;
+
 /** 我的 */
 UIKIT_EXTERN NSString *const STRViewTitle1;
 /** 计划 */
@@ -38,3 +44,4 @@ UIKIT_EXTERN NSString *const STRViewTitle13;
 UIKIT_EXTERN NSString *const STRViewTitle14;
 /** 修改密码 */
 UIKIT_EXTERN NSString *const STRViewTitle15;
+

@@ -433,7 +433,7 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
 
     } else {
         
-        [self alertButtonMessage:str_Common_Tips1];
+        [self alertButtonMessage:STRCommonTip1];
     }
 }
 

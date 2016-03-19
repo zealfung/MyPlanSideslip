@@ -8,6 +8,12 @@
 
 #import "StringConst.h"
 
+/** 理想生活，我有计划 */
+NSString *const STRAppSlogan = @"理想生活，我有计划";
+
+/** 请到“设置”-“隐私”-“照片”中找到”我有计划“，将按钮打开，允许访问相册 */
+NSString *const STRCommonTip1 = @"请到“设置”-“隐私”-“照片”中找到”我有计划“，将按钮打开，允许访问相册";
+
 /** 我的 */
 NSString *const STRViewTitle1 = @"我的";
 /** 计划 */

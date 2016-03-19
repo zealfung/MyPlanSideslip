@@ -997,7 +997,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
             
         } else {
             
-            [self alertButtonMessage:str_Common_Tips1];
+            [self alertButtonMessage:STRCommonTip1];
         }
     }
 }

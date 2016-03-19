@@ -28,7 +28,7 @@
     [shareParams SSDKSetupShareParamsByText:str_Share_Tips3
                                      images:imageArray
                                         url:[NSURL URLWithString:str_Website_URL]
-                                      title:str_App_Slogan
+                                      title:STRAppSlogan
                                        type:SSDKContentTypeImage];
     
     //1.2、自定义分享平台
