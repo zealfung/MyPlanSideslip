@@ -49,8 +49,8 @@
 }
 
 - (void)setMenuArray {
-    menuImgArray = [NSMutableArray arrayWithObjects:png_Icon_Menu_PersonalCenter, png_Icon_Menu_PhotoLine, png_Icon_Menu_Help, png_Icon_Menu_FiveStar, png_Icon_Menu_Feedback, png_Icon_Menu_Messages, png_Icon_Menu_About, nil];
-    menuArray = [NSMutableArray arrayWithObjects:STRViewTitle4, STRViewTitle5, STRViewTitle6, STRViewTitle7, STRViewTitle8, STRViewTitle12, STRViewTitle9, nil];
+    menuImgArray = [NSMutableArray arrayWithObjects:png_Icon_Menu_PersonalCenter, png_Icon_Menu_PhotoLine, png_Icon_Menu_Help, png_Icon_Menu_FiveStar, png_Icon_Menu_Messages, png_Icon_Menu_About, nil];
+    menuArray = [NSMutableArray arrayWithObjects:STRViewTitle4, STRViewTitle5, STRViewTitle6, STRViewTitle7, STRViewTitle12, STRViewTitle9, nil];
 }
 
 #pragma mark - Table view data source
@@ -158,25 +158,25 @@
             [self.sideMenuViewController hideMenuViewController];
             break;
         }
-        case 4: {//建议反馈
-            Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
-            if (!mailClass) {
-                [self alertButtonMessage:str_More_Feedback_Tips1];
-                return;
-            }
-            if (![mailClass canSendMail]) {
-                [self alertButtonMessage:str_More_Feedback_Tips2];
-                return;
-            }
-            [self displayMailPicker];
-            break;
-        }
-        case 5: {//系统消息
+//        case 4: {//建议反馈
+//            Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
+//            if (!mailClass) {
+//                [self alertButtonMessage:str_More_Feedback_Tips1];
+//                return;
+//            }
+//            if (![mailClass canSendMail]) {
+//                [self alertButtonMessage:str_More_Feedback_Tips2];
+//                return;
+//            }
+//            [self displayMailPicker];
+//            break;
+//        }
+        case 4: {//系统消息
             MessagesViewController *controller = [[MessagesViewController alloc]init];
             [self setContentViewController:controller];
             break;
         }
-        case 6: {//关于我们
+        case 5: {//关于我们
             AboutViewController *controller = [[AboutViewController alloc]init];
             [self setContentViewController:controller];
         }
