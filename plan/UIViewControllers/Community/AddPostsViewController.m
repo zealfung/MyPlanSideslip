@@ -70,6 +70,8 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     self.textViewContent.text = @"";
     self.textViewContent.inputAccessoryView = [self getInputAccessoryView];
     
+    self.btnCheckbox.hidden = YES;
+    self.labelCheckbox.hidden = YES;
     self.labelCheckbox.text = str_Posts_Add_Tips3;
 
     NSData *addImage = UIImageJPEGRepresentation([UIImage imageNamed:png_Btn_AddPhoto], 1);
@@ -344,6 +346,13 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
         photoArray[count - 1] = addImage;
     }
     
+    if (photoArray.count == 1) {
+        isSaveForPhoto = NO;
+        self.btnCheckbox.hidden = YES;
+        self.labelCheckbox.hidden = YES;
+        [self.btnCheckbox setImage:[UIImage imageNamed:png_Btn_Uncheck] forState:UIControlStateNormal];
+    }
+    
     [pageScrollView reloadData];
     [self relocationPage];
 }
@@ -381,6 +390,9 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
         photoArray[imgMax - 1] = imgData;
         canAddPhoto = NO;
     }
+    
+    self.btnCheckbox.hidden = NO;
+    self.labelCheckbox.hidden = NO;
 }
 
 @end
