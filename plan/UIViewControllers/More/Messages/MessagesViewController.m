@@ -186,6 +186,7 @@
         } else {
             if (object) {
                 [weakSelf isLikedPost:object];
+                [weakSelf incrementPostsReadTimes:object];
                 NSArray *imgURLArray = [NSArray arrayWithArray:[object objectForKey:@"imgURLArray"]];
                 if (imgURLArray && imgURLArray > 0) {
                     for (NSString *imgURL in imgURLArray) {
@@ -221,6 +222,14 @@
         controller.posts = posts;
         [weakSelf.navigationController pushViewController:controller animated:YES];
     }];
+}
+
+- (void)incrementPostsReadTimes:(BmobObject *)posts {
+    BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
+    //查看数加1
+    [obj incrementKey:@"readTimes"];
+    //异步更新obj的数据
+    [obj updateInBackground];
 }
 
 @end
