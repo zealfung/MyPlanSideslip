@@ -123,7 +123,7 @@
     cell.textLabel.text = menuArray[indexPath.row];
     cell.textLabel.font = font_Normal_16;
     cell.textLabel.textColor = [UIColor whiteColor];
-    if (indexPath.row == 5 && [PlanCache hasUnreadMessages]) {
+    if (indexPath.row == 4 && [PlanCache hasUnreadMessages]) {
         [cell.imageView showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
         cell.imageView.badgeCenterOffset = CGPointMake(20, 0);
     }
