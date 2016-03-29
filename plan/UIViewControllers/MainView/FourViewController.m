@@ -667,13 +667,7 @@
         [obj addRelation:relation forKey:@"readUser"];
     }
     //异步更新obj的数据
-    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-        if (isSuccessful) {
-            NSLog(@"successful");
-        }else{
-            NSLog(@"error %@",[error description]);
-        }
-    }];
+    [obj updateInBackground];
 }
 
 - (void)likePosts:(BmobObject *)posts {
