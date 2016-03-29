@@ -238,9 +238,15 @@ NSUInteger const kSecondsPerDay = 86400;
     }
     
     NSDate *birthday = [CommonFunction NSStringDateToNSDate:birthdayFormat formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-    
-    NSTimeInterval secondsLifetime = kSecondsPerDay * 365 * lifetime;
-    deadDay = [birthday dateByAddingTimeInterval:secondsLifetime];
+
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    unsigned units  = NSMonthCalendarUnit|NSDayCalendarUnit|NSYearCalendarUnit;
+    NSDateComponents *comp = [calendar components:units fromDate:birthday];
+    NSInteger year = [comp year];
+    year += lifetime;
+    [comp setYear:year];
+
+    deadDay = [calendar dateFromComponents:comp];
     
     NSDate *now = [NSDate date];
     NSTimeInterval secondsBetweenDates= [deadDay timeIntervalSinceDate:now];
