@@ -6,6 +6,7 @@
 //  Copyright (c) 2015年 Fengzy. All rights reserved.
 //
 
+#import "Photo.h"
 #import "BmobFile.h"
 #import "BmobUser.h"
 #import "BmobQuery.h"
@@ -24,6 +25,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     
     BOOL isSending;
     BOOL canAddPhoto;
+    BOOL isSaveForPhoto;//是否保存到岁月影像
     CGRect originalFrame;
     NSString *content;
     UILabel *tipsLabel;
@@ -67,13 +69,15 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     self.textViewContent.textColor = color_333333;
     self.textViewContent.text = @"";
     self.textViewContent.inputAccessoryView = [self getInputAccessoryView];
+    
+    self.labelCheckbox.text = str_Posts_Add_Tips3;
 
     NSData *addImage = UIImageJPEGRepresentation([UIImage imageNamed:png_Btn_AddPhoto], 1);
     [photoArray addObject:addImage];
     
     CGFloat tipsHeight = 30;
     CGFloat photoViewHeight = HEIGHT_FULL_SCREEN / 2;
-    CGFloat yEdgeInset = (photoViewHeight - imgPageHeight - tipsHeight - 44) / 2;
+    CGFloat yEdgeInset = (photoViewHeight - imgPageHeight - tipsHeight - 24) / 2;
 
     pageScrollView = [[PageScrollView alloc] initWithFrame:CGRectMake(0, yEdgeInset, WIDTH_FULL_SCREEN, imgPageHeight) pageWidth:imgPageWidth pageDistance:10];
     pageScrollView.holdPageCount = 5;
@@ -94,6 +98,15 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     originalFrame = self.view.frame;
 }
 
+- (IBAction)btnCheckboxAction:(id)sender {
+    isSaveForPhoto = !isSaveForPhoto;
+    if (isSaveForPhoto) {
+        [self.btnCheckbox setImage:[UIImage imageNamed:png_Btn_Check] forState:UIControlStateNormal];
+    } else {
+        [self.btnCheckbox setImage:[UIImage imageNamed:png_Btn_Uncheck] forState:UIControlStateNormal];
+    }
+}
+
 #pragma mark - action
 - (void)saveAction:(UIButton *)button {
     if (isSending) return;
@@ -106,11 +119,18 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     }
     
     [self showHUD];
-    
+    isSending = YES;
+
     //去掉那张新增按钮图
     if (canAddPhoto) {
         [photoArray removeObjectAtIndex:photoArray.count - 1];
     }
+    
+    //同时保存到“岁月影像”
+    if (isSaveForPhoto) {
+        [self saveForPhoto];
+    }
+    
     BmobObject *newPosts = [BmobObject objectWithClassName:@"Posts"];
     [newPosts setObject:content forKey:@"content"];
     [newPosts setObject:[NSDate date] forKey:@"updatedTime"];
@@ -121,7 +141,6 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     [Config shareInstance].settings = [PlanCache getPersonalSettings];
     BmobObject *author = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
     [newPosts setObject:author forKey:@"author"];
-    isSending = YES;
     if (photoArray.count > 0) {
         uploadCount = 0;
         uploadPhotoArray = [NSMutableArray array];
@@ -131,6 +150,32 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
         }
     } else {
         [self sendPosts:newPosts];
+    }
+}
+
+- (void)saveForPhoto {
+    NSString *timeNow = [CommonFunction getTimeNowString];
+    NSString* photoid = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyyMMddHHmmss];
+    
+    Photo *photo = [[Photo alloc] init];
+    photo.photoid = photoid;
+    photo.createtime = timeNow;
+    photo.updatetime = timeNow;
+    photo.photoURLArray = [NSMutableArray arrayWithCapacity:9];
+    for (NSInteger i = 0; i < 9; i++) {
+        photo.photoURLArray[i] = @"";
+    }
+    photo.content = self.textViewContent.text;
+    photo.phototime = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+    photo.location = @"";
+
+    photo.photoArray = photoArray;
+    
+    BOOL result = [PlanCache storePhoto:photo];
+    if (result) {
+
+    } else {
+
     }
 }
 

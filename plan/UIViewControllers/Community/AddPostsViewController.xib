@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9531" systemVersion="14F1021" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1713" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddPostsViewController">
             <connections>
+                <outlet property="btnCheckbox" destination="rYz-Pa-cow" id="6U0-a5-UPP"/>
+                <outlet property="labelCheckbox" destination="dXF-cu-jeD" id="sbk-pK-D2Y"/>
                 <outlet property="textViewContent" destination="e0H-Rl-aK5" id="MDV-WE-UKr"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="Mqb-eG-ZtD"/>
                 <outlet property="viewPhoto" destination="Fw0-jK-Gi3" id="hY6-HP-cWG"/>
@@ -38,7 +40,36 @@
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Fw0-jK-Gi3">
                     <rect key="frame" x="0.0" y="185" width="320" height="315"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rYz-Pa-cow">
+                            <rect key="frame" x="12" y="10" width="30" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="S7W-fY-0Hs"/>
+                                <constraint firstAttribute="width" constant="30" id="Y3c-8c-B0p"/>
+                            </constraints>
+                            <state key="normal" image="Btn_Uncheck.png"/>
+                            <connections>
+                                <action selector="btnCheckboxAction:" destination="-1" eventType="touchUpInside" id="lEW-nu-6Nn"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dXF-cu-jeD">
+                            <rect key="frame" x="42" y="10" width="266" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="frD-HJ-lhX"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <color key="textColor" red="0.3411764705882353" green="0.64313725490196072" blue="0.99607843137254903" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
                     <color key="backgroundColor" red="0.9137254901960784" green="0.93725490196078431" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstItem="rYz-Pa-cow" firstAttribute="leading" secondItem="Fw0-jK-Gi3" secondAttribute="leading" constant="12" id="8qn-Hf-OAO"/>
+                        <constraint firstItem="rYz-Pa-cow" firstAttribute="top" secondItem="Fw0-jK-Gi3" secondAttribute="top" constant="10" id="LY5-mI-wjK"/>
+                        <constraint firstAttribute="trailing" secondItem="dXF-cu-jeD" secondAttribute="trailing" constant="12" id="TMW-V7-IGv"/>
+                        <constraint firstItem="dXF-cu-jeD" firstAttribute="top" secondItem="Fw0-jK-Gi3" secondAttribute="top" constant="10" id="Vwd-cN-4mG"/>
+                        <constraint firstItem="dXF-cu-jeD" firstAttribute="leading" secondItem="rYz-Pa-cow" secondAttribute="trailing" id="cQW-e6-3kg"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -54,4 +85,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
+    <resources>
+        <image name="Btn_Uncheck.png" width="30" height="30"/>
+    </resources>
 </document>

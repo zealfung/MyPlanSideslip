@@ -33,6 +33,8 @@
 #define png_Btn_Report @"Btn_Report"
 #define png_Btn_BackToTop @"Btn_BackToTop"
 #define png_Btn_M @"Btn_M"
+#define png_Btn_Check @"Btn_Check"
+#define png_Btn_Uncheck @"Btn_Uncheck"
 
 #define png_Bg_Cell_White @"Bg_Cell_White"
 #define png_Bg_Input_Gray @"Bg_Input_Gray"
