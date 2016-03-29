@@ -628,6 +628,7 @@
     } else {
         [self hideHUD];
         [self.tableView reloadData];
+        [self backToTop:nil];
     }
 }
 
@@ -745,6 +746,7 @@
         if (checkLikeCount == postsArray.count) {
             [weakSelf hideHUD];
             [weakSelf.tableView reloadData];
+            [weakSelf backToTop:nil];
         }
     }];
 }
