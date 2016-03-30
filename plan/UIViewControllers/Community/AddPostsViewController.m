@@ -128,11 +128,6 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
         [photoArray removeObjectAtIndex:photoArray.count - 1];
     }
     
-    //同时保存到“岁月影像”
-    if (isSaveForPhoto) {
-        [self saveForPhoto];
-    }
-    
     BmobObject *newPosts = [BmobObject objectWithClassName:@"Posts"];
     [newPosts setObject:content forKey:@"content"];
     [newPosts setObject:[NSDate date] forKey:@"updatedTime"];
@@ -167,6 +162,9 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     for (NSInteger i = 0; i < 9; i++) {
         photo.photoURLArray[i] = @"";
     }
+    for (NSInteger i = 0; i < uploadPhotoArray.count; i++) {
+        photo.photoURLArray[i] = uploadPhotoArray[i];
+    }
     photo.content = self.textViewContent.text;
     photo.phototime = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
     photo.location = @"";
@@ -187,6 +185,10 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
         [self hideHUD];
         isSending = NO;
         if (isSuccessful) {
+            //同时保存到“岁月影像”
+            if (isSaveForPhoto) {
+                [weakSelf saveForPhoto];
+            }
             [NotificationCenter postNotificationName:Notify_Posts_New object:nil];
             [weakSelf alertToastMessage:str_Send_Success];
             [weakSelf.navigationController popViewControllerAnimated:YES];
