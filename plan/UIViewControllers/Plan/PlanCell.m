@@ -16,7 +16,8 @@ NSUInteger const kBounceSpace = 20;
     
     UIButton *btnDone;
     UILabel *labelContent;
-    UILabel *labelCreateDate;
+    UILabel *labelBeginDate;
+    UILabel *labelDateLeft;
     UIImageView *imgViewAlarm;
 }
 
@@ -73,11 +74,21 @@ NSUInteger const kBounceSpace = 20;
     imgViewAlarm.hidden = YES;
     [labelContent addSubview:imgViewAlarm];
     
-    UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 100, 15)];
+    UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 60, 15)];
     labelDate.textColor = color_666666;
     labelDate.font = font_Normal_10;
-    labelCreateDate = labelDate;
+    labelBeginDate = labelDate;
     [labelContent addSubview:labelDate];
+    
+    UILabel *labelDateleft = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, 60, 15)];
+    labelDateleft.backgroundColor = color_e9eff1;
+    labelDateleft.textColor = color_ff0000_06;
+    labelDateleft.textAlignment = NSTextAlignmentCenter;
+    labelDateleft.font = font_Normal_10;
+    labelDateleft.clipsToBounds = YES;
+    labelDateleft.layer.cornerRadius = 7.5;
+    labelDateLeft = labelDateleft;
+    [labelContent addSubview:labelDateleft];
     
     [menuContetnView addSubview:vBtnDone];
     [menuContetnView addSubview:vBtnDelete];
@@ -226,7 +237,11 @@ NSUInteger const kBounceSpace = 20;
     NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:str_DateFormatter_yyyy_MM_dd];
     if ([plan.iscompleted isEqualToString:@"0"]
         && [beginDate compare:[NSDate date]] == NSOrderedDescending) {
-        labelCreateDate.text = [CommonFunction getBeginDateStringForShow:plan.beginDate];
+        labelBeginDate.text = [CommonFunction getBeginDateStringForShow:plan.beginDate];
+        labelDateLeft.text = [NSString stringWithFormat:str_Common_Time10,[CommonFunction howManyDaysLeft:plan.beginDate]];
+        labelDateLeft.hidden = NO;
+    } else {
+        labelDateLeft.hidden = YES;
     }
     if ([plan.isnotify isEqualToString:@"1"]) {
         imgViewAlarm.hidden = NO;
