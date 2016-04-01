@@ -80,6 +80,9 @@
 //计划开始时间显示格式：今天，明天，或日期
 + (NSString *)getBeginDateStringForShow:(NSString *)date;
 
+/** 计算剩余天数，toDay格式：2016-03-18 */
++ (NSInteger)howManyDaysLeft:(NSString*)toDay;
+
 //将整型数字转换成带千分号的格式
 + (NSString *)integerToDecimalStyle:(NSInteger)integer;
 

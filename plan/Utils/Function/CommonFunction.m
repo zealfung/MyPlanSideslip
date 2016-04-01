@@ -344,6 +344,20 @@ static NSString * const kKeyMinutes = @"minutes";
     }
 }
 
+/** toDay格式：2016-03-18 */
++ (NSInteger)howManyDaysLeft:(NSString*)toDay {
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    [gregorian setFirstWeekday:2];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
+    NSDate *fromDate;
+    NSDate *toDate;
+    [gregorian rangeOfUnit:NSDayCalendarUnit startDate:&fromDate interval:NULL forDate:[NSDate date]];
+    [gregorian rangeOfUnit:NSDayCalendarUnit startDate:&toDate interval:NULL forDate:[dateFormatter dateFromString:toDay]];
+    NSDateComponents *dayComponents = [gregorian components:NSDayCalendarUnit fromDate:fromDate toDate:toDate options:0];
+    return dayComponents.day;
+}
+
 //将整型数字转换成带千分号的格式
 + (NSString *)integerToDecimalStyle:(NSInteger)integer {
     NSNumberFormatter *formatter = [NSNumberFormatter new];
