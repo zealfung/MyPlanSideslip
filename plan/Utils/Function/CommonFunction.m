@@ -365,4 +365,27 @@ static NSString * const kKeyMinutes = @"minutes";
     return [formatter stringFromNumber:[NSNumber numberWithInteger:integer]];
 }
 
+/** 更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效 */
++ (NSString *)updateNotifyTime:(NSString *)notifyTime {
+    
+    NSDate *oldNotifyTime = [CommonFunction NSStringDateToNSDate:notifyTime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
+    
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    unsigned units  = NSMonthCalendarUnit|NSDayCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit;
+    NSDateComponents *compOldNotifyTime = [calendar components:units fromDate:oldNotifyTime];
+    NSDateComponents *compToday = [calendar components:units fromDate:[NSDate date]];
+    compToday.hour = compOldNotifyTime.hour;
+    compToday.minute = compOldNotifyTime.minute;
+    
+    NSDate *newNotifyTime = [calendar dateFromComponents:compToday];
+    
+    if ([newNotifyTime compare:[NSDate date]] == NSOrderedAscending) {
+        //把提醒的时、分赋值到今天的日期下面，还是比当前时间小的话，就直接把提醒日期设为明天即可
+        compToday.day += 1;
+        newNotifyTime = [calendar dateFromComponents:compToday];
+    }
+    
+    return [CommonFunction NSDateToNSString:newNotifyTime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
+}
+
 @end

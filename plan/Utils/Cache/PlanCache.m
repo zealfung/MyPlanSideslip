@@ -578,6 +578,9 @@ static NSMutableDictionary *__contactsOnlineState;
             //更新提醒
             if (b && [plan.isnotify isEqualToString:@"1"]) {
                 
+                //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
+                plan.notifytime = [CommonFunction updateNotifyTime:plan.notifytime];
+                
                 [self updatePlanNotification:plan];
                 
             } else {
@@ -817,6 +820,9 @@ static NSMutableDictionary *__contactsOnlineState;
             
             //更新提醒
             if (b && [task.isNotify isEqualToString:@"1"]) {
+                //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
+                task.notifyTime = [CommonFunction updateNotifyTime:task.notifyTime];
+
                 [self updateTaskNotification:task];
             } else {
                 [self cancelTaskNotification:task.taskId];

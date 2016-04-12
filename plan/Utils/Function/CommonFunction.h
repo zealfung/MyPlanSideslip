@@ -86,4 +86,7 @@
 //将整型数字转换成带千分号的格式
 + (NSString *)integerToDecimalStyle:(NSInteger)integer;
 
+/** 更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效 */
++ (NSString *)updateNotifyTime:(NSString *)notifyTime;
+
 @end
