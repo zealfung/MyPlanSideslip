@@ -54,31 +54,25 @@
 
 - (void)loadCustomView {
     yOffset = kEdgeInset;
-    {
-        CGFloat txtViewHeight = HEIGHT_FULL_SCREEN / 4;
-        UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2, txtViewHeight)];
-        detailTextView.backgroundColor = [UIColor clearColor];
-        detailTextView.layer.borderWidth = 1;
-        detailTextView.layer.borderColor = [color_GrayLight CGColor];
-        detailTextView.layer.cornerRadius = 5;
-        detailTextView.font = font_Normal_18;
-        detailTextView.textColor = color_Black;
-        detailTextView.delegate = self;
-        detailTextView.inputAccessoryView = [self getInputAccessoryView];
-        [self.view addSubview:detailTextView];
-        txtViewContent = detailTextView;
-        
-        yOffset += txtViewHeight + kEdgeInset;
-    }
     CGFloat iconSize = 30;
     CGFloat switchWidth = 20;
     {
+        CGFloat tipsWidth = 90;
         beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
-        UILabel *labelBeginTime = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2, iconSize)];
+        UILabel *labelBeginTimeTips = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, tipsWidth, iconSize)];
+        labelBeginTimeTips.textColor = color_Black;
+        labelBeginTimeTips.font = font_Normal_18;
+        labelBeginTimeTips.text = str_Plan_BeginDate;
+        [self.view addSubview:labelBeginTimeTips];
+        
+        UILabel *labelBeginTime = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset + tipsWidth, yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2 - tipsWidth, iconSize)];
         labelBeginTime.textColor = color_Black;
         labelBeginTime.font = font_Normal_18;
+        labelBeginTime.layer.borderWidth = 1;
+        labelBeginTime.layer.cornerRadius = 5;
+        labelBeginTime.layer.borderColor = [color_GrayLight CGColor];
         labelBeginTime.userInteractionEnabled = YES;
-        labelBeginTime.text = [NSString stringWithFormat:@"%@%@", str_Plan_BeginDate, [CommonFunction getBeginDateStringForShow:beginDate]];
+        labelBeginTime.text = [CommonFunction getBeginDateStringForShow:beginDate];
         UITapGestureRecognizer *labelBeginTimeTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(beginDateTouchAction:)];
         [labelBeginTime addGestureRecognizer:labelBeginTimeTapGestureRecognizer];
         [self.view addSubview:labelBeginTime];
@@ -107,10 +101,26 @@
         
         yOffset += iconSize + kEdgeInset;
     }
+    {
+        CGFloat txtViewHeight = HEIGHT_FULL_SCREEN / 2;
+        UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2, txtViewHeight)];
+        detailTextView.backgroundColor = [UIColor clearColor];
+        detailTextView.layer.borderWidth = 1;
+        detailTextView.layer.borderColor = [color_GrayLight CGColor];
+        detailTextView.layer.cornerRadius = 5;
+        detailTextView.font = font_Normal_18;
+        detailTextView.textColor = color_Black;
+        detailTextView.delegate = self;
+        detailTextView.inputAccessoryView = [self getInputAccessoryView];
+        [self.view addSubview:detailTextView];
+        txtViewContent = detailTextView;
+        
+        yOffset += txtViewHeight + kEdgeInset;
+    }
     if (self.operationType == Edit) {
         txtViewContent.text = self.plan.content;
         beginDate = self.plan.beginDate;
-        labelBeginDate.text = [NSString stringWithFormat:@"%@%@", str_Plan_BeginDate, [CommonFunction getBeginDateStringForShow:beginDate]];
+        labelBeginDate.text = [CommonFunction getBeginDateStringForShow:beginDate];
         if ([self.plan.isnotify isEqualToString:@"1"]) {
             [switchBtnAlarm setOn:YES];
             labelNotifyTime.text = self.plan.notifytime;
@@ -205,7 +215,7 @@
     if (isSelectBeginDate) {
         [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd];
         beginDate = [dateFormatter stringFromDate:datePicker.date];
-        labelBeginDate.text = [NSString stringWithFormat:@"%@%@", str_Plan_BeginDate, [CommonFunction getBeginDateStringForShow:beginDate]];
+        labelBeginDate.text = [CommonFunction getBeginDateStringForShow:beginDate];
     } else {
         [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
         notifyTime = [dateFormatter stringFromDate:datePicker.date];
