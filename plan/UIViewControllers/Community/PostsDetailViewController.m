@@ -12,6 +12,7 @@
 #import "DOPNavbarMenu.h"
 #import "SDPhotoBrowser.h"
 #import "LogInViewController.h"
+#import "UserLevelViewController.h"
 #import "PostsDetailViewController.h"
 
 NSInteger const kDeleteTag = 20160110;
@@ -263,11 +264,13 @@ NSInteger const kDeleteTag = 20160110;
     [avatarView sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed:png_AvatarDefault1]];
     avatarView.contentMode = UIViewContentModeScaleAspectFit;
     [self.headerView addSubview:avatarView];
+    
+    __weak typeof(self) weakSelf = self;
     //昵称
     ThreeSubView *tsViewNickname = [[ThreeSubView alloc] initWithFrame:CGRectMake(53, 5, WIDTH_FULL_SCREEN - 69, 18) leftButtonSelectBlock:^{
         
     } centerButtonSelectBlock:^{
-        
+        [weakSelf showLevelDescription];
     } rightButtonSelectBlock:^{
         
     }];
@@ -280,7 +283,6 @@ NSInteger const kDeleteTag = 20160110;
     [tsViewNickname.leftButton setAllTitle:nickName];
     tsViewNickname.leftButton.titleLabel.textAlignment = NSTextAlignmentLeft;
     if (level) {
-        tsViewNickname.centerButton.enabled = NO;
         tsViewNickname.centerButton.adjustsImageWhenDisabled = NO;
         [tsViewNickname.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
     }
@@ -330,11 +332,12 @@ NSInteger const kDeleteTag = 20160110;
     [avatarView sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed:png_AvatarDefault1]];
     avatarView.contentMode = UIViewContentModeScaleAspectFit;
     [view addSubview:avatarView];
+    __weak typeof(self) weakSelf = self;
     //昵称
     ThreeSubView *tsViewNickname = [[ThreeSubView alloc] initWithFrame:CGRectMake(40, 0, WIDTH_FULL_SCREEN - 159, 15) leftButtonSelectBlock:^{
         
     } centerButtonSelectBlock:^{
-        
+        [weakSelf showLevelDescription];
     } rightButtonSelectBlock:^{
         
     }];
@@ -373,7 +376,6 @@ NSInteger const kDeleteTag = 20160110;
     [tsViewNickname autoLayout];
     [view addSubview:tsViewNickname];
     //赞、举报
-    __weak typeof(self) weakSelf = self;
     ThreeSubView *tsViewLikes = [[ThreeSubView alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - 12 - 90, 0, 90, 20) leftButtonSelectBlock:^{
         [weakSelf reportCommentAction:comment];
     } centerButtonSelectBlock:^{
@@ -1155,6 +1157,12 @@ NSInteger const kDeleteTag = 20160110;
     [newNotice setObject:userObjectId forKey:@"toAuthorObjectId"];//评论对象的ID
     [newNotice setObject:@"0" forKey:@"hasRead"];// 0未读 1已读
     [newNotice saveInBackground];
+}
+
+- (void)showLevelDescription {
+    UserLevelViewController *controller = [[UserLevelViewController alloc] init];
+    controller.userTagsArray = self.userTagsArray;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end

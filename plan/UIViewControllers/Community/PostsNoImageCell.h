@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ThreeSubView.h"
 
+typedef void(^PostsNoImageCellLevelBlock)();
 typedef void(^PostsNoImageCellViewBlock)();
 typedef void(^PostsNoImageCellCommentBlock)();
 typedef void(^PostsNoImageCellLikeBlock)();
@@ -22,6 +23,7 @@ typedef void(^PostsNoImageCellLikeBlock)();
 @property (strong, nonatomic) IBOutlet UILabel *labelPostTime;
 @property (strong, nonatomic) IBOutlet UILabel *labelContent;
 @property (strong, nonatomic) IBOutlet ThreeSubView *subViewButton;
+@property (strong, nonatomic) PostsNoImageCellLevelBlock postsCellLevelBlock;
 @property (strong, nonatomic) PostsNoImageCellViewBlock postsCellViewBlock;
 @property (strong, nonatomic) PostsNoImageCellCommentBlock postsCellCommentBlock;
 @property (strong, nonatomic) PostsNoImageCellLikeBlock postsCellLikeBlock;

@@ -26,16 +26,18 @@
     cellView.labelIsTop.hidden = YES;
     cellView.labelIsHighlight.hidden = YES;
     
+    __weak typeof(PostsTwoImageCell) *weakSelf = cellView;
     [cellView getNameSubViewForLeftBlock:^{
         
     } centerBlock:^{
-        
+        if (weakSelf.postsCellLevelBlock) {
+            weakSelf.postsCellLevelBlock();
+        }
     } rightBlock:^{
         
     }];
     [cellView.subViewNickName autoLayout];
     
-    __weak typeof(PostsTwoImageCell) *weakSelf = cellView;
     [cellView getThreeSubViewForLeftBlock: ^{
         if (weakSelf.postsCellViewBlock) {
             weakSelf.postsCellViewBlock();

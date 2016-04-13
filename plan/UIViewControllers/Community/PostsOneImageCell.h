@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "ThreeSubView.h"
 
+typedef void(^PostsOneImageCellLevelBlock)();
 typedef void(^PostsOneImageCellViewBlock)();
 typedef void(^PostsOneImageCellCommentBlock)();
 typedef void(^PostsOneImageCellLikeBlock)();
@@ -23,6 +24,7 @@ typedef void(^PostsOneImageCellLikeBlock)();
 @property (strong, nonatomic) IBOutlet UILabel *labelContent;
 @property (strong, nonatomic) IBOutlet UIImageView *imgViewOne;
 @property (strong, nonatomic) IBOutlet ThreeSubView *subViewButton;
+@property (strong, nonatomic) PostsOneImageCellLevelBlock postsCellLevelBlock;
 @property (strong, nonatomic) PostsOneImageCellViewBlock postsCellViewBlock;
 @property (strong, nonatomic) PostsOneImageCellCommentBlock postsCellCommentBlock;
 @property (strong, nonatomic) PostsOneImageCellLikeBlock postsCellLikeBlock;

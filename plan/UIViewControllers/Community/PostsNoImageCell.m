@@ -26,16 +26,19 @@
     cellView.labelIsTop.hidden = YES;
     cellView.labelIsHighlight.hidden = YES;
     
+    __weak typeof(PostsNoImageCell) *weakSelf = cellView;
+    
     [cellView getNameSubViewForLeftBlock:^{
         
     } centerBlock:^{
-        
+        if (weakSelf.postsCellLevelBlock) {
+            weakSelf.postsCellLevelBlock();
+        }
     } rightBlock:^{
         
     }];
     [cellView.subViewNickName autoLayout];
     
-    __weak typeof(PostsNoImageCell) *weakSelf = cellView;
     [cellView getBtnSubViewForLeftBlock: ^{
         if (weakSelf.postsCellViewBlock) {
             weakSelf.postsCellViewBlock();
@@ -61,7 +64,6 @@
     self.subViewNickName.backgroundColor = [UIColor clearColor];
     
     self.subViewNickName.fixCenterWidth = 20;
-    self.subViewNickName.centerButton.enabled = NO;
     self.subViewNickName.centerButton.adjustsImageWhenDisabled = NO;
     self.subViewNickName.fixRightWidth = self.subViewNickName.frame.size.width - self.subViewNickName.fixLeftWidth - self.subViewNickName.fixCenterWidth;
     

@@ -18,7 +18,8 @@
 @property (strong, nonatomic) IBOutlet ThreeSubView *bottomBtnView;
 @property (strong, nonatomic) IBOutlet GrowingTextView *inputView;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *inputViewConstraint;
-@property (nonatomic, strong) NSLayoutConstraint *inputViewHeightConstraint;
+@property (strong, nonatomic) NSLayoutConstraint *inputViewHeightConstraint;
 @property (strong, nonatomic) BmobObject *posts;
+@property (strong, nonatomic) NSArray *userTagsArray;
 
 @end

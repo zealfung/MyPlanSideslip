@@ -278,6 +278,9 @@
                 [cell.subViewButton.centerButton setAllTitle:[CommonFunction checkNumberForThousand:commentsCount]];
                 [cell.subViewButton.rightButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
                 __weak typeof(PostsOneImageCell) *weakCell = cell;
+                cell.postsCellLevelBlock = ^() {
+                    [weakSelf mAction:nil];
+                };
                 cell.postsCellViewBlock = ^(){
                     [weakSelf toPostsDetail:obj];
                 };
@@ -340,6 +343,9 @@
                 [cell.subViewButton.centerButton setAllTitle:[CommonFunction checkNumberForThousand:commentsCount]];
                 [cell.subViewButton.rightButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
                 __weak typeof(PostsTwoImageCell) *weakCell = cell;
+                cell.postsCellLevelBlock = ^() {
+                    [weakSelf mAction:nil];
+                };
                 cell.postsCellViewBlock = ^(){
                     [weakSelf toPostsDetail:obj];
                 };
@@ -401,6 +407,9 @@
             [cell.subViewButton.centerButton setAllTitle:[CommonFunction checkNumberForThousand:commentsCount]];
             [cell.subViewButton.rightButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
             __weak typeof(PostsNoImageCell) *weakCell = cell;
+            cell.postsCellLevelBlock = ^() {
+                [weakSelf mAction:nil];
+            };
             cell.postsCellViewBlock = ^(){
                 [weakSelf toPostsDetail:obj];
             };
@@ -607,14 +616,9 @@
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserTags"];
     [bquery whereKey:@"isUsed" equalTo:@"1"];
     [bquery orderByAscending:@"orderNo"];
-
-    __weak typeof(self) weakSelf = self;
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
         if (!error && array.count > 0) {
             userTagsArray = [NSArray arrayWithArray:array];
-            weakSelf.rightBarButtonItems = [NSArray arrayWithObjects:
-                                        [weakSelf createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)],
-                                        [weakSelf createBarButtonItemWithNormalImageName:png_Btn_M selectedImageName:png_Btn_M selector:@selector(mAction:)], nil];
         }
     }];
 }
@@ -770,6 +774,7 @@
     
     PostsDetailViewController *controller = [[PostsDetailViewController alloc] init];
     controller.posts = posts;
+    controller.userTagsArray = [NSArray arrayWithArray:userTagsArray];
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
