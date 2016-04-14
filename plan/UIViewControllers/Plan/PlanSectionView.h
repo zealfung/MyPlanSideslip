@@ -14,7 +14,7 @@ static const NSUInteger kPlanSectionViewHeight = 50;
 
 @property (nonatomic, assign) NSInteger sectionIndex;
 
-- (id)initWithTitle:(NSString *)title isAllDone:(BOOL)isAllDone;
+- (id)initWithTitle:(NSString *)title count:(NSString *)count isAllDone:(BOOL)isAllDone;
 
 - (void)toggleArrow;
 

@@ -571,10 +571,12 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     if (planType == EverydayPlan && dayDateKeyArray.count > section) {
         NSString *date = dayDateKeyArray[section];
         NSArray *planArray = [dayPlanDict objectForKey:date];
-        BOOL isAllDone = [self isAllDone:planArray];
+        NSDictionary *dic = [self isAllDone:planArray];
+        NSString *count = [dic objectForKey:@"count"];
+        BOOL isAllDone = [[dic objectForKey:@"isAllDone"] boolValue];
         date = [self getSectionTitle:date];
 
-        view = [[PlanSectionView alloc] initWithTitle:date isAllDone:isAllDone];
+        view = [[PlanSectionView alloc] initWithTitle:date count:count isAllDone:isAllDone];
         view.sectionIndex = section;
         if (daySectionFlag[section])
             [view toggleArrow];
@@ -582,7 +584,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         return view;
     } else if (planType == FuturePlan && futureDateKeyArray.count > section) {
         NSString *date = futureDateKeyArray[section];
-        view = [[PlanSectionView alloc] initWithTitle:date isAllDone:YES];
+        view = [[PlanSectionView alloc] initWithTitle:date count:@"" isAllDone:YES];
         view.sectionIndex = section;
         if (futureSectionFlag[section])
             [view toggleArrow];
@@ -644,13 +646,21 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     }
 }
 
-- (BOOL)isAllDone:(NSArray *)planArray {
+- (NSDictionary *)isAllDone:(NSArray *)planArray {
+    int done = 0;
+    BOOL result = YES;
     for (Plan *plan in planArray) {
         if ([plan.iscompleted isEqualToString:@"0"]) {
-            return NO;
+            result = NO;
+        } else {
+            done++;
         }
     }
-    return YES;
+    NSString *count = result ? @"" : [NSString stringWithFormat:@"%d/%lu", done, (unsigned long)planArray.count];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+    [dic setObject:@(result) forKey:@"isAllDone"];
+    [dic setObject:count forKey:@"count"];
+    return dic;
 }
 
 #pragma mark - action
