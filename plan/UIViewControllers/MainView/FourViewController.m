@@ -594,6 +594,10 @@
     bquery.skip = postsArray.count;
     __weak typeof(self) weakSelf = self;
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        //自动回顶部
+        if (!isLoadMore) {
+            [weakSelf backToTop:nil];
+        }
         isLoadMore = NO;
         isLoadingPosts = NO;
         isLoadEnd = YES;
@@ -632,7 +636,6 @@
     } else {
         [self hideHUD];
         [self.tableView reloadData];
-        [self backToTop:nil];
     }
 }
 
@@ -744,7 +747,6 @@
         if (checkLikeCount == postsArray.count) {
             [weakSelf hideHUD];
             [weakSelf.tableView reloadData];
-            [weakSelf backToTop:nil];
         }
     }];
 }
