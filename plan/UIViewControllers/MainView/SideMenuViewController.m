@@ -15,7 +15,7 @@
 #import "MessagesViewController.h"
 #import "SettingsViewController.h"
 #import "SideMenuViewController.h"
-#import "PersonalCenterViewController.h"
+#import "PersonalCenterNewViewController.h"
 #import <MessageUI/MFMailComposeViewController.h>
 
 @interface SideMenuViewController () <MFMailComposeViewControllerDelegate> {
@@ -136,7 +136,7 @@
     
     switch (indexPath.row) {
         case 0: {//个人中心
-            PersonalCenterViewController *controller = [[PersonalCenterViewController alloc] init];
+            PersonalCenterNewViewController *controller = [[PersonalCenterNewViewController alloc] init];
             [self setContentViewController:controller];
             break;
         }
