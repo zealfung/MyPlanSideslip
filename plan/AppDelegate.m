@@ -15,6 +15,7 @@
 #import "CLLockNavVC.h"
 #import "RegisterSDK.h"
 #import "AppDelegate.h"
+#import "StatisticsCenter.h"
 #import "LogInViewController.h"
 #import "LocalNotificationManager.h"
 
@@ -98,6 +99,8 @@
     }
     
     if ([LogIn isLogin]) {
+        //签到
+        [StatisticsCenter checkIn];
         //自动同步数据
         if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"]) {
             [DataCenter startSyncData];
