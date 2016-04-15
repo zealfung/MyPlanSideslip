@@ -241,6 +241,10 @@
 		13D406251C3020BF0089D702 /* Btn_Posts_Unlike@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D406231C3020BF0089D702 /* Btn_Posts_Unlike@2x.png */; };
 		13D406271C3024860089D702 /* Btn_Posts_More@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D406261C3024860089D702 /* Btn_Posts_More@2x.png */; };
 		13D4069A1C3D00310089D702 /* DOPNavbarMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D406991C3D00310089D702 /* DOPNavbarMenu.m */; };
+		13F670871CC07BD3009D2BA9 /* PersonalCenterNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670861CC07BD3009D2BA9 /* PersonalCenterNewViewController.m */; };
+		13F6708B1CC07E7B009D2BA9 /* PersonalCenterNewCell0.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670891CC07E7B009D2BA9 /* PersonalCenterNewCell0.m */; };
+		13F6708C1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13F6708A1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib */; };
+		13F670A41CC11A2E009D2BA9 /* PersonalCenterMyPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670A31CC11A2E009D2BA9 /* PersonalCenterMyPostsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -624,6 +628,13 @@
 		13D406261C3024860089D702 /* Btn_Posts_More@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Posts_More@2x.png"; sourceTree = "<group>"; };
 		13D406981C3D00310089D702 /* DOPNavbarMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DOPNavbarMenu.h; sourceTree = "<group>"; };
 		13D406991C3D00310089D702 /* DOPNavbarMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DOPNavbarMenu.m; sourceTree = "<group>"; };
+		13F670851CC07BD3009D2BA9 /* PersonalCenterNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterNewViewController.h; sourceTree = "<group>"; };
+		13F670861CC07BD3009D2BA9 /* PersonalCenterNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterNewViewController.m; sourceTree = "<group>"; };
+		13F670881CC07E7B009D2BA9 /* PersonalCenterNewCell0.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterNewCell0.h; sourceTree = "<group>"; };
+		13F670891CC07E7B009D2BA9 /* PersonalCenterNewCell0.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterNewCell0.m; sourceTree = "<group>"; };
+		13F6708A1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonalCenterNewCell0.xib; sourceTree = "<group>"; };
+		13F670A21CC11A2E009D2BA9 /* PersonalCenterMyPostsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterMyPostsViewController.h; sourceTree = "<group>"; };
+		13F670A31CC11A2E009D2BA9 /* PersonalCenterMyPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterMyPostsViewController.m; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E7C51BA1CAD16DA7E729CF56 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -745,6 +756,13 @@
 		131D6A661BFB5D9C009FDD72 /* PersonalCenter */ = {
 			isa = PBXGroup;
 			children = (
+				13F670A21CC11A2E009D2BA9 /* PersonalCenterMyPostsViewController.h */,
+				13F670A31CC11A2E009D2BA9 /* PersonalCenterMyPostsViewController.m */,
+				13F670881CC07E7B009D2BA9 /* PersonalCenterNewCell0.h */,
+				13F670891CC07E7B009D2BA9 /* PersonalCenterNewCell0.m */,
+				13F6708A1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib */,
+				13F670851CC07BD3009D2BA9 /* PersonalCenterNewViewController.h */,
+				13F670861CC07BD3009D2BA9 /* PersonalCenterNewViewController.m */,
 				131D6A671BFB5D9D009FDD72 /* PersonalCenterViewController.h */,
 				131D6A681BFB5D9D009FDD72 /* PersonalCenterViewController.m */,
 				131D6A691BFB5D9D009FDD72 /* PieceButton.h */,
@@ -1774,6 +1792,7 @@
 				13D1AD6F1C3E7930007734F6 /* Btn_Report@2x.png in Resources */,
 				135B22311B9301C9005CE84A /* Btn_Plan_Doing@2x.png in Resources */,
 				13D406131C2EA2D60089D702 /* PostsOneImageCell.xib in Resources */,
+				13F6708C1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib in Resources */,
 				1310C3571C4542FC00A2A404 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				13D405FB1C2D13360089D702 /* Icon_Posts_Eyes@2x.png in Resources */,
 				13D4061D1C2FD4470089D702 /* PostsDetailViewController.xib in Resources */,
@@ -1831,6 +1850,7 @@
 				137470971C07E66B00B7822A /* CLLockView.m in Sources */,
 				132263A91B9C809400D21637 /* SecondViewController.m in Sources */,
 				137470941C07E66B00B7822A /* CLLockItemView.m in Sources */,
+				13F670A41CC11A2E009D2BA9 /* PersonalCenterMyPostsViewController.m in Sources */,
 				1310C3731C47292200A2A404 /* ChangePasswordViewController.m in Sources */,
 				131D69F51BF466D2009FDD72 /* StatisticsCenter.m in Sources */,
 				137700BA1B93E290008C83FD /* PlanSectionView.m in Sources */,
@@ -1847,6 +1867,7 @@
 				135B221F1B92E74C005CE84A /* PromptMessage.m in Sources */,
 				1374713D1C1920DB00B7822A /* UITabBar+Util.m in Sources */,
 				132263781B9825D400D21637 /* UIDevice+Util.m in Sources */,
+				13F670871CC07BD3009D2BA9 /* PersonalCenterNewViewController.m in Sources */,
 				13D1AD911C41FAC2007734F6 /* SDPhotoBrowser.m in Sources */,
 				1374712D1C17161600B7822A /* MessagesViewController.m in Sources */,
 				1361AFC61BCBA5E700DD5FFB /* DoImagePickerController.m in Sources */,
@@ -1919,6 +1940,7 @@
 				137700DB1B952EE5008C83FD /* MoreViewController.m in Sources */,
 				1374704F1C03ED1200B7822A /* RegisterViewController.m in Sources */,
 				13D1AD771C3F411F007734F6 /* GrowingTextView.m in Sources */,
+				13F6708B1CC07E7B009D2BA9 /* PersonalCenterNewCell0.m in Sources */,
 				13AF648B1C19C071008E8A9E /* MessagesDetailViewController.m in Sources */,
 				137470A41C0815F100B7822A /* CoreArchive.m in Sources */,
 				13D406171C2F9AD00089D702 /* AddPostsViewController.m in Sources */,
