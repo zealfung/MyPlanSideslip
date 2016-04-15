@@ -20,9 +20,11 @@
 + (PostsOneImageCell *)cellView {
     PostsOneImageCell *cellView = [[NSBundle mainBundle] loadNibNamed:@"PostsOneImageCell" owner:self options:nil].lastObject;
     
-    cellView.imgViewAvatar.layer.cornerRadius = cellView.imgViewAvatar.frame.size.width / 2;
     cellView.imgViewAvatar.clipsToBounds = YES;
+    cellView.imgViewAvatar.layer.borderWidth = 1;
+    cellView.imgViewAvatar.layer.borderColor = [color_dedede CGColor];
     cellView.imgViewAvatar.contentMode = UIViewContentModeScaleAspectFit;
+    cellView.imgViewAvatar.layer.cornerRadius = cellView.imgViewAvatar.frame.size.width / 2;
     cellView.labelIsTop.hidden = YES;
     cellView.labelIsHighlight.hidden = YES;
     
