@@ -47,5 +47,7 @@
 #define kDatePickerHeight 216
 //键盘工具栏高度
 #define kToolBarHeight 44
+//列表行高度
+#define kTableViewCellHeight 60
 
 #endif

@@ -18,14 +18,7 @@
 #import "ChangePasswordViewController.h"
 #import "SettingsSetTextViewController.h"
 
-NSUInteger const kSettingsViewPickerBgViewTag = 20141228;
-NSUInteger const kSettingsViewEdgeInset = 10;
-NSUInteger const kSettingsViewCellHeight = 44;
-NSUInteger const kSettingsViewPickerHeight = 216;
-NSUInteger const kSettingsViewToolBarHeight = 44;
-NSUInteger const kSettingsViewRightEdgeInset = 8;
-NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
-
+NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
 
 @interface SettingsViewController() <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
     
@@ -46,8 +39,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     UITextField *txtEmail;
     UITextField *txtPwd;
 }
-
-@property (nonatomic, strong) UIPopoverController *popOver;
 
 @end
 
@@ -74,10 +65,6 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     }
 }
 
-- (void)dealloc {
-    [NotificationCenter removeObserver:self];
-}
-
 - (void)createNavBarButton {
     if ([LogIn isLogin]) {
         self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Sync selectedImageName:png_Btn_Sync selector:@selector(syncDataAction)];
@@ -91,7 +78,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     [scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self showHUD];
     
-    CGFloat yOffset = kSettingsViewEdgeInset;
+    CGFloat yOffset = kEdgeInset;
     
     if([LogIn isLogin]) {
         ThreeSubView *view = [self getAccountView];
@@ -99,11 +86,11 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         [self configBorderForView:view];
         
         CGRect frame = view.frame;
-        frame.origin.x = kSettingsViewEdgeInset;
+        frame.origin.x = kEdgeInset;
         frame.origin.y = yOffset;
         view.frame = frame;
         
-        yOffset = CGRectGetMaxY(frame) + kSettingsViewEdgeInset;
+        yOffset = CGRectGetMaxY(frame) + kEdgeInset;
     }
     
     {
@@ -114,7 +101,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         frame.origin.y = yOffset;
         view.frame = frame;
         
-        yOffset = CGRectGetMaxY(frame) + kSettingsViewEdgeInset;
+        yOffset = CGRectGetMaxY(frame) + kEdgeInset;
     }
     
     {
@@ -125,35 +112,35 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         frame.origin.y = yOffset;
         view.frame = frame;
         
-        yOffset = CGRectGetMaxY(frame) + kSettingsViewEdgeInset;
+        yOffset = CGRectGetMaxY(frame) + kEdgeInset;
     }
 
     if([LogIn isLogin]) {
         UIButton *button = [self createExitButton];
         
         CGRect frame = CGRectZero;
-        frame.origin.x = kSettingsViewEdgeInset;
+        frame.origin.x = kEdgeInset;
         frame.origin.y = yOffset;
-        frame.size.width = CGRectGetWidth(scrollView.frame) - kSettingsViewEdgeInset * 2;
-        frame.size.height = kSettingsViewCellHeight;
+        frame.size.width = CGRectGetWidth(scrollView.frame) - kEdgeInset * 2;
+        frame.size.height = kTableViewCellHeight;
         button.frame = frame;
         [scrollView addSubview:button];
         
-        yOffset = CGRectGetMaxY(frame) + kSettingsViewCellHeight;
+        yOffset = CGRectGetMaxY(frame) + kTableViewCellHeight;
         
     } else {
         
         UIButton *button = [self createLogInButton];
 
         CGRect frame = CGRectZero;
-        frame.origin.x = kSettingsViewEdgeInset;
+        frame.origin.x = kEdgeInset;
         frame.origin.y = yOffset;
-        frame.size.width = CGRectGetWidth(scrollView.frame) - kSettingsViewEdgeInset * 2;
-        frame.size.height = kSettingsViewCellHeight;
+        frame.size.width = CGRectGetWidth(scrollView.frame) - kEdgeInset * 2;
+        frame.size.height = kTableViewCellHeight;
         button.frame = frame;
         [scrollView addSubview:button];
         
-        yOffset = CGRectGetMaxY(frame) + kSettingsViewCellHeight;
+        yOffset = CGRectGetMaxY(frame) + kTableViewCellHeight;
     }
     scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, yOffset);
     
@@ -163,7 +150,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 - (ThreeSubView *)getAccountView {
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock:nil rightBlock:nil];
     [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Acount]];
-    threeSubView.fixRightWidth = kSettingsViewRightEdgeInset;
+    threeSubView.fixRightWidth = kEdgeInset;
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
     BmobUser *user = [BmobUser getCurrentUser];
     NSString *email = [user objectForKey:@"username"];
@@ -181,7 +168,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 }
 
 - (UIView *)createSectionTwoView {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(kSettingsViewEdgeInset, 0, [self contentWidth], 0)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(kEdgeInset, 0, [self contentWidth], 0)];
     view.backgroundColor = [UIColor whiteColor];
     
     NSUInteger yOffset = 0;
@@ -249,7 +236,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 }
 
 - (UIView *)createSectionThreeView {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(kSettingsViewEdgeInset, 0, [self contentWidth], 0)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(kEdgeInset, 0, [self contentWidth], 0)];
     view.backgroundColor = [UIColor whiteColor];
     
     NSUInteger yOffset = 0;
@@ -336,8 +323,8 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     
     NSUInteger yDistance = 2;
     UIImage *bgImage = [UIImage imageNamed:png_AvatarBg];
-    CGFloat bgSize = kSettingsViewCellHeight - yDistance;
-    UIImageView *avatarBg = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(threeSubView.centerButton.bounds) - kSettingsViewEdgeInset - bgSize, yDistance, bgSize, bgSize)];
+    CGFloat bgSize = kTableViewCellHeight - yDistance;
+    UIImageView *avatarBg = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(threeSubView.centerButton.bounds) - kEdgeInset - bgSize, yDistance, bgSize, bgSize)];
     avatarBg.backgroundColor = [UIColor clearColor];
     avatarBg.image = bgImage;
     avatarBg.layer.cornerRadius = bgSize / 2;
@@ -373,7 +360,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         [weakSelf toSetNickNameViewController];
     } rightBlock:nil];
     [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Nickname]];
-    threeSubView.fixRightWidth = kSettingsViewRightEdgeInset;
+    threeSubView.fixRightWidth = kEdgeInset;
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
     
     NSString *userNickName = [Config shareInstance].settings.nickname;
@@ -433,7 +420,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         [weakSelf setBirthday];
     } rightBlock:nil];
     [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Birthday]];
-    threeSubView.fixRightWidth = kSettingsViewRightEdgeInset;
+    threeSubView.fixRightWidth = kEdgeInset;
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
     
     NSString *birthday = [Config shareInstance].settings.birthday;
@@ -452,7 +439,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         [weakSelf toSetLifeViewController];
     } rightBlock:nil];
     [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Lifespan]];
-    threeSubView.fixRightWidth = kSettingsViewRightEdgeInset;
+    threeSubView.fixRightWidth = kEdgeInset;
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
     
     NSString *lifetime = [Config shareInstance].settings.lifespan;
@@ -670,7 +657,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 - (NSUInteger)contentWidth {
     static NSUInteger contentWidth = 0;
     if (contentWidth == 0) {
-        contentWidth = CGRectGetWidth(scrollView.bounds) - kSettingsViewEdgeInset * 2;
+        contentWidth = CGRectGetWidth(scrollView.bounds) - kEdgeInset * 2;
     }
     return contentWidth;
 }
@@ -678,7 +665,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 - (CGSize)cellSize {
     static CGSize cellSize = {0, 0};
     if (CGSizeEqualToSize(cellSize, CGSizeZero)) {
-        cellSize = CGSizeMake([self contentWidth], kSettingsViewCellHeight);
+        cellSize = CGSizeMake([self contentWidth], kTableViewCellHeight);
     }
     return cellSize;
 }
@@ -854,7 +841,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         [pickerView addSubview:bgView];
     }
     {
-        UIToolbar* toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, pickerView.frame.size.height - kSettingsViewPickerHeight - kSettingsViewToolBarHeight, CGRectGetWidth(pickerView.bounds), kSettingsViewToolBarHeight)];
+        UIToolbar* toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, pickerView.frame.size.height - kDatePickerHeight - kToolBarHeight, CGRectGetWidth(pickerView.bounds), kToolBarHeight)];
         toolbar.barStyle = UIBarStyleBlack;
         toolbar.translucent = YES;
         UIBarButtonItem* item1 = [[UIBarButtonItem alloc] initWithTitle:str_OK style:UIBarButtonItemStylePlain target:nil action:@selector(onPickerCertainBtn)];
@@ -865,7 +852,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         [pickerView addSubview:toolbar];
     }
     {
-        UIDatePicker *picker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, pickerView.frame.size.height - kSettingsViewPickerHeight, CGRectGetWidth(pickerView.bounds), kSettingsViewPickerHeight)];
+        UIDatePicker *picker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, pickerView.frame.size.height - kDatePickerHeight, CGRectGetWidth(pickerView.bounds), kDatePickerHeight)];
         picker.backgroundColor = [UIColor whiteColor];
         picker.locale = [NSLocale currentLocale];
         picker.datePickerMode = UIDatePickerModeDate;
@@ -898,7 +885,7 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
         }
     }
     
-    pickerView.tag = kSettingsViewPickerBgViewTag;
+    pickerView.tag = kDatePickerBgViewTag;
     [self.view addSubview:pickerView];
 }
 
@@ -914,14 +901,14 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
     }
     [birthThreeSubView.centerButton setAllTitle:birthday];
     
-    UIView *pickerView = [self.view viewWithTag:kSettingsViewPickerBgViewTag];
+    UIView *pickerView = [self.view viewWithTag:kDatePickerBgViewTag];
     [pickerView removeFromSuperview];
     [Config shareInstance].settings.birthday = birthday;
     [PlanCache storePersonalSettings:[Config shareInstance].settings];
 }
 
 - (void)onPickerCancelBtn {
-    UIView *pickerView = [self.view viewWithTag:kSettingsViewPickerBgViewTag];
+    UIView *pickerView = [self.view viewWithTag:kDatePickerBgViewTag];
     [pickerView removeFromSuperview];
 }
 
@@ -1012,6 +999,5 @@ NSString * const kSettingsViewEdgeWhiteSpace = @"  ";
 
     [self saveAvatar:[CommonFunction compressImage:image]];
 }
-
 
 @end

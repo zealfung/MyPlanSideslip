@@ -15,11 +15,6 @@
 NSUInteger const photoMax = 9;
 NSUInteger const pageHeight = 148;
 NSUInteger const pageWidth = 110;
-NSUInteger const kAddPhotoViewPickerHeight = 216;
-NSUInteger const kAddPhotoViewToolBarHeight = 44;
-NSUInteger const kAddPhotoViewPickerBgViewTag = 20151006;
-NSUInteger const kAddPhotoViewPhotoStartTag = 20151007;
-NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
 
 @interface AddPhotoViewController () <UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PageScrollViewDataSource, PageScrollViewDelegate, DoImagePickerControllerDelegate> {
     
@@ -159,7 +154,7 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
         [pickerView addSubview:bgView];
     }
     {
-        UIToolbar* toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, pickerView.frame.size.height - kAddPhotoViewPickerHeight - kAddPhotoViewToolBarHeight, CGRectGetWidth(pickerView.bounds), kAddPhotoViewToolBarHeight)];
+        UIToolbar* toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, pickerView.frame.size.height - kDatePickerHeight - kToolBarHeight, CGRectGetWidth(pickerView.bounds), kToolBarHeight)];
         toolbar.barStyle = UIBarStyleBlack;
         toolbar.translucent = YES;
         UIBarButtonItem* item1 = [[UIBarButtonItem alloc] initWithTitle:str_OK style:UIBarButtonItemStylePlain target:nil action:@selector(onPickerCertainBtn)];
@@ -170,7 +165,7 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
         [pickerView addSubview:toolbar];
     }
     {
-        UIDatePicker *picker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, pickerView.frame.size.height - kAddPhotoViewPickerHeight, CGRectGetWidth(pickerView.bounds), kAddPhotoViewPickerHeight)];
+        UIDatePicker *picker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, pickerView.frame.size.height - kDatePickerHeight, CGRectGetWidth(pickerView.bounds), kDatePickerHeight)];
         picker.backgroundColor = [UIColor whiteColor];
         picker.locale = [NSLocale currentLocale];
         picker.datePickerMode = UIDatePickerModeDate;
@@ -206,7 +201,7 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
             self.datePicker.date = defaultDate;
         }
     }
-    pickerView.tag = kAddPhotoViewPickerBgViewTag;
+    pickerView.tag = kDatePickerBgViewTag;
     [self.view addSubview:pickerView];
 }
 
@@ -215,12 +210,12 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
     [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd];
     NSString *photoTime = [dateFormatter stringFromDate:self.datePicker.date];
     self.textFieldTime.text = photoTime;
-    UIView *pickerView = [self.view viewWithTag:kAddPhotoViewPickerBgViewTag];
+    UIView *pickerView = [self.view viewWithTag:kDatePickerBgViewTag];
     [pickerView removeFromSuperview];
 }
 
 - (void)onPickerCancelBtn {
-    UIView *pickerView = [self.view viewWithTag:kAddPhotoViewPickerBgViewTag];
+    UIView *pickerView = [self.view viewWithTag:kDatePickerBgViewTag];
     [pickerView removeFromSuperview];
 }
 
@@ -329,7 +324,7 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
 }
 
 - (void)tapAction:(UITapGestureRecognizer *)tapGestureRecognizer {
-    NSInteger index = tapGestureRecognizer.view.tag - kAddPhotoViewPhotoStartTag;
+    NSInteger index = tapGestureRecognizer.view.tag - (kDatePickerBgViewTag + 1);
     
     if (index != self.pageScrollView.currentPage) {
         
@@ -355,7 +350,7 @@ NSUInteger const kAddPhotoViewPhotoDateTextFieldTag = 20151011;
 
     UIImageView *imageView = [[UIImageView alloc] init];
     imageView.userInteractionEnabled = YES;
-    imageView.tag = kAddPhotoViewPhotoStartTag + index;
+    imageView.tag = (kDatePickerBgViewTag + 1) + index;
     imageView.image = photo;
     imageView.backgroundColor = [UIColor clearColor];
     if (canAddPhoto && (index == self.photoArray.count - 1)) {
