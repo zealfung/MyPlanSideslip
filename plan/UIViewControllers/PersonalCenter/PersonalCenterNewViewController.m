@@ -8,6 +8,7 @@
 
 #import "PersonalCenterNewCell0.h"
 #import "SettingsViewController.h"
+#import "SettingsPersonalViewController.h"
 #import "PersonalCenterNewViewController.h"
 #import "PersonalCenterMyPostsViewController.h"
 
@@ -63,7 +64,7 @@
         case 0:
             return 120.f;
         case 1:
-            return 60.f;
+            return kTableViewCellHeight;
         default:
             break;
     }
@@ -107,7 +108,10 @@
     
     switch (indexPath.section) {
         case 0:
-            
+        {
+            SettingsPersonalViewController *controller = [[SettingsPersonalViewController alloc] init];
+            [self.navigationController pushViewController:controller animated:YES];
+        }
             break;
         case 1:
         {
