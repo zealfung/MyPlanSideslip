@@ -6,16 +6,16 @@
 //  Copyright (c) 2015年 Fengzy. All rights reserved.
 //
 
-#import "DataCenter.h"
 #import "PlanCache.h"
+#import "DataCenter.h"
 #import "ShareCenter.h"
 #import "ThreeSubView.h"
 #import "UIButton+Util.h"
 #import "WZLBadgeImport.h"
 #import "FirstViewController.h"
-#import "SettingsViewController.h"
 #import "SideMenuViewController.h"
 #import <RESideMenu/RESideMenu.h>
+#import "SettingsPersonalViewController.h"
 
 NSUInteger const kSecondsPerDay = 86400;
 
@@ -133,39 +133,30 @@ NSUInteger const kSecondsPerDay = 86400;
 - (void)createAvatar {
     [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
-    NSUInteger avatarBgSize = WIDTH_FULL_SCREEN / 3;
-    NSUInteger avatarSize = avatarBgSize - 6;
+    NSUInteger avatarSize = WIDTH_FULL_SCREEN / 3;
     xMiddle = WIDTH_FULL_SCREEN / 2;
     yOffset = iPhone4 ? HEIGHT_FULL_SCREEN / 28 : HEIGHT_FULL_SCREEN / 15;
     ySpace = HEIGHT_FULL_SCREEN / 25;
     
-    UIImage *bgImage = [UIImage imageNamed:png_AvatarBg];
-    UIImageView *avatarBg = [[UIImageView alloc] initWithFrame:CGRectMake(xMiddle - avatarBgSize / 2, yOffset, avatarBgSize, avatarBgSize)];
-    avatarBg.backgroundColor = [UIColor clearColor];
-    avatarBg.image = bgImage;
-    avatarBg.layer.cornerRadius = avatarBgSize / 2;
-    avatarBg.clipsToBounds = YES;
-    avatarBg.userInteractionEnabled = YES;
-    avatarBg.contentMode = UIViewContentModeScaleAspectFit;
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toSettingsViewController)];
-    [avatarBg addGestureRecognizer:singleTap];
-    [self.view addSubview:avatarBg];
-    {
-        UIImage *image = [UIImage imageNamed:png_AvatarDefault];
-        if ([Config shareInstance].settings.avatar) {
-            image = [UIImage imageWithData:[Config shareInstance].settings.avatar];
-        }
-        UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(ceilf((avatarBgSize - avatarSize)/2), ceilf((avatarBgSize - avatarSize)/2), avatarSize, avatarSize)];
-        avatar.backgroundColor = [UIColor clearColor];
-        avatar.image = image;
-        avatar.layer.cornerRadius = avatarSize / 2;
-        avatar.clipsToBounds = YES;
-        avatar.contentMode = UIViewContentModeScaleAspectFit;
-        
-        [avatarBg addSubview:avatar];
+    UIImage *image = [UIImage imageNamed:png_AvatarDefault];
+    if ([Config shareInstance].settings.avatar) {
+        image = [UIImage imageWithData:[Config shareInstance].settings.avatar];
     }
+    UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(xMiddle - avatarSize / 2, yOffset, avatarSize, avatarSize)];
+    avatar.image = image;
+    avatar.clipsToBounds = YES;
+    avatar.layer.borderWidth = 1;
+    avatar.userInteractionEnabled = YES;
+    avatar.layer.cornerRadius = avatarSize / 2;
+    avatar.backgroundColor = [UIColor clearColor];
+    avatar.layer.borderColor = [color_dedede CGColor];
+    avatar.contentMode = UIViewContentModeScaleAspectFit;
+    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toSettingsViewController)];
+    [avatar addGestureRecognizer:singleTap];
     
-    yOffset += avatarBgSize + ySpace;
+    [self.view addSubview:avatar];
+    
+    yOffset += avatarSize + ySpace;
 }
 
 - (void)createLabelText {
@@ -465,7 +456,7 @@ NSUInteger const kSecondsPerDay = 86400;
 }
 
 - (void)toSettingsViewController {
-    SettingsViewController *controller = [[SettingsViewController alloc]init];
+    SettingsPersonalViewController *controller = [[SettingsPersonalViewController alloc]init];
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }

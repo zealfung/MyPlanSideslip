@@ -269,34 +269,25 @@ NSString *const kEdgeWhiteSpace = @"  ";
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth;
     [threeSubView autoLayout];
     
-    NSUInteger yDistance = 2;
-    UIImage *bgImage = [UIImage imageNamed:png_AvatarBg];
-    CGFloat bgSize = kTableViewCellHeight - yDistance;
-    UIImageView *avatarBg = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(threeSubView.centerButton.bounds) - kEdgeInset - bgSize, yDistance, bgSize, bgSize)];
-    avatarBg.backgroundColor = [UIColor clearColor];
-    avatarBg.image = bgImage;
-    avatarBg.layer.cornerRadius = bgSize / 2;
-    avatarBg.clipsToBounds = YES;
-    avatarBg.userInteractionEnabled = YES;
-    avatarBg.contentMode = UIViewContentModeScaleAspectFit;
-    
     UIImage *avatarImage = [UIImage imageNamed:png_AvatarDefault];
     if ([Config shareInstance].settings.avatar) {
         avatarImage = [UIImage imageWithData:[Config shareInstance].settings.avatar];
     }
-    CGFloat avatarSize = bgSize - yDistance;
-    UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(ceilf((bgSize - avatarSize)/2), ceilf((bgSize - avatarSize)/2), avatarSize, avatarSize)];
-    avatar.backgroundColor = [UIColor clearColor];
+    NSUInteger yDistance = 2;
+    CGFloat avatarSize = kTableViewCellHeight - yDistance;
+    UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(threeSubView.centerButton.bounds) - kEdgeInset - avatarSize, yDistance, avatarSize, avatarSize)];
     avatar.image = avatarImage;
-    avatar.layer.cornerRadius = avatarSize / 2;
     avatar.clipsToBounds = YES;
-    avatar.contentMode = UIViewContentModeScaleAspectFit;
+    avatar.layer.borderWidth = 1;
     avatar.userInteractionEnabled = YES;
+    avatar.layer.cornerRadius = avatarSize / 2;
+    avatar.backgroundColor = [UIColor clearColor];
+    avatar.layer.borderColor = [color_dedede CGColor];
+    avatar.contentMode = UIViewContentModeScaleAspectFit;
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setAvatar)];
     [avatar addGestureRecognizer:singleTap];
-    
-    [avatarBg addSubview:avatar];
-    [threeSubView.centerButton addSubview:avatarBg];
+
+    [threeSubView.centerButton addSubview:avatar];
     
     avatarView = avatar;
     return threeSubView;
