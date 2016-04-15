@@ -20,24 +20,13 @@
 
 NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
 
-@interface SettingsViewController() <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
+@interface SettingsViewController() <UIActionSheetDelegate> {
     
     UIScrollView *scrollView;
-    UIImageView *avatarView;
-    ThreeSubView *nickThreeSubView;
-    ThreeSubView *genderThreeSubView;
-    ThreeSubView *birthThreeSubView;
-    ThreeSubView *lifeThreeSubView;
-    ThreeSubView *emailThreeSubView;
-    ThreeSubView *changePasswordThreeSubView;
     ThreeSubView *autoSyncThreeSubView;
     ThreeSubView *isUseGestureLockThreeSubView;//启用手势解锁
     ThreeSubView *isShowGestureTrackThreeSubView;//显示手势轨迹
     ThreeSubView *changeGestureThreeSubView;//修改手势
-    UIDatePicker *datePicker;
-    
-    UITextField *txtEmail;
-    UITextField *txtPwd;
 }
 
 @end
@@ -55,7 +44,6 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     if (!scrollView) {
-        
         scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
         scrollView.showsHorizontalScrollIndicator = NO;
         scrollView.showsVerticalScrollIndicator = NO;
@@ -65,174 +53,24 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     }
 }
 
-- (void)createNavBarButton {
-    if ([LogIn isLogin]) {
-        self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Sync selectedImageName:png_Btn_Sync selector:@selector(syncDataAction)];
-    } else {
-        self.rightBarButtonItem = nil;
-    }
-}
-
 - (void)loadCustomView {
-    [self createNavBarButton];
     [scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self showHUD];
     
     CGFloat yOffset = kEdgeInset;
     
-    if([LogIn isLogin]) {
-        ThreeSubView *view = [self getAccountView];
-        [scrollView addSubview:view];
-        [self configBorderForView:view];
-        
-        CGRect frame = view.frame;
-        frame.origin.x = kEdgeInset;
-        frame.origin.y = yOffset;
-        view.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame) + kEdgeInset;
-    }
+    UIView *view = [self createSectionThreeView];
+    [scrollView addSubview:view];
     
-    {
-        UIView *view = [self createSectionTwoView];
-        [scrollView addSubview:view];
-        
-        CGRect frame = view.frame;
-        frame.origin.y = yOffset;
-        view.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame) + kEdgeInset;
-    }
+    CGRect frame = view.frame;
+    frame.origin.y = yOffset;
+    view.frame = frame;
     
-    {
-        UIView *view = [self createSectionThreeView];
-        [scrollView addSubview:view];
-        
-        CGRect frame = view.frame;
-        frame.origin.y = yOffset;
-        view.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame) + kEdgeInset;
-    }
-
-    if([LogIn isLogin]) {
-        UIButton *button = [self createExitButton];
-        
-        CGRect frame = CGRectZero;
-        frame.origin.x = kEdgeInset;
-        frame.origin.y = yOffset;
-        frame.size.width = CGRectGetWidth(scrollView.frame) - kEdgeInset * 2;
-        frame.size.height = kTableViewCellHeight;
-        button.frame = frame;
-        [scrollView addSubview:button];
-        
-        yOffset = CGRectGetMaxY(frame) + kTableViewCellHeight;
-        
-    } else {
-        
-        UIButton *button = [self createLogInButton];
-
-        CGRect frame = CGRectZero;
-        frame.origin.x = kEdgeInset;
-        frame.origin.y = yOffset;
-        frame.size.width = CGRectGetWidth(scrollView.frame) - kEdgeInset * 2;
-        frame.size.height = kTableViewCellHeight;
-        button.frame = frame;
-        [scrollView addSubview:button];
-        
-        yOffset = CGRectGetMaxY(frame) + kTableViewCellHeight;
-    }
+    yOffset = CGRectGetMaxY(frame) + kEdgeInset;
+    
     scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, yOffset);
     
     [self hideHUD];
-}
-
-- (ThreeSubView *)getAccountView {
-    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock:nil rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Acount]];
-    threeSubView.fixRightWidth = kEdgeInset;
-    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
-    BmobUser *user = [BmobUser getCurrentUser];
-    NSString *email = [user objectForKey:@"username"];
-    NSRange range = [email rangeOfString:@"@"];
-    if (range.location != NSNotFound) {
-        NSString *replaceString = @"*";
-        for (NSInteger i = 1; i < range.location - 1; i++) {
-            replaceString = [replaceString stringByAppendingString:@"*"];
-        }
-        email = [email stringByReplacingCharactersInRange:NSMakeRange(1, range.location - 1) withString:replaceString];
-    }
-    [threeSubView.centerButton setAllTitle:email];
-    [threeSubView autoLayout];
-    return threeSubView;
-}
-
-- (UIView *)createSectionTwoView {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(kEdgeInset, 0, [self contentWidth], 0)];
-    view.backgroundColor = [UIColor whiteColor];
-    
-    NSUInteger yOffset = 0;
-    {
-        ThreeSubView *threeSubView = [self createAvatarView];
-        [self addSeparatorForView:threeSubView];
-        [view addSubview:threeSubView];
-        
-        CGRect frame = threeSubView.frame;
-        frame.origin.y = yOffset;
-        threeSubView.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame);
-    }
-    {
-        ThreeSubView *threeSubView = [self createNickNameView];
-        [self addSeparatorForView:threeSubView];
-        [view addSubview:threeSubView];
-        
-        CGRect frame = threeSubView.frame;
-        frame.origin.y = yOffset;
-        threeSubView.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame);
-    }
-    {
-        ThreeSubView *threeSubView = [self createGenderView];
-        [self addSeparatorForView:threeSubView];
-        [view addSubview:threeSubView];
-        
-        CGRect frame = threeSubView.frame;
-        frame.origin.y = yOffset;
-        threeSubView.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame);
-    }
-    {
-        ThreeSubView *threeSubView = [self createBirthdayView];
-        [self addSeparatorForView:threeSubView];
-        [view addSubview:threeSubView];
-        
-        CGRect frame = threeSubView.frame;
-        frame.origin.y = yOffset;
-        threeSubView.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame);
-    }
-    {
-        ThreeSubView *threeSubView = [self createLifespanView];
-        [view addSubview:threeSubView];
-        
-        CGRect frame = threeSubView.frame;
-        frame.origin.y = yOffset;
-        threeSubView.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame);
-    }
-    
-    CGRect frame = view.frame;
-    frame.size.height = yOffset;
-    view.frame = frame;
-    
-    [self configBorderForView:view];
-    return view;
 }
 
 - (UIView *)createSectionThreeView {
@@ -241,30 +79,16 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     
     NSUInteger yOffset = 0;
     if ([LogIn isLogin]) {
-        //修改密码
-        {
-            ThreeSubView *threeSubView = [self createChangePassword];
-            [self addSeparatorForView:threeSubView];
-            [view addSubview:threeSubView];
-            
-            CGRect frame = threeSubView.frame;
-            frame.origin.y = yOffset;
-            threeSubView.frame = frame;
-            
-            yOffset = CGRectGetMaxY(frame);
-        }
         //自动同步
-        {
-            ThreeSubView *threeSubView = [self createAutoSyncSwitchView];
-            [self addSeparatorForView:threeSubView];
-            [view addSubview:threeSubView];
-            
-            CGRect frame = threeSubView.frame;
-            frame.origin.y = yOffset;
-            threeSubView.frame = frame;
-            
-            yOffset = CGRectGetMaxY(frame);
-        }
+        ThreeSubView *threeSubView = [self createAutoSyncSwitchView];
+        [self addSeparatorForView:threeSubView];
+        [view addSubview:threeSubView];
+        
+        CGRect frame = threeSubView.frame;
+        frame.origin.y = yOffset;
+        threeSubView.frame = frame;
+        
+        yOffset = CGRectGetMaxY(frame);
     }
     //手势解锁
     {
@@ -310,166 +134,6 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     
     [self configBorderForView:view];
     return view;
-}
-
-- (ThreeSubView *)createAvatarView {
-    __weak typeof(self) weakSelf = self;
-    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
-        [weakSelf setAvatar];
-    } rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Avatar]];
-    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth;
-    [threeSubView autoLayout];
-    
-    NSUInteger yDistance = 2;
-    UIImage *bgImage = [UIImage imageNamed:png_AvatarBg];
-    CGFloat bgSize = kTableViewCellHeight - yDistance;
-    UIImageView *avatarBg = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(threeSubView.centerButton.bounds) - kEdgeInset - bgSize, yDistance, bgSize, bgSize)];
-    avatarBg.backgroundColor = [UIColor clearColor];
-    avatarBg.image = bgImage;
-    avatarBg.layer.cornerRadius = bgSize / 2;
-    avatarBg.clipsToBounds = YES;
-    avatarBg.userInteractionEnabled = YES;
-    avatarBg.contentMode = UIViewContentModeScaleAspectFit;
-    
-    UIImage *avatarImage = [UIImage imageNamed:png_AvatarDefault];
-    if ([Config shareInstance].settings.avatar) {
-        avatarImage = [UIImage imageWithData:[Config shareInstance].settings.avatar];
-    }
-    CGFloat avatarSize = bgSize - yDistance;
-    UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(ceilf((bgSize - avatarSize)/2), ceilf((bgSize - avatarSize)/2), avatarSize, avatarSize)];
-    avatar.backgroundColor = [UIColor clearColor];
-    avatar.image = avatarImage;
-    avatar.layer.cornerRadius = avatarSize / 2;
-    avatar.clipsToBounds = YES;
-    avatar.contentMode = UIViewContentModeScaleAspectFit;
-    avatar.userInteractionEnabled = YES;
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setAvatar)];
-    [avatar addGestureRecognizer:singleTap];
-    
-    [avatarBg addSubview:avatar];
-    [threeSubView.centerButton addSubview:avatarBg];
-    
-    avatarView = avatar;
-    return threeSubView;
-}
-
-- (ThreeSubView *)createNickNameView {
-    __weak typeof(self) weakSelf = self;
-    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
-        [weakSelf toSetNickNameViewController];
-    } rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Nickname]];
-    threeSubView.fixRightWidth = kEdgeInset;
-    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
-    
-    NSString *userNickName = [Config shareInstance].settings.nickname;
-    if (userNickName.length == 0) {
-        userNickName = str_Settings_Nickname_Tips;
-    }
-    [threeSubView.centerButton setAllTitle:userNickName];
-    [threeSubView autoLayout];
-    
-    nickThreeSubView = threeSubView;
-    return threeSubView;
-}
-
-- (ThreeSubView *)createGenderView {
-    __weak typeof(self) weakSelf = self;
-    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
-        [weakSelf setMale];
-    } rightBlock: ^{
-        [weakSelf setFemale];
-    }];
-    
-    threeSubView.fixCenterWidth = 55;
-    [threeSubView.centerButton setImage:[UIImage imageNamed:png_Icon_Gender_M_Normal] forState:UIControlStateNormal];
-    [threeSubView.centerButton setImage:[UIImage imageNamed:png_Icon_Gender_M_Selected] forState:UIControlStateSelected];
-    [threeSubView.centerButton setAllTitle:str_Settings_Gender_M];
-    
-    threeSubView.fixRightWidth = 55;
-    [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Gender_F_Normal] forState:UIControlStateNormal];
-    [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Gender_F_Selected] forState:UIControlStateSelected];
-    [threeSubView.rightButton setAllTitle:str_Settings_Gender_F];
-    
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Gender]];
-    threeSubView.fixLeftWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixCenterWidth;
-    
-    threeSubView.centerButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    
-    NSString *gender = [Config shareInstance].settings.gender;
-    if (gender) {
-        if ([gender intValue] == 0) {
-            
-            threeSubView.rightButton.selected = YES;
-            
-        } else if ([gender intValue] == 1) {
-            
-            threeSubView.centerButton.selected = YES;
-        }
-    }
-    [threeSubView autoLayout];
-    genderThreeSubView = threeSubView;
-    return threeSubView;
-}
-
-- (ThreeSubView *)createBirthdayView {
-    __weak typeof(self) weakSelf = self;
-    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
-        [weakSelf setBirthday];
-    } rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Birthday]];
-    threeSubView.fixRightWidth = kEdgeInset;
-    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
-    
-    NSString *birthday = [Config shareInstance].settings.birthday;
-    if (birthday.length == 0) {
-        birthday = str_Settings_Birthday_Tips;
-    }
-    [threeSubView.centerButton setAllTitle:birthday];
-    [threeSubView autoLayout];
-    birthThreeSubView = threeSubView;
-    return threeSubView;
-}
-
-- (ThreeSubView *)createLifespanView {
-    __weak typeof(self) weakSelf = self;
-    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
-        [weakSelf toSetLifeViewController];
-    } rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Lifespan]];
-    threeSubView.fixRightWidth = kEdgeInset;
-    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
-    
-    NSString *lifetime = [Config shareInstance].settings.lifespan;
-    if (lifetime.length == 0) {
-        lifetime = str_Settings_Lifespan_Tips;
-    }
-    [threeSubView.centerButton setAllTitle:lifetime];
-    [threeSubView autoLayout];
-    lifeThreeSubView = threeSubView;
-    return threeSubView;
-}
-
-- (ThreeSubView *)createChangePassword {
-    __weak typeof(self) weakSelf = self;
-    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
-        [weakSelf toChangePasswordViewController];
-    } rightBlock: ^{
-        [weakSelf toChangePasswordViewController];
-    }];
-    
-    threeSubView.fixRightWidth = 55;
-    [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Arrow_Right] forState:UIControlStateNormal];
-    
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_ChangePassword]];
-    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixLeftWidth;
-    threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-    
-    [threeSubView autoLayout];
-    changePasswordThreeSubView = threeSubView;
-    return threeSubView;
 }
 
 - (ThreeSubView *)createAutoSyncSwitchView {
@@ -597,28 +261,6 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     return threeSubView;
 }
 
-- (UIButton *)createLogInButton {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.backgroundColor = color_0BA32A;
-    button.titleLabel.font = font_Bold_18;
-    button.layer.cornerRadius = 5;
-    button.clipsToBounds = YES;
-    [button setAllTitle:str_Settings_LogIn];
-    [button addTarget:self action:@selector(logInAction) forControlEvents:UIControlEventTouchUpInside];
-    return button;
-}
-
-- (UIButton *)createExitButton {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.backgroundColor = [UIColor redColor];
-    button.titleLabel.font = font_Bold_18;
-    button.layer.cornerRadius = 5;
-    button.clipsToBounds = YES;
-    [button setAllTitle:str_Settings_LogOut];
-    [button addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
-    return button;
-}
-
 - (ThreeSubView *)getThreeSubViewForCenterBlock:(ButtonSelectBlock)centerBlock rightBlock:(ButtonSelectBlock)rightBlock {
     CGRect frame = CGRectZero;
     frame.size = [self cellSize];
@@ -675,91 +317,6 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     return [NSString stringWithFormat:@"%@%@", kSettingsViewEdgeWhiteSpace, string];
 }
 
-- (void)setAvatar {
-    
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:str_Settings_SetAvatar_Tips1
-                                                                 delegate:self
-                                                        cancelButtonTitle:str_Cancel
-                                                   destructiveButtonTitle:nil
-                                                        otherButtonTitles:str_Settings_SetAvatar_Camera, str_Settings_SetAvatar_Album, nil];
-        [actionSheet showInView:self.view];
-        
-    } else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:str_Settings_SetAvatar_Tips2
-                                                                 delegate:self
-                                                        cancelButtonTitle:str_Cancel
-                                                   destructiveButtonTitle:nil
-                                                        otherButtonTitles:str_Settings_SetAvatar_Album, nil];
-        [actionSheet showInView:self.view];
-        
-    } else {
-        //不支持相片选取
-    }
-}
-
-- (void)toSetNickNameViewController {
-    __weak typeof(self) weakSelf = self;
-    SettingsSetTextViewController *controller = [[SettingsSetTextViewController alloc] init];
-    controller.title = str_Set_Nickname;
-    controller.textFieldPlaceholder = str_Set_Nickname_Tips1;
-    controller.setType = SetNickName;
-    controller.finishedBlock = ^(NSString *text) {
-        
-        text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        
-        if (text.length > 10) {
-            [weakSelf alertButtonMessage:str_Set_Nickname_Tips2];
-            return;
-        }
-        
-        if (text.length == 0) {
-            [weakSelf alertButtonMessage:str_Set_Nickname_Tips1];
-            return;
-        }
-
-        [Config shareInstance].settings.nickname = text;
-        [PlanCache storePersonalSettings:[Config shareInstance].settings];
-        
-        [nickThreeSubView.centerButton setAllTitle:text];
-        [self alertToastMessage:str_Save_Success];
-        [weakSelf.navigationController popViewControllerAnimated:YES];
-    };
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
-- (void)toSetLifeViewController {
-    __weak typeof(self) weakSelf = self;
-    SettingsSetTextViewController *controller = [[SettingsSetTextViewController alloc] init];
-    controller.title = str_Set_Lifespan;
-    controller.textFieldPlaceholder = str_Set_Lifespan_Tips1;
-    controller.setType = SetLife;
-    controller.finishedBlock = ^(NSString *text) {
-        
-        text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        
-        if (text.length == 0) {
-            [weakSelf alertButtonMessage:str_Set_Lifespan_Tips2];
-            return;
-        }
-        
-        if ([text intValue]> 130) {
-            [weakSelf alertButtonMessage:str_Set_Lifespan_Tips3];
-            return;
-        }
-
-        [Config shareInstance].settings.lifespan = text;
-        [PlanCache storePersonalSettings:[Config shareInstance].settings];
-
-        [lifeThreeSubView.centerButton setAllTitle:text];
-        [self alertToastMessage:str_Save_Success];
-        [weakSelf.navigationController popViewControllerAnimated:YES];
-    };
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
 - (void)toGestureLockViewController {
     __weak typeof(self) weakSelf = self;
     BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
@@ -789,11 +346,6 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     }
 }
 
-- (void)toChangePasswordViewController {
-    ChangePasswordViewController *controller = [[ChangePasswordViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
 - (void)toChangeGestureViewController {
     __weak typeof(self) weakSelf = self;
     BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
@@ -806,20 +358,6 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     }
 }
 
-- (void)setMale {
-    genderThreeSubView.centerButton.selected = YES;
-    genderThreeSubView.rightButton.selected = NO;
-    [Config shareInstance].settings.gender = @"1";
-    [PlanCache storePersonalSettings:[Config shareInstance].settings];
-}
-
-- (void)setFemale {
-    genderThreeSubView.centerButton.selected = NO;
-    genderThreeSubView.rightButton.selected = YES;
-    [Config shareInstance].settings.gender = @"0";
-    [PlanCache storePersonalSettings:[Config shareInstance].settings];
-}
-
 - (void)setAutoSync {
     autoSyncThreeSubView.rightButton.selected = !autoSyncThreeSubView.rightButton.selected;
     if (autoSyncThreeSubView.rightButton.selected) {
@@ -828,176 +366,6 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
         [Config shareInstance].settings.isAutoSync = @"0";
     }
     [PlanCache storePersonalSettings:[Config shareInstance].settings];
-}
-
-- (void)setBirthday {
-    UIView *pickerView = [[UIView alloc] initWithFrame:self.view.bounds];
-    pickerView.backgroundColor = [UIColor clearColor];
-    
-    {
-        UIView *bgView = [[UIView alloc] initWithFrame:pickerView.bounds];
-        bgView.backgroundColor = [UIColor blackColor];
-        bgView.alpha = 0.3;
-        [pickerView addSubview:bgView];
-    }
-    {
-        UIToolbar* toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, pickerView.frame.size.height - kDatePickerHeight - kToolBarHeight, CGRectGetWidth(pickerView.bounds), kToolBarHeight)];
-        toolbar.barStyle = UIBarStyleBlack;
-        toolbar.translucent = YES;
-        UIBarButtonItem* item1 = [[UIBarButtonItem alloc] initWithTitle:str_OK style:UIBarButtonItemStylePlain target:nil action:@selector(onPickerCertainBtn)];
-        UIBarButtonItem* item2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        UIBarButtonItem* item3 = [[UIBarButtonItem alloc] initWithTitle:str_Cancel style:UIBarButtonItemStylePlain target:nil action:@selector(onPickerCancelBtn)];
-        NSArray* toolbarItems = [NSArray arrayWithObjects:item3, item2, item1, nil];
-        [toolbar setItems:toolbarItems];
-        [pickerView addSubview:toolbar];
-    }
-    {
-        UIDatePicker *picker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, pickerView.frame.size.height - kDatePickerHeight, CGRectGetWidth(pickerView.bounds), kDatePickerHeight)];
-        picker.backgroundColor = [UIColor whiteColor];
-        picker.locale = [NSLocale currentLocale];
-        picker.datePickerMode = UIDatePickerModeDate;
-        picker.maximumDate = [NSDate date];
-        NSDateComponents *defaultComponents = [CommonFunction getDateTime:[NSDate date]];
-        NSDate *minDate = [CommonFunction NSStringDateToNSDate:[NSString stringWithFormat:@"%zd-%zd-%zd",
-                                                                 defaultComponents.year - 100,
-                                                                 defaultComponents.month,
-                                                                 defaultComponents.day]
-                                                      formatter:str_DateFormatter_yyyy_MM_dd];
-
-        picker.minimumDate = minDate;
-        [pickerView addSubview:picker];
-        datePicker = picker;
-        
-        NSString *birthday = [Config shareInstance].settings.birthday;
-        
-        if (birthday) {
-            NSDate *date = [CommonFunction NSStringDateToNSDate:birthday formatter:str_DateFormatter_yyyy_MM_dd];
-            if (date) {
-                [datePicker setDate:date animated:YES];
-            }
-        } else {
-            NSDate *defaultDate = [CommonFunction NSStringDateToNSDate:[NSString stringWithFormat:@"%zd-%zd-%zd",
-                                                                         defaultComponents.year - 20,
-                                                                         defaultComponents.month,
-                                                                         defaultComponents.day]
-                                                              formatter:str_DateFormatter_yyyy_MM_dd];
-            datePicker.date = defaultDate;
-        }
-    }
-    
-    pickerView.tag = kDatePickerBgViewTag;
-    [self.view addSubview:pickerView];
-}
-
-- (void)onPickerCertainBtn {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd];
-    NSString *birthday = [dateFormatter stringFromDate:datePicker.date];
-    
-    [Config shareInstance].settings.birthday = birthday;
-    
-    if (birthday.length == 0) {
-        birthday = str_Settings_Birthday_Tips;
-    }
-    [birthThreeSubView.centerButton setAllTitle:birthday];
-    
-    UIView *pickerView = [self.view viewWithTag:kDatePickerBgViewTag];
-    [pickerView removeFromSuperview];
-    [Config shareInstance].settings.birthday = birthday;
-    [PlanCache storePersonalSettings:[Config shareInstance].settings];
-}
-
-- (void)onPickerCancelBtn {
-    UIView *pickerView = [self.view viewWithTag:kDatePickerBgViewTag];
-    [pickerView removeFromSuperview];
-}
-
-- (void)saveAvatar:(NSData *)icon {
-    if (icon == nil) {
-        return;
-    }
-    
-    avatarView.image = [UIImage imageWithData:icon];
-    avatarView.contentMode = UIViewContentModeScaleAspectFit;
-
-    [Config shareInstance].settings.avatar = icon;
-    [Config shareInstance].settings.avatarURL = @"";
-    [PlanCache storePersonalSettings:[Config shareInstance].settings];
-}
-
-- (void)logInAction {
-    LogInViewController *controller = [[LogInViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
-- (void)exitAction {
-    [BmobUser logout];
-    [NotificationCenter postNotificationName:Notify_Settings_Save object:nil];
-    [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
-    [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
-    [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
-    [NotificationCenter postNotificationName:Notify_Posts_Refresh object:nil];
-}
-
-- (void)syncDataAction {
-    [AlertCenter alertNavBarYellowMessage:str_Sync_Begin];
-    [DataCenter startSyncData];
-}
-
-#pragma mark - UIActionSheetDelegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    if (buttonIndex==[actionSheet cancelButtonIndex]) {
-        
-    } else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:str_Settings_SetAvatar_Camera]) {
-        //拍照
-        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            
-            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-            picker.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor darkGrayColor]};
-            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-            picker.allowsEditing = YES;
-            picker.delegate = self;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self presentViewController:picker animated:YES completion:nil];
-            });
-            
-        } else {
-            
-            [self alertButtonMessage:str_Common_Tips2];
-        }
-        
-    } else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:str_Settings_SetAvatar_Album]) {
-        //从相册选择
-        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-            
-            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-            picker.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor darkGrayColor]};
-            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            picker.allowsEditing = YES;
-            picker.delegate = self;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{//如果不这样写，在iPad上会访问不了相册
-                [self presentViewController:picker animated:YES completion:nil];
-            });
-            
-        } else {
-            
-            [self alertButtonMessage:STRCommonTip1];
-        }
-    }
-}
-
-#pragma mark - UIImagePickerControllerDelegate
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
-    [picker dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo {
-    [picker dismissViewControllerAnimated:YES completion:nil];
-
-    [self saveAvatar:[CommonFunction compressImage:image]];
 }
 
 @end
