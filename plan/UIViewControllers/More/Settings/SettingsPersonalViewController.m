@@ -25,6 +25,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
     UIScrollView *scrollView;
     UIImageView *avatarView;
     ThreeSubView *nickThreeSubView;
+    ThreeSubView *signatureThreeSubView;
     ThreeSubView *genderThreeSubView;
     ThreeSubView *birthThreeSubView;
     ThreeSubView *lifeThreeSubView;
@@ -218,6 +219,17 @@ NSString *const kEdgeWhiteSpace = @"  ";
     }
     {
         ThreeSubView *threeSubView = [self createLifespanView];
+        [self addSeparatorForView:threeSubView];
+        [view addSubview:threeSubView];
+        
+        CGRect frame = threeSubView.frame;
+        frame.origin.y = yOffset;
+        threeSubView.frame = frame;
+        
+        yOffset = CGRectGetMaxY(frame);
+    }
+    {
+        ThreeSubView *threeSubView = [self createSignatureView];
         [view addSubview:threeSubView];
         
         CGRect frame = threeSubView.frame;
@@ -391,6 +403,26 @@ NSString *const kEdgeWhiteSpace = @"  ";
     return threeSubView;
 }
 
+- (ThreeSubView *)createSignatureView {
+    __weak typeof(self) weakSelf = self;
+    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
+        [weakSelf toSetSignatureViewController];
+    } rightBlock:nil];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Signature]];
+    threeSubView.fixRightWidth = kEdgeInset;
+    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
+    
+    NSString *signature = [Config shareInstance].settings.signature;
+    if (signature.length == 0) {
+        signature = str_Settings_Signature_Tips;
+    }
+    [threeSubView.centerButton setAllTitle:signature];
+    [threeSubView autoLayout];
+    
+    signatureThreeSubView = threeSubView;
+    return threeSubView;
+}
+
 - (ThreeSubView *)createChangePassword {
     __weak typeof(self) weakSelf = self;
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
@@ -538,6 +570,31 @@ NSString *const kEdgeWhiteSpace = @"  ";
         [PlanCache storePersonalSettings:[Config shareInstance].settings];
         
         [nickThreeSubView.centerButton setAllTitle:text];
+        [self alertToastMessage:str_Save_Success];
+        [weakSelf.navigationController popViewControllerAnimated:YES];
+    };
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)toSetSignatureViewController {
+    __weak typeof(self) weakSelf = self;
+    SettingsSetTextViewController *controller = [[SettingsSetTextViewController alloc] init];
+    controller.title = str_Set_Signature;
+    controller.textFieldPlaceholder = str_Set_Signature_Tips1;
+    controller.setType = SetNickName;
+    controller.finishedBlock = ^(NSString *text) {
+        
+        text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        
+        if (text.length == 0) {
+            [weakSelf alertButtonMessage:str_Set_Signature_Tips1];
+            return;
+        }
+        
+        [Config shareInstance].settings.signature = text;
+        [PlanCache storePersonalSettings:[Config shareInstance].settings];
+        
+        [signatureThreeSubView.centerButton setAllTitle:text];
         [self alertToastMessage:str_Save_Success];
         [weakSelf.navigationController popViewControllerAnimated:YES];
     };
