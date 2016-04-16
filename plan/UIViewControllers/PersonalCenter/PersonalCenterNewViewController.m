@@ -25,8 +25,7 @@
     
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = color_eeeeee;
-//    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_Settings_Save object:nil];
-//    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_LogIn object:nil];
+    [NotificationCenter addObserver:self selector:@selector(reloadTableView) name:Notify_Settings_Save object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -40,6 +39,10 @@
 - (void)btnSettingsAction:(UIButton *)sender {
     SettingsViewController *controller = [[SettingsViewController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)reloadTableView {
+    [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
