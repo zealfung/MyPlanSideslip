@@ -27,6 +27,8 @@ NSString *const kSettings_GesturePasswod = @"gesturePasswod";
 NSString *const kSettings_Updatetime = @"updatetime";
 NSString *const kSettings_Createtime = @"createtime";
 NSString *const kSettings_Syntime = @"syntime";
+NSString *const kSettings_CountdownType = @"countdownType";
+NSString *const kSettings_Signature = @"signature";
 
 @implementation Settings
 
@@ -49,7 +51,8 @@ NSString *const kSettings_Syntime = @"syntime";
 @synthesize updatetime = _updatetime;
 @synthesize createtime = _createtime;
 @synthesize syntime = _syntime;
-
+@synthesize countdownType = _countdownType;
+@synthesize signature = _signature;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
@@ -73,6 +76,8 @@ NSString *const kSettings_Syntime = @"syntime";
         self.updatetime = [dict objectOrNilForKey:kSettings_Updatetime];
         self.createtime = [dict objectOrNilForKey:kSettings_Createtime];
         self.syntime = [dict objectOrNilForKey:kSettings_Syntime];
+        self.countdownType = [dict objectOrNilForKey:kSettings_CountdownType];
+        self.signature = [dict objectOrNilForKey:kSettings_Signature];
     }
     return self;
 }
@@ -97,6 +102,8 @@ NSString *const kSettings_Syntime = @"syntime";
     self.updatetime = [aDecoder decodeObjectForKey:kSettings_Updatetime];
     self.createtime = [aDecoder decodeObjectForKey:kSettings_Createtime];
     self.syntime = [aDecoder decodeObjectForKey:kSettings_Syntime];
+    self.countdownType = [aDecoder decodeObjectForKey:kSettings_CountdownType];
+    self.signature = [aDecoder decodeObjectForKey:kSettings_Signature];
     return self;
 }
 
@@ -120,6 +127,8 @@ NSString *const kSettings_Syntime = @"syntime";
     [aCoder encodeObject:_updatetime forKey:kSettings_Updatetime];
     [aCoder encodeObject:_createtime forKey:kSettings_Createtime];
     [aCoder encodeObject:_syntime forKey:kSettings_Syntime];
+    [aCoder encodeObject:_countdownType forKey:kSettings_CountdownType];
+    [aCoder encodeObject:_signature forKey:kSettings_Signature];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -143,6 +152,8 @@ NSString *const kSettings_Syntime = @"syntime";
     copy.updatetime = [self.updatetime copyWithZone:zone];
     copy.createtime = [self.createtime copyWithZone:zone];
     copy.syntime = [self.syntime copyWithZone:zone];
+    copy.countdownType = [self.countdownType copyWithZone:zone];
+    copy.signature = [self.signature copyWithZone:zone];
     return copy;
 }
 
