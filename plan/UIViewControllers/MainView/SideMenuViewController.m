@@ -13,8 +13,8 @@
 #import "AboutViewController.h"
 #import "PhotoViewController.h"
 #import "MessagesViewController.h"
-#import "SettingsViewController.h"
 #import "SideMenuViewController.h"
+#import "SettingsPersonalViewController.h"
 #import "PersonalCenterNewViewController.h"
 #import <MessageUI/MFMailComposeViewController.h>
 
@@ -194,7 +194,7 @@
 
 - (void)pushLoginPage {
     UINavigationController *navController = (UINavigationController *)((UITabBarController *)self.sideMenuViewController.contentViewController).selectedViewController;
-    SettingsViewController *controller = [[SettingsViewController alloc] init];
+    SettingsPersonalViewController *controller = [[SettingsPersonalViewController alloc] init];
     controller.hidesBottomBarWhenPushed = YES;
     [navController pushViewController:controller animated:YES];
     
