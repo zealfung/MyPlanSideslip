@@ -169,6 +169,8 @@ static BOOL finishTask;
     [Config shareInstance].settings.createtime = [obj objectForKey:@"createdTime"];
     [Config shareInstance].settings.updatetime = [obj objectForKey:@"updatedTime"];
     [Config shareInstance].settings.syntime = [obj objectForKey:@"syncTime"];
+    [Config shareInstance].settings.countdownType = [obj objectForKey:@"countdownType"];
+    [Config shareInstance].settings.signature = [obj objectForKey:@"signature"];
     
     NSString *serverAvatarURL = [obj objectForKey:@"avatarURL"];
     NSString *serverCenterTopURL = [obj objectForKey:@"centerTopURL"];
@@ -253,6 +255,12 @@ static BOOL finishTask;
     if ([Config shareInstance].settings.createtime) {
         [settingsObject setObject:[Config shareInstance].settings.createtime forKey:@"createdTime"];
     }
+    if ([Config shareInstance].settings.countdownType) {
+        [settingsObject setObject:[Config shareInstance].settings.countdownType forKey:@"countdownType"];
+    }
+    if ([Config shareInstance].settings.signature) {
+        [settingsObject setObject:[Config shareInstance].settings.signature forKey:@"signature"];
+    }
 
     //上传头像
     NSString *avatarUrl = [settingsObject objectForKey:@"avatarURL"];
@@ -327,6 +335,12 @@ static BOOL finishTask;
         [userSettings setObject:[Config shareInstance].settings.createtime forKey:@"createdTime"];
     }
     [userSettings setObject:@"2015-09-01 09:09:09" forKey:@"syncTime"];
+    if ([Config shareInstance].settings.countdownType) {
+        [userSettings setObject:[Config shareInstance].settings.countdownType forKey:@"countdownType"];
+    }
+    if ([Config shareInstance].settings.signature) {
+        [userSettings setObject:[Config shareInstance].settings.signature forKey:@"signature"];
+    }
     
     //上传头像
     if ([Config shareInstance].settings.avatar) {
