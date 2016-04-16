@@ -199,7 +199,7 @@ NSUInteger const kHoursPerDay = 24;
     nickFrame.origin.y = yOffset;
     
     nickNameView.frame = nickFrame;
-    yOffset += nickNameView.frame.size.height + ySpace * 2;
+    yOffset += nickNameView.frame.size.height + (iPhone4 ? ySpace : ySpace * 2);
     
     ThreeSubView *liftetimeSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(xMiddle, yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
     
