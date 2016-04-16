@@ -18,7 +18,8 @@
 #import "SettingsPersonalViewController.h"
 
 NSUInteger const kSecondsPerDay = 86400;
-
+NSUInteger const kMinutesPerDay = 1440;
+NSUInteger const kHoursPerDay = 24;
 
 @interface FirstViewController () <UITextFieldDelegate> {
     
@@ -26,6 +27,8 @@ NSUInteger const kSecondsPerDay = 86400;
     ThreeSubView *liftetimeView;
     ThreeSubView *daysLeftView;
     ThreeSubView *secondsLeftView;
+    ThreeSubView *minuteLeftView;
+    ThreeSubView *hourLeftView;
     UIView *statisticsView;
     ThreeSubView *everydayView;
     ThreeSubView *longtermView;
@@ -246,7 +249,7 @@ NSUInteger const kSecondsPerDay = 86400;
     } else {
         daysLeft = secondsBetweenDates/kSecondsPerDay;
     }
-    
+    //剩余天数
     ThreeSubView *daysLeftSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(xMiddle, yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
     [daysLeftSubView.leftButton.titleLabel setFont:font_Normal_16];
     [daysLeftSubView.leftButton setAllTitleColor:color_Black];
@@ -274,29 +277,85 @@ NSUInteger const kSecondsPerDay = 86400;
     
     daysLeftView.frame = daysFrame;
     yOffset += daysLeftView.frame.size.height + ySpace;
-    
-    ThreeSubView *secondsLeftSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(xMiddle, yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
-    [secondsLeftSubView.leftButton.titleLabel setFont:font_Normal_16];
-    [secondsLeftSubView.leftButton setAllTitleColor:color_Black];
-    [secondsLeftSubView.leftButton setAllTitle:str_FirstView_5];
-    [secondsLeftSubView.centerButton.titleLabel setFont:font_Normal_24];
-    [secondsLeftSubView.centerButton setAllTitleColor:color_Red];
-    [secondsLeftSubView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:kSecondsPerDay]];
-    [secondsLeftSubView.rightButton.titleLabel setFont:font_Normal_16];
-    [secondsLeftSubView.rightButton setAllTitleColor:color_Black];
-    [secondsLeftSubView.rightButton setAllTitle:str_FirstView_6];
-    [secondsLeftSubView autoLayout];
-    [self.view addSubview:secondsLeftSubView];
-    
-    secondsLeftView = secondsLeftSubView;
-    
-    CGRect secondsFrame = CGRectZero;
-    secondsFrame.size.width = secondsLeftView.frame.size.width;
-    secondsFrame.size.height = secondsLeftView.frame.size.height;
-    secondsFrame.origin.x = xMiddle - secondsLeftView.frame.size.width/2;
-    secondsFrame.origin.y = yOffset;
-    
-    secondsLeftView.frame = secondsFrame;
+    //剩余秒
+    if ([self showSeconds]) {
+        ThreeSubView *secondsLeftSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(xMiddle, yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
+        [secondsLeftSubView.leftButton.titleLabel setFont:font_Normal_16];
+        [secondsLeftSubView.leftButton setAllTitleColor:color_Black];
+        [secondsLeftSubView.leftButton setAllTitle:str_FirstView_5];
+        [secondsLeftSubView.centerButton.titleLabel setFont:font_Normal_24];
+        [secondsLeftSubView.centerButton setAllTitleColor:color_Red];
+        [secondsLeftSubView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:kSecondsPerDay]];
+        [secondsLeftSubView.rightButton.titleLabel setFont:font_Normal_16];
+        [secondsLeftSubView.rightButton setAllTitleColor:color_Black];
+        [secondsLeftSubView.rightButton setAllTitle:str_FirstView_6];
+        [secondsLeftSubView autoLayout];
+        [self.view addSubview:secondsLeftSubView];
+        
+        secondsLeftView = secondsLeftSubView;
+        
+        CGRect secondsFrame = CGRectZero;
+        secondsFrame.size.width = secondsLeftView.frame.size.width;
+        secondsFrame.size.height = secondsLeftView.frame.size.height;
+        secondsFrame.origin.x = xMiddle - secondsLeftView.frame.size.width/2;
+        secondsFrame.origin.y = yOffset;
+        
+        secondsLeftView.frame = secondsFrame;
+        yOffset += secondsLeftView.frame.size.height + ySpace;
+    }
+    //剩余分
+    if ([self showMinutes]) {
+        ThreeSubView *minuteLeftSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(xMiddle, yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
+        [minuteLeftSubView.leftButton.titleLabel setFont:font_Normal_16];
+        [minuteLeftSubView.leftButton setAllTitleColor:color_Black];
+        [minuteLeftSubView.leftButton setAllTitle:str_FirstView_5];
+        [minuteLeftSubView.centerButton.titleLabel setFont:font_Normal_24];
+        [minuteLeftSubView.centerButton setAllTitleColor:color_Red];
+        [minuteLeftSubView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:kMinutesPerDay]];
+        [minuteLeftSubView.rightButton.titleLabel setFont:font_Normal_16];
+        [minuteLeftSubView.rightButton setAllTitleColor:color_Black];
+        [minuteLeftSubView.rightButton setAllTitle:str_FirstView_13];
+        [minuteLeftSubView autoLayout];
+        [self.view addSubview:minuteLeftSubView];
+        
+        minuteLeftView = minuteLeftSubView;
+        
+        CGRect minuteFrame = CGRectZero;
+        minuteFrame.size.width = minuteLeftView.frame.size.width;
+        minuteFrame.size.height = minuteLeftView.frame.size.height;
+        minuteFrame.origin.x = xMiddle - minuteLeftView.frame.size.width/2;
+        minuteFrame.origin.y = yOffset;
+        
+        minuteLeftView.frame = minuteFrame;
+        yOffset += minuteLeftView.frame.size.height + ySpace;
+    }
+    //剩余时
+    if ([self showHours]) {
+        ThreeSubView *hourLeftSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(xMiddle, yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
+        [hourLeftSubView.leftButton.titleLabel setFont:font_Normal_16];
+        [hourLeftSubView.leftButton setAllTitleColor:color_Black];
+        [hourLeftSubView.leftButton setAllTitle:str_FirstView_5];
+        [hourLeftSubView.centerButton.titleLabel setFont:font_Normal_24];
+        [hourLeftSubView.centerButton setAllTitleColor:color_Red];
+        [hourLeftSubView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:kHoursPerDay]];
+        [hourLeftSubView.rightButton.titleLabel setFont:font_Normal_16];
+        [hourLeftSubView.rightButton setAllTitleColor:color_Black];
+        [hourLeftSubView.rightButton setAllTitle:str_FirstView_14];
+        [hourLeftSubView autoLayout];
+        [self.view addSubview:hourLeftSubView];
+        
+        hourLeftView = hourLeftSubView;
+        
+        CGRect hourFrame = CGRectZero;
+        hourFrame.size.width = hourLeftView.frame.size.width;
+        hourFrame.size.height = hourLeftView.frame.size.height;
+        hourFrame.origin.x = xMiddle - hourLeftView.frame.size.width/2;
+        hourFrame.origin.y = yOffset;
+        
+        hourLeftView.frame = hourFrame;
+        yOffset += hourLeftView.frame.size.height + ySpace;
+    }
+    //倒计时
     timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(secondsCountdown) userInfo:nil repeats:YES];
 }
 
@@ -308,9 +367,7 @@ NSUInteger const kSecondsPerDay = 86400;
     CGFloat subviewWidth = viewWidth / 3;
     CGFloat viewHeight = HEIGHT_FULL_SCREEN * 0.1875;
     CGFloat subviewHeight = viewHeight / 3;
-    
-    yOffset += iPhone4 ? ySpace : ySpace * 2;
-    
+
     UIView *statisticsBgView = [[UIView alloc] initWithFrame:CGRectMake(xOffset, yOffset, viewWidth, subviewHeight * 2)];
     [self.view addSubview:statisticsBgView];
     [self addSeparatorForLeft:statisticsBgView];
@@ -431,13 +488,34 @@ NSUInteger const kSecondsPerDay = 86400;
     NSInteger hour = [dateComponent hour];
     NSInteger minute = [dateComponent minute];
     NSInteger second = [dateComponent second];
-    NSInteger secondsLeft = kSecondsPerDay - hour*3600 - minute*60 -second;
     
-    [secondsLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:secondsLeft]];
-    [secondsLeftView autoLayout];
-    CGRect frame = secondsLeftView.frame;
-    frame.origin.x = self.view.frame.size.width / 2 - secondsLeftView.frame.size.width / 2;
-    secondsLeftView.frame = frame;
+    //刷新秒
+    NSInteger secondsLeft = kSecondsPerDay - hour*3600 - minute*60 - second;
+    if ([self showSeconds]) {
+        [secondsLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:secondsLeft]];
+        [secondsLeftView autoLayout];
+        CGRect frame = secondsLeftView.frame;
+        frame.origin.x = self.view.frame.size.width / 2 - secondsLeftView.frame.size.width / 2;
+        secondsLeftView.frame = frame;
+    }
+    //刷新分
+    if ([self showMinutes]) {
+        NSInteger minutesLeft = kMinutesPerDay - hour*60 - minute;
+        [minuteLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:minutesLeft]];
+        [minuteLeftView autoLayout];
+        CGRect frame = minuteLeftView.frame;
+        frame.origin.x = self.view.frame.size.width / 2 - minuteLeftView.frame.size.width / 2;
+        minuteLeftView.frame = frame;
+    }
+    //刷新时
+    if ([self showHours]) {
+        NSInteger hoursLeft = kHoursPerDay - hour;
+        [hourLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:hoursLeft]];
+        [hourLeftView autoLayout];
+        CGRect frame = hourLeftView.frame;
+        frame.origin.x = self.view.frame.size.width / 2 - hourLeftView.frame.size.width / 2;
+        hourLeftView.frame = frame;
+    }
     
     if (secondsLeft == kSecondsPerDay) {
         NSTimeInterval secondsBetweenDates= [deadDay timeIntervalSinceDate:now];
@@ -459,6 +537,31 @@ NSUInteger const kSecondsPerDay = 86400;
     SettingsPersonalViewController *controller = [[SettingsPersonalViewController alloc]init];
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (BOOL)showSeconds {
+    if (![Config shareInstance].settings.countdownType
+        || [[Config shareInstance].settings.countdownType isEqualToString:@"0"]
+        || [[Config shareInstance].settings.countdownType isEqualToString:@"3"]) {
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)showMinutes {
+    if ([[Config shareInstance].settings.countdownType isEqualToString:@"1"]
+        || [[Config shareInstance].settings.countdownType isEqualToString:@"3"]) {
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)showHours {
+    if ([[Config shareInstance].settings.countdownType isEqualToString:@"2"]
+        || [[Config shareInstance].settings.countdownType isEqualToString:@"3"]) {
+        return YES;
+    }
+    return NO;
 }
 
 @end
