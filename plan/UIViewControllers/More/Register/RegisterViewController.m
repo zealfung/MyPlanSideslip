@@ -102,12 +102,32 @@
         
         [weakSelf hideHUD];
         if (isSuccessful){
-            [BmobUser logout];
+            [weakSelf addSettingsToServer];
             [weakSelf alertButtonMessage:str_Register_Tips6];
             [weakSelf.navigationController popViewControllerAnimated:YES];
         } else {
+            [BmobUser logout];
             [weakSelf alertButtonMessage:str_Register_Fail];
         }
+    }];
+}
+
+- (void)addSettingsToServer {
+    BmobUser *user = [BmobUser getCurrentUser];
+    BmobObject *userSettings = [BmobObject objectWithClassName:@"UserSettings"];
+    [userSettings setObject:user.objectId forKey:@"userObjectId"];
+
+    BmobACL *acl = [BmobACL ACL];
+    [acl setPublicReadAccess];//设置所有人可读
+    [acl setWriteAccessForUser:user];//设置只有当前用户可写
+    userSettings.ACL = acl;
+    [userSettings saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        if (isSuccessful) {
+            [Config shareInstance].settings.objectId = userSettings.objectId;
+            [PlanCache storePersonalSettings:[Config shareInstance].settings];
+        }
+        //先注销登录，让用户验证邮箱然后再登录
+        [BmobUser logout];
     }];
 }
 
