@@ -85,6 +85,16 @@
     [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
 }
 
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    [UIView animateWithDuration:0.2 animations:^(void) {
+        if (scrollView.contentOffset.y <= 150)
+            btnBackToTop.alpha = 0.0;
+        else
+            btnBackToTop.alpha = 1.0;
+    }];
+    btnBackToTop.frame = CGRectMake(btnBackToTop.frame.origin.x, buttonY+self.tableView.contentOffset.y , btnBackToTop.frame.size.width, btnBackToTop.frame.size.height);
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (postsArray.count > indexPath.row) {
         BmobObject *obj = postsArray[indexPath.row];
