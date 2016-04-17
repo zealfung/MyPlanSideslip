@@ -246,6 +246,7 @@
 		13F6708C1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13F6708A1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib */; };
 		13F670A41CC11A2E009D2BA9 /* PersonalCenterMyPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670A31CC11A2E009D2BA9 /* PersonalCenterMyPostsViewController.m */; };
 		13F670A71CC12271009D2BA9 /* SettingsPersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670A61CC12271009D2BA9 /* SettingsPersonalViewController.m */; };
+		13F670AA1CC24D56009D2BA9 /* NotificationConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670A91CC24D56009D2BA9 /* NotificationConst.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -638,6 +639,8 @@
 		13F670A31CC11A2E009D2BA9 /* PersonalCenterMyPostsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterMyPostsViewController.m; sourceTree = "<group>"; };
 		13F670A51CC12271009D2BA9 /* SettingsPersonalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsPersonalViewController.h; sourceTree = "<group>"; };
 		13F670A61CC12271009D2BA9 /* SettingsPersonalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsPersonalViewController.m; sourceTree = "<group>"; };
+		13F670A81CC24D56009D2BA9 /* NotificationConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationConst.h; sourceTree = "<group>"; };
+		13F670A91CC24D56009D2BA9 /* NotificationConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationConst.m; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E7C51BA1CAD16DA7E729CF56 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -1455,6 +1458,8 @@
 			isa = PBXGroup;
 			children = (
 				139A5E371C78614300541106 /* AHConst.h */,
+				13F670A81CC24D56009D2BA9 /* NotificationConst.h */,
+				13F670A91CC24D56009D2BA9 /* NotificationConst.m */,
 				139A5D1C1C785B2100541106 /* StringConst.h */,
 				139A5D1D1C785B2100541106 /* StringConst.m */,
 			);
@@ -1937,6 +1942,7 @@
 				13AF64C61C269369008E8A9E /* PostsTwoImageCell.m in Sources */,
 				13A6ACC71BC69E61005A02F9 /* PhotoDetailViewController.m in Sources */,
 				131D69E81BF37614009FDD72 /* Statistics.m in Sources */,
+				13F670AA1CC24D56009D2BA9 /* NotificationConst.m in Sources */,
 				13A6AC901BC3439E005A02F9 /* ThreeViewController.m in Sources */,
 				131D6A211BF47FE4009FDD72 /* UIView+Util.m in Sources */,
 				135B22341B932A4F005CE84A /* AddPlanViewController.m in Sources */,
