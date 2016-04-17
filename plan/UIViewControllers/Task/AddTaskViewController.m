@@ -96,16 +96,16 @@
             self.labelRepeat.hidden = NO;
             switch ([self.task.repeatType integerValue]) {
                 case 0:
-                    self.labelRepeat.text = str_Common_Tips8;
+                    self.labelRepeat.text = STRCommonTip8;
                     break;
                 case 1:
-                    self.labelRepeat.text = str_Common_Tips9;
+                    self.labelRepeat.text = STRCommonTip9;
                     break;
                 case 2:
-                    self.labelRepeat.text = str_Common_Tips10;
+                    self.labelRepeat.text = STRCommonTip10;
                     break;
                 case 3:
-                    self.labelRepeat.text = str_Common_Tips11;
+                    self.labelRepeat.text = STRCommonTip11;
                     break;
                 default:
                     break;
@@ -123,7 +123,7 @@
 - (void)saveAction:(UIButton *)button {
     NSString *content = [self.txtView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if (content.length < 2) {
-        [self alertButtonMessage:str_Common_Tips3];
+        [self alertButtonMessage:STRCommonTip3];
         return;
     }
     if (isTomato) {
@@ -331,7 +331,7 @@
 }
 
 - (void)showRepeatActionSheet {
-    repeatActionSheet = [[UIActionSheet alloc] initWithTitle:str_Task_Tips7 delegate:self cancelButtonTitle:str_Cancel destructiveButtonTitle:nil otherButtonTitles:str_Common_Tips8, str_Common_Tips9, str_Common_Tips10, str_Common_Tips11, nil];
+    repeatActionSheet = [[UIActionSheet alloc] initWithTitle:str_Task_Tips7 delegate:self cancelButtonTitle:str_Cancel destructiveButtonTitle:nil otherButtonTitles:STRCommonTip8, STRCommonTip9, STRCommonTip10, STRCommonTip11, nil];
     [repeatActionSheet showInView:self.view];
 }
 
@@ -342,28 +342,28 @@
         case 0://每天
         {
             self.task.repeatType = @"0";
-            self.labelRepeat.text = str_Common_Tips8;
+            self.labelRepeat.text = STRCommonTip8;
             [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];
         }
             break;
         case 1://每周
         {
             self.task.repeatType = @"1";
-            self.labelRepeat.text = str_Common_Tips9;
+            self.labelRepeat.text = STRCommonTip9;
             [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];
         }
             break;
         case 2://每月
         {
             self.task.repeatType = @"2";
-            self.labelRepeat.text = str_Common_Tips10;
+            self.labelRepeat.text = STRCommonTip10;
             [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];
         }
             break;
         case 3://每年
         {
             self.task.repeatType = @"3";
-            self.labelRepeat.text = str_Common_Tips11;
+            self.labelRepeat.text = STRCommonTip11;
             [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];
         }
             break;

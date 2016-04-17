@@ -13,6 +13,47 @@ UIKIT_EXTERN NSString *const STRAppSlogan;
 
 /** 请到“设置”-“隐私”-“照片”中找到”我有计划“，将按钮打开，允许访问相册 */
 UIKIT_EXTERN NSString *const STRCommonTip1;
+/** 请到“设置”-“隐私”-“相机”中找到”我有计划“，将按钮打开，允许使用摄像头 */
+UIKIT_EXTERN NSString *const STRCommonTip2;
+/** 至少写点什么吧 */
+UIKIT_EXTERN NSString *const STRCommonTip3;
+/** 已保存到手机相册 */
+UIKIT_EXTERN NSString *const STRCommonTip4;
+/** 图片加载失败 */
+UIKIT_EXTERN NSString *const STRCommonTip5;
+/** 暂无内容 */
+UIKIT_EXTERN NSString *const STRCommonTip6;
+/** 内容加载失败 */
+UIKIT_EXTERN NSString *const STRCommonTip7;
+/** 每天重复提醒 */
+UIKIT_EXTERN NSString *const STRCommonTip8;
+/** 每周重复提醒 */
+UIKIT_EXTERN NSString *const STRCommonTip9;
+/** 每月重复提醒 */
+UIKIT_EXTERN NSString *const STRCommonTip10;
+/** 每年重复提醒 */
+UIKIT_EXTERN NSString *const STRCommonTip11;
+
+/** 刚刚 */
+UIKIT_EXTERN NSString *const STRCommonTime1;
+/** 今天 */
+UIKIT_EXTERN NSString *const STRCommonTime2;
+/** 昨天 */
+UIKIT_EXTERN NSString *const STRCommonTime3;
+/** 一个月前 */
+UIKIT_EXTERN NSString *const STRCommonTime4;
+/** %ld分钟前 */
+UIKIT_EXTERN NSString *const STRCommonTime5;
+/** %ld小时前 */
+UIKIT_EXTERN NSString *const STRCommonTime6;
+/** %ld天前 */
+UIKIT_EXTERN NSString *const STRCommonTime7;
+/** %ld个月前 */
+UIKIT_EXTERN NSString *const STRCommonTime8;
+/** 明天 */
+UIKIT_EXTERN NSString *const STRCommonTime9;
+/** 还剩%ld天 */
+UIKIT_EXTERN NSString *const STRCommonTime10;
 
 /** 我的 */
 UIKIT_EXTERN NSString *const STRViewTitle1;
@@ -44,4 +85,32 @@ UIKIT_EXTERN NSString *const STRViewTitle13;
 UIKIT_EXTERN NSString *const STRViewTitle14;
 /** 修改密码 */
 UIKIT_EXTERN NSString *const STRViewTitle15;
+/** 用户身份标识说明 */
+UIKIT_EXTERN NSString *const STRViewTitle16;
+/** 个人设置 */
+UIKIT_EXTERN NSString *const STRViewTitle17;
+/** 通用设置 */
+UIKIT_EXTERN NSString *const STRViewTitle18;
 
+/** 自动同步 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips1;
+/** 倒计样式 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips2;
+/** 手势解锁 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips3;
+/** 显示手势 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips4;
+/** 修改手势 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips5;
+/** 首页倒计时样式设置 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips6;
+/** 只显示秒倒计 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips7;
+/** 只显示分倒计 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips8;
+/** 只显示时倒计 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips9;
+/** 全部都显示 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips10;
+/** 手势密码设置成功 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips11;

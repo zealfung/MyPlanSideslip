@@ -17,7 +17,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = str_ViewTitle_16;
+    self.title = STRViewTitle16;
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.showsHorizontalScrollIndicator = NO;
@@ -81,7 +81,7 @@
             cell.textLabel.font = font_Bold_16;
         }
         if (indexPath.row == 2) {
-            cell.textLabel.text = str_Common_Tips6;
+            cell.textLabel.text = STRCommonTip6;
         } else {
             cell.textLabel.text = nil;
         }

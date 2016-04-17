@@ -148,19 +148,19 @@ static NSString * const kKeyMinutes = @"minutes";
     NSInteger minutes = [[dic objectForKey:kKeyMinutes] integerValue];
     
     if (minutes < 1) {
-        return str_Common_Time1;
+        return STRCommonTime1;
     } else if (minutes < 60) {
-        return [NSString stringWithFormat:str_Common_Time5, (long)minutes];
+        return [NSString stringWithFormat:STRCommonTime5, (long)minutes];
     } else if (minutes < 24 * 60) {
-        return [NSString stringWithFormat:str_Common_Time6, (long)minutes / 60];
+        return [NSString stringWithFormat:STRCommonTime6, (long)minutes / 60];
     } else if (minutes < 48 * 60) {
-        return str_Common_Time3;
+        return STRCommonTime3;
     } else if (minutes < 30 * 24 * 60) {
-        return [NSString stringWithFormat:str_Common_Time7, (long)minutes / (60 * 24)];
+        return [NSString stringWithFormat:STRCommonTime7, (long)minutes / (60 * 24)];
     } else if (minutes < 60 * 24 * 60) {
-        return str_Common_Time4;
+        return STRCommonTime4;
     } else if (minutes < 12 * 30 * 24 * 60) {
-        return [NSString stringWithFormat:str_Common_Time8, (long)minutes / (60 * 24 * 30)];
+        return [NSString stringWithFormat:STRCommonTime8, (long)minutes / (60 * 24 * 30)];
     } else {
         return [CommonFunction NSDateToNSString:date formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
     }
@@ -336,9 +336,9 @@ static NSString * const kKeyMinutes = @"minutes";
     NSString *todayString = [CommonFunction NSDateToNSString:today formatter:str_DateFormatter_yyyy_MM_dd];
     NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:str_DateFormatter_yyyy_MM_dd];
     if ([date isEqualToString:todayString]) {
-        return str_Common_Time2;
+        return STRCommonTime2;
     } else if ([date isEqualToString:tomorrowString]) {
-        return str_Common_Time9;
+        return STRCommonTime9;
     } else {
         return date;
     }

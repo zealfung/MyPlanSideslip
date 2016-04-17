@@ -176,7 +176,7 @@
 - (void)saveAction:(UIButton *)button {
     NSString *content = [txtViewContent.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if (content.length == 0) {
-        [self alertButtonMessage:str_Common_Tips3];
+        [self alertButtonMessage:STRCommonTip3];
         return;
     }
     [self savePlan];

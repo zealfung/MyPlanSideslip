@@ -43,7 +43,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = @"个人设置";
+    self.title = STRViewTitle17;
     
     [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_LogIn object:nil];
     [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_Settings_Save object:nil];
@@ -654,7 +654,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
         //打开手势解锁
         [CLLockVC showSettingLockVCInVC:self successBlock:^(CLLockVC *lockVC, NSString *pwd) {
             
-            [weakSelf alertToastMessage:str_Settings_Tips1];
+            [weakSelf alertToastMessage:STRSettingsViewTips11];
             [lockVC dismiss:.5f];
         }];
     }
@@ -826,7 +826,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
             
         } else {
             
-            [self alertButtonMessage:str_Common_Tips2];
+            [self alertButtonMessage:STRCommonTip2];
         }
         
     } else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:str_Settings_SetAvatar_Album]) {

@@ -62,7 +62,7 @@
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
     //加载出错
     [self hideHUD];
-    [self alertToastMessage:str_Common_Tips7];
+    [self alertToastMessage:STRCommonTip7];
     [self.navigationController popViewControllerAnimated:YES];
 }
 

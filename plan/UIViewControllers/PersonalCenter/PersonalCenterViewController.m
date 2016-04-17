@@ -343,7 +343,7 @@
             });
             
         } else {
-            [self alertButtonMessage:str_Common_Tips2];
+            [self alertButtonMessage:STRCommonTip2];
         }
     } else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:str_Settings_SetAvatar_Album]) {
         //从相册选择

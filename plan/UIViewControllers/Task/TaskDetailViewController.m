@@ -93,16 +93,16 @@ NSUInteger const kTaskDeleteTag = 20151201;
         self.labelRepeat.hidden = NO;
         switch ([self.task.repeatType integerValue]) {
             case 0:
-                self.labelRepeat.text = str_Common_Tips8;
+                self.labelRepeat.text = STRCommonTip8;
                 break;
             case 1:
-                self.labelRepeat.text = str_Common_Tips9;
+                self.labelRepeat.text = STRCommonTip9;
                 break;
             case 2:
-                self.labelRepeat.text = str_Common_Tips10;
+                self.labelRepeat.text = STRCommonTip10;
                 break;
             case 3:
-                self.labelRepeat.text = str_Common_Tips11;
+                self.labelRepeat.text = STRCommonTip11;
                 break;
             default:
                 break;

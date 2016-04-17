@@ -37,7 +37,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = str_More_Settings;
+    self.title = STRViewTitle18;
     
     [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_LogIn object:nil];
     [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_Settings_Save object:nil];
@@ -160,7 +160,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_AutoSync_Normal] forState:UIControlStateNormal];
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_AutoSync_Selected] forState:UIControlStateSelected];
     
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_AutoSync]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRSettingsViewTips1]];
     threeSubView.fixLeftWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixCenterWidth;
     threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     
@@ -188,26 +188,26 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
         [weakSelf setCountdownType];
     } rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_CountdownType]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRSettingsViewTips2]];
     threeSubView.fixRightWidth = kEdgeInset;
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
     
     NSString *countdownType = [Config shareInstance].settings.countdownType;
     switch ([countdownType integerValue]) {
         case 0:
-            [threeSubView.centerButton setAllTitle:@"只显示秒倒计"];
+            [threeSubView.centerButton setAllTitle:STRSettingsViewTips7];
             break;
         case 1:
-            [threeSubView.centerButton setAllTitle:@"只显示分倒计"];
+            [threeSubView.centerButton setAllTitle:STRSettingsViewTips8];
             break;
         case 2:
-            [threeSubView.centerButton setAllTitle:@"只显示时倒计"];
+            [threeSubView.centerButton setAllTitle:STRSettingsViewTips9];
             break;
         case 3:
-            [threeSubView.centerButton setAllTitle:@"全部都显示"];
+            [threeSubView.centerButton setAllTitle:STRSettingsViewTips10];
             break;
         default:
-            [threeSubView.centerButton setAllTitle:@"只显示秒倒计"];
+            [threeSubView.centerButton setAllTitle:STRSettingsViewTips7];
             break;
     }
     [threeSubView autoLayout];
@@ -225,7 +225,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Gesture_Unlock] forState:UIControlStateNormal];
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Gesture_Lock] forState:UIControlStateSelected];
     
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Gesture]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRSettingsViewTips3]];
     threeSubView.fixLeftWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixCenterWidth;
     threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     
@@ -264,7 +264,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_GestureTrack_Hide] forState:UIControlStateNormal];
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_GestureTrack_Show] forState:UIControlStateSelected];
     
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_ShowGesture]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRSettingsViewTips4]];
     threeSubView.fixLeftWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixCenterWidth;
     threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     
@@ -298,7 +298,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     threeSubView.fixRightWidth = 55;
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Arrow_Right] forState:UIControlStateNormal];
 
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_ChangeGesture]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRSettingsViewTips5]];
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixLeftWidth;
     threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
 
@@ -364,7 +364,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
 }
 
 - (void)setCountdownType {
-    countdownTypeActionSheet = [[UIActionSheet alloc] initWithTitle:@"首页倒计时样式设置" delegate:self cancelButtonTitle:str_Cancel destructiveButtonTitle:nil otherButtonTitles:@"只显示秒倒计", @"只显示分倒计", @"只显示时倒计", @"全部都显示", nil];
+    countdownTypeActionSheet = [[UIActionSheet alloc] initWithTitle:STRSettingsViewTips6 delegate:self cancelButtonTitle:str_Cancel destructiveButtonTitle:nil otherButtonTitles:STRSettingsViewTips7, STRSettingsViewTips8, STRSettingsViewTips9, STRSettingsViewTips10, nil];
     [countdownTypeActionSheet showInView:self.view];
 }
 
@@ -430,7 +430,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
         //打开手势解锁
         [CLLockVC showSettingLockVCInVC:self successBlock:^(CLLockVC *lockVC, NSString *pwd) {
             
-            [weakSelf alertToastMessage:str_Settings_Tips1];
+            [weakSelf alertToastMessage:STRSettingsViewTips11];
             [lockVC dismiss:.5f];
         }];
     }

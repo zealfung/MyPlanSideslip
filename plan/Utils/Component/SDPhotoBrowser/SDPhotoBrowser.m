@@ -110,7 +110,7 @@
     if (error) {
         label.text = str_Save_Fail;
     }   else {
-        label.text = str_Common_Tips4;
+        label.text = STRCommonTip4;
     }
     [label performSelector:@selector(removeFromSuperview) withObject:nil afterDelay:1.0];
 }

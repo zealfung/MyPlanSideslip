@@ -238,7 +238,7 @@ NSUInteger const kBounceSpace = 20;
     if ([plan.iscompleted isEqualToString:@"0"]
         && [beginDate compare:[NSDate date]] == NSOrderedDescending) {
         labelBeginDate.text = [CommonFunction getBeginDateStringForShow:plan.beginDate];
-        labelDateLeft.text = [NSString stringWithFormat:str_Common_Time10,[CommonFunction howManyDaysLeft:plan.beginDate]];
+        labelDateLeft.text = [NSString stringWithFormat:STRCommonTime10,[CommonFunction howManyDaysLeft:plan.beginDate]];
         labelDateLeft.hidden = NO;
     } else {
         labelDateLeft.hidden = YES;

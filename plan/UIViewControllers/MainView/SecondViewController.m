@@ -45,7 +45,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     
     UITableView *tableViewDay;
     UITableView *tableViewFuture;
-    ThreeSubView *threeSubView;
+    ThreeSubView *menuTabView;
     UIView *underLineView;
 }
 
@@ -70,7 +70,10 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     [super viewWillAppear:animated];
     [self refreshRedDot];
     [self checkUnread:self.tabBarController.tabBar index:1];
-    
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
     //计算最近一次加载数据时间是否已经超过十分钟，如果是，就自动刷新一次数据
     NSDate *lastUpdatedTime = [UserDefaults objectForKey:str_PlanList_UpdatedTime];
     if (lastUpdatedTime) {
@@ -84,21 +87,13 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
             [UserDefaults synchronize];
         }
     }
-}
-
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
     if (planType == EverydayPlan) {
-        [self moveUnderLineViewToButton:threeSubView.leftButton];
+        [self moveUnderLineViewToButton:menuTabView.leftButton];
     }
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-}
-
-- (void)dealloc {
-    [NotificationCenter removeObserver:self];
 }
 
 - (void)createNavBarButton {
@@ -255,7 +250,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 - (void)showMenuView {
     __weak typeof(self) weakSelf = self;
-    threeSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), kPlan_MenuHeight) leftButtonSelectBlock: ^{
+    menuTabView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), kPlan_MenuHeight) leftButtonSelectBlock: ^{
         
         weakSelf.planType = EverydayPlan;
         
@@ -265,37 +260,37 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         
     } rightButtonSelectBlock:nil];
     
-    threeSubView.fixLeftWidth = CGRectGetWidth(self.view.bounds)/2;
-    threeSubView.fixCenterWidth = CGRectGetWidth(self.view.bounds)/2;
-    [threeSubView.leftButton setAllTitleColor:[CommonFunction getGenderColor]];
-    [threeSubView.centerButton setAllTitleColor:[CommonFunction getGenderColor]];
-    threeSubView.leftButton.titleLabel.font = font_Bold_18;
-    threeSubView.centerButton.titleLabel.font = font_Bold_18;
-    [threeSubView.leftButton setAllTitle:str_FirstView_11];
-    [threeSubView.centerButton setAllTitle:str_FirstView_12];
-    [threeSubView autoLayout];
-    [self.view addSubview:threeSubView];
+    menuTabView.fixLeftWidth = CGRectGetWidth(self.view.bounds)/2;
+    menuTabView.fixCenterWidth = CGRectGetWidth(self.view.bounds)/2;
+    [menuTabView.leftButton setAllTitleColor:[CommonFunction getGenderColor]];
+    [menuTabView.centerButton setAllTitleColor:[CommonFunction getGenderColor]];
+    menuTabView.leftButton.titleLabel.font = font_Bold_18;
+    menuTabView.centerButton.titleLabel.font = font_Bold_18;
+    [menuTabView.leftButton setAllTitle:str_FirstView_11];
+    [menuTabView.centerButton setAllTitle:str_FirstView_12];
+    [menuTabView autoLayout];
+    [self.view addSubview:menuTabView];
     {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.bounds)/2, 5, 1, kPlan_MenuHeight - 10)];
         view.backgroundColor = color_GrayLight;
-        [threeSubView addSubview:view];
+        [menuTabView addSubview:view];
     }
     {
         UIImage *image = [UIImage imageNamed:png_Bg_Cell_White];
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:threeSubView.frame];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:menuTabView.frame];
         imageView.backgroundColor = [UIColor clearColor];
         imageView.image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(5, 5, 5, 5)];
-        [self.view insertSubview:imageView belowSubview:threeSubView];
+        [self.view insertSubview:imageView belowSubview:menuTabView];
     }
 }
 
 - (void)showUnderLineView {
-    CGRect frame = [threeSubView.leftButton convertRect:threeSubView.leftButton.titleLabel.frame toView:threeSubView];
-    frame.origin.y = threeSubView.frame.size.height - kPlan_MenuLineHeight;
+    CGRect frame = [menuTabView.leftButton convertRect:menuTabView.leftButton.titleLabel.frame toView:menuTabView];
+    frame.origin.y = menuTabView.frame.size.height - kPlan_MenuLineHeight;
     frame.size.height = kPlan_MenuLineHeight;
     UIView *view = [[UIView alloc] initWithFrame:frame];
     view.backgroundColor = [CommonFunction getGenderColor];
-    [threeSubView addSubview:view];
+    [menuTabView addSubview:view];
     underLineView = view;
 }
 
@@ -325,7 +320,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 }
 
 - (void)moveUnderLineViewToLeft {
-    [self moveUnderLineViewToButton:threeSubView.leftButton];
+    [self moveUnderLineViewToButton:menuTabView.leftButton];
     tableViewFuture.hidden = YES;
     tableViewDay.hidden = NO;
 
@@ -337,7 +332,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 }
 
 - (void)moveUnderLineViewToRight {
-    [self moveUnderLineViewToButton:threeSubView.centerButton];
+    [self moveUnderLineViewToButton:menuTabView.centerButton];
     tableViewFuture.hidden = NO;
     tableViewDay.hidden = YES;
     
@@ -350,7 +345,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 - (void)moveUnderLineViewToButton:(UIButton *)button {
     CGRect frame = [button convertRect:button.titleLabel.frame toView:button.superview];
-    frame.origin.y = threeSubView.frame.size.height - kPlan_MenuLineHeight;
+    frame.origin.y = menuTabView.frame.size.height - kPlan_MenuLineHeight;
     frame.size.height = kPlan_MenuLineHeight;
     button.superview.userInteractionEnabled = NO;
     [UIView animateWithDuration:0.25 animations: ^{
@@ -626,11 +621,11 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     NSString *yesterdayString = [CommonFunction NSDateToNSString:yesterday formatter:str_DateFormatter_yyyy_MM_dd];
     NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:str_DateFormatter_yyyy_MM_dd];
     if ([date isEqualToString:todayString]) {
-        return [NSString stringWithFormat:@"%@ • %@", date, str_Common_Time2];
+        return [NSString stringWithFormat:@"%@ • %@", date, STRCommonTime2];
     } else if ([date isEqualToString:yesterdayString]) {
-        return [NSString stringWithFormat:@"%@ • %@", date, str_Common_Time3];
+        return [NSString stringWithFormat:@"%@ • %@", date, STRCommonTime3];
     } else if ([date isEqualToString:tomorrowString]) {
-        return [NSString stringWithFormat:@"%@ • %@", date, str_Common_Time9];
+        return [NSString stringWithFormat:@"%@ • %@", date, STRCommonTime9];
     } else {
         return date;
     }
