@@ -136,14 +136,6 @@
         }
     }
     
-    NSTimeInterval iNow = [[NSDate date] timeIntervalSince1970];
-    NSDate *notifyDate = [CommonFunction NSStringDateToNSDate:self.task.notifyTime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
-    NSTimeInterval iNotify = [notifyDate timeIntervalSince1970];
-    if (iNotify - iNow <= 10) {//提醒时间已经过期了
-        [self alertButtonMessage:str_Task_Tips14];
-        return;
-    }
-    
     NSString *timeNow = [CommonFunction getTimeNowString];
     NSString *taskId = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyyMMddHHmmss];
     if (self.operationType == Add) {
@@ -155,6 +147,13 @@
     }
     self.task.content = content;
     if (isAlarm) {
+        NSTimeInterval iNow = [[NSDate date] timeIntervalSince1970];
+        NSDate *notifyDate = [CommonFunction NSStringDateToNSDate:self.task.notifyTime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
+        NSTimeInterval iNotify = [notifyDate timeIntervalSince1970];
+        if (iNotify - iNow <= 10) {//提醒时间已经过期了
+            [self alertButtonMessage:str_Task_Tips14];
+            return;
+        }
         self.task.isNotify = @"1";
     } else {
         self.task.isNotify = @"0";
