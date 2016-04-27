@@ -10,6 +10,7 @@
 #define plan_AHConst_h
 
 #import "StringConst.h"
+#import "IDStringConst.h"
 #import "NotificationConst.h"
 
 #endif /* AHConst_h */

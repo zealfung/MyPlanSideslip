@@ -20,9 +20,9 @@
 
 + (void)registerSDK {
 
-    [Bmob registerWithAppKey:str_Bmob_ApplicationID];
+    [Bmob registerWithAppKey:IDSTRBmobApplicationID];
     
-    [ShareSDK registerApp:str_ShareSDK_AppKey activePlatforms:@[@(SSDKPlatformTypeSinaWeibo),@(SSDKPlatformTypeQQ),@(SSDKPlatformTypeWechat)] onImport:^(SSDKPlatformType platformType) {
+    [ShareSDK registerApp:IDSTRShareSDKAppKey activePlatforms:@[@(SSDKPlatformTypeSinaWeibo),@(SSDKPlatformTypeQQ),@(SSDKPlatformTypeWechat)] onImport:^(SSDKPlatformType platformType) {
         
         switch (platformType) {
             case SSDKPlatformTypeSinaWeibo:
@@ -42,13 +42,13 @@
         
         switch (platformType) {
             case SSDKPlatformTypeSinaWeibo:
-                [appInfo SSDKSetupSinaWeiboByAppKey:str_SinaWeibo_AppKey appSecret:str_SinaWeibo_AppSecret redirectUri:str_SinaWeibo_RedirectURI authType:SSDKAuthTypeBoth];
+                [appInfo SSDKSetupSinaWeiboByAppKey:IDSTRSinaWeiboAppKey appSecret:IDSTRSinaWeiboAppSecret redirectUri:str_SinaWeibo_RedirectURI authType:SSDKAuthTypeBoth];
                 break;
             case SSDKPlatformTypeQQ:
-                [appInfo SSDKSetupQQByAppId:str_QQ_AppID appKey:str_QQ_AppKey authType:SSDKAuthTypeBoth];
+                [appInfo SSDKSetupQQByAppId:IDSTRQQAppID appKey:IDSTRQQAppKey authType:SSDKAuthTypeBoth];
                 break;
             case SSDKPlatformTypeWechat:
-                [appInfo SSDKSetupWeChatByAppId:str_Wechat_AppKey appSecret:str_Wechat_AppSecret];
+                [appInfo SSDKSetupWeChatByAppId:IDSTRWechatAppKey appSecret:IDSTRWechatAppSecret];
                 break;
                 
             default:

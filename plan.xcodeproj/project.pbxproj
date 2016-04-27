@@ -208,6 +208,7 @@
 		13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */; };
 		13CC6F321C4E4280001D290F /* Icon_Tomorrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13CC6F311C4E4280001D290F /* Icon_Tomorrow@2x.png */; };
 		13CC6F341C4F1874001D290F /* Icon_EverydayNotify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13CC6F331C4F1874001D290F /* Icon_EverydayNotify@2x.png */; };
+		13D12E4E1CD0BF4100889A9E /* IDStringConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D12E4D1CD0BF4100889A9E /* IDStringConst.m */; };
 		13D135CE1C577D9200E97D5F /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D135CD1C577D9200E97D5F /* KxMenu.m */; };
 		13D1AD6B1C3E71EA007734F6 /* Btn_More@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD6A1C3E71EA007734F6 /* Btn_More@2x.png */; };
 		13D1AD6D1C3E7670007734F6 /* Btn_Refresh@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D1AD6C1C3E7670007734F6 /* Btn_Refresh@2x.png */; };
@@ -585,6 +586,8 @@
 		13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Settings@2x.png"; sourceTree = "<group>"; };
 		13CC6F311C4E4280001D290F /* Icon_Tomorrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Tomorrow@2x.png"; sourceTree = "<group>"; };
 		13CC6F331C4F1874001D290F /* Icon_EverydayNotify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_EverydayNotify@2x.png"; sourceTree = "<group>"; };
+		13D12E4C1CD0BF4100889A9E /* IDStringConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDStringConst.h; sourceTree = "<group>"; };
+		13D12E4D1CD0BF4100889A9E /* IDStringConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDStringConst.m; sourceTree = "<group>"; };
 		13D135CC1C577D9200E97D5F /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
 		13D135CD1C577D9200E97D5F /* KxMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KxMenu.m; sourceTree = "<group>"; };
 		13D1AD6A1C3E71EA007734F6 /* Btn_More@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_More@2x.png"; sourceTree = "<group>"; };
@@ -1462,6 +1465,8 @@
 				13F670A91CC24D56009D2BA9 /* NotificationConst.m */,
 				139A5D1C1C785B2100541106 /* StringConst.h */,
 				139A5D1D1C785B2100541106 /* StringConst.m */,
+				13D12E4C1CD0BF4100889A9E /* IDStringConst.h */,
+				13D12E4D1CD0BF4100889A9E /* IDStringConst.m */,
 			);
 			path = Consts;
 			sourceTree = "<group>";
@@ -1890,6 +1895,7 @@
 				13D1AD921C41FAC2007734F6 /* SDWaitingView.m in Sources */,
 				13D4069A1C3D00310089D702 /* DOPNavbarMenu.m in Sources */,
 				1361AFC81BCBA5E700DD5FFB /* DoPhotoCell.m in Sources */,
+				13D12E4E1CD0BF4100889A9E /* IDStringConst.m in Sources */,
 				131D6AC01C00769A009FDD72 /* FullScreenImageArrayViewController.m in Sources */,
 				137470A31C0815F100B7822A /* NSString+File.m in Sources */,
 				1361AFC31BCBA5E700DD5FFB /* AssetHelper.m in Sources */,
