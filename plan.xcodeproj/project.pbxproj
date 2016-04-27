@@ -534,7 +534,6 @@
 		1377010E1B9680AC008C83FD /* Bg_Input_Gray@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bg_Input_Gray@2x.png"; sourceTree = "<group>"; };
 		137701111B9683E3008C83FD /* CommonFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonFunction.h; sourceTree = "<group>"; };
 		137701121B9683E3008C83FD /* CommonFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonFunction.m; sourceTree = "<group>"; };
-		137701141B96E1D6008C83FD /* NotificationMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationMacro.h; sourceTree = "<group>"; };
 		137C60911BBFD43200725662 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		138038EC1C53C17300E98C5F /* Icon_Task_Tomato@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Task_Tomato@2x.png"; sourceTree = "<group>"; };
 		138038EE1C53C67900E98C5F /* Icon_Tomato@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Tomato@2x.png"; sourceTree = "<group>"; };
@@ -979,7 +978,6 @@
 				135B21D71B909EAB005CE84A /* FontMacro.h */,
 				135B21D41B909B14005CE84A /* ImageMacro.h */,
 				135B21B61B9011FF005CE84A /* Macro.h */,
-				137701141B96E1D6008C83FD /* NotificationMacro.h */,
 				135B21D31B909A8F005CE84A /* StringMacro.h */,
 			);
 			path = Macros;
