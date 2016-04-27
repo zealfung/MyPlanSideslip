@@ -61,10 +61,10 @@
     headerImagesURLArray = [NSMutableArray array];
     headerDetailURLArray = [NSMutableArray array];
     
-    [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:Notify_Messages_Save object:nil];
-    [NotificationCenter addObserver:self selector:@selector(refreshPostsList) name:Notify_LogIn object:nil];
-    [NotificationCenter addObserver:self selector:@selector(reloadPostsData) name:Notify_Posts_New object:nil];
-    [NotificationCenter addObserver:self selector:@selector(refreshPostsList) name:Notify_Posts_Refresh object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:NTFMessagesSave object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshPostsList) name:NTFLogIn object:nil];
+    [NotificationCenter addObserver:self selector:@selector(reloadPostsData) name:NTFPostsNew object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshPostsList) name:NTFPostsRefresh object:nil];
 
     [self initTableView];
     

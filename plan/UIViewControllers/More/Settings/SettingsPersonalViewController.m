@@ -45,8 +45,8 @@ NSString *const kEdgeWhiteSpace = @"  ";
     [super viewDidLoad];
     self.title = STRViewTitle17;
     
-    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_LogIn object:nil];
-    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_Settings_Save object:nil];
+    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFLogIn object:nil];
+    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFSettingsSave object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -793,11 +793,11 @@ NSString *const kEdgeWhiteSpace = @"  ";
 
 - (void)exitAction {
     [BmobUser logout];
-    [NotificationCenter postNotificationName:Notify_Settings_Save object:nil];
-    [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
-    [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
-    [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
-    [NotificationCenter postNotificationName:Notify_Posts_Refresh object:nil];
+    [NotificationCenter postNotificationName:NTFSettingsSave object:nil];
+    [NotificationCenter postNotificationName:NTFPlanSave object:nil];
+    [NotificationCenter postNotificationName:NTFPhotoSave object:nil];
+    [NotificationCenter postNotificationName:NTFTaskSave object:nil];
+    [NotificationCenter postNotificationName:NTFPostsRefresh object:nil];
 }
 
 - (void)syncDataAction {

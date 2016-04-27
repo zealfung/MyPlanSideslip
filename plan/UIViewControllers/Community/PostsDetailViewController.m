@@ -65,7 +65,7 @@ NSInteger const kDeleteTag = 20160110;
     [self.view addSubview:self.inputView];
     [self.view addConstraint:self.inputViewHeightConstraint];
     
-    [NotificationCenter addObserver:self selector:@selector(refreshCommentsAndBottomBtn) name:Notify_LogIn object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshCommentsAndBottomBtn) name:NTFLogIn object:nil];
     [NotificationCenter addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
     [NotificationCenter addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
     [NotificationCenter addObserver:self selector:@selector(textDidUpdate:)    name:UITextViewTextDidChangeNotification object:nil];
@@ -727,7 +727,7 @@ NSInteger const kDeleteTag = 20160110;
         isAnding = NO;
         [weakSelf hideHUD];
         if (isSuccessful) {
-            [NotificationCenter postNotificationName:Notify_Posts_New object:nil];
+            [NotificationCenter postNotificationName:NTFPostsNew object:nil];
             [weakSelf alertToastMessage:str_Delete_Success];
             [weakSelf.navigationController popViewControllerAnimated:YES];
         } else {
@@ -804,7 +804,7 @@ NSInteger const kDeleteTag = 20160110;
             likesCount += 1;
             [posts setObject:@(likesCount) forKey:@"likesCount"];
             [posts setObject:@(YES) forKey:@"isLike"];
-            [NotificationCenter postNotificationName:Notify_Posts_Refresh object:nil];
+            [NotificationCenter postNotificationName:NTFPostsRefresh object:nil];
             [weakSelf addNoticesForLikesPosts:weakSelf.posts];
         }else{
             NSLog(@"error %@",[error description]);
@@ -830,7 +830,7 @@ NSInteger const kDeleteTag = 20160110;
             likesCount -= 1;
             [posts setObject:@(likesCount) forKey:@"likesCount"];
             [posts setObject:@(NO) forKey:@"isLike"];
-            [NotificationCenter postNotificationName:Notify_Posts_Refresh object:nil];
+            [NotificationCenter postNotificationName:NTFPostsRefresh object:nil];
         }else{
             NSLog(@"error %@",[error description]);
         }
@@ -1061,7 +1061,7 @@ NSInteger const kDeleteTag = 20160110;
             NSInteger commentsCount = [[self.posts objectForKey:@"commentsCount"] integerValue];
             commentsCount += 1;
             [self.posts setObject:@(commentsCount) forKey:@"commentsCount"];
-            [NotificationCenter postNotificationName:Notify_Posts_Refresh object:nil];
+            [NotificationCenter postNotificationName:NTFPostsRefresh object:nil];
             
             [weakSelf alertToastMessage:str_Comment_Success];
             [weakSelf getCommets];

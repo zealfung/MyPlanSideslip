@@ -38,9 +38,9 @@
     self.tableView.tableFooterView = [[UIView alloc] init];
     
     taskArray = [NSMutableArray array];
-    [NotificationCenter addObserver:self selector:@selector(toTask:) name:Notify_Push_LocalNotify object:nil];
-    [NotificationCenter addObserver:self selector:@selector(reloadTaskData) name:Notify_Task_Save object:nil];
-    [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:Notify_Messages_Save object:nil];
+    [NotificationCenter addObserver:self selector:@selector(toTask:) name:NTFLocalPush object:nil];
+    [NotificationCenter addObserver:self selector:@selector(reloadTaskData) name:NTFTaskSave object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:NTFMessagesSave object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

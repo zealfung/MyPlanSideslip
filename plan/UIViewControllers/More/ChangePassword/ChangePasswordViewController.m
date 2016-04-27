@@ -83,7 +83,7 @@
                 } else {
                     [weakSelf alertToastMessage:str_ChangePassword_Tips5];
                 }
-                [NotificationCenter postNotificationName:Notify_LogIn object:nil];
+                [NotificationCenter postNotificationName:NTFLogIn object:nil];
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             }];
         } else {

@@ -34,8 +34,8 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = [[UIView alloc] init];
     
-    [NotificationCenter addObserver:self selector:@selector(reload) name:Notify_Settings_Save object:nil];
-    [NotificationCenter addObserver:self selector:@selector(reload) name:Notify_Messages_Save object:nil];
+    [NotificationCenter addObserver:self selector:@selector(reload) name:NTFSettingsSave object:nil];
+    [NotificationCenter addObserver:self selector:@selector(reload) name:NTFMessagesSave object:nil];
     
     [self setMenuArray];
 }

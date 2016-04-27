@@ -40,7 +40,7 @@
     if (localNotify) {
         //程序在后台或者已关闭
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [NotificationCenter postNotificationName:Notify_Push_LocalNotify object:nil userInfo:localNotify.userInfo];
+            [NotificationCenter postNotificationName:NTFLocalPush object:nil userInfo:localNotify.userInfo];
         });
     }
 
@@ -132,7 +132,7 @@
         
     } else if(buttonIndex == 1) {
         //显示
-        [NotificationCenter postNotificationName:Notify_Push_LocalNotify object:nil userInfo:lastNotification.userInfo];
+        [NotificationCenter postNotificationName:NTFLocalPush object:nil userInfo:lastNotification.userInfo];
         
         NSDictionary *dict = lastNotification.userInfo;
         NSInteger type = [[dict objectForKey:@"type"] integerValue];
@@ -201,7 +201,7 @@
         UIApplicationState state = [UIApplication sharedApplication].applicationState;
         if (state == UIApplicationStateInactive) {
             //程序在后台或者已关闭
-            [NotificationCenter postNotificationName:Notify_Push_LocalNotify object:nil userInfo:lastNotification.userInfo];
+            [NotificationCenter postNotificationName:NTFLocalPush object:nil userInfo:lastNotification.userInfo];
             
             NSDictionary *dict = lastNotification.userInfo;
             NSInteger type = [[dict objectForKey:@"type"] integerValue];

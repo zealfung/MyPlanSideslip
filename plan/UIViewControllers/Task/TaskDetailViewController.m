@@ -25,8 +25,8 @@ NSUInteger const kTaskDeleteTag = 20151201;
     self.title = str_Task_Detail;
     [self createRightBarButton];
     
-    [NotificationCenter addObserver:self selector:@selector(reloadTaskData) name:Notify_Task_Save object:nil];
-    [NotificationCenter addObserver:self selector:@selector(reloadTaskRecordData) name:Notify_TaskRecord_Save object:nil];
+    [NotificationCenter addObserver:self selector:@selector(reloadTaskData) name:NTFTaskSave object:nil];
+    [NotificationCenter addObserver:self selector:@selector(reloadTaskRecordData) name:NTFTaskRecordSave object:nil];
 
     [self setControls];
 }

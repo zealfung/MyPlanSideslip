@@ -39,8 +39,8 @@
     }];
     self.tableView.mj_footer.hidden = YES;
     
-    [NotificationCenter addObserver:self selector:@selector(reloadPhotoData) name:Notify_Photo_Save object:nil];
-    [NotificationCenter addObserver:self selector:@selector(refreshTable) name:Notify_Photo_RefreshOnly object:nil];
+    [NotificationCenter addObserver:self selector:@selector(reloadPhotoData) name:NTFPhotoSave object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshTable) name:NTFPhotoRefreshOnly object:nil];
     
     [self reloadPhotoData];
 }

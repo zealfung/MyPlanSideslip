@@ -41,8 +41,8 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     [super viewDidLoad];
     self.title = STRViewTitle18;
     
-    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_LogIn object:nil];
-    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_Settings_Save object:nil];
+    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFLogIn object:nil];
+    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFSettingsSave object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {

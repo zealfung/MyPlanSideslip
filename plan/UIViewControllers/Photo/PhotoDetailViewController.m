@@ -34,7 +34,7 @@ NSUInteger const kPhotoDeleteTag = 20151011;
     self.title = str_Photo_Detail;
     self.view.backgroundColor = color_eeeeee;
     
-    [NotificationCenter addObserver:self selector:@selector(refreshData) name:Notify_Photo_Save object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshData) name:NTFPhotoSave object:nil];
     
     [self createRightBarButton];
     [self initVariables];

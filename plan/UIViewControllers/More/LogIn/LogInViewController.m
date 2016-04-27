@@ -101,7 +101,7 @@
                     //登录后自动同步一次数据
                     [AlertCenter alertNavBarYellowMessage:str_Sync_Begin];
                     [DataCenter startSyncData];
-                    [NotificationCenter postNotificationName:Notify_LogIn object:nil];
+                    [NotificationCenter postNotificationName:NTFLogIn object:nil];
                     [weakSelf.navigationController popViewControllerAnimated:YES];
                 }
                 

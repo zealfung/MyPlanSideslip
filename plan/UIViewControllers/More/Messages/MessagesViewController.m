@@ -36,7 +36,7 @@
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
     
-    [NotificationCenter addObserver:self selector:@selector(reloadData) name:Notify_Messages_Save object:nil];
+    [NotificationCenter addObserver:self selector:@selector(reloadData) name:NTFMessagesSave object:nil];
     
     messagesArray = [NSArray array];
     [self reloadData];

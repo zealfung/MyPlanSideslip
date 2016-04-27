@@ -417,8 +417,8 @@ static NSMutableDictionary *__contactsOnlineState;
             FMDBQuickCheck(b, sqlString, __db);
         }
         
-        [NotificationCenter postNotificationName:Notify_Settings_Save object:nil];
-        [NotificationCenter postNotificationName:Notify_Photo_RefreshOnly object:nil];
+        [NotificationCenter postNotificationName:NTFSettingsSave object:nil];
+        [NotificationCenter postNotificationName:NTFPhotoRefreshOnly object:nil];
     }
 }
 
@@ -507,7 +507,7 @@ static NSMutableDictionary *__contactsOnlineState;
             if (!flag || ![flag isEqualToString:@"1"]) {
 
             } else {
-                [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
+                [NotificationCenter postNotificationName:NTFPlanSave object:nil];
             }
         }
         return b;
@@ -578,7 +578,7 @@ static NSMutableDictionary *__contactsOnlineState;
             FMDBQuickCheck(b, sqlString, __db);
         }
         if (b) {
-            [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
+            [NotificationCenter postNotificationName:NTFPhotoSave object:nil];
         }
         return b;
     }
@@ -643,7 +643,7 @@ static NSMutableDictionary *__contactsOnlineState;
             
             FMDBQuickCheck(b, sqlString, __db);
         }
-        [NotificationCenter postNotificationName:Notify_Settings_Save object:nil];
+        [NotificationCenter postNotificationName:NTFSettingsSave object:nil];
         return b;
     }
 }
@@ -742,7 +742,7 @@ static NSMutableDictionary *__contactsOnlineState;
             [self setFiveDayNotification];
         }
         if (b) {
-            [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
+            [NotificationCenter postNotificationName:NTFTaskSave object:nil];
         }
         return b;
     }
@@ -767,7 +767,7 @@ static NSMutableDictionary *__contactsOnlineState;
         FMDBQuickCheck(b, sqlString, __db);
         
         if (b) {
-            [NotificationCenter postNotificationName:Notify_TaskRecord_Save object:nil];
+            [NotificationCenter postNotificationName:NTFTaskRecordSave object:nil];
         }
         return b;
     }
@@ -829,7 +829,7 @@ static NSMutableDictionary *__contactsOnlineState;
             
             FMDBQuickCheck(b, sqlString, __db);
             
-            [NotificationCenter postNotificationName:Notify_Messages_Save object:nil];
+            [NotificationCenter postNotificationName:NTFMessagesSave object:nil];
         }
         return b;
     }
@@ -868,7 +868,7 @@ static NSMutableDictionary *__contactsOnlineState;
             
             FMDBQuickCheck(b, sqlString, __db);
             
-            [NotificationCenter postNotificationName:Notify_Messages_Save object:nil];
+            [NotificationCenter postNotificationName:NTFMessagesSave object:nil];
         }
         return b;
     }
@@ -913,7 +913,7 @@ static NSMutableDictionary *__contactsOnlineState;
             }
         }
         if (b) {
-            [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
+            [NotificationCenter postNotificationName:NTFPlanSave object:nil];
         }
         return b;
     }
@@ -952,7 +952,7 @@ static NSMutableDictionary *__contactsOnlineState;
             FMDBQuickCheck(b, sqlString, __db);
         }
         if (b) {
-            [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
+            [NotificationCenter postNotificationName:NTFPhotoSave object:nil];
         }
         return b;
     }
@@ -996,7 +996,7 @@ static NSMutableDictionary *__contactsOnlineState;
             }
         }
         if (b) {
-            [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
+            [NotificationCenter postNotificationName:NTFTaskSave object:nil];
         }
         return b;
     }
@@ -1022,7 +1022,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMDBQuickCheck(b, sqlString, __db);
         
-        [NotificationCenter postNotificationName:Notify_Messages_Save object:nil];
+        [NotificationCenter postNotificationName:NTFMessagesSave object:nil];
 
         return b;
     }
@@ -1856,7 +1856,7 @@ static NSMutableDictionary *__contactsOnlineState;
                     
                     FMDBQuickCheck(b, sqlString, __db);
                 }
-                [NotificationCenter postNotificationName:Notify_Settings_Save object:nil];
+                [NotificationCenter postNotificationName:NTFSettingsSave object:nil];
             }
         }];
     }
@@ -1875,7 +1875,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMDBQuickCheck(b, sqlString, __db);
     }
-    [NotificationCenter postNotificationName:Notify_Plan_Save object:nil];
+    [NotificationCenter postNotificationName:NTFPlanSave object:nil];
     //影像
     hasRec = NO;
     sqlString = [NSString stringWithFormat:@"SELECT photoid FROM %@ WHERE account=?", str_TableName_Photo];
@@ -1890,7 +1890,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMDBQuickCheck(b, sqlString, __db);
     }
-    [NotificationCenter postNotificationName:Notify_Photo_Save object:nil];
+    [NotificationCenter postNotificationName:NTFPhotoSave object:nil];
     //任务
     hasRec = NO;
     sqlString = [NSString stringWithFormat:@"SELECT taskId FROM %@ WHERE account=?", str_TableName_Task];
@@ -1905,7 +1905,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMDBQuickCheck(b, sqlString, __db);
     }
-    [NotificationCenter postNotificationName:Notify_Task_Save object:nil];
+    [NotificationCenter postNotificationName:NTFTaskSave object:nil];
 }
 
 + (NSArray *)getPlanForSync:(NSString *)syntime {

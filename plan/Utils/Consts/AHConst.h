@@ -13,4 +13,7 @@
 #import "IDStringConst.h"
 #import "NotificationConst.h"
 
+#define NotificationCenter [NSNotificationCenter defaultCenter]
+#define UserDefaults [NSUserDefaults standardUserDefaults]
+
 #endif /* AHConst_h */

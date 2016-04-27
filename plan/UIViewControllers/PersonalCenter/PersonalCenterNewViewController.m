@@ -25,7 +25,7 @@
     
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = color_eeeeee;
-    [NotificationCenter addObserver:self selector:@selector(reloadTableView) name:Notify_Settings_Save object:nil];
+    [NotificationCenter addObserver:self selector:@selector(reloadTableView) name:NTFSettingsSave object:nil];
 }
 
 - (void)didReceiveMemoryWarning {

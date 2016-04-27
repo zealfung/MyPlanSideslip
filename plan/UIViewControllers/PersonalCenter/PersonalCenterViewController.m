@@ -44,8 +44,8 @@
     self.title = STRViewTitle4;
     [self createRightBarButton];
     
-    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_Settings_Save object:nil];
-    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:Notify_LogIn object:nil];
+    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFSettingsSave object:nil];
+    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFLogIn object:nil];
     
     scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, HEIGHT_FULL_SCREEN)];
     scrollView.showsVerticalScrollIndicator = NO;

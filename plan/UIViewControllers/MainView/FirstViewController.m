@@ -58,9 +58,9 @@ NSUInteger const kHoursPerDay = 24;
     self.tabBarItem.title = STRViewTitle1;
     [self createNavBarButton];
     
-    [NotificationCenter addObserver:self selector:@selector(refreshView:) name:Notify_Settings_Save object:nil];
-    [NotificationCenter addObserver:self selector:@selector(refreshView:) name:Notify_Plan_Save object:nil];
-    [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:Notify_Messages_Save object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFSettingsSave object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFPlanSave object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:NTFMessagesSave object:nil];
     
     [DataCenter setPlanBeginDate];
     

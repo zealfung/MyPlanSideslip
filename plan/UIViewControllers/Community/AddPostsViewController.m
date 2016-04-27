@@ -189,7 +189,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
             if (isSaveForPhoto) {
                 [weakSelf saveForPhoto];
             }
-            [NotificationCenter postNotificationName:Notify_Posts_New object:nil];
+            [NotificationCenter postNotificationName:NTFPostsNew object:nil];
             [weakSelf alertToastMessage:str_Send_Success];
             [weakSelf.navigationController popViewControllerAnimated:YES];
         } else {
