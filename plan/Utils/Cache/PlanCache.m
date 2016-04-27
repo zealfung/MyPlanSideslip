@@ -101,13 +101,23 @@ static NSMutableDictionary *__contactsOnlineState;
     
     // 个人设置
     if (![__db tableExists:str_TableName_Settings]) {
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (objectId TEXT, account TEXT, nickname TEXT, birthday TEXT, email TEXT, gender TEXT, lifespan TEXT, syntime TEXT, avatar BLOB, avatarURL TEXT, centerTop BLOB, centerTopURL TEXT, isAutoSync TEXT, isUseGestureLock TEXT, isShowGestureTrack TEXT, gesturePasswod TEXT, updatetime TEXT, createtime TEXT, countdownType TEXT, signature TEXT)", str_TableName_Settings];
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (objectId TEXT, account TEXT, nickname TEXT, birthday TEXT, email TEXT, gender TEXT, lifespan TEXT, syntime TEXT, avatar BLOB, avatarURL TEXT, centerTop BLOB, centerTopURL TEXT, isAutoSync TEXT, isUseGestureLock TEXT, isShowGestureTrack TEXT, gesturePasswod TEXT, updatetime TEXT, createtime TEXT, countdownType TEXT, dayOrMonth TEXT, signature TEXT)", str_TableName_Settings];
         
         BOOL b = [__db executeUpdate:sqlString];
         
         FMDBQuickCheck(b, sqlString, __db);
         
     } else {//新增字段
+        //新增显示剩余日月设置字段2016-04-27
+        NSString *dayOrMonth = @"dayOrMonth";
+        if (![__db columnExists:dayOrMonth inTableWithName:str_TableName_Settings]) {
+            
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, dayOrMonth];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
         //新增倒计时类似字段2016-04-16
         NSString *countdownType = @"countdownType";
         if (![__db columnExists:countdownType inTableWithName:str_TableName_Settings]) {
@@ -123,66 +133,6 @@ static NSMutableDictionary *__contactsOnlineState;
         if (![__db columnExists:signature inTableWithName:str_TableName_Settings]) {
             
             NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, signature];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //新增objectId字段2015-12-30
-        NSString *objectId = @"objectId";
-        if (![__db columnExists:objectId inTableWithName:str_TableName_Settings]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, objectId];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //新增创建时间字段2015-12-3
-        NSString *createtime = @"createtime";
-        if (![__db columnExists:createtime inTableWithName:str_TableName_Settings]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, createtime];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //是否启用手势密码字段2015-11-27
-        NSString *isUseGestureLock = @"isUseGestureLock";
-        if (![__db columnExists:isUseGestureLock inTableWithName:str_TableName_Settings]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, isUseGestureLock];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //是否显示手势轨迹字段2015-11-27
-        NSString *isShowGestureTrack = @"isShowGestureTrack";
-        if (![__db columnExists:isShowGestureTrack inTableWithName:str_TableName_Settings]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, isShowGestureTrack];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //手势密码字段2015-11-27
-        NSString *gesturePasswod = @"gesturePasswod";
-        if (![__db columnExists:gesturePasswod inTableWithName:str_TableName_Settings]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, gesturePasswod];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //是否自动同步字段2015-11-25
-        NSString *isAutoSync = @"isAutoSync";
-        if (![__db columnExists:isAutoSync inTableWithName:str_TableName_Settings]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, isAutoSync];
             
             BOOL b = [__db executeUpdate:sqlString];
             
@@ -226,86 +176,6 @@ static NSMutableDictionary *__contactsOnlineState;
         if (![__db columnExists:photo1URL inTableWithName:str_TableName_Photo]) {
             
             NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo1URL];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //图片URL字段2015-12-3
-        NSString *photo2URL = @"photo2URL";
-        if (![__db columnExists:photo2URL inTableWithName:str_TableName_Photo]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo2URL];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //图片URL字段2015-12-3
-        NSString *photo3URL = @"photo3URL";
-        if (![__db columnExists:photo3URL inTableWithName:str_TableName_Photo]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo3URL];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //图片URL字段2015-12-3
-        NSString *photo4URL = @"photo4URL";
-        if (![__db columnExists:photo4URL inTableWithName:str_TableName_Photo]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo4URL];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //图片URL字段2015-12-3
-        NSString *photo5URL = @"photo5URL";
-        if (![__db columnExists:photo5URL inTableWithName:str_TableName_Photo]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo5URL];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //图片URL字段2015-12-3
-        NSString *photo6URL = @"photo6URL";
-        if (![__db columnExists:photo6URL inTableWithName:str_TableName_Photo]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo6URL];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //图片URL字段2015-12-3
-        NSString *photo7URL = @"photo7URL";
-        if (![__db columnExists:photo7URL inTableWithName:str_TableName_Photo]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo7URL];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //图片URL字段2015-12-3
-        NSString *photo8URL = @"photo8URL";
-        if (![__db columnExists:photo8URL inTableWithName:str_TableName_Photo]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo8URL];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //图片URL字段2015-12-3
-        NSString *photo9URL = @"photo9URL";
-        if (![__db columnExists:photo9URL inTableWithName:str_TableName_Photo]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Photo, photo9URL];
             
             BOOL b = [__db executeUpdate:sqlString];
             
@@ -510,6 +380,9 @@ static NSMutableDictionary *__contactsOnlineState;
         if (!settings.countdownType) {
             settings.countdownType = @"0";
         }
+        if (!settings.dayOrMonth) {
+            settings.dayOrMonth = @"0";
+        }
         if (!settings.signature) {
             settings.signature = @"";
         }
@@ -529,17 +402,17 @@ static NSMutableDictionary *__contactsOnlineState;
         [rs close];
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET objectId=?, nickname=?, birthday=?, email=?, gender=?, lifespan=?, avatar=?, avatarURL=?, centerTop=?, centerTopURL=?, isAutoSync=?, isUseGestureLock=?, isShowGestureTrack=?, gesturePasswod=?, createtime=?, updatetime=?, syntime=?, countdownType=?, signature=?  WHERE account=?", str_TableName_Settings];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET objectId=?, nickname=?, birthday=?, email=?, gender=?, lifespan=?, avatar=?, avatarURL=?, centerTop=?, centerTopURL=?, isAutoSync=?, isUseGestureLock=?, isShowGestureTrack=?, gesturePasswod=?, createtime=?, updatetime=?, syntime=?, countdownType=?, dayOrMonth=?, signature=?  WHERE account=?", str_TableName_Settings];
             
-            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.objectId, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, settings.avatar, settings.avatarURL, settings.centerTop, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.createtime, settings.updatetime, settings.syntime, settings.countdownType, settings.signature, settings.account]];
+            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.objectId, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, settings.avatar, settings.avatarURL, settings.centerTop, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.createtime, settings.updatetime, settings.syntime, settings.countdownType, settings.dayOrMonth, settings.signature, settings.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
         } else {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(objectId, account, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, isUseGestureLock, isShowGestureTrack, gesturePasswod, createtime, updatetime, syntime, countdownType, signature) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Settings];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(objectId, account, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, isUseGestureLock, isShowGestureTrack, gesturePasswod, createtime, updatetime, syntime, countdownType, dayOrMonth, signature) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Settings];
             
-            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.objectId, settings.account, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, settings.avatar, settings.avatarURL, settings.centerTop, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.createtime, settings.updatetime, settings.syntime, settings.countdownType, settings.signature]];
+            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.objectId, settings.account, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, settings.avatar, settings.avatarURL, settings.centerTop, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.createtime, settings.updatetime, settings.syntime, settings.countdownType, settings.dayOrMonth, settings.signature]];
 
             FMDBQuickCheck(b, sqlString, __db);
         }
@@ -1203,7 +1076,7 @@ static NSMutableDictionary *__contactsOnlineState;
             settings.account = @"";
         }
 
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT objectId, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, isUseGestureLock, isShowGestureTrack, gesturePasswod, createtime, updatetime, syntime, countdownType, signature FROM %@ WHERE account=?", str_TableName_Settings];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT objectId, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, isUseGestureLock, isShowGestureTrack, gesturePasswod, createtime, updatetime, syntime, countdownType, dayOrMonth, signature FROM %@ WHERE account=?", str_TableName_Settings];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[settings.account]];
         while ([rs next]) {
@@ -1231,6 +1104,7 @@ static NSMutableDictionary *__contactsOnlineState;
             settings.updatetime = [rs stringForColumn:@"updatetime"];
             settings.syntime = [rs stringForColumn:@"syntime"];
             settings.countdownType = [rs stringForColumn:@"countdownType"];
+            settings.dayOrMonth = [rs stringForColumn:@"dayOrMonth"];
             settings.signature = [rs stringForColumn:@"signature"];
             if (!settings.isAutoSync) {
                 settings.isAutoSync = @"0";
@@ -1246,6 +1120,9 @@ static NSMutableDictionary *__contactsOnlineState;
             }
             if (!settings.countdownType) {
                 settings.countdownType = @"0";
+            }
+            if (!settings.dayOrMonth) {
+                settings.dayOrMonth = @"0";
             }
             if (!settings.signature) {
                 settings.signature = @"";

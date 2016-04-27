@@ -29,6 +29,7 @@ NSString *const kSettings_Createtime = @"createtime";
 NSString *const kSettings_Syntime = @"syntime";
 NSString *const kSettings_CountdownType = @"countdownType";
 NSString *const kSettings_Signature = @"signature";
+NSString *const kSettings_DayOrMonth = @"dayOrMonth";
 
 @implementation Settings
 
@@ -53,6 +54,7 @@ NSString *const kSettings_Signature = @"signature";
 @synthesize syntime = _syntime;
 @synthesize countdownType = _countdownType;
 @synthesize signature = _signature;
+@synthesize dayOrMonth = _dayOrMonth;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dict {
     self = [super init];
@@ -78,6 +80,7 @@ NSString *const kSettings_Signature = @"signature";
         self.syntime = [dict objectOrNilForKey:kSettings_Syntime];
         self.countdownType = [dict objectOrNilForKey:kSettings_CountdownType];
         self.signature = [dict objectOrNilForKey:kSettings_Signature];
+        self.dayOrMonth = [dict objectOrNilForKey:kSettings_DayOrMonth];
     }
     return self;
 }
@@ -104,6 +107,7 @@ NSString *const kSettings_Signature = @"signature";
     self.syntime = [aDecoder decodeObjectForKey:kSettings_Syntime];
     self.countdownType = [aDecoder decodeObjectForKey:kSettings_CountdownType];
     self.signature = [aDecoder decodeObjectForKey:kSettings_Signature];
+    self.dayOrMonth = [aDecoder decodeObjectForKey:kSettings_DayOrMonth];
     return self;
 }
 
@@ -129,6 +133,7 @@ NSString *const kSettings_Signature = @"signature";
     [aCoder encodeObject:_syntime forKey:kSettings_Syntime];
     [aCoder encodeObject:_countdownType forKey:kSettings_CountdownType];
     [aCoder encodeObject:_signature forKey:kSettings_Signature];
+    [aCoder encodeObject:_dayOrMonth forKey:kSettings_DayOrMonth];
 }
 
 - (id)copyWithZone:(NSZone *)zone {
@@ -154,6 +159,7 @@ NSString *const kSettings_Signature = @"signature";
     copy.syntime = [self.syntime copyWithZone:zone];
     copy.countdownType = [self.countdownType copyWithZone:zone];
     copy.signature = [self.signature copyWithZone:zone];
+    copy.dayOrMonth = [self.dayOrMonth copyWithZone:zone];
     return copy;
 }
 

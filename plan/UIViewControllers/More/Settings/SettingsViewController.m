@@ -23,9 +23,11 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
 @interface SettingsViewController() <UIActionSheetDelegate> {
     
     UIScrollView *scrollView;
-    UIActionSheet *countdownTypeActionSheet;
+    UIActionSheet *actionSheet;
+    NSInteger actionSheetType;//1.设置剩余天/月数 2.设置剩余时分秒
     ThreeSubView *autoSyncThreeSubView;
     ThreeSubView *countdownTypeThreeSubView;//倒计时类型
+    ThreeSubView *dayOrMonthThreeSubView;//日月类型
     ThreeSubView *isUseGestureLockThreeSubView;//启用手势解锁
     ThreeSubView *isShowGestureTrackThreeSubView;//显示手势轨迹
     ThreeSubView *changeGestureThreeSubView;//修改手势
@@ -83,6 +85,18 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     if ([LogIn isLogin]) {
         //自动同步
         ThreeSubView *threeSubView = [self createAutoSyncSwitchView];
+        [self addSeparatorForView:threeSubView];
+        [view addSubview:threeSubView];
+        
+        CGRect frame = threeSubView.frame;
+        frame.origin.y = yOffset;
+        threeSubView.frame = frame;
+        
+        yOffset = CGRectGetMaxY(frame);
+    }
+    //日月显示样式
+    {
+        ThreeSubView *threeSubView = [self createDayOrMonthView];
         [self addSeparatorForView:threeSubView];
         [view addSubview:threeSubView];
         
@@ -180,6 +194,33 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     }
     [threeSubView autoLayout];
     autoSyncThreeSubView = threeSubView;
+    return threeSubView;
+}
+
+- (ThreeSubView *)createDayOrMonthView {
+    __weak typeof(self) weakSelf = self;
+    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
+        [weakSelf setDayOrMonth];
+    } rightBlock:nil];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRSettingsViewTips12]];
+    threeSubView.fixRightWidth = kEdgeInset;
+    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
+    
+    NSString *dayOrMonth = [Config shareInstance].settings.dayOrMonth;
+    switch ([dayOrMonth integerValue]) {
+        case 0:
+            [threeSubView.centerButton setAllTitle:STRSettingsViewTips13];
+            break;
+        case 1:
+            [threeSubView.centerButton setAllTitle:STRSettingsViewTips14];
+            break;
+            break;
+        default:
+            [threeSubView.centerButton setAllTitle:STRSettingsViewTips13];
+            break;
+    }
+    [threeSubView autoLayout];
+    dayOrMonthThreeSubView = threeSubView;
     return threeSubView;
 }
 
@@ -364,36 +405,59 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
 }
 
 - (void)setCountdownType {
-    countdownTypeActionSheet = [[UIActionSheet alloc] initWithTitle:STRSettingsViewTips6 delegate:self cancelButtonTitle:str_Cancel destructiveButtonTitle:nil otherButtonTitles:STRSettingsViewTips7, STRSettingsViewTips8, STRSettingsViewTips9, STRSettingsViewTips10, nil];
-    [countdownTypeActionSheet showInView:self.view];
+    actionSheetType = 2;
+    actionSheet = [[UIActionSheet alloc] initWithTitle:STRSettingsViewTips6 delegate:self cancelButtonTitle:str_Cancel destructiveButtonTitle:nil otherButtonTitles:STRSettingsViewTips7, STRSettingsViewTips8, STRSettingsViewTips9, STRSettingsViewTips10, nil];
+    [actionSheet showInView:self.view];
 }
 
+- (void)setDayOrMonth {
+    actionSheetType = 1;
+    actionSheet = [[UIActionSheet alloc] initWithTitle:STRSettingsViewTips6 delegate:self cancelButtonTitle:str_Cancel destructiveButtonTitle:nil otherButtonTitles:STRSettingsViewTips13, STRSettingsViewTips14, nil];
+    [actionSheet showInView:self.view];
+}
 #pragma mark actionSheet点击事件
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     UIAlertView *alertView;
-    switch (buttonIndex) {
-        case 0://只显示秒倒计
-        {
-            [Config shareInstance].settings.countdownType = @"0";
+    if (actionSheetType == 1) {
+        switch (buttonIndex) {
+            case 0://显示剩余天数
+            {
+                [Config shareInstance].settings.dayOrMonth = @"0";
+            }
+                break;
+            case 1://显示剩余月数
+            {
+                [Config shareInstance].settings.dayOrMonth = @"1";
+            }
+                break;
+            default:
+                break;
         }
-            break;
-        case 1://只显示分倒计
-        {
-            [Config shareInstance].settings.countdownType = @"1";
-        }
-            break;
-        case 2://只显示时倒计
-        {
-            [Config shareInstance].settings.countdownType = @"2";
-        }
-            break;
-        case 3://全部都显示
-        {
-            [Config shareInstance].settings.countdownType = @"3";
-        }
-            break;
-        default:
-            break;
+    } else if (actionSheetType == 2) {
+        switch (buttonIndex) {
+            case 0://只显示秒倒计
+            {
+                [Config shareInstance].settings.countdownType = @"0";
+            }
+                break;
+            case 1://只显示分倒计
+            {
+                [Config shareInstance].settings.countdownType = @"1";
+            }
+                break;
+            case 2://只显示时倒计
+            {
+                [Config shareInstance].settings.countdownType = @"2";
+            }
+                break;
+            case 3://全部都显示
+            {
+                [Config shareInstance].settings.countdownType = @"3";
+            }
+                break;
+            default:
+                break;
+    }
     }
     [PlanCache storePersonalSettings:[Config shareInstance].settings];
     [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];

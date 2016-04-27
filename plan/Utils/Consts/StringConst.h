@@ -114,3 +114,9 @@ UIKIT_EXTERN NSString *const STRSettingsViewTips9;
 UIKIT_EXTERN NSString *const STRSettingsViewTips10;
 /** 手势密码设置成功 */
 UIKIT_EXTERN NSString *const STRSettingsViewTips11;
+/** 日月样式 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips12;
+/** 显示剩余天数 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips13;
+/** 显示剩余月数 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips14;

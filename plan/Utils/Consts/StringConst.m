@@ -114,3 +114,9 @@ NSString *const STRSettingsViewTips9 = @"只显示时倒计";
 NSString *const STRSettingsViewTips10 = @"全部都显示";
 /** 手势密码设置成功 */
 NSString *const STRSettingsViewTips11 = @"手势密码设置成功";
+/** 日月样式 */
+NSString *const STRSettingsViewTips12 = @"日月样式";
+/** 显示剩余天数 */
+NSString *const STRSettingsViewTips13 = @"显示剩余天数";
+/** 显示剩余月数 */
+NSString *const STRSettingsViewTips14 = @"显示剩余月数";

@@ -17,6 +17,7 @@
 #import <RESideMenu/RESideMenu.h>
 #import "SettingsPersonalViewController.h"
 
+NSUInteger const kDaysPerMonth = 30;
 NSUInteger const kSecondsPerDay = 86400;
 NSUInteger const kMinutesPerDay = 1440;
 NSUInteger const kHoursPerDay = 24;
@@ -249,6 +250,9 @@ NSUInteger const kHoursPerDay = 24;
     } else {
         daysLeft = secondsBetweenDates/kSecondsPerDay;
     }
+    if ([[Config shareInstance].settings.dayOrMonth isEqualToString:@"1"]) {
+        daysLeft = daysLeft / kDaysPerMonth;
+    }
     //剩余天数
     ThreeSubView *daysLeftSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(xMiddle, yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
     [daysLeftSubView.leftButton.titleLabel setFont:font_Normal_16];
@@ -263,7 +267,11 @@ NSUInteger const kHoursPerDay = 24;
     }
     [daysLeftSubView.rightButton.titleLabel setFont:font_Normal_16];
     [daysLeftSubView.rightButton setAllTitleColor:color_Black];
-    [daysLeftSubView.rightButton setAllTitle:str_FirstView_4];
+    if ([[Config shareInstance].settings.dayOrMonth isEqualToString:@"1"]) {
+        [daysLeftSubView.rightButton setAllTitle:str_FirstView_15];
+    } else {
+        [daysLeftSubView.rightButton setAllTitle:str_FirstView_4];
+    }
     [daysLeftSubView autoLayout];
     [self.view addSubview:daysLeftSubView];
     
@@ -522,9 +530,11 @@ NSUInteger const kHoursPerDay = 24;
         if(secondsBetweenDates < 0) {
             daysLeft = 0;
         } else {
-            daysLeft = secondsBetweenDates/kSecondsPerDay;
+            daysLeft = secondsBetweenDates / kSecondsPerDay;
         }
-        
+        if ([[Config shareInstance].settings.dayOrMonth isEqualToString:@"1"]) {
+            daysLeft = daysLeft / kDaysPerMonth;
+        }
         [daysLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:daysLeft]];
         [daysLeftView autoLayout];
         CGRect frame = daysLeftView.frame;

@@ -52,5 +52,7 @@
 @property (nonatomic, strong) NSString *countdownType;
 /** 个性签名 */
 @property (nonatomic, strong) NSString *signature;
+/** 首页日月模式 0显示剩余天数 1显示剩余月数 */
+@property (nonatomic, strong) NSString *dayOrMonth;
 
 @end
