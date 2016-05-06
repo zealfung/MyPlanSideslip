@@ -475,7 +475,8 @@ static NSMutableDictionary *__contactsOnlineState;
             FMDBQuickCheck(b, sqlString, __db);
             
             //更新提醒
-            if (b && [plan.isnotify isEqualToString:@"1"]) {
+            if (b && [plan.isnotify isEqualToString:@"1"]
+                && [plan.iscompleted isEqualToString:@"0"]) {
                 
                 //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
                 plan.notifytime = [CommonFunction updateNotifyTime:plan.notifytime];
@@ -718,7 +719,8 @@ static NSMutableDictionary *__contactsOnlineState;
             FMDBQuickCheck(b, sqlString, __db);
             
             //更新提醒
-            if (b && [task.isNotify isEqualToString:@"1"]) {
+            if (b && [task.isNotify isEqualToString:@"1"]
+                && [task.isRepeat isEqualToString:@"1"]) {
                 //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
                 task.notifyTime = [CommonFunction updateNotifyTime:task.notifyTime];
 
