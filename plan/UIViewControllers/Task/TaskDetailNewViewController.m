@@ -73,6 +73,7 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
         self.imgViewAlarm.hidden = NO;
         self.labelAlram.hidden = NO;
         self.labelAlram.text = [NSString stringWithFormat:@"%@%@", str_Task_Tips11, self.task.notifyTime];
+        self.layoutConstraintTxtViewBottom.constant = 90.f;
     }
     if ([self.task.isRepeat isEqualToString:@"0"]) {
         self.imgViewRepeat.hidden = YES;

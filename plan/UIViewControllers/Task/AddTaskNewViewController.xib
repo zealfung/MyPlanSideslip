@@ -78,7 +78,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="pRr-Dk-YBD">
-                    <rect key="frame" x="12" y="90" width="296" height="468"/>
+                    <rect key="frame" x="12" y="50" width="296" height="508"/>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
@@ -95,7 +95,7 @@
                 <constraint firstItem="Ug6-qA-67o" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="RCU-KB-4yh"/>
                 <constraint firstItem="fFJ-Hl-0pX" firstAttribute="leading" secondItem="Ug6-qA-67o" secondAttribute="trailing" constant="6" id="S1l-MM-DPk"/>
                 <constraint firstItem="NJK-83-cOv" firstAttribute="top" secondItem="Ug6-qA-67o" secondAttribute="bottom" constant="9" id="XHS-dO-XCr"/>
-                <constraint firstItem="pRr-Dk-YBD" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="90" id="eEE-zF-E9a"/>
+                <constraint firstItem="pRr-Dk-YBD" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="50" id="eEE-zF-E9a"/>
                 <constraint firstItem="MsW-EC-SP7" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="eoR-14-Cyz"/>
                 <constraint firstItem="TqO-Ku-XEf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="or7-cj-nIe"/>
                 <constraint firstItem="Ug6-qA-67o" firstAttribute="leading" secondItem="MsW-EC-SP7" secondAttribute="trailing" constant="3" id="uVd-Kq-a0P"/>
