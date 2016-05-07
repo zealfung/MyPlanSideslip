@@ -88,7 +88,7 @@
             Task *task = taskArray[i];
             task.taskOrder = [NSString stringWithFormat:@"%ld", (long)i];
             task.updateTime = timenow;
-            [PlanCache storeTask:task];
+            [PlanCache storeTask:task updateNotify:NO];
         }
         taskArray = [PlanCache getTask];
         isTableEditing = NO;

@@ -26,7 +26,7 @@
 
 + (BOOL)storeStatistics:(Statistics *)statistics;
 
-+ (BOOL)storeTask:(Task *)task;
++ (BOOL)storeTask:(Task *)task updateNotify:(BOOL)updateNotify;
 
 + (BOOL)storeTaskRecord:(TaskRecord *)taskRecord;
 

@@ -140,7 +140,7 @@
         self.task.isRepeat = @"0";
     }
 
-    BOOL result = [PlanCache storeTask:self.task];
+    BOOL result = [PlanCache storeTask:self.task updateNotify:YES];
     if (result) {
         [self alertToastMessage:str_Save_Success];
         [self.navigationController popViewControllerAnimated:YES];

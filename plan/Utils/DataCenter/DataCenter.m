@@ -1006,7 +1006,7 @@ static BOOL finishTask;
     task.taskOrder = [obj objectForKey:@"taskOrder"];
     task.isDeleted = [obj objectForKey:@"isDeleted"];
     [self getNewTaskRecordFromServer:task.taskId];
-    [PlanCache storeTask:task];
+    [PlanCache storeTask:task updateNotify:YES];
 }
 
 + (void)getNewTaskRecordFromServer:(NSString *)recordId {

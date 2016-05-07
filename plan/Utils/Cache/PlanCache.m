@@ -649,7 +649,7 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (BOOL)storeTask:(Task *)task {
++ (BOOL)storeTask:(Task *)task updateNotify:(BOOL)updateNotify {
     @synchronized(__db) {
         
         if (!__db.open) {
@@ -719,8 +719,8 @@ static NSMutableDictionary *__contactsOnlineState;
             FMDBQuickCheck(b, sqlString, __db);
             
             //更新提醒
-            if (b && [task.isNotify isEqualToString:@"1"]
-                && [task.isRepeat isEqualToString:@"1"]) {
+            if (b && updateNotify
+                && [task.isNotify isEqualToString:@"1"]) {
                 //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
                 task.notifyTime = [CommonFunction updateNotifyTime:task.notifyTime];
 
