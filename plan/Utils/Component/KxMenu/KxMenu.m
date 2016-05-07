@@ -106,8 +106,6 @@ typedef enum {
         self.opaque = YES;
         self.alpha = 0;
         
-        self.layer.shadowOpacity = 0.5;
-        self.layer.shadowOffset = CGSizeMake(2, 2);
         self.layer.shadowRadius = 2;
     }
     return self;
@@ -149,7 +147,6 @@ typedef enum {
             point.x = outerWidth - contentSize.width - kMargin;
         
         _arrowPosition = rectXM - point.x;
-        //_arrowPosition = MAX(16, MIN(_arrowPosition, contentSize.width - 16));        
         _contentView.frame = (CGRect){0, kArrowSize, contentSize};
                 
         self.frame = (CGRect) {
@@ -546,8 +543,12 @@ typedef enum {
 
 - (void)drawBackground:(CGRect)frame
              inContext:(CGContextRef)context {
-    CGFloat R0 = 0.267, G0 = 0.303, B0 = 0.335;
-    CGFloat R1 = 0.040, G1 = 0.040, B1 = 0.040;
+    //黑色背景
+//    CGFloat R0 = 0.267, G0 = 0.303, B0 = 0.335;
+//    CGFloat R1 = 0.040, G1 = 0.040, B1 = 0.040;
+    //蓝色背景
+    CGFloat R0 = 0.341, G0 = 0.645, B0 = 0.996;
+    CGFloat R1 = 0.341, G1 = 0.645, B1 = 0.996;
     
     UIColor *tintColor = [KxMenu tintColor];
     if (tintColor) {
