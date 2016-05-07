@@ -40,7 +40,7 @@
     
     self.txtView.layer.borderWidth = 1;
     self.txtView.layer.cornerRadius = 5;
-    self.txtView.layer.borderColor = [color_GrayLight CGColor];
+    self.txtView.layer.borderColor = [color_eeeeee CGColor];
     self.txtView.editable = YES;
     self.txtView.delegate = self;
     self.txtView.inputAccessoryView = [self getInputAccessoryView];
@@ -71,6 +71,9 @@
             self.imgViewRepeat.hidden = NO;
             self.switchRepeat.hidden = NO;
             self.labelRepeat.hidden = NO;
+            self.layoutConstraintTxtViewTop.constant = 90.f;
+        } else {
+            self.layoutConstraintTxtViewTop.constant = 50.f;
         }
         if ([self.task.isRepeat isEqualToString:@"1"]) {
             [self.switchRepeat setOn:YES];
