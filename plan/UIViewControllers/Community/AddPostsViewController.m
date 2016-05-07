@@ -111,6 +111,33 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 
 #pragma mark - action
 - (void)saveAction:(UIButton *)button {
+    
+    [self checkIsForbidden];
+}
+
+- (void)checkIsForbidden {
+    __weak typeof(self) weakSelf = self;
+    BmobUser *user = [BmobUser getCurrentUser];
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        
+        if (array.count > 0) {
+            
+            BmobObject *obj = array[0];
+            
+            NSString *isForbidden = [obj objectForKey:@"isForbidden"];
+            
+            if ([isForbidden isEqualToString:@"1"]) {
+                [weakSelf alertButtonMessage:str_Posts_Add_Tips4];
+            } else {
+                [weakSelf savePosts];
+            }
+        }
+    }];
+}
+
+- (void)savePosts {
     if (isSending) return;
     
     [self.view endEditing:YES];
@@ -122,7 +149,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     
     [self showHUD];
     isSending = YES;
-
+    
     //去掉那张新增按钮图
     if (canAddPhoto) {
         [photoArray removeObjectAtIndex:photoArray.count - 1];
