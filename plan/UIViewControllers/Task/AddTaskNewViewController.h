@@ -18,6 +18,7 @@
 @property (strong, nonatomic) IBOutlet UISwitch *switchRepeat;
 @property (strong, nonatomic) IBOutlet UILabel *labelAlarmTime;
 @property (strong, nonatomic) IBOutlet UILabel *labelRepeat;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *layoutConstraintTxtViewTop;
 
 @property (assign, nonatomic) OperationType operationType;
 @property (strong, nonatomic) Task *task;

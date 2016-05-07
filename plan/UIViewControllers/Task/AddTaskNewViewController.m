@@ -186,6 +186,7 @@
         self.switchRepeat.hidden = NO;
         self.labelRepeat.hidden = NO;
         [self showDatePicker];
+        self.layoutConstraintTxtViewTop.constant = 90.f;
     } else {
         self.labelAlarmTime.hidden = YES;
         self.labelAlarmTime.text = @"";
@@ -196,6 +197,7 @@
         [self.switchRepeat setOn:NO];
         isRepeat = NO;
         [self onPickerCancelBtn];
+        self.layoutConstraintTxtViewTop.constant = 50.f;
     }
 }
 
@@ -274,6 +276,14 @@
         isAlarm = NO;
         self.task.notifyTime = @"";
         [self.switchAlarm setOn:NO];
+        
+        self.imgViewRepeat.hidden = YES;
+        self.switchRepeat.hidden = YES;
+        self.labelRepeat.hidden = YES;
+        self.labelRepeat.text = @"";
+        [self.switchRepeat setOn:NO];
+        isRepeat = NO;
+        self.layoutConstraintTxtViewTop.constant = 50.f;
     }
 }
 

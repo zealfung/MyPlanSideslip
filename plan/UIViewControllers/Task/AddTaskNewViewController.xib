@@ -11,6 +11,7 @@
                 <outlet property="imgViewRepeat" destination="TqO-Ku-XEf" id="bgl-vI-rTD"/>
                 <outlet property="labelAlarmTime" destination="fFJ-Hl-0pX" id="kCa-Lz-Wiq"/>
                 <outlet property="labelRepeat" destination="AnF-TS-Kzg" id="PJ7-l5-8QR"/>
+                <outlet property="layoutConstraintTxtViewTop" destination="eEE-zF-E9a" id="RMR-6g-8mq"/>
                 <outlet property="switchAlarm" destination="Ug6-qA-67o" id="Fh6-ec-ujq"/>
                 <outlet property="switchRepeat" destination="NJK-83-cOv" id="fXk-bH-gbn"/>
                 <outlet property="txtView" destination="pRr-Dk-YBD" id="ing-br-bol"/>
@@ -77,10 +78,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="pRr-Dk-YBD">
-                    <rect key="frame" x="12" y="90" width="296" height="468"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="468" id="9dk-IV-1Hc"/>
-                    </constraints>
+                    <rect key="frame" x="12" y="50" width="296" height="508"/>
                     <fontDescription key="fontDescription" type="system" pointSize="18"/>
                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                 </textView>
@@ -90,13 +88,14 @@
                 <constraint firstAttribute="trailing" secondItem="pRr-Dk-YBD" secondAttribute="trailing" constant="12" id="0kV-Uh-Txg"/>
                 <constraint firstItem="NJK-83-cOv" firstAttribute="leading" secondItem="TqO-Ku-XEf" secondAttribute="trailing" constant="3" id="1Jh-SO-O6E"/>
                 <constraint firstItem="pRr-Dk-YBD" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="79w-am-RVZ"/>
+                <constraint firstAttribute="bottom" secondItem="pRr-Dk-YBD" secondAttribute="bottom" constant="10" id="Bsk-cp-I3E"/>
                 <constraint firstItem="fFJ-Hl-0pX" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="N8w-4X-57c"/>
                 <constraint firstItem="AnF-TS-Kzg" firstAttribute="top" secondItem="fFJ-Hl-0pX" secondAttribute="bottom" constant="10" id="NhE-7X-Rj5"/>
                 <constraint firstItem="MsW-EC-SP7" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="Q8n-Fo-yw6"/>
                 <constraint firstItem="Ug6-qA-67o" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="RCU-KB-4yh"/>
                 <constraint firstItem="fFJ-Hl-0pX" firstAttribute="leading" secondItem="Ug6-qA-67o" secondAttribute="trailing" constant="6" id="S1l-MM-DPk"/>
                 <constraint firstItem="NJK-83-cOv" firstAttribute="top" secondItem="Ug6-qA-67o" secondAttribute="bottom" constant="9" id="XHS-dO-XCr"/>
-                <constraint firstItem="pRr-Dk-YBD" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="90" id="eEE-zF-E9a"/>
+                <constraint firstItem="pRr-Dk-YBD" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="50" id="eEE-zF-E9a"/>
                 <constraint firstItem="MsW-EC-SP7" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="eoR-14-Cyz"/>
                 <constraint firstItem="TqO-Ku-XEf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="or7-cj-nIe"/>
                 <constraint firstItem="Ug6-qA-67o" firstAttribute="leading" secondItem="MsW-EC-SP7" secondAttribute="trailing" constant="3" id="uVd-Kq-a0P"/>

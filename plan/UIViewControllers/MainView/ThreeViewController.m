@@ -11,7 +11,7 @@
 #import "WZLBadgeImport.h"
 #import <BmobSDK/BmobUser.h>
 #import "ThreeViewController.h"
-#import "AddTaskViewController.h"
+#import "AddTaskNewViewController.h"
 #import <RESideMenu/RESideMenu.h>
 #import "TaskDetailViewController.h"
 
@@ -68,7 +68,7 @@
 }
 
 - (void)addAction:(UIButton *)button {
-    AddTaskViewController *controller = [[AddTaskViewController alloc] init];
+    AddTaskNewViewController *controller = [[AddTaskNewViewController alloc] init];
     controller.operationType = Add;
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
