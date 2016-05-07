@@ -242,6 +242,8 @@
 		13D406251C3020BF0089D702 /* Btn_Posts_Unlike@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D406231C3020BF0089D702 /* Btn_Posts_Unlike@2x.png */; };
 		13D406271C3024860089D702 /* Btn_Posts_More@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13D406261C3024860089D702 /* Btn_Posts_More@2x.png */; };
 		13D4069A1C3D00310089D702 /* DOPNavbarMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D406991C3D00310089D702 /* DOPNavbarMenu.m */; };
+		13D9165B1CDD7607001F34EA /* AddTaskNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D916591CDD7607001F34EA /* AddTaskNewViewController.m */; };
+		13D9165C1CDD7607001F34EA /* AddTaskNewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D9165A1CDD7607001F34EA /* AddTaskNewViewController.xib */; };
 		13F670871CC07BD3009D2BA9 /* PersonalCenterNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670861CC07BD3009D2BA9 /* PersonalCenterNewViewController.m */; };
 		13F6708B1CC07E7B009D2BA9 /* PersonalCenterNewCell0.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670891CC07E7B009D2BA9 /* PersonalCenterNewCell0.m */; };
 		13F6708C1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13F6708A1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib */; };
@@ -632,6 +634,9 @@
 		13D406261C3024860089D702 /* Btn_Posts_More@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Posts_More@2x.png"; sourceTree = "<group>"; };
 		13D406981C3D00310089D702 /* DOPNavbarMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DOPNavbarMenu.h; sourceTree = "<group>"; };
 		13D406991C3D00310089D702 /* DOPNavbarMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DOPNavbarMenu.m; sourceTree = "<group>"; };
+		13D916581CDD7607001F34EA /* AddTaskNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTaskNewViewController.h; sourceTree = "<group>"; };
+		13D916591CDD7607001F34EA /* AddTaskNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTaskNewViewController.m; sourceTree = "<group>"; };
+		13D9165A1CDD7607001F34EA /* AddTaskNewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddTaskNewViewController.xib; sourceTree = "<group>"; };
 		13F670851CC07BD3009D2BA9 /* PersonalCenterNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterNewViewController.h; sourceTree = "<group>"; };
 		13F670861CC07BD3009D2BA9 /* PersonalCenterNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterNewViewController.m; sourceTree = "<group>"; };
 		13F670881CC07E7B009D2BA9 /* PersonalCenterNewCell0.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterNewCell0.h; sourceTree = "<group>"; };
@@ -782,6 +787,9 @@
 		131D6A701BFB68A8009FDD72 /* Task */ = {
 			isa = PBXGroup;
 			children = (
+				13D916581CDD7607001F34EA /* AddTaskNewViewController.h */,
+				13D916591CDD7607001F34EA /* AddTaskNewViewController.m */,
+				13D9165A1CDD7607001F34EA /* AddTaskNewViewController.xib */,
 				137470BC1C0ABCFE00B7822A /* AddTaskViewController.h */,
 				137470BD1C0ABCFE00B7822A /* AddTaskViewController.m */,
 				137470BE1C0ABCFE00B7822A /* AddTaskViewController.xib */,
@@ -1763,6 +1771,7 @@
 				13D1AD961C434028007734F6 /* ImageDefault_Rectangle@2x.png in Resources */,
 				1374705A1C04202700B7822A /* ForgotPasswordViewController.xib in Resources */,
 				131D6A411BF6CFAA009FDD72 /* Icon_Menu_FiveStar@2x.png in Resources */,
+				13D9165C1CDD7607001F34EA /* AddTaskNewViewController.xib in Resources */,
 				135B21971B900394005CE84A /* Images.xcassets in Resources */,
 				131D6A2A1BF5B0D4009FDD72 /* Icon_Menu_Feedback@2x.png in Resources */,
 				1361AFC91BCBA5E700DD5FFB /* DoPhotoCell.xib in Resources */,
@@ -1925,6 +1934,7 @@
 				13AF64C11C255BB7008E8A9E /* FourViewController.m in Sources */,
 				135B21DC1B90A145005CE84A /* UIButton+Util.m in Sources */,
 				13A6ACA81BC3FBF1005A02F9 /* PagedFlowView.m in Sources */,
+				13D9165B1CDD7607001F34EA /* AddTaskNewViewController.m in Sources */,
 				135B221C1B92E72A005CE84A /* AlertCenter.m in Sources */,
 				131D6A261BF4D95F009FDD72 /* RootViewController.m in Sources */,
 				13A6AC9A1BC347D6005A02F9 /* PhotoCell.m in Sources */,
