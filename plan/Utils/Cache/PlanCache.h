@@ -48,6 +48,8 @@
 
 + (NSArray *)getPlan:(BOOL)isEverydayPlan startIndex:(NSInteger)startIndex;
 
++ (NSArray *)searchPlan:(NSString *)key;
+
 //ALL全部 DAY每日计划 FUTURE未来计划
 + (NSString *)getPlanTotalCount:(NSString *)type;
 
