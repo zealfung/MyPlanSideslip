@@ -70,7 +70,7 @@
         labelBeginTime.font = font_Normal_18;
         labelBeginTime.layer.borderWidth = 1;
         labelBeginTime.layer.cornerRadius = 5;
-        labelBeginTime.layer.borderColor = [color_GrayLight CGColor];
+        labelBeginTime.layer.borderColor = [color_eeeeee CGColor];
         labelBeginTime.userInteractionEnabled = YES;
         labelBeginTime.text = [CommonFunction getBeginDateStringForShow:beginDate];
         UITapGestureRecognizer *labelBeginTimeTapGestureRecognizer = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(beginDateTouchAction:)];
@@ -102,11 +102,11 @@
         yOffset += iconSize + kEdgeInset;
     }
     {
-        CGFloat txtViewHeight = HEIGHT_FULL_SCREEN / 2;
+        CGFloat txtViewHeight = HEIGHT_FULL_VIEW - kEdgeInset - yOffset;
         UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2, txtViewHeight)];
         detailTextView.backgroundColor = [UIColor clearColor];
         detailTextView.layer.borderWidth = 1;
-        detailTextView.layer.borderColor = [color_GrayLight CGColor];
+        detailTextView.layer.borderColor = [color_eeeeee CGColor];
         detailTextView.layer.cornerRadius = 5;
         detailTextView.font = font_Normal_18;
         detailTextView.textColor = color_Black;
@@ -114,8 +114,6 @@
         detailTextView.inputAccessoryView = [self getInputAccessoryView];
         [self.view addSubview:detailTextView];
         txtViewContent = detailTextView;
-        
-        yOffset += txtViewHeight + kEdgeInset;
     }
     if (self.operationType == Edit) {
         txtViewContent.text = self.plan.content;
