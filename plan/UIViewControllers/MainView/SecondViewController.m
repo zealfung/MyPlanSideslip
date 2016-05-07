@@ -43,8 +43,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     NSMutableArray *futureDateKeyArray;
     NSMutableDictionary *futurePlanDict;
     
-    UITableView *tableViewDay;
-    UITableView *tableViewFuture;
+    UITableView *tableViewPlan;
     ThreeSubView *menuTabView;
     UIView *underLineView;
 }
@@ -101,6 +100,141 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
 }
 
+//刷新小红点
+- (void)refreshRedDot {
+    if ([PlanCache hasUnreadMessages]) {
+        [self.leftBarButtonItem showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
+        self.leftBarButtonItem.badgeCenterOffset = CGPointMake(-8, 0);
+    } else {
+        [self.leftBarButtonItem clearBadge];
+    }
+}
+
+//初始化自定义界面
+- (void)loadCustomView {
+    [self initTableView];
+    
+    if (!underLineView) {
+        [self showMenuView];
+        [self showUnderLineView];
+    }
+    planType = EverydayPlan;
+    [self getPlanData];
+}
+
+- (void)initTableView {
+    NSUInteger yOffset = kPlan_MenuHeight;
+    NSUInteger tableHeight = CGRectGetHeight(self.view.bounds) - yOffset -40;
+    CGRect frame = CGRectZero;
+    frame.origin.x = 0;
+    frame.origin.y =yOffset;
+    frame.size.width = CGRectGetWidth(self.view.bounds);
+    frame.size.height = tableHeight;
+    
+    __weak typeof(self) weakSelf = self;
+    tableViewPlan = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
+    tableViewPlan.backgroundColor = [UIColor clearColor];
+    tableViewPlan.backgroundView = nil;
+    tableViewPlan.dataSource = self;
+    tableViewPlan.delegate = self;
+    tableViewPlan.showsHorizontalScrollIndicator = NO;
+    tableViewPlan.showsVerticalScrollIndicator = NO;
+    tableViewPlan.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    tableViewPlan.rowHeight = kPlanCellHeight;
+    {
+        UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 5)];
+        header.backgroundColor = [UIColor clearColor];
+        tableViewPlan.tableHeaderView = header;
+    }
+    {
+        UIView *footer = [[UIView alloc] init];
+        tableViewPlan.tableFooterView = footer;
+    }
+    tableViewPlan.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tableViewPlan.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
+        
+        isLoadMore = YES;
+        [weakSelf getPlanData];
+        
+    }];
+    tableViewPlan.mj_footer.hidden = YES;
+    [self.view addSubview:tableViewPlan];
+}
+
+- (void)showMenuView {
+    __weak typeof(self) weakSelf = self;
+    menuTabView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), kPlan_MenuHeight) leftButtonSelectBlock: ^{
+        
+        weakSelf.planType = EverydayPlan;
+        
+    } centerButtonSelectBlock: ^{
+        
+        weakSelf.planType = FuturePlan;
+        
+    } rightButtonSelectBlock:nil];
+    
+    menuTabView.fixLeftWidth = CGRectGetWidth(self.view.bounds)/2;
+    menuTabView.fixCenterWidth = CGRectGetWidth(self.view.bounds)/2;
+    [menuTabView.leftButton setAllTitleColor:[CommonFunction getGenderColor]];
+    [menuTabView.centerButton setAllTitleColor:[CommonFunction getGenderColor]];
+    menuTabView.leftButton.titleLabel.font = font_Bold_18;
+    menuTabView.centerButton.titleLabel.font = font_Bold_18;
+    [menuTabView.leftButton setAllTitle:str_FirstView_11];
+    [menuTabView.centerButton setAllTitle:str_FirstView_12];
+    [menuTabView autoLayout];
+    [self.view addSubview:menuTabView];
+    {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.bounds)/2, 5, 1, kPlan_MenuHeight - 10)];
+        view.backgroundColor = color_GrayLight;
+        [menuTabView addSubview:view];
+    }
+    {
+        UIImage *image = [UIImage imageNamed:png_Bg_Cell_White];
+        UIImageView *imageView = [[UIImageView alloc] initWithFrame:menuTabView.frame];
+        imageView.backgroundColor = [UIColor clearColor];
+        imageView.image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(5, 5, 5, 5)];
+        [self.view insertSubview:imageView belowSubview:menuTabView];
+    }
+}
+
+- (void)showUnderLineView {
+    CGRect frame = [menuTabView.leftButton convertRect:menuTabView.leftButton.titleLabel.frame toView:menuTabView];
+    frame.origin.y = menuTabView.frame.size.height - kPlan_MenuLineHeight;
+    frame.size.height = kPlan_MenuLineHeight;
+    UIView *view = [[UIView alloc] initWithFrame:frame];
+    view.backgroundColor = [CommonFunction getGenderColor];
+    [menuTabView addSubview:view];
+    underLineView = view;
+}
+
+- (void)moveUnderLineViewToLeft {
+    [self moveUnderLineViewToButton:menuTabView.leftButton];
+
+    [self getPlanData];
+}
+
+- (void)moveUnderLineViewToRight {
+    [self moveUnderLineViewToButton:menuTabView.centerButton];
+
+    [self getPlanData];
+}
+
+- (void)moveUnderLineViewToButton:(UIButton *)button {
+    CGRect frame = [button convertRect:button.titleLabel.frame toView:button.superview];
+    frame.origin.y = menuTabView.frame.size.height - kPlan_MenuLineHeight;
+    frame.size.height = kPlan_MenuLineHeight;
+    button.superview.userInteractionEnabled = NO;
+    [UIView animateWithDuration:0.25 animations: ^{
+        
+        underLineView.frame = frame;
+        
+    } completion:^(BOOL finished) {
+        if (finished) {
+            button.superview.userInteractionEnabled = YES;
+        }
+    }];
+}
+
 - (void)getPlanData {
     if (planType == FuturePlan) {
         [self getFuturePlan];
@@ -145,11 +279,11 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     isLoadMore = NO;
     if (dayStart < dayTotal) {
         dayStart += kPlanLoadMax;
-    } else {
-        [tableViewDay.mj_footer endRefreshingWithNoMoreData];
+    } else if (planType == EverydayPlan) {
+        [tableViewPlan.mj_footer endRefreshingWithNoMoreData];
     }
-    [tableViewDay.mj_footer endRefreshing];
-    [self reloadTableViewData];
+    [tableViewPlan.mj_footer endRefreshing];
+    [tableViewPlan reloadData];
 }
 
 - (void)getFuturePlan {
@@ -206,11 +340,11 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     isLoadMore = NO;
     if (futureStart < futureTotal) {
         futureStart += kPlanLoadMax;
-    } else {
-        [tableViewFuture.mj_footer endRefreshingWithNoMoreData];
+    } else if (planType == FuturePlan) {
+        [tableViewPlan.mj_footer endRefreshingWithNoMoreData];
     }
-    [tableViewFuture.mj_footer endRefreshing];
-    [self reloadTableViewData];
+    [tableViewPlan.mj_footer endRefreshing];
+    [tableViewPlan reloadData];
 }
 
 - (NSInteger)calculateDayFromDate:(NSDate *)date1 toDate:(NSDate *)date2{
@@ -219,146 +353,6 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     NSInteger days = [components day];
     return days;
 }
-
-- (void)reloadTableViewData {
-    if (tableViewDay && planType == EverydayPlan) {
-        [tableViewDay reloadData];
-    } else if (tableViewFuture && planType == FuturePlan) {
-        [tableViewFuture reloadData];
-    }
-}
-
-- (void)refreshRedDot {
-    //小红点
-    if ([PlanCache hasUnreadMessages]) {
-        [self.leftBarButtonItem showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
-        self.leftBarButtonItem.badgeCenterOffset = CGPointMake(-8, 0);
-    } else {
-        [self.leftBarButtonItem clearBadge];
-    }
-}
-
-//初始化自定义界面
-- (void)loadCustomView {
-    if (!underLineView) {
-        [self showMenuView];
-        [self showUnderLineView];
-    }
-    self.planType = EverydayPlan;
-    [self showListView];
-}
-
-- (void)showMenuView {
-    __weak typeof(self) weakSelf = self;
-    menuTabView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), kPlan_MenuHeight) leftButtonSelectBlock: ^{
-        
-        weakSelf.planType = EverydayPlan;
-        
-    } centerButtonSelectBlock: ^{
-        
-        weakSelf.planType = FuturePlan;
-        
-    } rightButtonSelectBlock:nil];
-    
-    menuTabView.fixLeftWidth = CGRectGetWidth(self.view.bounds)/2;
-    menuTabView.fixCenterWidth = CGRectGetWidth(self.view.bounds)/2;
-    [menuTabView.leftButton setAllTitleColor:[CommonFunction getGenderColor]];
-    [menuTabView.centerButton setAllTitleColor:[CommonFunction getGenderColor]];
-    menuTabView.leftButton.titleLabel.font = font_Bold_18;
-    menuTabView.centerButton.titleLabel.font = font_Bold_18;
-    [menuTabView.leftButton setAllTitle:str_FirstView_11];
-    [menuTabView.centerButton setAllTitle:str_FirstView_12];
-    [menuTabView autoLayout];
-    [self.view addSubview:menuTabView];
-    {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.bounds)/2, 5, 1, kPlan_MenuHeight - 10)];
-        view.backgroundColor = color_GrayLight;
-        [menuTabView addSubview:view];
-    }
-    {
-        UIImage *image = [UIImage imageNamed:png_Bg_Cell_White];
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:menuTabView.frame];
-        imageView.backgroundColor = [UIColor clearColor];
-        imageView.image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(5, 5, 5, 5)];
-        [self.view insertSubview:imageView belowSubview:menuTabView];
-    }
-}
-
-- (void)showUnderLineView {
-    CGRect frame = [menuTabView.leftButton convertRect:menuTabView.leftButton.titleLabel.frame toView:menuTabView];
-    frame.origin.y = menuTabView.frame.size.height - kPlan_MenuLineHeight;
-    frame.size.height = kPlan_MenuLineHeight;
-    UIView *view = [[UIView alloc] initWithFrame:frame];
-    view.backgroundColor = [CommonFunction getGenderColor];
-    [menuTabView addSubview:view];
-    underLineView = view;
-}
-
-- (void)showListView {
-    NSUInteger yOffset = kPlan_MenuHeight;
-    NSUInteger tableHeight = CGRectGetHeight(self.view.bounds) - yOffset -40;
-    CGRect frame = CGRectZero;
-    frame.origin.x = 0;
-    frame.origin.y =yOffset;
-    frame.size.width = CGRectGetWidth(self.view.bounds);
-    frame.size.height = tableHeight;
-    
-    if (!tableViewDay && planType == EverydayPlan) {
-        UITableView *tableView = [self createTableView];
-        tableView.frame = frame;
-        [self.view addSubview:tableView];
-        tableViewDay = tableView;
-    } else if (!tableViewFuture && planType == FuturePlan) {
-        UITableView *tableView = [self createTableView];
-        tableView.frame = frame;
-        [self.view addSubview:tableView];
-        tableViewFuture = tableView;
-    } else {
-        [tableViewDay reloadData];
-        [tableViewFuture reloadData];
-    }
-}
-
-- (void)moveUnderLineViewToLeft {
-    [self moveUnderLineViewToButton:menuTabView.leftButton];
-    tableViewFuture.hidden = YES;
-    tableViewDay.hidden = NO;
-
-    [self getPlanData];
-    
-    if (!tableViewDay) {
-        [self showListView];
-    }
-}
-
-- (void)moveUnderLineViewToRight {
-    [self moveUnderLineViewToButton:menuTabView.centerButton];
-    tableViewFuture.hidden = NO;
-    tableViewDay.hidden = YES;
-    
-    [self getPlanData];
-    
-    if (!tableViewFuture) {
-        [self showListView];
-    }
-}
-
-- (void)moveUnderLineViewToButton:(UIButton *)button {
-    CGRect frame = [button convertRect:button.titleLabel.frame toView:button.superview];
-    frame.origin.y = menuTabView.frame.size.height - kPlan_MenuLineHeight;
-    frame.size.height = kPlan_MenuLineHeight;
-    button.superview.userInteractionEnabled = NO;
-    [UIView animateWithDuration:0.25 animations: ^{
-        
-        underLineView.frame = frame;
-        
-    } completion:^(BOOL finished) {
-        if (finished) {
-            button.superview.userInteractionEnabled = YES;
-        }
-    }];
-}
-
 
 - (void)setPlanType:(PlanType)type {
     planType = type;
@@ -376,35 +370,6 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         default:
             break;
     }
-}
-
-- (UITableView *)createTableView {
-    __weak typeof(self) weakSelf = self;
-    UITableView *tableView = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
-    tableView.backgroundColor = [UIColor clearColor];
-    tableView.backgroundView = nil;
-    tableView.dataSource = self;
-    tableView.delegate = self;
-    tableView.showsHorizontalScrollIndicator = NO;
-    tableView.showsVerticalScrollIndicator = NO;
-    tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    tableView.rowHeight = kPlanCellHeight;
-    {
-        UIView *header = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), 5)];
-        header.backgroundColor = [UIColor clearColor];
-        tableView.tableHeaderView = header;
-    }
-    {
-        UIView *footer = [[UIView alloc] init];
-        tableView.tableFooterView = footer;
-    }
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-        isLoadMore = YES;
-        [weakSelf getPlanData];
-    }];
-    tableView.mj_footer.hidden = YES;
-    return tableView;
 }
 
 #pragma mark - UITableViewDataSource
@@ -457,12 +422,14 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+    
     if (planType == EverydayPlan) {
         if(indexPath.section < dayDateKeyArray.count) {
             NSString *dateKey = dayDateKeyArray[indexPath.section];
             NSArray *planArray = [dayPlanDict objectForKey:dateKey];
             if (indexPath.row < planArray.count) {
-                tableViewDay.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
+                
                 static NSString *everydayCellIdentifier = @"everydayCellIdentifier";
                 
                 PlanCell *cell = [tableView dequeueReusableCellWithIdentifier:everydayCellIdentifier];
@@ -483,7 +450,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                 return cell;
             }
         } else {
-            tableViewDay.separatorStyle = UITableViewCellSeparatorStyleNone;
+            tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             static NSString *noEverydayCellIdentifier = @"noEverydayCellIdentifier";
             
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noEverydayCellIdentifier];
@@ -508,7 +475,6 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
             NSString *dateKey = futureDateKeyArray[indexPath.section];
             NSArray *planArray = [futurePlanDict objectForKey:dateKey];
             if (indexPath.row < planArray.count) {
-                tableViewFuture.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
                 static NSString *futureCellIdentifier = @"futureCellIdentifier";
                 
                 PlanCell *cell = [tableView dequeueReusableCellWithIdentifier:futureCellIdentifier];
@@ -524,7 +490,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                 return cell;
             }
         } else {
-            tableViewFuture.separatorStyle = UITableViewCellSeparatorStyleNone;
+            tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             static NSString *noFutureCellIdentifier = @"noFutureCellIdentifier";
             
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noFutureCellIdentifier];
@@ -676,15 +642,15 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     
     if (planType == EverydayPlan) {
         daySectionFlag[view.sectionIndex] = !daySectionFlag[view.sectionIndex];
-        [tableViewDay reloadSections:[NSIndexSet indexSetWithIndex:view.sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [tableViewPlan reloadSections:[NSIndexSet indexSetWithIndex:view.sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
         //section自动上移
         if (daySectionFlag[view.sectionIndex]) {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:view.sectionIndex];
-            [tableViewDay scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
+            [tableViewPlan scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
         }
     } else if (planType == FuturePlan) {
         futureSectionFlag[view.sectionIndex] = !futureSectionFlag[view.sectionIndex];
-        [tableViewFuture reloadSections:[NSIndexSet indexSetWithIndex:view.sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [tableViewPlan reloadSections:[NSIndexSet indexSetWithIndex:view.sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 
@@ -759,11 +725,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     
     [PlanCache storePlan:plan];
     
-    if (planType == EverydayPlan) {
-        [tableViewDay reloadData];
-    } else {
-        [tableViewFuture reloadData];
-    }
+    [tableViewPlan reloadData];
 }
 
 //删除计划
@@ -780,7 +742,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     if (canCustomEditNow != canCustomEdit) {
         canCustomEditNow = canCustomEdit;
         
-        CGRect frame = planType == EverydayPlan ? tableViewDay.frame : tableViewFuture.frame;
+        CGRect frame = tableViewPlan.frame;
         if (canCustomEditNow) {
             if (hitView == nil) {
                 hitView = [[HitView alloc] init];
@@ -790,20 +752,12 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
             hitView.frame = frame;
             [self.view addSubview:hitView];
             
-            if (planType == EverydayPlan) {
-                tableViewDay.scrollEnabled = NO;
-            } else {
-                tableViewFuture.scrollEnabled = NO;
-            }
+            tableViewPlan.scrollEnabled = NO;
         } else {
             planCell = nil;
             [hitView removeFromSuperview];
             
-            if (planType == EverydayPlan) {
-                tableViewDay.scrollEnabled = YES;
-            } else {
-                tableViewFuture.scrollEnabled = YES;
-            }
+            tableViewPlan.scrollEnabled = YES;
         }
     }
 }
@@ -819,11 +773,9 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 - (UIView *)hitViewClicked:(CGPoint)point event:(UIEvent *)event touchView:(UIView *)touchView {
     BOOL vCloudReceiveTouch = NO;
     CGRect vSlidedCellRect;
-    if (planType == EverydayPlan) {
-        vSlidedCellRect = [hitView convertRect:planCell.frame fromView:tableViewDay];
-    } else {
-        vSlidedCellRect = [hitView convertRect:planCell.frame fromView:tableViewFuture];
-    }
+    
+    vSlidedCellRect = [hitView convertRect:planCell.frame fromView:tableViewPlan];
+    
     vCloudReceiveTouch = CGRectContainsPoint(vSlidedCellRect, point);
     if (!vCloudReceiveTouch) {
         [planCell hideMenuView:YES Animated:YES];
