@@ -505,8 +505,11 @@ typedef enum {
 + (UIImage *)gradientLine:(CGSize)size {
     const CGFloat locations[5] = {0,0.2,0.5,0.8,1};
     
-    const CGFloat R = 0.44f, G = 0.44f, B = 0.44f;
-        
+    //灰色
+//    const CGFloat R = 0.44f, G = 0.44f, B = 0.44f;
+    //白色
+    const CGFloat R = 1, G = 1, B = 1;
+    
     const CGFloat components[20] = {
         R,G,B,0.1,
         R,G,B,0.4,
