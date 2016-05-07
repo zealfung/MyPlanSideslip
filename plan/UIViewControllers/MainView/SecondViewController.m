@@ -150,6 +150,8 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     {
         searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, 44)];
         searchBar.delegate = self;
+        searchBar.barTintColor = color_eeeeee;
+        searchBar.searchBarStyle = UISearchBarStyleMinimal; 
         searchBar.inputAccessoryView = [self getInputAccessoryView];
         searchBar.placeholder = @"搜索";
         tableViewPlan.tableHeaderView = searchBar;
@@ -193,7 +195,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     [self.view addSubview:menuTabView];
     {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.bounds)/2, 5, 1, kPlan_MenuHeight - 10)];
-        view.backgroundColor = color_GrayLight;
+        view.backgroundColor = color_dedede;
         [menuTabView addSubview:view];
     }
     {
