@@ -13,7 +13,7 @@
 #import "ThreeViewController.h"
 #import "AddTaskNewViewController.h"
 #import <RESideMenu/RESideMenu.h>
-#import "TaskDetailViewController.h"
+#import "TaskDetailNewViewController.h"
 
 @interface ThreeViewController () <UIGestureRecognizerDelegate> {
     
@@ -151,7 +151,7 @@
         task.taskOrder = [dict objectForKey:@"taskOrder"];
         task.isDeleted = @"0";
         
-        TaskDetailViewController *controller = [[TaskDetailViewController alloc]init];
+        TaskDetailNewViewController *controller = [[TaskDetailNewViewController alloc]init];
         controller.task = task;
         controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
@@ -238,7 +238,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row < taskArray.count) {
-        TaskDetailViewController *controller = [[TaskDetailViewController alloc]init];
+        TaskDetailNewViewController *controller = [[TaskDetailNewViewController alloc]init];
         controller.task = taskArray[indexPath.row];
         controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];

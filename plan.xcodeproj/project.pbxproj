@@ -244,6 +244,8 @@
 		13D4069A1C3D00310089D702 /* DOPNavbarMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D406991C3D00310089D702 /* DOPNavbarMenu.m */; };
 		13D9165B1CDD7607001F34EA /* AddTaskNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D916591CDD7607001F34EA /* AddTaskNewViewController.m */; };
 		13D9165C1CDD7607001F34EA /* AddTaskNewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D9165A1CDD7607001F34EA /* AddTaskNewViewController.xib */; };
+		13D916601CDDC4D7001F34EA /* TaskDetailNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D9165E1CDDC4D7001F34EA /* TaskDetailNewViewController.m */; };
+		13D916611CDDC4D7001F34EA /* TaskDetailNewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D9165F1CDDC4D7001F34EA /* TaskDetailNewViewController.xib */; };
 		13F670871CC07BD3009D2BA9 /* PersonalCenterNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670861CC07BD3009D2BA9 /* PersonalCenterNewViewController.m */; };
 		13F6708B1CC07E7B009D2BA9 /* PersonalCenterNewCell0.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670891CC07E7B009D2BA9 /* PersonalCenterNewCell0.m */; };
 		13F6708C1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13F6708A1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib */; };
@@ -637,6 +639,9 @@
 		13D916581CDD7607001F34EA /* AddTaskNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTaskNewViewController.h; sourceTree = "<group>"; };
 		13D916591CDD7607001F34EA /* AddTaskNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTaskNewViewController.m; sourceTree = "<group>"; };
 		13D9165A1CDD7607001F34EA /* AddTaskNewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddTaskNewViewController.xib; sourceTree = "<group>"; };
+		13D9165D1CDDC4D7001F34EA /* TaskDetailNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskDetailNewViewController.h; sourceTree = "<group>"; };
+		13D9165E1CDDC4D7001F34EA /* TaskDetailNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskDetailNewViewController.m; sourceTree = "<group>"; };
+		13D9165F1CDDC4D7001F34EA /* TaskDetailNewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskDetailNewViewController.xib; sourceTree = "<group>"; };
 		13F670851CC07BD3009D2BA9 /* PersonalCenterNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterNewViewController.h; sourceTree = "<group>"; };
 		13F670861CC07BD3009D2BA9 /* PersonalCenterNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterNewViewController.m; sourceTree = "<group>"; };
 		13F670881CC07E7B009D2BA9 /* PersonalCenterNewCell0.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterNewCell0.h; sourceTree = "<group>"; };
@@ -799,6 +804,9 @@
 				138038F01C55FA7700E98C5F /* TaskDetailViewController.h */,
 				138038F11C55FA7700E98C5F /* TaskDetailViewController.m */,
 				138038F21C55FA7700E98C5F /* TaskDetailViewController.xib */,
+				13D9165D1CDDC4D7001F34EA /* TaskDetailNewViewController.h */,
+				13D9165E1CDDC4D7001F34EA /* TaskDetailNewViewController.m */,
+				13D9165F1CDDC4D7001F34EA /* TaskDetailNewViewController.xib */,
 			);
 			path = Task;
 			sourceTree = "<group>";
@@ -1815,6 +1823,7 @@
 				135B22311B9301C9005CE84A /* Btn_Plan_Doing@2x.png in Resources */,
 				13D406131C2EA2D60089D702 /* PostsOneImageCell.xib in Resources */,
 				13F6708C1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib in Resources */,
+				13D916611CDDC4D7001F34EA /* TaskDetailNewViewController.xib in Resources */,
 				1310C3571C4542FC00A2A404 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				13D405FB1C2D13360089D702 /* Icon_Posts_Eyes@2x.png in Resources */,
 				13D4061D1C2FD4470089D702 /* PostsDetailViewController.xib in Resources */,
@@ -1896,6 +1905,7 @@
 				1361AFC61BCBA5E700DD5FFB /* DoImagePickerController.m in Sources */,
 				131D6A6F1BFB5DDE009FDD72 /* PhotoViewController.m in Sources */,
 				135B21D21B909955005CE84A /* Config.m in Sources */,
+				13D916601CDDC4D7001F34EA /* TaskDetailNewViewController.m in Sources */,
 				132819421C61D1D000FB8628 /* NSLayoutConstraint+Util.m in Sources */,
 				133B07A21B9FBCA30015E752 /* HelpViewController.m in Sources */,
 				135B22091B92B126005CE84A /* UIViewController+Util.m in Sources */,
