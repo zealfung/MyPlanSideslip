@@ -996,7 +996,7 @@ NSInteger const kDeleteTag = 20160110;
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text {
     if ([text isEqualToString: @"\n"]) {
 
-        [self sendContent:textView.text];
+        [self checkIsForbidden:textView.text];
         [self.view endEditing:YES];
 
         return NO;
@@ -1079,6 +1079,28 @@ NSInteger const kDeleteTag = 20160110;
     
     self.inputView.text = @"";
     NSLog(@"发送内容：%@", content);
+}
+
+- (void)checkIsForbidden:(NSString *)content {
+    __weak typeof(self) weakSelf = self;
+    BmobUser *user = [BmobUser getCurrentUser];
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        
+        if (array.count > 0) {
+            
+            BmobObject *obj = array[0];
+            
+            NSString *isForbidden = [obj objectForKey:@"isForbidden"];
+            
+            if ([isForbidden isEqualToString:@"1"]) {
+                [weakSelf alertButtonMessage:str_Posts_Add_Tips5];
+            } else {
+                [weakSelf sendContent:content];
+            }
+        }
+    }];
 }
 
 - (void)relationCommentToPost:(NSString *)commentsObjectId {
