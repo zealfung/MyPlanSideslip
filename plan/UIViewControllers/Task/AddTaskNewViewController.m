@@ -24,10 +24,30 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setControls];
+    
+    //注册通知,监听键盘出现
+    [NotificationCenter addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    //注册通知，监听键盘消失事件
+    [NotificationCenter addObserver:self selector:@selector(handleKeyboardDidHidden:) name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
+}
+
+//监听事件
+- (void)handleKeyboardDidShow:(NSNotification*)showNotification {
+    //获取键盘高度
+    NSValue *keyboardRectAsObject=[[showNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey];
+    
+    CGRect keyboardRect;
+    [keyboardRectAsObject getValue:&keyboardRect];
+    
+    self.txtView.contentInset = UIEdgeInsetsMake(0, 0,keyboardRect.size.height, 0);
+}
+
+- (void)handleKeyboardDidHidden:(NSNotification*)hiddenNotification {
+    self.txtView.contentInset = UIEdgeInsetsZero;
 }
 
 - (void)setControls {

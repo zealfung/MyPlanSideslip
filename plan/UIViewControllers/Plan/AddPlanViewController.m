@@ -19,6 +19,7 @@
     UILabel *labelNotifyTime;
     UILabel *labelBeginDate;
     BOOL isSelectBeginDate;
+    CGRect txtViewFrame;
 }
 
 @end
@@ -42,6 +43,25 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self loadCustomView];
+    //注册通知,监听键盘出现
+    [NotificationCenter addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
+    //注册通知，监听键盘消失事件
+    [NotificationCenter addObserver:self selector:@selector(handleKeyboardDidHidden:) name:UIKeyboardDidHideNotification object:nil];
+}
+
+//监听事件
+- (void)handleKeyboardDidShow:(NSNotification*)showNotification {
+    //获取键盘高度
+    NSValue *keyboardRectAsObject=[[showNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey];
+    
+    CGRect keyboardRect;
+    [keyboardRectAsObject getValue:&keyboardRect];
+    
+    txtViewContent.contentInset = UIEdgeInsetsMake(0, 0,keyboardRect.size.height, 0);
+}
+
+- (void)handleKeyboardDidHidden:(NSNotification*)hiddenNotification {
+    txtViewContent.contentInset = UIEdgeInsetsZero;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -113,6 +133,7 @@
         detailTextView.delegate = self;
         detailTextView.inputAccessoryView = [self getInputAccessoryView];
         [self.view addSubview:detailTextView];
+        txtViewFrame = txtViewContent.frame;
         txtViewContent = detailTextView;
     }
     if (self.operationType == Edit) {
