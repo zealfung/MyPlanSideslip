@@ -10,7 +10,6 @@
 #import "MoreViewController.h"
 #import "AboutViewController.h"
 #import "SettingsViewController.h"
-#import "PersonalCenterViewController.h"
 
 @implementation MoreViewController {
 
@@ -84,8 +83,6 @@
 
 - (void)toPersonalCenterViewController {
     
-    PersonalCenterViewController *controller = [[PersonalCenterViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)toPersonSettingViewController {

@@ -43,8 +43,6 @@
 		131D6A421BF6CFAA009FDD72 /* Icon_Menu_Help@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A3D1BF6CFAA009FDD72 /* Icon_Menu_Help@2x.png */; };
 		131D6A431BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A3E1BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png */; };
 		131D6A441BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A3F1BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png */; };
-		131D6A6B1BFB5D9D009FDD72 /* PersonalCenterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A681BFB5D9D009FDD72 /* PersonalCenterViewController.m */; };
-		131D6A6C1BFB5D9D009FDD72 /* PieceButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A6A1BFB5D9D009FDD72 /* PieceButton.m */; };
 		131D6A6F1BFB5DDE009FDD72 /* PhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A6E1BFB5DDE009FDD72 /* PhotoViewController.m */; };
 		131D6A721BFC0994009FDD72 /* Bg_SideTop@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 131D6A711BFC0994009FDD72 /* Bg_SideTop@2x.png */; };
 		131D6A8E1BFD9660009FDD72 /* ShareCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A8D1BFD9660009FDD72 /* ShareCenter.m */; };
@@ -206,6 +204,7 @@
 		13AF64C61C269369008E8A9E /* PostsTwoImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF64C41C269369008E8A9E /* PostsTwoImageCell.m */; };
 		13AF64C71C269369008E8A9E /* PostsTwoImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13AF64C51C269369008E8A9E /* PostsTwoImageCell.xib */; };
 		13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */; };
+		13C725F01D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C725EF1D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.m */; };
 		13CC6F321C4E4280001D290F /* Icon_Tomorrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13CC6F311C4E4280001D290F /* Icon_Tomorrow@2x.png */; };
 		13CC6F341C4F1874001D290F /* Icon_EverydayNotify@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 13CC6F331C4F1874001D290F /* Icon_EverydayNotify@2x.png */; };
 		13D12E4E1CD0BF4100889A9E /* IDStringConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D12E4D1CD0BF4100889A9E /* IDStringConst.m */; };
@@ -322,10 +321,6 @@
 		131D6A3D1BF6CFAA009FDD72 /* Icon_Menu_Help@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Menu_Help@2x.png"; sourceTree = "<group>"; };
 		131D6A3E1BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Menu_PersonalCenter@2x.png"; sourceTree = "<group>"; };
 		131D6A3F1BF6CFAA009FDD72 /* Icon_Menu_PhotoLine@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Menu_PhotoLine@2x.png"; sourceTree = "<group>"; };
-		131D6A671BFB5D9D009FDD72 /* PersonalCenterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterViewController.h; sourceTree = "<group>"; };
-		131D6A681BFB5D9D009FDD72 /* PersonalCenterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterViewController.m; sourceTree = "<group>"; };
-		131D6A691BFB5D9D009FDD72 /* PieceButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieceButton.h; sourceTree = "<group>"; };
-		131D6A6A1BFB5D9D009FDD72 /* PieceButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieceButton.m; sourceTree = "<group>"; };
 		131D6A6D1BFB5DDE009FDD72 /* PhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PhotoViewController.h; sourceTree = "<group>"; };
 		131D6A6E1BFB5DDE009FDD72 /* PhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PhotoViewController.m; sourceTree = "<group>"; };
 		131D6A711BFC0994009FDD72 /* Bg_SideTop@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bg_SideTop@2x.png"; sourceTree = "<group>"; };
@@ -587,6 +582,8 @@
 		13AF64C41C269369008E8A9E /* PostsTwoImageCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PostsTwoImageCell.m; sourceTree = "<group>"; };
 		13AF64C51C269369008E8A9E /* PostsTwoImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PostsTwoImageCell.xib; sourceTree = "<group>"; };
 		13BB1C8E1BE98FAE00412D6D /* Btn_Settings@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Settings@2x.png"; sourceTree = "<group>"; };
+		13C725EE1D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterUndonePlanViewController.h; sourceTree = "<group>"; };
+		13C725EF1D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterUndonePlanViewController.m; sourceTree = "<group>"; };
 		13CC6F311C4E4280001D290F /* Icon_Tomorrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Tomorrow@2x.png"; sourceTree = "<group>"; };
 		13CC6F331C4F1874001D290F /* Icon_EverydayNotify@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_EverydayNotify@2x.png"; sourceTree = "<group>"; };
 		13D12E4C1CD0BF4100889A9E /* IDStringConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDStringConst.h; sourceTree = "<group>"; };
@@ -653,6 +650,8 @@
 		13F670A61CC12271009D2BA9 /* SettingsPersonalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsPersonalViewController.m; sourceTree = "<group>"; };
 		13F670A81CC24D56009D2BA9 /* NotificationConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NotificationConst.h; sourceTree = "<group>"; };
 		13F670A91CC24D56009D2BA9 /* NotificationConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationConst.m; sourceTree = "<group>"; };
+		13FC0DF71D18E19200905D60 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		13FC0DF81D18E19200905D60 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
 		D20618BBE36BB6EEAA8583DB /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		E63B58B1DFA51CA8858183E3 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		E7C51BA1CAD16DA7E729CF56 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -781,10 +780,8 @@
 				13F6708A1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib */,
 				13F670851CC07BD3009D2BA9 /* PersonalCenterNewViewController.h */,
 				13F670861CC07BD3009D2BA9 /* PersonalCenterNewViewController.m */,
-				131D6A671BFB5D9D009FDD72 /* PersonalCenterViewController.h */,
-				131D6A681BFB5D9D009FDD72 /* PersonalCenterViewController.m */,
-				131D6A691BFB5D9D009FDD72 /* PieceButton.h */,
-				131D6A6A1BFB5D9D009FDD72 /* PieceButton.m */,
+				13C725EE1D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.h */,
+				13C725EF1D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.m */,
 			);
 			path = PersonalCenter;
 			sourceTree = "<group>";
@@ -1913,6 +1910,7 @@
 				13D4069A1C3D00310089D702 /* DOPNavbarMenu.m in Sources */,
 				1361AFC81BCBA5E700DD5FFB /* DoPhotoCell.m in Sources */,
 				13D12E4E1CD0BF4100889A9E /* IDStringConst.m in Sources */,
+				13C725F01D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.m in Sources */,
 				131D6AC01C00769A009FDD72 /* FullScreenImageArrayViewController.m in Sources */,
 				137470A31C0815F100B7822A /* NSString+File.m in Sources */,
 				1361AFC31BCBA5E700DD5FFB /* AssetHelper.m in Sources */,
@@ -1954,10 +1952,8 @@
 				137470901C07E66B00B7822A /* CALayer+Anim.m in Sources */,
 				13D135CE1C577D9200E97D5F /* KxMenu.m in Sources */,
 				137470CB1C0AEB0300B7822A /* TaskRecord.m in Sources */,
-				131D6A6C1BFB5D9D009FDD72 /* PieceButton.m in Sources */,
 				131D6AC71C00AEB0009FDD72 /* UINavigationController+Util.m in Sources */,
 				137700E91B953521008C83FD /* AboutViewController.m in Sources */,
-				131D6A6B1BFB5D9D009FDD72 /* PersonalCenterViewController.m in Sources */,
 				132263A21B9C7DC200D21637 /* LocalNotificationManager.m in Sources */,
 				13A6AC931BC344A2005A02F9 /* FatherTableViewController.m in Sources */,
 				13A6AC8D1BBFDDD6005A02F9 /* DataCenter.m in Sources */,
@@ -2012,6 +2008,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				135B21941B900394005CE84A /* Base */,
+				13FC0DF81D18E19200905D60 /* zh-Hans */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -2020,6 +2017,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				135B21991B900394005CE84A /* Base */,
+				13FC0DF71D18E19200905D60 /* zh-Hans */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";

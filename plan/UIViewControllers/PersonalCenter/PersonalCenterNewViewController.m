@@ -11,6 +11,7 @@
 #import "SettingsPersonalViewController.h"
 #import "PersonalCenterNewViewController.h"
 #import "PersonalCenterMyPostsViewController.h"
+#import "PersonalCenterUndonePlanViewController.h"
 
 @interface PersonalCenterNewViewController ()
 
@@ -55,7 +56,7 @@
         case 0:
             return 1;
         case 1:
-            return 1;
+            return 2;
         default:
             break;
     }
@@ -98,6 +99,8 @@
         }
         if (indexPath.row == 0) {
             cell.textLabel.text = @"我的帖子";
+        } else if (indexPath.row == 1) {
+            cell.textLabel.text = @"未完计划";
         }
         return cell;
     } else {
@@ -120,6 +123,9 @@
         {
             if (indexPath.row == 0) {
                 PersonalCenterMyPostsViewController *controller = [[PersonalCenterMyPostsViewController alloc] init];
+                [self.navigationController pushViewController:controller animated:YES];
+            } else if (indexPath.row == 1) {
+                PersonalCenterUndonePlanViewController *controller = [[PersonalCenterUndonePlanViewController alloc] init];
                 [self.navigationController pushViewController:controller animated:YES];
             }
         }

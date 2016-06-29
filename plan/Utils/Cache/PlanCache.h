@@ -48,6 +48,9 @@
 
 + (NSArray *)getPlan:(BOOL)isEverydayPlan startIndex:(NSInteger)startIndex;
 
+/** 获取未完计划 */
++ (NSArray *)getUndonePlan;
+
 + (NSArray *)searchPlan:(NSString *)key;
 
 //ALL全部 DAY每日计划 FUTURE未来计划

@@ -1216,6 +1216,58 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
++ (NSArray *)getUndonePlan {
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return nil ;
+            }
+        }
+        
+        NSString *account = @"";
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser getCurrentUser];
+            account = user.objectId;
+        }
+        
+        NSString *condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd]];
+        NSString *order = @"DESC";
+        
+        NSMutableArray *array = [NSMutableArray array];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE %@ AND account=? AND isdeleted=0 AND iscompleted=0 ORDER BY beginDate %@", str_TableName_Plan, condition, order];
+        
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
+        
+        while ([rs next]) {
+            
+            Plan *plan = [[Plan alloc] init];
+            plan.account = account;
+            plan.planid = [rs stringForColumn:@"planid"];
+            plan.content = [rs stringForColumn:@"content"];
+            plan.createtime = [rs stringForColumn:@"createtime"];
+            plan.completetime = [rs stringForColumn:@"completetime"];
+            plan.updatetime = [rs stringForColumn:@"updatetime"];
+            plan.iscompleted = [rs stringForColumn:@"iscompleted"];
+            plan.isnotify = [rs stringForColumn:@"isnotify"];
+            plan.notifytime = [rs stringForColumn:@"notifytime"];
+            plan.beginDate = [rs stringForColumn:@"beginDate"];
+            plan.isdeleted = [rs stringForColumn:@"isdeleted"];
+            
+            if (!plan.beginDate
+                || plan.beginDate.length == 0) {
+                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:str_DateFormatter_yyyy_MM_dd];
+            }
+            
+            [array addObject:plan];
+        }
+        [rs close];
+        
+        return array;
+    }
+}
+
 + (NSArray *)searchPlan:(NSString *)key {
     @synchronized(__db) {
         
