@@ -59,8 +59,7 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
     searchKeyword = @"";
     searchResultArray = [NSArray array];
     
-    NSUInteger yOffset = 0;
-    NSUInteger tableHeight = CGRectGetHeight(self.view.bounds) - yOffset - 40;
+    NSUInteger tableHeight = CGRectGetHeight(self.view.bounds);
     CGRect frame = CGRectZero;
     frame.origin.x = 0;
     frame.origin.y = 0;
