@@ -54,5 +54,7 @@
 @property (nonatomic, strong) NSString *signature;
 /** 首页日月模式 0显示剩余天数 1显示剩余月数 */
 @property (nonatomic, strong) NSString *dayOrMonth;
+/** 未完计划处理设置 0未完计划不延期 1未完计划自动延期 */
+@property (nonatomic, strong) NSString *autoDelayUndonePlan;
 
 @end

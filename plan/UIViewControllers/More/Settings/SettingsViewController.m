@@ -24,13 +24,14 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     
     UIScrollView *scrollView;
     UIActionSheet *actionSheet;
-    NSInteger actionSheetType;//1.设置剩余天/月数 2.设置剩余时分秒
-    ThreeSubView *autoSyncThreeSubView;
-    ThreeSubView *countdownTypeThreeSubView;//倒计时类型
-    ThreeSubView *dayOrMonthThreeSubView;//日月类型
-    ThreeSubView *isUseGestureLockThreeSubView;//启用手势解锁
-    ThreeSubView *isShowGestureTrackThreeSubView;//显示手势轨迹
-    ThreeSubView *changeGestureThreeSubView;//修改手势
+    NSInteger actionSheetType;//1.设置剩余天/月数 2.设置剩余时分秒 2.设置自动处理未完计划延期
+    ThreeSubView *tsvAutoSync;
+    ThreeSubView *tsvCountdownType;//倒计时类型
+    ThreeSubView *tsvDayOrMonth;//日月类型
+    ThreeSubView *tsvAutoDelayUndonePlan;//未完计划是否自动后延设置
+    ThreeSubView *tsvIsUseGestureLock;//启用手势解锁
+    ThreeSubView *tsvIsShowGestureTrack;//显示手势轨迹
+    ThreeSubView *tsvChangeGesture;//修改手势
 }
 
 @end
@@ -63,7 +64,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     
     CGFloat yOffset = kEdgeInset;
     
-    UIView *view = [self createSectionThreeView];
+    UIView *view = [self createSectionView];
     [scrollView addSubview:view];
     
     CGRect frame = view.frame;
@@ -77,7 +78,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     [self hideHUD];
 }
 
-- (UIView *)createSectionThreeView {
+- (UIView *)createSectionView {
     UIView *view = [[UIView alloc] initWithFrame:CGRectMake(kEdgeInset, 0, [self contentWidth], 0)];
     view.backgroundColor = [UIColor whiteColor];
     
@@ -109,6 +110,18 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     //倒计时显示样式
     {
         ThreeSubView *threeSubView = [self createCountdownTypeView];
+        [self addSeparatorForView:threeSubView];
+        [view addSubview:threeSubView];
+        
+        CGRect frame = threeSubView.frame;
+        frame.origin.y = yOffset;
+        threeSubView.frame = frame;
+        
+        yOffset = CGRectGetMaxY(frame);
+    }
+    //未完计划自动处理设置
+    {
+        ThreeSubView *threeSubView = [self createAutoDelayUndonePlanView];
         [self addSeparatorForView:threeSubView];
         [view addSubview:threeSubView];
         
@@ -193,7 +206,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
         threeSubView.rightButton.selected = NO;
     }
     [threeSubView autoLayout];
-    autoSyncThreeSubView = threeSubView;
+    tsvAutoSync = threeSubView;
     return threeSubView;
 }
 
@@ -220,7 +233,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
             break;
     }
     [threeSubView autoLayout];
-    dayOrMonthThreeSubView = threeSubView;
+    tsvDayOrMonth = threeSubView;
     return threeSubView;
 }
 
@@ -252,7 +265,33 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
             break;
     }
     [threeSubView autoLayout];
-    countdownTypeThreeSubView = threeSubView;
+    tsvCountdownType = threeSubView;
+    return threeSubView;
+}
+
+- (ThreeSubView *)createAutoDelayUndonePlanView {
+    __weak typeof(self) weakSelf = self;
+    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
+        [weakSelf setAutoDelayUndonePlan];
+    } rightBlock:nil];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRSettingsViewTips15]];
+    threeSubView.fixRightWidth = kEdgeInset;
+    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
+    
+    NSString *autoDelayUndonePlan = [Config shareInstance].settings.autoDelayUndonePlan;
+    switch ([autoDelayUndonePlan integerValue]) {
+        case 0:
+            [threeSubView.centerButton setAllTitle:STRSettingsViewTips16];
+            break;
+        case 1:
+            [threeSubView.centerButton setAllTitle:STRSettingsViewTips17];
+            break;
+        default:
+            [threeSubView.centerButton setAllTitle:STRSettingsViewTips16];
+            break;
+    }
+    [threeSubView autoLayout];
+    tsvAutoDelayUndonePlan = threeSubView;
     return threeSubView;
 }
 
@@ -285,15 +324,15 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
         threeSubView.rightButton.selected = NO;
     }
     [threeSubView autoLayout];
-    isUseGestureLockThreeSubView = threeSubView;
+    tsvIsUseGestureLock = threeSubView;
     return threeSubView;
 }
 
 - (ThreeSubView *)createShowGestureTrackView {
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: nil rightBlock: ^{
         
-        isShowGestureTrackThreeSubView.rightButton.selected = !isShowGestureTrackThreeSubView.rightButton.selected;
-        if (isShowGestureTrackThreeSubView.rightButton.selected) {
+        tsvIsShowGestureTrack.rightButton.selected = !tsvIsShowGestureTrack.rightButton.selected;
+        if (tsvIsShowGestureTrack.rightButton.selected) {
             [Config shareInstance].settings.isShowGestureTrack = @"1";
         } else {
             [Config shareInstance].settings.isShowGestureTrack = @"0";
@@ -324,7 +363,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
         threeSubView.rightButton.selected = NO;
     }
     [threeSubView autoLayout];
-    isShowGestureTrackThreeSubView = threeSubView;
+    tsvIsShowGestureTrack = threeSubView;
     return threeSubView;
 }
 
@@ -344,7 +383,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
 
     [threeSubView autoLayout];
-    changeGestureThreeSubView = threeSubView;
+    tsvChangeGesture = threeSubView;
     return threeSubView;
 }
 
@@ -415,6 +454,13 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     actionSheet = [[UIActionSheet alloc] initWithTitle:STRSettingsViewTips6 delegate:self cancelButtonTitle:str_Cancel destructiveButtonTitle:nil otherButtonTitles:STRSettingsViewTips13, STRSettingsViewTips14, nil];
     [actionSheet showInView:self.view];
 }
+
+- (void)setAutoDelayUndonePlan {
+    actionSheetType = 3;
+    actionSheet = [[UIActionSheet alloc] initWithTitle:STRSettingsViewTips15 delegate:self cancelButtonTitle:str_Cancel destructiveButtonTitle:nil otherButtonTitles:STRSettingsViewTips16, STRSettingsViewTips17, nil];
+    [actionSheet showInView:self.view];
+}
+
 #pragma mark actionSheet点击事件
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
     UIAlertView *alertView;
@@ -457,7 +503,18 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
                 break;
             default:
                 break;
-    }
+        }
+    } else if(actionSheetType == 3) {
+        switch (buttonIndex) {
+            case 0://未完计划不延期
+                [Config shareInstance].settings.autoDelayUndonePlan = @"0";
+                break;
+            case 1://未完计划自动延期
+                [Config shareInstance].settings.autoDelayUndonePlan = @"1";
+                break;
+            default:
+                break;
+        }
     }
     [PlanCache storePersonalSettings:[Config shareInstance].settings];
     [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];
@@ -513,8 +570,8 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
 }
 
 - (void)setAutoSync {
-    autoSyncThreeSubView.rightButton.selected = !autoSyncThreeSubView.rightButton.selected;
-    if (autoSyncThreeSubView.rightButton.selected) {
+    tsvAutoSync.rightButton.selected = !tsvAutoSync.rightButton.selected;
+    if (tsvAutoSync.rightButton.selected) {
         [Config shareInstance].settings.isAutoSync = @"1";
     } else {
         [Config shareInstance].settings.isAutoSync = @"0";

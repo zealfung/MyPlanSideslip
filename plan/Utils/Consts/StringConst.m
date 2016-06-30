@@ -120,3 +120,9 @@ NSString *const STRSettingsViewTips12 = @"日月样式";
 NSString *const STRSettingsViewTips13 = @"显示剩余天数";
 /** 显示剩余月数 */
 NSString *const STRSettingsViewTips14 = @"显示剩余月数";
+/** 未完计划 */
+NSString *const STRSettingsViewTips15 = @"未完计划";
+/** 未完计划不延期 */
+NSString *const STRSettingsViewTips16 = @"未完计划不延期";
+/** 未完计划自动延期 */
+NSString *const STRSettingsViewTips17 = @"未完计划自动延期";

@@ -171,6 +171,7 @@ static BOOL finishTask;
     [Config shareInstance].settings.syntime = [obj objectForKey:@"syncTime"];
     [Config shareInstance].settings.countdownType = [obj objectForKey:@"countdownType"];
     [Config shareInstance].settings.dayOrMonth = [obj objectForKey:@"dayOrMonth"];
+    [Config shareInstance].settings.autoDelayUndonePlan = [obj objectForKey:@"autoDelayUndonePlan"];
     [Config shareInstance].settings.signature = [obj objectForKey:@"signature"];
     
     NSString *serverAvatarURL = [obj objectForKey:@"avatarURL"];
@@ -262,6 +263,9 @@ static BOOL finishTask;
     if ([Config shareInstance].settings.dayOrMonth) {
         [settingsObject setObject:[Config shareInstance].settings.dayOrMonth forKey:@"dayOrMonth"];
     }
+    if ([Config shareInstance].settings.autoDelayUndonePlan) {
+        [settingsObject setObject:[Config shareInstance].settings.autoDelayUndonePlan forKey:@"autoDelayUndonePlan"];
+    }
     if ([Config shareInstance].settings.signature) {
         [settingsObject setObject:[Config shareInstance].settings.signature forKey:@"signature"];
     }
@@ -344,6 +348,9 @@ static BOOL finishTask;
     }
     if ([Config shareInstance].settings.dayOrMonth) {
         [userSettings setObject:[Config shareInstance].settings.dayOrMonth forKey:@"dayOrMonth"];
+    }
+    if ([Config shareInstance].settings.autoDelayUndonePlan) {
+        [userSettings setObject:[Config shareInstance].settings.autoDelayUndonePlan forKey:@"autoDelayUndonePlan"];
     }
     if ([Config shareInstance].settings.signature) {
         [userSettings setObject:[Config shareInstance].settings.signature forKey:@"signature"];

@@ -120,3 +120,9 @@ UIKIT_EXTERN NSString *const STRSettingsViewTips12;
 UIKIT_EXTERN NSString *const STRSettingsViewTips13;
 /** 显示剩余月数 */
 UIKIT_EXTERN NSString *const STRSettingsViewTips14;
+/** 未完计划处理设置 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips15;
+/** 未完计划不延期 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips16;
+/** 未完计划自动延期 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips17;

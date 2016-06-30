@@ -268,7 +268,18 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     NSString *key = @"";
     for (NSInteger i = 0; i < array.count; i++) {
         Plan *plan = array[i];
-        key = plan.beginDate;
+        
+        if ([[Config shareInstance].settings.autoDelayUndonePlan isEqualToString:@"1"]
+            && [plan.iscompleted isEqualToString:@"0"]) {
+            
+            key = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+            plan.beginDate = key;
+            
+        } else {
+            
+            key = plan.beginDate;
+            
+        }
 
         NSMutableArray *dateArray = [dayPlanDict objectForKey:key];
         if (!dateArray) {
