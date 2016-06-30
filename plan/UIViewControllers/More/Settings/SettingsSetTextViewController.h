@@ -12,7 +12,7 @@ typedef NS_ENUM(NSUInteger, SetType) {
     
     SetNickName = 1, //设置昵称
     
-    SetLife, //设置生命
+    SetLife, //设置岁数
     
     SetEmail //设置邮箱
     
