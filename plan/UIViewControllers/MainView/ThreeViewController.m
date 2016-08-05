@@ -86,7 +86,6 @@
         NSString *timenow = [CommonFunction getTimeNowString];
         for (NSInteger i = 0; i < taskArray.count; i++) {
             Task *task = taskArray[i];
-            task.taskOrder = [NSString stringWithFormat:@"%ld", (long)i];
             task.updateTime = timenow;
             [PlanCache storeTask:task updateNotify:NO];
         }
@@ -264,6 +263,7 @@
     Task *task = taskArray[sourceIndexPath.row];
     //删除之前行的数据
     [taskArray removeObject:task];
+    task.taskOrder = [NSString stringWithFormat:@"%ld", (long)destinationIndexPath.row];
     // 插入数据到新的位置
     [taskArray insertObject:task atIndex:destinationIndexPath.row];
 }

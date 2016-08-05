@@ -1391,7 +1391,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
 
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND isDeleted=0 ORDER BY taskOrder ASC, createTime DESC", str_TableName_Task];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND isDeleted=0 ORDER BY cast(taskOrder as integer) ASC, createTime DESC", str_TableName_Task];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
@@ -1449,7 +1449,7 @@ static NSMutableDictionary *__contactsOnlineState;
             account = user.objectId;
         }
 
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND taskId=? ORDER BY taskOrder ASC, createTime DESC", str_TableName_Task];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND taskId=? ORDER BY cast(taskOrder as integer) ASC, createTime DESC", str_TableName_Task];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, taskId]];
         
