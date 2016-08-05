@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="9532" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="KGk-i7-Jjw" customClass="ThemeCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="160"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="159.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="8vL-bq-E8V">
+                        <rect key="frame" x="12" y="12" width="296" height="136"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="旅行计划" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lMd-HQ-DYo">
+                        <rect key="frame" x="12" y="96" width="296" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="mPu-cP-Fe2"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="8vL-bq-E8V" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="12" id="0rK-l4-2Fi"/>
+                    <constraint firstAttribute="bottom" secondItem="lMd-HQ-DYo" secondAttribute="bottom" constant="23.5" id="4vf-BQ-p8c"/>
+                    <constraint firstAttribute="bottom" secondItem="8vL-bq-E8V" secondAttribute="bottom" constant="11.5" id="Fpp-aL-6PE"/>
+                    <constraint firstItem="8vL-bq-E8V" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="U5S-D4-L6e"/>
+                    <constraint firstAttribute="trailing" secondItem="lMd-HQ-DYo" secondAttribute="trailing" constant="12" id="jN2-BC-hME"/>
+                    <constraint firstAttribute="trailing" secondItem="8vL-bq-E8V" secondAttribute="trailing" constant="12" id="lmc-LM-95w"/>
+                    <constraint firstItem="lMd-HQ-DYo" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="xyg-hJ-wZz"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="imgView" destination="8vL-bq-E8V" id="8W9-mH-Tba"/>
+                <outlet property="labelName" destination="lMd-HQ-DYo" id="3Vo-RI-q9z"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>
