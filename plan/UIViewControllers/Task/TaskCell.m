@@ -26,9 +26,9 @@
     if (![task.isNotify isEqualToString:@"1"]) {
         [cellView.imgViewAlarm setVisibility:UIViewVisibilityGone affectedMarginDirections:UIViewMarginDirectionRight];
     }
-    if (![task.isTomato isEqualToString:@"1"]) {
+//    if (![task.isTomato isEqualToString:@"1"]) {
         [cellView.imgViewTomato setVisibility:UIViewVisibilityGone affectedMarginDirections:UIViewMarginDirectionAll];
-    }
+//    }
     
     NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
     if ([task.isTomato isEqualToString:@"0"]
