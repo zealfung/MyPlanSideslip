@@ -23,6 +23,9 @@
     TaskCell *cellView = [[NSBundle mainBundle] loadNibNamed:@"TaskCell" owner:self options:nil].lastObject;
     cellView.labelTask.text = task.content;
     cellView.task = task;
+    cellView.btnDone.clipsToBounds = YES;
+    cellView.btnDone.layer.cornerRadius = cellView.btnDone.frame.size.width / 2;
+    
     if (![task.isNotify isEqualToString:@"1"]) {
         [cellView.imgViewAlarm setVisibility:UIViewVisibilityGone affectedMarginDirections:UIViewMarginDirectionRight];
     }
@@ -37,8 +40,44 @@
         [task.completionDate isEqualToString:date]) {
         
         cellView.labelTask.textColor = color_0BA32A;
+        cellView.btnDone.enabled = NO;
+        [cellView.btnDone setBackgroundColor:color_0BA32A];
+        
+    } else {
+        
+        cellView.btnDone.enabled = YES;
+        [cellView.btnDone setBackgroundColor:color_57a4fe_05];
+        
     }
+    
+    if (task.totalCount.length == 0
+        || [task.totalCount integerValue] == 0) {
+        [cellView.btnDone setAllTitle:@"0"];
+    } else {
+        [cellView.btnDone setAllTitle:task.totalCount];
+    }
+    
     return cellView;
+}
+
+- (IBAction)doneAction:(id)sender {
+    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+    self.task.completionDate = date;
+    NSString *count = self.task.totalCount;
+    NSInteger totalCount = 0;
+    if (count.length > 0) {
+        totalCount = [count integerValue] + 1;
+    }
+    self.task.totalCount = [NSString stringWithFormat:@"%ld", (long)totalCount];
+    NSString *time = [CommonFunction getTimeNowString];
+    self.task.updateTime = time;
+    
+    TaskRecord *taskRecord = [[TaskRecord alloc] init];
+    taskRecord.recordId = self.task.taskId;
+    taskRecord.createTime = time;
+    
+    [PlanCache storeTask:self.task updateNotify:NO];
+    [PlanCache storeTaskRecord:taskRecord];
 }
 
 @end

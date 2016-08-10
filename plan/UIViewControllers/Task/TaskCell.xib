@@ -15,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="idY-cN-hlh">
-                        <rect key="frame" x="12" y="0.0" width="296" height="59"/>
+                        <rect key="frame" x="12" y="0.0" width="256" height="59"/>
                         <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
@@ -34,19 +34,36 @@
                             <constraint firstAttribute="height" constant="16" id="jiP-fU-CBl"/>
                         </constraints>
                     </imageView>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hMK-M2-yDq">
+                        <rect key="frame" x="268" y="10" width="40" height="40"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="40" id="EhG-1h-Ape"/>
+                            <constraint firstAttribute="width" constant="40" id="s8N-D7-AlN"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <state key="normal">
+                            <color key="titleColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                        <connections>
+                            <action selector="doneAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Kjk-68-myJ"/>
+                        </connections>
+                    </button>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="trailing" secondItem="hMK-M2-yDq" secondAttribute="trailing" constant="12" id="5UU-zG-fbB"/>
+                    <constraint firstItem="hMK-M2-yDq" firstAttribute="leading" secondItem="idY-cN-hlh" secondAttribute="trailing" id="8gE-NJ-Og9"/>
                     <constraint firstItem="9bd-Ji-rJH" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="KaH-Pk-4Wd"/>
-                    <constraint firstAttribute="trailing" secondItem="idY-cN-hlh" secondAttribute="trailing" constant="12" id="Kpy-Is-P42"/>
                     <constraint firstAttribute="trailing" secondItem="9bd-Ji-rJH" secondAttribute="trailing" constant="3" id="Xoy-Gj-44i"/>
                     <constraint firstItem="idY-cN-hlh" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="12" id="a8o-54-Kn5"/>
                     <constraint firstItem="idY-cN-hlh" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="bl3-eo-nVV"/>
                     <constraint firstItem="A8c-dB-sLT" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="l64-0C-oqJ"/>
+                    <constraint firstItem="hMK-M2-yDq" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="10" id="lpF-Zf-fUb"/>
                     <constraint firstAttribute="bottom" secondItem="idY-cN-hlh" secondAttribute="bottom" constant="0.5" id="nwu-B4-5cf"/>
                     <constraint firstItem="9bd-Ji-rJH" firstAttribute="leading" secondItem="A8c-dB-sLT" secondAttribute="trailing" constant="3" id="qa3-lm-ZOB"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="btnDone" destination="hMK-M2-yDq" id="Z1d-iV-Gs9"/>
                 <outlet property="imgViewAlarm" destination="A8c-dB-sLT" id="aQj-Vs-vdp"/>
                 <outlet property="imgViewTomato" destination="9bd-Ji-rJH" id="Aii-LH-Ukc"/>
                 <outlet property="labelTask" destination="idY-cN-hlh" id="jJP-CX-pe4"/>
