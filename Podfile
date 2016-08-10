@@ -1,4 +1,7 @@
-platform:ios,'7.0'
+platform :ios, ‘7.0‘
+
+target 'plan' do
+
 pod 'MBProgressHUD'
 pod 'FMDB'
 pod 'BmobSDK'
@@ -9,3 +12,5 @@ pod 'WZLBadge'
 pod 'MJRefresh'
 pod 'ReactiveCocoa'
 pod 'SDCycleScrollView'
+
+end

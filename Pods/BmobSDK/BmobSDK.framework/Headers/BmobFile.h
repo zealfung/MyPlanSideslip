@@ -30,16 +30,6 @@
 
 
 
-/*!
- DEPRECATED: 使用-(id)initWithFilePath:(NSString*)filePath;代替
- */
--(id)initWithClassName:(NSString*)className withFilePath:(NSString*)filePath;
-
-/*!
- DEPRECATED: 使用-(id)initWithFileName:(NSString*)fileName  withFileData:(NSData*)data;代替
- */
--(id)initWithClassName:(NSString *)className  withFileName:(NSString*)fileName  withFileData:(NSData*)data;
-
 /**
  *  创建BmobFile对象
  *  可代替-(id)initWithClassName:(NSString*)className withFilePath:(NSString*)filePath;
@@ -59,11 +49,6 @@
  */
 -(id)initWithFileName:(NSString*)fileName  withFileData:(NSData*)data;
 
-/**
- *	上传文件并保存,使用同步的方法保存，故
- *  请勿在GCD使用该方法
- */
--(BOOL)save;
 
 /**
  *  异步上传文件并保存
@@ -78,7 +63,7 @@
  *  @param block         返回保存结果与信息，如果保存成功，则无返回信息
  *  @param progressBlock 上传进度
  */
--(void)saveInBackground:(BmobBooleanResultBlock)block withProgressBlock:(void(^)(float progress))progressBlock;
+-(void)saveInBackground:(BmobBooleanResultBlock)block withProgressBlock:(BmobProgressBlock)progressBlock;
 
 
 /**
@@ -94,10 +79,11 @@
  *  @param block         返回保存的结果与信息，如果保存成功则无返回信息
  *  @param progressBlock 上传文件的进度
  */
--(void)saveInBackgroundByDataSharding:(BmobBooleanResultBlock)block progressBlock:(void(^)(float progress))progressBlock;
+-(void)saveInBackgroundByDataSharding:(BmobBooleanResultBlock)block progressBlock:(BmobProgressBlock)progressBlock;
+
 
 /**
- *  异步请求删除文件
+ *  异步请求删除文件 ,适合1.7.0之后的接口上传的文件
  */
 -(void)deleteInBackground;
 
@@ -137,5 +123,13 @@
                        progressBlock:(BmobFileBatchProgressBlock)progress
                          resultBlock:(BmobFileBatchResultBlock)block;
 
+/**
+ *  批量删除又拍云上的文件
+ *
+ *  @param urls  url数组
+ *  @param block block里面有三个返回值 array 表示删除失败的文件地址，isSuccessful表示删除是否成功，error表示请求的结果
+ */
++(void)filesDeleteBatchWithArray:(NSArray <NSString *>*)urls
+                     resultBlock:(BmobFilesDeleteBlock)block;
 
 @end

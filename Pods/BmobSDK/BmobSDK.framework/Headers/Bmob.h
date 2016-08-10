@@ -23,16 +23,14 @@
 #import "BmobInstallation.h"
 #import "BmobACL.h"
 #import "BmobRole.h"
-#import "BmobImage.h"
 #import "BmobEvent.h"
 #import "BQLQueryResult.h"
 #import "BmobObject+Subclass.h"
-#import "BmobMessage.h"
 #import "BmobSMS.h"
 #import "BmobTableSchema.h"
 
 /**
- *  初始化成功的通知，注册该通知可以在初始化成功后执行需要的动作，最新版本的初始化过程已经修改成同步，因此该通过可以不作处理
+ *  初始化成功的通知
  */
 extern NSString *const  kBmobInitSuccessNotification;
 
@@ -53,11 +51,18 @@ extern NSString *const  kBmobInitFailNotification;
 
 
 /**
- *  得到服务器时间戳
+ *  得到服务器时间戳 ,需要在子线程调用
  *
  *  @return 时间戳字符串 (到秒)
  */
 +(NSString*)getServerTimestamp;
+
+/**
+ *  异步调用获取服务器时间戳的方法
+ *
+ *  @param completion 时间戳字符串和错误信息
+ */
++(void)serverTimestamp:(void(^)(NSString *timestamp,NSError *error))completion;
 
 
 /**
@@ -65,15 +70,32 @@ extern NSString *const  kBmobInitFailNotification;
  */
 +(void)activateSDK;
 
+#pragma mark - 配置
+
+/**
+ *  设置接口请求超时时间
+ *
+ *  @param seconds 多少秒
+ */
 +(void)setBmobRequestTimeOut:(CGFloat)seconds;
+
+/**
+ *  设置文件分块上传大小，不可小于100kb, 不超过5M
+ *
+ *  @param blockSize 块大小 单位 字节
+ */
++(void)setBlockSize:(NSUInteger)blockSize;
+
+/**
+ *  设置文件分块上传授权时间，默认 1800秒
+ *
+ *  @param seconds 秒
+ */
++(void)setUploadExpiresIn:(NSUInteger)seconds;
 
 # pragma mark - 获取表结构
 + (void)getAllTableSchemasWithCallBack:(BmobAllTableSchemasBlock)block;
 
 + (void)getTableSchemasWithClassName:(NSString*)tableName callBack:(BmobTableSchemasBlock)block;
-
-
-
-
 
 @end

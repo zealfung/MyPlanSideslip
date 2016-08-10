@@ -25,12 +25,12 @@
 /**
  *	 BmobObject对象的最后更新时间
  */
-@property(nonatomic,retain)NSDate *updatedAt;
+@property(nonatomic,strong)NSDate *updatedAt;
 
 /**
  *	 BmobObject对象的生成时间
  */
-@property(nonatomic,retain)NSDate *createdAt;
+@property(nonatomic,strong)NSDate *createdAt;
 
 /**
  *  BmobObject对象的表名
@@ -41,7 +41,7 @@
 /**
  *  权限控制里列表
  */
-@property(nonatomic,retain)BmobACL *ACL;
+@property(nonatomic,strong)BmobACL *ACL;
 
 
 /**
@@ -62,7 +62,7 @@
  *
  *  @return BmobObject对象
  */
-+(instancetype)objectWithoutDatatWithClassName:(NSString*)className objectId:(NSString *)objectId;
++(instancetype)objectWithoutDataWithClassName:(NSString*)className objectId:(NSString *)objectId;
 
 /**
  *	通过对象名称（类似数据库表名）初始化BmobObject对象
@@ -72,6 +72,17 @@
  *	@return	BmobObject
  */
 -(id)initWithClassName:(NSString*)className;
+
+
+
+/**
+ *  从字典创建BmobObject
+ *
+ *  @param dictionary 字典
+ *
+ *  @return BmobObject 对象
+ */
+-(instancetype)initWithDictionary:(NSDictionary *)dictionary;
 
 /**
  *	向BmobObject对象添加数据
@@ -153,6 +164,14 @@
 -(void)incrementKey:(NSString *)key;
 
 /**
+ *  列的值加 number
+ *
+ *  @param key    列的值
+ *  @param number 增加的数值，可为任意数值类型
+ */
+- (void)incrementKey:(NSString *)key byNumber:(NSNumber *)number;
+
+/**
  *  列的值加 amount
  *
  *  @param key    列的值
@@ -166,6 +185,14 @@
  *  @param key 列名
  */
 -(void)decrementKey:(NSString *)key;
+
+/**
+ *  列的值送去number
+ *
+ *  @param key    列值
+ *  @param number 送去的数值，可为做任意数值类型
+ */
+- (void)decrementKey:(NSString *)key byNumber:(NSNumber *)number;
 
 /**
  *  列的值减 amount
@@ -214,11 +241,5 @@
  *	@param	block	返回删除的结果是成功还是失败
  */
 -(void)deleteInBackgroundWithBlock:(BmobBooleanResultBlock)block;
-
-
-- (BOOL)isEqual:(BmobObject*)object;
-- (NSString*)description;
-
-
 
 @end

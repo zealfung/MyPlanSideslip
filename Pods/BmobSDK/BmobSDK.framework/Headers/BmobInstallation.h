@@ -21,12 +21,13 @@
  */
 +(BmobQuery *)query;
 
+
 /**
  * BmobInstallation实例
  *
  *  @return BmobInstallation实例
  */
-+(instancetype)currentInstallation;
++(instancetype)installation ;
 
 /**
  *  绑定设备DeviceToken
@@ -39,7 +40,7 @@
 @property (nonatomic,copy   ) NSString *deviceType;
 @property (nonatomic,copy   ) NSString *deviceToken;
 @property (nonatomic,assign ) int      badge;
-@property (nonatomic, retain) NSArray  *channels;
+@property (nonatomic, copy) NSArray  *channels;
 
 /**
  *  注册订阅频道

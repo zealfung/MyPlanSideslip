@@ -48,6 +48,11 @@
     [kActualView clearBadge];
 }
 
+- (void)resumeBadge
+{
+    [kActualView resumeBadge];
+}
+
 #pragma mark -- private method
 
 /**
@@ -70,6 +75,16 @@
 - (void)setBadge:(UILabel *)label
 {
     [kActualView setBadge:label];
+}
+
+- (UIFont *)badgeFont
+{
+	return kActualView.badgeFont;
+}
+
+- (void)setBadgeFont:(UIFont *)badgeFont
+{
+	[kActualView setBadgeFont:badgeFont];
 }
 
 - (UIColor *)badgeBgColor
@@ -120,6 +135,16 @@
 - (void)setBadgeCenterOffset:(CGPoint)badgeCenterOffset
 {
     [kActualView setBadgeCenterOffset:badgeCenterOffset];
+}
+
+- (NSInteger)badgeMaximumBadgeNumber
+{
+    return [kActualView badgeMaximumBadgeNumber];
+}
+
+- (void)setBadgeMaximumBadgeNumber:(NSInteger)badgeMaximumBadgeNumber
+{
+    [kActualView setBadgeMaximumBadgeNumber:badgeMaximumBadgeNumber];
 }
 
 @end

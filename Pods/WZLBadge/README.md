@@ -3,7 +3,7 @@ BADGE IN ONE LINE(iOS)
 ===================
 OVERVIEW
 ===================
-WZLBadge is a tool to add or clear badge for **any UIViews**, which is written in Objective-C, **supporting iOS5 ~ iOS8**, supporting **portrait and landscape device orientation**.
+WZLBadge is a tool to add or clear badge for **any UIViews**, which is written in Objective-C, **supporting iOS5 or above**, supporting **portrait and landscape device orientation**.
 
 > The code is implemented by the way of category for UIView, thus, 
 it is **very easy to use**.
@@ -25,9 +25,9 @@ Three animation types are supported:
 
 Here are examples for WZLBadge:
 
-![](http://chuantu.biz/t2/13/1443173925x1729546381.gif)
+![](http://media.xtwind.com/images/2016/03/14/09a28a239eba55b920b804b7c356f2b8.gif)
 
-![](http://chuantu.biz/t2/13/1443173966x1822614216.gif)
+![](http://media.xtwind.com/images/2016/03/14/d1db854e8fa291c0356f76727c6c6506.gif)
 
 ----------
 
@@ -42,7 +42,8 @@ Drag the
 
 Method2:
 Use CocoaPods to install automaticlly:
-pod 'WZLBadge', '~> 1.1.3’
+
+pod 'WZLBadge'
 
 ----------
 
@@ -69,11 +70,14 @@ USAGE
 
 or simply call interface:[- showBadge]
  
-3. Use the following to clear badge easily:
+3. Use the following to hide badge easily:
  
 
 > [someView clearBadge];
 
+4.Use the following to resume badge when it has been hidden:
+
+> [someView resumeBadge];
 
 ----------
 
@@ -116,18 +120,30 @@ This project will be update continually. Therefore, **fork** or **star** would b
 
 I wish it to be an ultimat solution for UIView badge in iOS.
 
+----------
+AUTHOR
+--------------------
+Zilin Weng(翁子林) https://github.com/weng1250
+
 
 ----------
 CONTRIBUTE
 --------------------
- - Zilin Weng(翁子林) https://github.com/weng1250
  - jfuellert https://github.com/jfuellert
+ - zhangao0086 https://github.com/zhangao0086
 
 Feel free to open an issue or pull request, if you need help or there is a bug.
 
 ----------
 CHANGE LOG
 --------------------
+v1.2.3 2016.2.15
+ 1.Enable resume badge when badge has been cleard(removed)
+
+V1.2.2  2015.12.18
+ 1.Enable badge font customization
+ 2.code warning removed
+
 V1.2  2015.09.25
  1.UITabBarItem badge is supproted;
  2.Enable change badge properties when badge is showing;

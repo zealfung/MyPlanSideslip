@@ -11,6 +11,10 @@
 
 @interface BmobObject (Subclass)
 
+@property (copy, nonatomic) NSArray *selectedKeyArray;
+
+@property (copy, nonatomic) NSArray *ignoredKeyArray;
+
 +(BmobQuery *)query;
 /**
  *  保存数据
@@ -45,7 +49,17 @@
  *
  *  @return 子类的对象
  */
--(instancetype)initFromBmobOjbect:(BmobObject *)obj;
+-(instancetype)initFromBmobObject:(BmobObject *)obj  ;
+
+/**
+ *  把bmobobject对象转成子类，对BmobObject，BmobUser，BmobRole，BmobInstallation的子类有效
+ *
+ *  @param obj    BmobObject对象
+ *  @param kClass 父类的class
+ *
+ *  @return 子类的对象
+ */
++(instancetype)convertWithObject:(BmobObject *)obj;
 
 @end
 

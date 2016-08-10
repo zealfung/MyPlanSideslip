@@ -193,7 +193,7 @@
  *
  *  @param keys 多个列组成的数组
  */
--(void)whereKeySExists:(NSArray *)keys;
+-(void)whereKeysExists:(NSArray *)keys;
 
 
 /**
@@ -309,7 +309,7 @@
  *
  *	@param	key	键
  *	@param	geopoint	位置信息
- *	@param	maxDistance	最大半径
+ *	@param	maxDistance	最大半径 (单位:弧度)
  */
 -(void)whereKey:(NSString *)key nearGeoPoint:(BmobGeoPoint *)geopoint withinRadians:(double)maxDistance;
 
@@ -324,6 +324,14 @@
 -(void)whereKey:(NSString *)key withinGeoBoxFromSouthwest:(BmobGeoPoint *)southwest toNortheast:(BmobGeoPoint *)northeast;
 
 #pragma mark 组合查询
+
+/**
+ *  添加查询
+ *
+ *  @param query 添加的BmobQuery中只能含有一个查询
+ */
+- (void)add:(BmobQuery *)query;
+
 /**
  *  组合并查询
  *
@@ -331,6 +339,10 @@
  */
 -(void)addTheConstraintByAndOperationWithArray:(NSArray*)array;
 
+/**
+ *  组合并，所有的where条件取并
+ */
+- (void)andOperation;
 
 /**
  *  组合或查询
@@ -339,21 +351,24 @@
  */
 -(void)addTheConstraintByOrOperationWithArray:(NSArray *)array;
 
-
+/**
+ *  组合或查询，所有的where条件取或
+ */
+- (void)orOperation;
 
 /**
- *  构造查询条件,一旦设置，查询的条件即为conDictionary
+ *  构造查询条件,一旦设置，查询的条件即为condition
  *
- *  @param conDictionary 构造查询条件
+ *  @param condition 构造查询条件
  */
--(void)queryWithAllConstraint:(NSDictionary*)conDictionary;
+-(void)queryWithAllConstraint:(NSDictionary*)condition;
 
 /**
  *  构造查询条件，可以与其他方法同时存在
  *
- *  @param dictionary 查询条件
+ *  @param condition 查询条件
  */
--(void)queryWithConstraint:(NSDictionary *)dictionary;
+-(void)queryWithConstraint:(NSDictionary *)condition;
 
 #pragma mark 缓存方面的函数
 
@@ -464,7 +479,7 @@
 /**
  *  取消查询
  */
--(void)cancle;
+-(void)cancel;
 
 # pragma mark 模糊查询
 /**
@@ -490,6 +505,5 @@
  *  @param end 想要查询的结尾的字符串
  */
 -(void)whereKey:(NSString *)key endWithString:(NSString*)end;
-
 
 @end

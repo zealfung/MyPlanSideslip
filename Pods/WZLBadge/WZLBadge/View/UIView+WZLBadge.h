@@ -9,15 +9,12 @@
 #import <UIKit/UIKit.h>
 #import "WZLBadgeProtocol.h"
 
-//for WBadgeStyleNumber style badge, if badge value is above kWZLBadgeMaximumBadgeNumber,
-//"kWZLBadgeMaximumBadgeNumber+" will be printed.
-#define kWZLBadgeMaximumBadgeNumber                     99
-
 #pragma mark -- badge apis
 
 @interface UIView (WZLBadge)<WZLBadgeProtocol>
 
 @property (nonatomic, strong) UILabel *badge;           /* badge entity, which is adviced not to set manually */
+@property (nonatomic, strong) UIFont *badgeFont;		/* [UIFont boldSystemFontOfSize:9] by default if not set */
 @property (nonatomic, strong) UIColor *badgeBgColor;    /* red color by default if not set */
 @property (nonatomic, strong) UIColor *badgeTextColor;  /* white color by default if not set */
 @property (nonatomic, assign) CGRect badgeFrame;        /* we have optimized the badge frame and center.
@@ -29,6 +26,10 @@
 
 @property (nonatomic, assign) WBadgeAnimType aniType;   /* NOTE that this is not animation type of badge's
                                                          appearing, nor  hidding*/
+
+@property (nonatomic, assign) NSInteger badgeMaximumBadgeNumber; /*for WBadgeStyleNumber style badge, 
+                                                                  if badge value is above badgeMaximumBadgeNumber,
+                                                                  "badgeMaximumBadgeNumber+" will be printed. */
 
 
 /**
@@ -50,8 +51,13 @@
 
 
 /**
- *  clear badge
+ *  clear badge(hide badge)
  */
 - (void)clearBadge;
+
+/**
+ *  make bage(if existing) not hiden
+ */
+- (void)resumeBadge;
 
 @end
