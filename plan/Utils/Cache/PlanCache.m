@@ -617,14 +617,15 @@ static NSMutableDictionary *__contactsOnlineState;
             FMDBQuickCheck(b, sqlString, __db);
             
             //更新提醒
-            if (b && updateNotify
-                && [task.isNotify isEqualToString:@"1"]) {
-                //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
-                task.notifyTime = [CommonFunction updateNotifyTime:task.notifyTime];
-
-                [self updateTaskNotification:task];
-            } else {
-                [self cancelTaskNotification:task.taskId];
+            if (b && updateNotify) {
+                if ([task.isNotify isEqualToString:@"1"]) {
+                    //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
+                    task.notifyTime = [CommonFunction updateNotifyTime:task.notifyTime];
+                    
+                    [self updateTaskNotification:task];
+                } else {
+                    [self cancelTaskNotification:task.taskId];
+                }
             }
         } else {
             
