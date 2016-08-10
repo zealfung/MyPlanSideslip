@@ -31,8 +31,10 @@
 //    }
     
     NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
-    if ([task.isTomato isEqualToString:@"0"]
-        && [task.completionDate isEqualToString:date]) {
+    if (
+//        [task.isTomato isEqualToString:@"0"]
+//        &&
+        [task.completionDate isEqualToString:date]) {
         
         cellView.labelTask.textColor = color_0BA32A;
     }

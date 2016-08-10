@@ -109,8 +109,10 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
     self.tableRecord.delegate = self;
     
     NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
-    if ([self.task.isTomato isEqualToString:@"0"]
-        && [self.task.completionDate isEqualToString:date]) {
+    if (
+//        [self.task.isTomato isEqualToString:@"0"]
+//        &&
+        [self.task.completionDate isEqualToString:date]) {
         self.btnStart.enabled = NO;
         [self.btnStart setBackgroundColor:color_8f8f8f];
     } else {
