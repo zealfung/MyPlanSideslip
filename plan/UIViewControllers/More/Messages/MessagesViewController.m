@@ -8,10 +8,10 @@
 
 #import "LogIn.h"
 #import "Messages.h"
-#import "BmobQuery.h"
-#import "BmobRelation.h"
 #import "WZLBadgeImport.h"
 #import <BmobSDK/BmobUser.h>
+#import <BmobSDK/BmobQuery.h>
+#import <BmobSDK/BmobRelation.h>
 #import "MessagesViewController.h"
 #import "PostsDetailViewController.h"
 #import "MessagesDetailViewController.h"
@@ -146,14 +146,14 @@
         //本地标识已读
         [PlanCache setMessagesRead:message];
         //网络登记已读
-        BmobObject *messages = [BmobObject objectWithoutDatatWithClassName:@"Messages" objectId:message.messageId];
+        BmobObject *messages = [BmobObject objectWithoutDataWithClassName:@"Messages" objectId:message.messageId];
         //查看数加1
         [messages incrementKey:@"readTimes"];
         if ([LogIn isLogin]) {
             //新建relation对象
             BmobRelation *relation = [[BmobRelation alloc] init];
-            BmobUser *user = [BmobUser getCurrentUser];
-            [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"_User" objectId:user.objectId]];
+            BmobUser *user = [BmobUser currentUser];
+            [relation addObject:[BmobObject objectWithoutDataWithClassName:@"_User" objectId:user.objectId]];
             //添加关联关系到hasRead列中
             [messages addRelation:relation forKey:@"hasRead"];
         }
@@ -170,7 +170,7 @@
         //本地标识已读
         [PlanCache setMessagesRead:notice];
         //网络登记已读
-        BmobObject *notices = [BmobObject objectWithoutDatatWithClassName:@"Notices" objectId:notice.messageId];
+        BmobObject *notices = [BmobObject objectWithoutDataWithClassName:@"Notices" objectId:notice.messageId];
         [notices setObject:@"1" forKey:@"hasRead"];
         [notices updateInBackground];
     }
@@ -205,7 +205,7 @@
 - (void)isLikedPost:(BmobObject *)posts {
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
     BmobQuery *inQuery = [BmobQuery queryWithClassName:@"UserSettings"];
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     [inQuery whereKey:@"userObjectId" equalTo:user.objectId];
     //匹配查询
     [bquery whereKey:@"likes" matchesQuery:inQuery];//（查询所有有关联的数据）
@@ -225,7 +225,7 @@
 }
 
 - (void)incrementPostsReadTimes:(BmobObject *)posts {
-    BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
+    BmobObject *obj = [BmobObject objectWithoutDataWithClassName:@"Posts" objectId:posts.objectId];
     //查看数加1
     [obj incrementKey:@"readTimes"];
     //异步更新obj的数据

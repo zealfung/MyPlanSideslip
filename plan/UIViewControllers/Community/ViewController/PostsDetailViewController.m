@@ -8,9 +8,9 @@
 
 #import "LogIn.h"
 #import "ShareCenter.h"
-#import "BmobRelation.h"
 #import "DOPNavbarMenu.h"
 #import "SDPhotoBrowser.h"
+#import <BmobSDK/BmobRelation.h>
 #import "LogInViewController.h"
 #import "UserLevelViewController.h"
 #import "PostsDetailViewController.h"
@@ -146,7 +146,7 @@ NSInteger const kDeleteTag = 20160110;
     if ([LogIn isLogin]) {
         BmobObject *postsAuthor = [self.posts objectForKey:@"author"];
         NSString *postsUserObjectId = [postsAuthor objectForKey:@"userObjectId"];
-        BmobUser *user = [BmobUser getCurrentUser];
+        BmobUser *user = [BmobUser currentUser];
         if ([postsUserObjectId isEqualToString:user.objectId]) {
             return YES;
         } else {
@@ -553,7 +553,7 @@ NSInteger const kDeleteTag = 20160110;
     [bquery includeKey:@"author,replyAuthor"];
     [bquery whereKey:@"isDeleted" equalTo:@"0"];
     //需要查询的列
-    BmobObject *post = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:self.posts.objectId];
+    BmobObject *post = [BmobObject objectWithoutDataWithClassName:@"Posts" objectId:self.posts.objectId];
     [bquery whereObjectKey:@"comments" relatedTo:post];
     [bquery orderByDescending:@"createdAt"];
     //查询该联系所有关联的评论
@@ -587,7 +587,7 @@ NSInteger const kDeleteTag = 20160110;
 - (void)isLikedComment:(BmobObject *)comment {
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Comments"];
     BmobQuery *inQuery = [BmobQuery queryWithClassName:@"UserSettings"];
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     [inQuery whereKey:@"userObjectId" equalTo:user.objectId];
     //匹配查询
     [bquery whereKey:@"likes" matchesQuery:inQuery];//（查询所有有关联的数据）
@@ -721,7 +721,7 @@ NSInteger const kDeleteTag = 20160110;
     
     [self showHUD];
     __weak typeof(self) weakSelf = self;
-    BmobObject *post = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:self.posts.objectId];
+    BmobObject *post = [BmobObject objectWithoutDataWithClassName:@"Posts" objectId:self.posts.objectId];
     [post setObject:@"1" forKey:@"isDeleted"];
     [post updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         isAnding = NO;
@@ -747,7 +747,7 @@ NSInteger const kDeleteTag = 20160110;
     [newPosts setObject:self.posts.objectId forKey:@"reportId"];
     [newPosts setObject:@"0" forKey:@"isSolved"];
     if ([LogIn isLogin]) {
-        BmobUser *user = [BmobUser getCurrentUser];
+        BmobUser *user = [BmobUser currentUser];
         [newPosts setObject:user.objectId forKey:@"reporterObjectId"];
     }
     [newPosts saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
@@ -772,7 +772,7 @@ NSInteger const kDeleteTag = 20160110;
     [newPosts setObject:comment.objectId forKey:@"reportId"];
     [newPosts setObject:@"0" forKey:@"isSolved"];
     if ([LogIn isLogin]) {
-        BmobUser *user = [BmobUser getCurrentUser];
+        BmobUser *user = [BmobUser currentUser];
         [newPosts setObject:user.objectId forKey:@"reporterObjectId"];
     }
     [newPosts saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
@@ -792,10 +792,10 @@ NSInteger const kDeleteTag = 20160110;
     isAnding = YES;
     
     __weak typeof(self) weakSelf = self;
-    BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
+    BmobObject *obj = [BmobObject objectWithoutDataWithClassName:@"Posts" objectId:posts.objectId];
     [obj incrementKey:@"likesCount"];
     BmobRelation *relation = [[BmobRelation alloc] init];
-    [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
+    [relation addObject:[BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         isAnding = NO;
@@ -818,10 +818,10 @@ NSInteger const kDeleteTag = 20160110;
     if (isAnding || likesCount < 1 || !isLike) return;
     isAnding = YES;
     
-    BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
+    BmobObject *obj = [BmobObject objectWithoutDataWithClassName:@"Posts" objectId:posts.objectId];
     [obj decrementKey:@"likesCount"];
     BmobRelation *relation = [[BmobRelation alloc] init];
-    [relation removeObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
+    [relation removeObject:[BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         isAnding = NO;
@@ -842,10 +842,10 @@ NSInteger const kDeleteTag = 20160110;
     if (isAnding || isLike) return;
     isAnding = YES;
     
-    BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Comments" objectId:comment.objectId];
+    BmobObject *obj = [BmobObject objectWithoutDataWithClassName:@"Comments" objectId:comment.objectId];
     [obj incrementKey:@"likesCount"];
     BmobRelation *relation = [[BmobRelation alloc] init];
-    [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
+    [relation addObject:[BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
     __weak typeof(self) weakSelf = self;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
@@ -869,10 +869,10 @@ NSInteger const kDeleteTag = 20160110;
     if (isAnding || likesCount < 1 || !isLike) return;
     isAnding = YES;
 
-    BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Comments" objectId:comment.objectId];
+    BmobObject *obj = [BmobObject objectWithoutDataWithClassName:@"Comments" objectId:comment.objectId];
     [obj decrementKey:@"likesCount"];
     BmobRelation *relation = [[BmobRelation alloc] init];
-    [relation removeObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
+    [relation removeObject:[BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
     __weak typeof(self) weakSelf = self;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
@@ -1028,7 +1028,7 @@ NSInteger const kDeleteTag = 20160110;
     
     //新建relation对象
     BmobRelation *relation = [[BmobRelation alloc] init];
-    [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:self.posts.objectId]];
+    [relation addObject:[BmobObject objectWithoutDataWithClassName:@"Posts" objectId:self.posts.objectId]];
     //添加关联关系到readUser列中
     [newComments addRelation:relation forKey:@"posts"];
     
@@ -1044,7 +1044,7 @@ NSInteger const kDeleteTag = 20160110;
 
     //设置评论关联的作者
     [Config shareInstance].settings = [PlanCache getPersonalSettings];
-    BmobObject *author = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
+    BmobObject *author = [BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
     [newComments setObject:author forKey:@"author"];
     [self showHUD];
     isAnding = YES;
@@ -1083,7 +1083,7 @@ NSInteger const kDeleteTag = 20160110;
 
 - (void)checkIsForbidden:(NSString *)content {
     __weak typeof(self) weakSelf = self;
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
@@ -1104,9 +1104,9 @@ NSInteger const kDeleteTag = 20160110;
 }
 
 - (void)relationCommentToPost:(NSString *)commentsObjectId {
-    BmobObject *post = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:self.posts.objectId];
+    BmobObject *post = [BmobObject objectWithoutDataWithClassName:@"Posts" objectId:self.posts.objectId];
     BmobRelation *relation = [[BmobRelation alloc] init];
-    [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"Comments" objectId:commentsObjectId]];
+    [relation addObject:[BmobObject objectWithoutDataWithClassName:@"Comments" objectId:commentsObjectId]];
     [post addRelation:relation forKey:@"comments"];
     [post incrementKey:@"commentsCount"];
     [post setObject:[NSDate date] forKey:@"updatedTime"];
@@ -1116,14 +1116,14 @@ NSInteger const kDeleteTag = 20160110;
 - (void)addNoticesForLikesPosts:(BmobObject *)posts {
     BmobObject *author = [posts objectForKey:@"author"];
     NSString *userObjectId = [author objectForKey:@"userObjectId"];
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     if ([user.objectId isEqualToString:userObjectId]) return;
     
     BmobObject *newNotice = [BmobObject objectWithClassName:@"Notices"];
     [newNotice setObject:@"1" forKey:@"noticeType"];//通知类型：1赞帖子 2赞评论 3回复帖子 4回复评论
     [newNotice setObject:posts.objectId forKey:@"postsObjectId"];//被评论或点赞的帖子id
     [newNotice setObject:[posts objectForKey:@"content"] forKey:@"noticeForContent"];//被评论的帖子内容
-    BmobObject *fromUser = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
+    BmobObject *fromUser = [BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
     [newNotice setObject:fromUser forKey:@"fromUser"];
     [newNotice setObject:userObjectId forKey:@"toAuthorObjectId"];//评论对象的ID
     [newNotice setObject:@"0" forKey:@"hasRead"];// 0未读 1已读
@@ -1133,14 +1133,14 @@ NSInteger const kDeleteTag = 20160110;
 - (void)addNoticesForReplyPosts:(BmobObject *)posts {
     BmobObject *author = [posts objectForKey:@"author"];
     NSString *userObjectId = [author objectForKey:@"userObjectId"];
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     if ([user.objectId isEqualToString:userObjectId]) return;
     
     BmobObject *newNotice = [BmobObject objectWithClassName:@"Notices"];
     [newNotice setObject:@"3" forKey:@"noticeType"];//通知类型：1赞帖子 2赞评论 3回复帖子 4回复评论
     [newNotice setObject:posts.objectId forKey:@"postsObjectId"];//被评论或点赞的帖子id
     [newNotice setObject:[posts objectForKey:@"content"] forKey:@"noticeForContent"];//被评论的帖子内容
-    BmobObject *fromUser = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
+    BmobObject *fromUser = [BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
     [newNotice setObject:fromUser forKey:@"fromUser"];
     [newNotice setObject:userObjectId forKey:@"toAuthorObjectId"];//评论对象的ID
     [newNotice setObject:@"0" forKey:@"hasRead"];// 0未读 1已读
@@ -1150,14 +1150,14 @@ NSInteger const kDeleteTag = 20160110;
 - (void)addNoticesForLikesComments:(BmobObject *)comments {
     BmobObject *commentAuthor = [comments objectForKey:@"author"];
     NSString *userObjectId = [commentAuthor objectForKey:@"userObjectId"];
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     if ([user.objectId isEqualToString:userObjectId]) return;
     
     BmobObject *newNotice = [BmobObject objectWithClassName:@"Notices"];
     [newNotice setObject:@"2" forKey:@"noticeType"];//通知类型：1赞帖子 2赞评论 3回复帖子 4回复评论
     [newNotice setObject:self.posts.objectId forKey:@"postsObjectId"];//被评论或点赞的帖子id
     [newNotice setObject:[comments objectForKey:@"content"] forKey:@"noticeForContent"];//被评论的帖子内容
-    BmobObject *fromUser = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
+    BmobObject *fromUser = [BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
     [newNotice setObject:fromUser forKey:@"fromUser"];
     [newNotice setObject:userObjectId forKey:@"toAuthorObjectId"];//评论对象的ID
     [newNotice setObject:@"0" forKey:@"hasRead"];// 0未读 1已读
@@ -1167,14 +1167,14 @@ NSInteger const kDeleteTag = 20160110;
 - (void)addNoticesForReplyComments:(BmobObject *)comments {
     BmobObject *commentAuthor = [comments objectForKey:@"author"];
     NSString *userObjectId = [commentAuthor objectForKey:@"userObjectId"];
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     if ([user.objectId isEqualToString:userObjectId]) return;
     
     BmobObject *newNotice = [BmobObject objectWithClassName:@"Notices"];
     [newNotice setObject:@"4" forKey:@"noticeType"];//通知类型：1赞帖子 2赞评论 3回复帖子 4回复评论
     [newNotice setObject:self.posts.objectId forKey:@"postsObjectId"];//被评论或点赞的帖子id
     [newNotice setObject:[comments objectForKey:@"content"] forKey:@"noticeForContent"];//被评论的帖子内容
-    BmobObject *fromUser = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
+    BmobObject *fromUser = [BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
     [newNotice setObject:fromUser forKey:@"fromUser"];
     [newNotice setObject:userObjectId forKey:@"toAuthorObjectId"];//评论对象的ID
     [newNotice setObject:@"0" forKey:@"hasRead"];// 0未读 1已读

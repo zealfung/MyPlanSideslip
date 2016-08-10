@@ -41,7 +41,7 @@
     self.txtPassword.inputAccessoryView = [self getInputAccessoryView];
 
     if ([LogIn isLogin]) {
-        BmobUser *user = [BmobUser getCurrentUser];
+        BmobUser *user = [BmobUser currentUser];
         NSString *email = [user objectForKey:@"username"];
         self.txtEmail.text = email;
         [self.txtEmail resignFirstResponder];

@@ -6,9 +6,9 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
-#import "BmobACL.h"
-#import "BmobUser.h"
-#import "BmobQuery.h"
+#import <BmobSDK/BmobACL.h>
+#import <BmobSDK/BmobUser.h>
+#import <BmobSDK/BmobQuery.h>
 #import "RegisterViewController.h"
 #import "ForgotPasswordViewController.h"
 
@@ -113,7 +113,7 @@
 }
 
 - (void)addSettingsToServer {
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     BmobObject *userSettings = [BmobObject objectWithClassName:@"UserSettings"];
     [userSettings setObject:user.objectId forKey:@"userObjectId"];
 

@@ -7,13 +7,13 @@
 //
 
 #import "LogIn.h"
-#import "BmobUser.h"
 #import "MJRefresh.h"
-#import "BmobQuery.h"
-#import "BmobRelation.h"
+#import <BmobSDK/BmobUser.h>
 #import "PostsNoImageCell.h"
+#import <BmobSDK/BmobQuery.h>
 #import "PostsOneImageCell.h"
 #import "PostsTwoImageCell.h"
+#import <BmobSDK/BmobRelation.h>
 #import "PostsDetailViewController.h"
 #import "PersonalCenterMyPostsViewController.h"
 
@@ -372,7 +372,7 @@
 
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
     BmobQuery *inQuery = [BmobQuery queryWithClassName:@"UserSettings"];
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     [inQuery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery whereKey:@"author" matchesQuery:inQuery];//匹配我的帖子
     [bquery includeKey:@"author"];//声明该次查询需要将author关联对象信息一并查询出来
@@ -418,14 +418,14 @@
 }
 
 - (void)incrementBannerReadTimes:(BmobObject *)obj {
-    BmobObject *banner = [BmobObject objectWithoutDatatWithClassName:@"Banner" objectId:obj.objectId];
+    BmobObject *banner = [BmobObject objectWithoutDataWithClassName:@"Banner" objectId:obj.objectId];
     //查看数加1
     [banner incrementKey:@"readTimes"];
     if ([LogIn isLogin]) {
         //新建relation对象
         BmobRelation *relation = [[BmobRelation alloc] init];
-        BmobUser *user = [BmobUser getCurrentUser];
-        [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"_User" objectId:user.objectId]];
+        BmobUser *user = [BmobUser currentUser];
+        [relation addObject:[BmobObject objectWithoutDataWithClassName:@"_User" objectId:user.objectId]];
         //添加关联关系到readUser列中
         [banner addRelation:relation forKey:@"readUser"];
     }
@@ -440,14 +440,14 @@
 }
 
 - (void)incrementPostsReadTimes:(BmobObject *)posts {
-    BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
+    BmobObject *obj = [BmobObject objectWithoutDataWithClassName:@"Posts" objectId:posts.objectId];
     //查看数加1
     [obj incrementKey:@"readTimes"];
     if ([LogIn isLogin]) {
         //新建relation对象
         BmobRelation *relation = [[BmobRelation alloc] init];
-        BmobUser *user = [BmobUser getCurrentUser];
-        [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"_User" objectId:user.objectId]];
+        BmobUser *user = [BmobUser currentUser];
+        [relation addObject:[BmobObject objectWithoutDataWithClassName:@"_User" objectId:user.objectId]];
         //添加关联关系到readUser列中
         [obj addRelation:relation forKey:@"readUser"];
     }
@@ -460,10 +460,10 @@
     if (isSendingLikes && isLike) return;
     
     __weak typeof(self) weakSelf = self;
-    BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
+    BmobObject *obj = [BmobObject objectWithoutDataWithClassName:@"Posts" objectId:posts.objectId];
     [obj incrementKey:@"likesCount"];
     BmobRelation *relation = [[BmobRelation alloc] init];
-    [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
+    [relation addObject:[BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
     isSendingLikes = YES;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
@@ -485,10 +485,10 @@
     BOOL isLike = [[posts objectForKey:@"isLike"] boolValue];
     if (isSendingLikes || likesCount < 1 || !isLike) return;
     
-    BmobObject *obj = [BmobObject objectWithoutDatatWithClassName:@"Posts" objectId:posts.objectId];
+    BmobObject *obj = [BmobObject objectWithoutDataWithClassName:@"Posts" objectId:posts.objectId];
     [obj decrementKey:@"likesCount"];
     BmobRelation *relation = [[BmobRelation alloc] init];
-    [relation removeObject:[BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
+    [relation removeObject:[BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
     isSendingLikes = YES;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
@@ -508,7 +508,7 @@
 - (void)isLikedPost:(BmobObject *)posts {
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
     BmobQuery *inQuery = [BmobQuery queryWithClassName:@"UserSettings"];
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     [inQuery whereKey:@"userObjectId" equalTo:user.objectId];
     //匹配查询
     [bquery whereKey:@"likes" matchesQuery:inQuery];//（查询所有有关联的数据）
@@ -532,14 +532,14 @@
 - (void)addNoticesForLikesPosts:(BmobObject *)posts {
     BmobObject *author = [posts objectForKey:@"author"];
     NSString *userObjectId = [author objectForKey:@"userObjectId"];
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     if ([user.objectId isEqualToString:userObjectId]) return;
     
     BmobObject *newNotice = [BmobObject objectWithClassName:@"Notices"];
     [newNotice setObject:@"1" forKey:@"noticeType"];//通知类型：1赞帖子 2赞评论 3回复帖子 4回复评论
     [newNotice setObject:posts.objectId forKey:@"postsObjectId"];//被评论或点赞的帖子id
     [newNotice setObject:[posts objectForKey:@"content"] forKey:@"noticeForContent"];//被评论的帖子内容
-    BmobObject *fromUser = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
+    BmobObject *fromUser = [BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
     [newNotice setObject:fromUser forKey:@"fromUser"];
     [newNotice setObject:userObjectId forKey:@"toAuthorObjectId"];//评论对象的ID
     [newNotice setObject:@"0" forKey:@"hasRead"];// 0未读 1已读

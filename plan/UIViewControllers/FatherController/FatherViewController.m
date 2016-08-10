@@ -152,7 +152,9 @@
 }
 
 - (void)setHudText:(NSString *)hudText {
-    self.hud.labelText = hudText;
+    if (self.hud) {
+        self.hud.label.text = hudText;
+    }
 }
 
 @end
@@ -161,19 +163,22 @@
 @implementation FatherViewController (HUDControl)
 
 - (void)showHUD {
-    if (!self.hud) {
-        MBProgressHUD *hud = [[MBProgressHUD alloc] initWithFrame:self.view.bounds];
-        hud.backgroundColor = [UIColor colorWithWhite:1 alpha:0.4];
-        [self.view addSubview:hud];
-        self.hud = hud;
-    }
-    self.hud.frame = self.view.bounds;
-    [self.view bringSubviewToFront:self.hud];
-    [self.hud show:YES];
+//    if (!self.hud) {
+//        MBProgressHUD *hud = [[MBProgressHUD alloc] initWithFrame:self.view.bounds];
+//        hud.backgroundColor = [UIColor colorWithWhite:1 alpha:0.4];
+//        [self.view addSubview:hud];
+//        self.hud = hud;
+//    }
+//    self.hud.frame = self.view.bounds;
+//    [self.view bringSubviewToFront:self.hud];
+//    [self.hud showAnimated:YES];
+    
+    [MBProgressHUD showHUDAddedTo:self.view animated:YES];
 }
 
 - (void)hideHUD {
-    [self.hud hide:YES];
+//    [self.hud hideAnimated:YES];
+    [MBProgressHUD hideHUDForView:self.view animated:YES];
 }
 
 @end

@@ -153,7 +153,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
     [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Acount]];
     threeSubView.fixRightWidth = kEdgeInset;
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     NSString *email = [user objectForKey:@"username"];
     NSRange range = [email rangeOfString:@"@"];
     if (range.location != NSNotFound) {

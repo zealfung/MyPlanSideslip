@@ -6,7 +6,7 @@
 //  Copyright (c) 2015年 Fengzy. All rights reserved.
 //
 
-#import "BmobQuery.h"
+#import <BmobSDK/BmobQuery.h>
 
 @interface DataCenter : NSObject
 

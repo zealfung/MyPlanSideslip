@@ -7,12 +7,11 @@
 //
 
 #import "Photo.h"
-#import "BmobFile.h"
-#import "BmobUser.h"
-#import "BmobQuery.h"
 #import "AssetHelper.h"
 #import "PageScrollView.h"
-#import <BmobSDK/BmobProFile.h>
+#import <BmobSDK/BmobUser.h>
+#import <BmobSDK/BmobFile.h>
+#import <BmobSDK/BmobQuery.h>
 #import "AddPostsViewController.h"
 #import "DoImagePickerController.h"
 
@@ -117,7 +116,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 
 - (void)checkIsForbidden {
     __weak typeof(self) weakSelf = self;
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
@@ -163,7 +162,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     [newPosts setObject:@"0" forKey:@"isHighlight"];
     //设置帖子关联的作者
     [Config shareInstance].settings = [PlanCache getPersonalSettings];
-    BmobObject *author = [BmobObject objectWithoutDatatWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
+    BmobObject *author = [BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];
     [newPosts setObject:author forKey:@"author"];
     if (photoArray.count > 0) {
         uploadCount = 0;
@@ -233,20 +232,20 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
         uploadProgress2 = 0;
     }
     __weak typeof(self) weakSelf = self;
-    [BmobProFile uploadFileWithFilename:@"imgPhoto.png" fileData:imgData block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
+    BmobFile *file = [[BmobFile alloc] initWithFileName:@"imgPhoto.png" withFileData:imgData];
+    [file saveInBackground:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
-            
-            uploadPhotoArray[index] = bmobFile.url;
+            uploadPhotoArray[index] = file.url;
             uploadCount += 1;
             if (uploadCount == photoArray.count) {
                 [newPosts addObjectsFromArray:uploadPhotoArray forKey:@"imgURLArray"];
                 [weakSelf sendPosts:newPosts];
             }
-        } else if (error) {
+        } else {
             [weakSelf hideHUD];
             [weakSelf alertButtonMessage:str_Send_Fail];
         }
-    } progress:^(CGFloat progress) {
+    } withProgressBlock:^(CGFloat progress) {
         CGFloat smallProgress = progress;
         if (photoArray.count > 1) {
             if (index == 0) {

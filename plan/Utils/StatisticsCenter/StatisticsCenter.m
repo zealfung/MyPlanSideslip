@@ -7,10 +7,10 @@
 //
 
 #import "LogIn.h"
-#import "BmobACL.h"
-#import "BmobQuery.h"
 #import "Statistics.h"
+#import <BmobSDK/BmobACL.h>
 #import "StatisticsCenter.h"
+#import <BmobSDK/BmobQuery.h>
 
 static BOOL isCheckingIn;
 
@@ -38,7 +38,7 @@ static BOOL isCheckingIn;
         if ([CommonFunction isSameDay:[NSDate date] date2:lastCheckInDate]) return;
     }
     __weak typeof(self) weakSelf = self;
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"CheckIn"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
@@ -92,7 +92,7 @@ static BOOL isCheckingIn;
 }
 
 + (void)addCheckIn {
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     BmobObject  *checkIn = [BmobObject objectWithClassName:@"CheckIn"];
     [checkIn setObject:user.objectId forKey:@"userObjectId"];
     [checkIn setObject:[NSNumber numberWithInt:1] forKey:@"recentDates"];
@@ -130,7 +130,7 @@ static BOOL isCheckingIn;
 }
 
 + (void)addCheckInRecord {
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     BmobObject *checkInRecord = [BmobObject objectWithClassName:@"CheckInRecord"];
     [checkInRecord setObject:user.objectId forKey:@"userObjectId"];
     BmobACL *acl = [BmobACL ACL];
@@ -151,8 +151,8 @@ static BOOL isCheckingIn;
 
 + (void)updateCheckIn:(BmobObject *)obj {
     BmobACL *acl = [BmobACL ACL];
-    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
-    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    [acl setReadAccessForUser:[BmobUser currentUser]];//设置只有当前用户可读
+    [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
     obj.ACL = acl;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {

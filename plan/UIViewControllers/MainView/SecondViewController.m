@@ -744,7 +744,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         //5天未新建计划提醒，不需要跳转到计划详情
         return;
     }
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     if ((user && [plan.account isEqualToString:user.objectId])
         || (!user && [plan.account isEqualToString:@""])) {
         

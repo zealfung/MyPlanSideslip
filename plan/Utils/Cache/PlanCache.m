@@ -8,11 +8,11 @@
 
 #import "LogIn.h"
 #import "PlanCache.h"
-#import "BmobQuery.h"
 #import "FMDatabase.h"
 #import "DataCenter.h"
 #import "FMDatabasePool.h"
 #import "FMDatabaseQueue.h"
+#import <BmobSDK/BmobQuery.h>
 #import <BmobSDK/BmobUser.h>
 #import "FMDatabaseAdditions.h"
 #import "LocalNotificationManager.h"
@@ -222,7 +222,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             settings.account = user.objectId;
         } else {
             settings.account = @"";
@@ -333,7 +333,7 @@ static NSMutableDictionary *__contactsOnlineState;
             return NO;
         
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             plan.account = user.objectId;
         } else {
             plan.account = @"";
@@ -427,7 +427,7 @@ static NSMutableDictionary *__contactsOnlineState;
             return NO;
         
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             photo.account = user.objectId;
         } else {
             photo.account = @"";
@@ -493,7 +493,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             statistics.account = user.objectId;
         } else {
             return NO;
@@ -560,7 +560,7 @@ static NSMutableDictionary *__contactsOnlineState;
             return NO;
         
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             task.account = user.objectId;
         } else {
             task.account = @"";
@@ -687,7 +687,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
         if (!message.title) {
@@ -749,7 +749,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
         
@@ -784,7 +784,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             plan.account = user.objectId;
         } else {
             plan.account = @"";
@@ -829,7 +829,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             photo.account = user.objectId;
         } else {
             photo.account = @"";
@@ -868,7 +868,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             task.account = user.objectId;
         } else {
             task.account = @"";
@@ -913,7 +913,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
         
@@ -939,7 +939,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
 
@@ -970,7 +970,7 @@ static NSMutableDictionary *__contactsOnlineState;
 
         Settings *settings = [[Settings alloc] init];
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             settings.account = user.objectId;
         } else {
             settings.account = @"";
@@ -1049,7 +1049,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
             //处理上次升级后本地数据显示不全的问题
             NSString *tmp = [UserDefaults objectForKey:str_Tmp_Flag1];
@@ -1129,7 +1129,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
         
@@ -1181,7 +1181,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
         
@@ -1233,7 +1233,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
         
@@ -1292,7 +1292,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
         
@@ -1345,7 +1345,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         Statistics *statistics = [[Statistics alloc] init];
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             statistics.account = user.objectId;
         } else {
             statistics.account = @"";
@@ -1386,7 +1386,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
 
@@ -1445,7 +1445,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
 
@@ -1532,7 +1532,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
         
@@ -1574,7 +1574,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
         
@@ -1617,7 +1617,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
         
@@ -1647,7 +1647,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
         
@@ -1677,7 +1677,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
         
@@ -1811,7 +1811,7 @@ static NSMutableDictionary *__contactsOnlineState;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
     NSString *fiveDayLater = [dateFormatter stringFromDate:[[NSDate date] dateByAddingTimeInterval:5 * 24 * 3600]];
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     NSString *account = @"";
     if (user) {
         account = user.objectId;
@@ -1836,7 +1836,7 @@ static NSMutableDictionary *__contactsOnlineState;
 
 + (void)linkedLocalDataToAccount {
     
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     if (!user) return;
     
     [Config shareInstance].settings = [PlanCache getPersonalSettings];
@@ -1929,7 +1929,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         } else {
             return array;
@@ -2027,7 +2027,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         } else {
             return array;
@@ -2096,7 +2096,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
         
@@ -2140,7 +2140,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *account = @"";
         if ([LogIn isLogin]) {
-            BmobUser *user = [BmobUser getCurrentUser];
+            BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
         

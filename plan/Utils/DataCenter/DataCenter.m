@@ -7,12 +7,11 @@
 //
 
 #import "LogIn.h"
-#import "BmobACL.h"
-#import "BmobFile.h"
 #import "PlanCache.h"
 #import "DataCenter.h"
-#import "BmobObjectsBatch.h"
-#import <BmobSDK/BmobProFile.h>
+#import <BmobSDK/BmobACL.h>
+#import <BmobSDK/BmobFile.h>
+#import <BmobSDK/BmobObjectsBatch.h>
 #import "SDWebImageDownloader.h"
 
 static BOOL finishSettings;
@@ -102,7 +101,7 @@ static BOOL finishTask;
         finishTask = NO;
     }
     __weak typeof(self) weakSelf = self;
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
@@ -225,7 +224,7 @@ static BOOL finishTask;
 
 + (void)syncLocalToServerForSettings {
     __weak typeof(self) weakSelf = self;
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
@@ -299,7 +298,7 @@ static BOOL finishTask;
     __weak typeof(self) weakSelf = self;
     BmobACL *acl = [BmobACL ACL];
     [acl setPublicReadAccess];//设置所有人可读
-    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
     settingsObject.ACL = acl;
     [settingsObject updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
@@ -319,7 +318,7 @@ static BOOL finishTask;
 }
 
 + (void)addSettingsToServer {
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     BmobObject *userSettings = [BmobObject objectWithClassName:@"UserSettings"];
     [Config shareInstance].settings = [PlanCache getPersonalSettings];
     
@@ -397,11 +396,12 @@ static BOOL finishTask;
 + (void)uploadAvatar:(BmobObject *)obj {
     //上传头像
     __weak typeof(self) weakSelf = self;
-    [BmobProFile uploadFileWithFilename:@"avatar.png" fileData:[Config shareInstance].settings.avatar block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
+    BmobFile *file = [[BmobFile alloc] initWithFileName:@"avatar.png" withFileData:[Config shareInstance].settings.avatar];
+    [file saveInBackground:^(BOOL isSuccessful, NSError *error) {
         finishUploadAvatar = YES;
         if (isSuccessful) {
             NSString *timeNow = [CommonFunction getTimeNowString];
-            [Config shareInstance].settings.avatarURL = bmobFile.url;
+            [Config shareInstance].settings.avatarURL = file.url;
             if (finishUploadAvatar
                 && finishUploadCenterTop
                 && [Config shareInstance].settings.updatetime) {
@@ -412,14 +412,12 @@ static BOOL finishTask;
                 }
             }
             //把上传完的文件保存到“头像”字段
-            [obj setObject:bmobFile.url forKey:@"avatarURL"];
+            [obj setObject:file.url forKey:@"avatarURL"];
             [obj updateInBackground];
             [PlanCache storePersonalSettings:[Config shareInstance].settings];
-        } else if (error) {
-            NSLog(@"上传头像到服务器失败：%@",error);
         }
         [weakSelf IsAllUploadFinished];
-    } progress:^(CGFloat progress) {
+    } withProgressBlock:^(CGFloat progress) {
         //上传进度
         NSLog(@"上传头像进度： %f",progress);
     }];
@@ -427,11 +425,12 @@ static BOOL finishTask;
 
 + (void)uploadCenterTop:(BmobObject *)obj {
     __weak typeof(self) weakSelf = self;
-    [BmobProFile uploadFileWithFilename:@"centerTop.png" fileData:[Config shareInstance].settings.centerTop block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
+    BmobFile *file = [[BmobFile alloc] initWithFileName:@"centerTop.png" withFileData:[Config shareInstance].settings.centerTop];
+    [file saveInBackground:^(BOOL isSuccessful, NSError *error) {
         finishUploadCenterTop = YES;
         if (isSuccessful) {
             NSString *timeNow = [CommonFunction getTimeNowString];
-            [Config shareInstance].settings.centerTopURL = bmobFile.url;
+            [Config shareInstance].settings.centerTopURL = file.url;
             if (finishUploadAvatar
                 && finishUploadCenterTop
                 && [Config shareInstance].settings.updatetime) {
@@ -441,15 +440,13 @@ static BOOL finishTask;
                     [Config shareInstance].settings.syntime = timeNow;
                 }
             }
-
-            [obj setObject:bmobFile.url forKey:@"centerTopURL"];
+            
+            [obj setObject:file.url forKey:@"centerTopURL"];
             [obj updateInBackground];
             [PlanCache storePersonalSettings:[Config shareInstance].settings];
-        } else if (error) {
-            NSLog(@"上传个人中心图片到服务器失败：%@",error);
         }
         [weakSelf IsAllUploadFinished];
-    } progress:^(CGFloat progress) {
+    } withProgressBlock:^(CGFloat progress) {
         //上传进度
         NSLog(@"上传个人中心图片进度： %f",progress);
     }];
@@ -468,7 +465,7 @@ static BOOL finishTask;
         localNewArray = [PlanCache getPlanForSync:nil];
     }
     __weak typeof(self) weakSelf = self;
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
     for (Plan *plan in localNewArray) {
         [bquery whereKey:@"userObjectId" equalTo:user.objectId];
@@ -546,14 +543,14 @@ static BOOL finishTask;
         [obj setObject:plan.beginDate forKey:@"beginDate"];
     }
     BmobACL *acl = [BmobACL ACL];
-    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
-    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    [acl setReadAccessForUser:[BmobUser currentUser]];//设置只有当前用户可读
+    [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
     obj.ACL = acl;
     [obj updateInBackground];
 }
 
 + (void)syncServerToLocalForPlan {
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     NSString *count = [PlanCache getPlanTotalCount:@"ALL"];
     __weak typeof(self) weakSelf = self;
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
@@ -628,7 +625,7 @@ static BOOL finishTask;
     } else {
         localNewArray = [PlanCache getPhotoForSync:nil];
     }
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Photo"];
     for (Photo *photo in localNewArray) {
         [bquery whereKey:@"userObjectId" equalTo:user.objectId];
@@ -672,8 +669,8 @@ static BOOL finishTask;
     [newPhoto saveAllWithDictionary:dic];
     __weak typeof(self) weakSelf = self;
     BmobACL *acl = [BmobACL ACL];
-    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
-    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    [acl setReadAccessForUser:[BmobUser currentUser]];//设置只有当前用户可读
+    [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
     newPhoto.ACL = acl;
     [newPhoto saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
@@ -689,7 +686,7 @@ static BOOL finishTask;
 }
 
 + (void)updatePhotoForServer:(Photo *)photo obj:(BmobObject *)obj {
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     if (photo.content) {
         [obj setObject:photo.content forKey:@"content"];
     }
@@ -724,18 +721,20 @@ static BOOL finishTask;
          || serverURL.length == 0
          || ![photo.photoURLArray[index] isEqualToString:serverURL])
         && imgData) {
-
-        [BmobProFile uploadFileWithFilename:@"imgPhoto.png" fileData:imgData block:^(BOOL isSuccessful, NSError *error, NSString *filename, NSString *url, BmobFile *bmobFile) {
+        
+        BmobFile *file = [[BmobFile alloc] initWithFileName:@"imgPhoto.png" withFileData:imgData];
+        [file saveInBackground:^(BOOL isSuccessful, NSError *error) {
+            
             if (isSuccessful) {
-                
-                [obj setObject:bmobFile.url forKey:urlName];
+                [obj setObject:file.url forKey:urlName];
                 [obj setObject:photo.updatetime forKey:@"updatedTime"];
                 [obj updateInBackground];
                 
-                photo.photoURLArray[index] = bmobFile.url;
+                photo.photoURLArray[index] = file.url;
                 [PlanCache storePhoto:photo];
             }
-        } progress:^(CGFloat progress) {
+
+        } withProgressBlock:^(CGFloat progress) {
             //上传进度
             NSLog(@"上传影像图片进度： %f",progress);
         }];
@@ -744,7 +743,7 @@ static BOOL finishTask;
 
 + (void)syncServerToLocalForPhoto {
     NSString *count = [PlanCache getPhotoTotalCount];
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Photo"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
@@ -835,7 +834,7 @@ static BOOL finishTask;
 
 + (void)syncLocalToServerForTask {
     __weak typeof(self) weakSelf = self;
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     NSArray *localNewArray = [NSArray array];
     if ([Config shareInstance].settings.syntime.length > 0) {
         
@@ -883,8 +882,8 @@ static BOOL finishTask;
                                       @"isDeleted":task.isDeleted};
                 [newTask saveAllWithDictionary:dic];
                 BmobACL *acl = [BmobACL ACL];
-                [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
-                [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+                [acl setReadAccessForUser:[BmobUser currentUser]];//设置只有当前用户可读
+                [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
                 newTask.ACL = acl;
                 [newTask saveInBackground];
                 //同时上传改任务的完成记录
@@ -901,7 +900,7 @@ static BOOL finishTask;
     } else {
         localNewArray = [PlanCache getTaskRecordForSyncByTaskId:taskId syntime:nil];
     }
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     for (TaskRecord *taskrecord in localNewArray) {
         
         BmobObject *newTaskRecord = [BmobObject objectWithClassName:@"TaskRecord"];
@@ -955,15 +954,15 @@ static BOOL finishTask;
         [obj setObject:task.isDeleted forKey:@"isDeleted"];
     }
     BmobACL *acl = [BmobACL ACL];
-    [acl setReadAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可读
-    [acl setWriteAccessForUser:[BmobUser getCurrentUser]];//设置只有当前用户可写
+    [acl setReadAccessForUser:[BmobUser currentUser]];//设置只有当前用户可读
+    [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
     obj.ACL = acl;
     [obj updateInBackground];
 }
 
 + (void)syncServerToLocalForTask {
     __weak typeof(self) weakSelf = self;
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Task"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
@@ -1017,7 +1016,7 @@ static BOOL finishTask;
 }
 
 + (void)getNewTaskRecordFromServer:(NSString *)recordId {
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"TaskRecord"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery whereKey:@"recordId" equalTo:recordId];
@@ -1042,7 +1041,7 @@ static BOOL finishTask;
     //构造约束条件
     BmobQuery *inQuery = [BmobQuery queryWithClassName:@"_User"];
     if ([LogIn isLogin]) {
-        BmobUser *user = [BmobUser getCurrentUser];
+        BmobUser *user = [BmobUser currentUser];
         [inQuery whereKey:@"username" equalTo:user.username];
         //匹配查询
         //    [bquery whereKey:@"hasRead" matchesQuery:inQuery];（查询所有有关联的数据）
@@ -1070,7 +1069,7 @@ static BOOL finishTask;
 
     //加载回复和点赞通知
     if ([LogIn isLogin]) {
-        BmobUser *user = [BmobUser getCurrentUser];
+        BmobUser *user = [BmobUser currentUser];
         BmobQuery *nquery = [BmobQuery queryWithClassName:@"Notices"];
         [nquery includeKey:@"fromUser"];
         [nquery whereKey:@"hasRead" equalTo:@"0"];

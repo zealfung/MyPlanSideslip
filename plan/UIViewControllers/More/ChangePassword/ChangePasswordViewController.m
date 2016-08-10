@@ -6,7 +6,7 @@
 //  Copyright © 2016年 Fengzy. All rights reserved.
 //
 
-#import "BmobUser.h"
+#import <BmobSDK/BmobUser.h>
 #import "ChangePasswordViewController.h"
 
 @interface ChangePasswordViewController ()
@@ -71,7 +71,7 @@
 - (void)submit {
     [self showHUD];
     __weak typeof(self) weakSelf = self;
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     [user updateCurrentUserPasswordWithOldPassword:self.txtOldPassword.text newPassword:self.txtNewPassword.text block:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful) {
             //用新密码登录

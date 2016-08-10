@@ -6,7 +6,7 @@
 //  Copyright © 2016年 Fengzy. All rights reserved.
 //
 
-#import "BmobObject.h"
+#import <BmobSDK/BmobObject.h>
 #import "UserLevelViewController.h"
 
 @interface UserLevelViewController ()

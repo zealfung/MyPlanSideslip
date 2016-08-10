@@ -6,9 +6,9 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
-#import "BmobQuery.h"
 #import "ThreeSubView.h"
 #import "GrowingTextView.h"
+#import <BmobSDK/BmobQuery.h>
 #import "FatherViewController.h"
 
 @interface PostsDetailViewController : FatherViewController

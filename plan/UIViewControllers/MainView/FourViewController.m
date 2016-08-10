@@ -7,11 +7,8 @@
 //
 
 #import "LogIn.h"
-#import "BmobUser.h"
 #import "MJRefresh.h"
-#import "BmobQuery.h"
 #import "ThemeCell.h"
-#import "BmobRelation.h"
 #import "WZLBadgeImport.h"
 #import "PostsNoImageCell.h"
 #import "WebViewController.h"
@@ -21,6 +18,9 @@
 #import "FourViewController.h"
 #import "LogInViewController.h"
 #import "LogInViewController.h"
+#import <BmobSDK/BmobUser.h>
+#import <BmobSDK/BmobQuery.h>
+#import <BmobSDK/BmobRelation.h>
 #import <RESideMenu/RESideMenu.h>
 #import "AddPostsViewController.h"
 #import "UserLevelViewController.h"
@@ -133,7 +133,7 @@
     bannerView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
     bannerView.delegate = self;
     bannerView.titlesGroup = headerTitlesArray;
-    bannerView.dotColor = [UIColor whiteColor]; //自定义分页控件小圆标颜色
+//    bannerView.pageDotColor = [UIColor whiteColor]; //自定义分页控件小圆标颜色
     bannerView.placeholderImage = [UIImage imageNamed:png_ImageDefault_Rectangle];
     return bannerView;
 }
@@ -352,14 +352,14 @@
 }
 
 - (void)incrementBannerReadTimes:(BmobObject *)obj {
-    BmobObject *banner = [BmobObject objectWithoutDatatWithClassName:@"Banner" objectId:obj.objectId];
+    BmobObject *banner = [BmobObject objectWithoutDataWithClassName:@"Banner" objectId:obj.objectId];
     //查看数加1
     [banner incrementKey:@"readTimes"];
     if ([LogIn isLogin]) {
         //新建relation对象
         BmobRelation *relation = [[BmobRelation alloc] init];
-        BmobUser *user = [BmobUser getCurrentUser];
-        [relation addObject:[BmobObject objectWithoutDatatWithClassName:@"_User" objectId:user.objectId]];
+        BmobUser *user = [BmobUser currentUser];
+        [relation addObject:[BmobObject objectWithoutDataWithClassName:@"_User" objectId:user.objectId]];
         //添加关联关系到readUser列中
         [banner addRelation:relation forKey:@"readUser"];
     }

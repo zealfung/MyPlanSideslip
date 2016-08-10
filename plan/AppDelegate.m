@@ -190,7 +190,7 @@
         plan.notifytime = fiveDayTomorrow;
         [PlanCache updatePlanNotification:plan];
     } else {
-        BmobUser *user = [BmobUser getCurrentUser];
+        BmobUser *user = [BmobUser currentUser];
         NSString *account = @"";
         if (user) {
             account = user.objectId;

@@ -6,7 +6,7 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
-#import "BmobUser.h"
+#import <BmobSDK/BmobUser.h>
 #import "SettingsViewController.h"
 #import "ForgotPasswordViewController.h"
 

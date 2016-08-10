@@ -13,7 +13,7 @@
 
 + (BOOL)isLogin {
     
-    BmobUser *bUser = [BmobUser getCurrentUser];
+    BmobUser *bUser = [BmobUser currentUser];
     if (bUser) {
         return YES;
     } else {

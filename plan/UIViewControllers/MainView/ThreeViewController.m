@@ -131,7 +131,7 @@
     }
     Task *task = [[Task alloc] init];
     task.account = [dict objectForKey:@"account"];
-    BmobUser *user = [BmobUser getCurrentUser];
+    BmobUser *user = [BmobUser currentUser];
     if ((user && [task.account isEqualToString:user.objectId])
         || (!user && [task.account isEqualToString:@""])) {
         
