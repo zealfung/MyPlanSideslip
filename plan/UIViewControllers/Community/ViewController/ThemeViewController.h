@@ -10,4 +10,6 @@
 
 @interface ThemeViewController : FatherTableViewController
 
+@property (nonatomic, strong) BmobObject *theme;
+
 @end

@@ -9,7 +9,6 @@
 #import "LogIn.h"
 #import "MJRefresh.h"
 #import "ThemeCell.h"
-#import "WZLBadgeImport.h"
 #import "PostsNoImageCell.h"
 #import "WebViewController.h"
 #import "PostsOneImageCell.h"
@@ -21,7 +20,6 @@
 #import "LogInViewController.h"
 #import "LogInViewController.h"
 #import <BmobSDK/BmobRelation.h>
-#import <RESideMenu/RESideMenu.h>
 #import "AddPostsViewController.h"
 #import "UserLevelViewController.h"
 #import "PostsDetailViewController.h"
@@ -52,8 +50,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = STRViewTitle14;
-    self.tabBarItem.title = STRViewTitle14;
+    self.title = [self.theme objectForKey:@"name"];
     [self createNavBarButton];
     
     userTagsArray = [NSArray array];
@@ -62,7 +59,6 @@
     headerImagesURLArray = [NSMutableArray array];
     headerDetailURLArray = [NSMutableArray array];
     
-    [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:NTFMessagesSave object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshPostsList) name:NTFLogIn object:nil];
     [NotificationCenter addObserver:self selector:@selector(reloadPostsData) name:NTFPostsNew object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshPostsList) name:NTFPostsRefresh object:nil];
@@ -78,7 +74,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self refreshRedDot];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -102,18 +97,7 @@
 }
 
 - (void)createNavBarButton {
-    self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction:)];
     self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
-}
-
-- (void)refreshRedDot {
-    //小红点
-    if ([PlanCache hasUnreadMessages]) {
-        [self.leftBarButtonItem showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
-        self.leftBarButtonItem.badgeCenterOffset = CGPointMake(-8, 0);
-    } else {
-        [self.leftBarButtonItem clearBadge];
-    }
 }
 
 - (void)initTableView {
@@ -151,13 +135,10 @@
 }
 
 #pragma mark - action
-- (void)leftMenuAction:(UIButton *)button {
-    [self.sideMenuViewController presentLeftMenuViewController];
-}
-
 - (void)addAction:(UIButton *)button {
     if ([LogIn isLogin]) {
         AddPostsViewController *controller = [[AddPostsViewController alloc] init];
+        controller.themeId = self.theme.objectId;
         controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
     } else {
@@ -184,7 +165,6 @@
     bannerView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
     bannerView.delegate = self;
     bannerView.titlesGroup = headerTitlesArray;
-    bannerView.pageDotColor = [UIColor whiteColor]; //自定义分页控件小圆标颜色
     bannerView.placeholderImage = [UIImage imageNamed:png_ImageDefault_Rectangle];
     return bannerView;
 }
@@ -455,7 +435,7 @@
             cell.textLabel.font = font_Bold_16;
         }
         if (indexPath.row == 1) {
-            cell.textLabel.text = isLoadEnd ? str_PostsList_Tips1 : @"";
+            cell.textLabel.text = isLoadEnd ? str_PostsList_Tips1 : @"暂无数据";
         }
         return cell;
     }
@@ -589,6 +569,7 @@
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
     [bquery includeKey:@"author"];//声明该次查询需要将author关联对象信息一并查询出来
     [bquery whereKey:@"isDeleted" equalTo:@"0"];
+    [bquery whereKey:@"themeId" equalTo:self.theme.objectId];
     [bquery orderByDescending:@"isTop"];//先按照是否置顶排序
     [bquery orderByDescending:@"updatedTime"];//再按照更新时间排序
     bquery.limit = 10;
