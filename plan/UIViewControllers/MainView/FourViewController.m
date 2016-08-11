@@ -11,20 +11,21 @@
 #import "ThemeCell.h"
 #import "WZLBadgeImport.h"
 #import "PostsNoImageCell.h"
+#import <BmobSDK/BmobUser.h>
 #import "WebViewController.h"
 #import "PostsOneImageCell.h"
 #import "PostsTwoImageCell.h"
 #import "SDCycleScrollView.h"
+#import <BmobSDK/BmobQuery.h>
 #import "FourViewController.h"
 #import "LogInViewController.h"
 #import "LogInViewController.h"
-#import <BmobSDK/BmobUser.h>
-#import <BmobSDK/BmobQuery.h>
+#import "ThemeViewController.h"
 #import <BmobSDK/BmobRelation.h>
 #import <RESideMenu/RESideMenu.h>
 #import "AddPostsViewController.h"
 #import "UserLevelViewController.h"
-#import "PostsDetailViewController.h"
+
 
 @interface FourViewController () <SDCycleScrollViewDelegate> {
     
@@ -192,7 +193,7 @@
         ThemeCell *cell = [ThemeCell cellView];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.labelName.text = name;
-        [cell.imgView sd_setImageWithURL:[NSURL URLWithString:imgURL] placeholderImage:[UIImage imageNamed: png_Bg_SideTop]];
+        [cell.imgView sd_setImageWithURL:[NSURL URLWithString:imgURL] placeholderImage:[UIImage imageNamed:png_ImageDefault_Theme]];
 
         return cell;
 
@@ -374,11 +375,10 @@
 }
 
 - (void)toThemeList:(BmobObject *)theme {
-//    PostsDetailViewController *controller = [[PostsDetailViewController alloc] init];
-//    controller.posts = posts;
-//    controller.userTagsArray = [NSArray arrayWithArray:userTagsArray];
-//    controller.hidesBottomBarWhenPushed = YES;
-//    [self.navigationController pushViewController:controller animated:YES];
+    ThemeViewController *controller = [[ThemeViewController alloc] init];
+    controller.theme = theme;
+    controller.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end

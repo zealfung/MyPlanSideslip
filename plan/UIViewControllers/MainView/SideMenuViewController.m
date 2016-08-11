@@ -70,7 +70,7 @@
     avatar.userInteractionEnabled = YES;
     avatar.translatesAutoresizingMaskIntoConstraints = NO;
     [headerView addSubview:avatar];
-    UIImage *image = [UIImage imageNamed:@"avatarDefault1"];
+    UIImage *image = [UIImage imageNamed:png_AvatarDefault1];
     if ([Config shareInstance].settings.avatar) {
         image = [UIImage imageWithData:[Config shareInstance].settings.avatar];
     }

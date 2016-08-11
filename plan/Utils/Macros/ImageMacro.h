@@ -9,11 +9,12 @@
 #ifndef plan_ImageMacro_h
 #define plan_ImageMacro_h
 
-#define png_AvatarBg @"avatarBg"
-#define png_AvatarDefault @"avatarDefault"
-#define png_AvatarDefault1 @"avatarDefault1"
-#define png_ImageDefault @"ImageDefault"
-#define png_ImageDefault_Rectangle @"ImageDefault_Rectangle"
+#define png_AvatarBg @"Bg_Avatar"
+#define png_AvatarDefault @"ImgDefault_Avatar_Blue"
+#define png_AvatarDefault1 @"ImgDefault_Avatar_Gray"
+#define png_ImageDefault @"ImgDefault_Square"
+#define png_ImageDefault_Rectangle @"ImgDefault_Rectangle"
+#define png_ImageDefault_Theme @"ImgDefault_Theme"
 
 #define png_Btn_Add @"Btn_Add"
 #define png_Btn_Edit @"Btn_Edit"
