@@ -160,6 +160,9 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     [newPosts setObject:@"0" forKey:@"isDeleted"];
     [newPosts setObject:@"0" forKey:@"isTop"];
     [newPosts setObject:@"0" forKey:@"isHighlight"];
+    if (self.themeId) {
+        [newPosts setObject:self.themeId forKey:@"themeId"];
+    }
     //设置帖子关联的作者
     [Config shareInstance].settings = [PlanCache getPersonalSettings];
     BmobObject *author = [BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId];

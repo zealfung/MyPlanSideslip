@@ -14,5 +14,6 @@
 @property (strong, nonatomic) IBOutlet UIView *viewPhoto;
 @property (strong, nonatomic) IBOutlet UIButton *btnCheckbox;
 @property (strong, nonatomic) IBOutlet UILabel *labelCheckbox;
+@property (strong, nonatomic) NSString *themeId;
 
 @end
