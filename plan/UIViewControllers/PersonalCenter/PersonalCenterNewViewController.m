@@ -12,8 +12,11 @@
 #import "PersonalCenterNewViewController.h"
 #import "PersonalCenterMyPostsViewController.h"
 #import "PersonalCenterUndonePlanViewController.h"
+#import "PersonalCenterTaskStatisticsViewController.h"
 
-@interface PersonalCenterNewViewController ()
+@interface PersonalCenterNewViewController () {
+    NSMutableArray *titleArray;
+}
 
 @end
 
@@ -27,6 +30,8 @@
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStyleGrouped];
     self.tableView.backgroundColor = color_eeeeee;
     [NotificationCenter addObserver:self selector:@selector(reloadTableView) name:NTFSettingsSave object:nil];
+    
+    titleArray = [NSMutableArray arrayWithObjects:@"我的帖子", @"未完计划", @"任务统计", nil];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -56,7 +61,7 @@
         case 0:
             return 1;
         case 1:
-            return 2;
+            return titleArray.count;
         default:
             break;
     }
@@ -97,10 +102,8 @@
             cell.textLabel.textColor = color_Black;
             cell.textLabel.font = font_Normal_16;
         }
-        if (indexPath.row == 0) {
-            cell.textLabel.text = @"我的帖子";
-        } else if (indexPath.row == 1) {
-            cell.textLabel.text = @"未完计划";
+        if (indexPath.row < titleArray.count) {
+            cell.textLabel.text = titleArray[indexPath.row];
         }
         return cell;
     } else {
@@ -126,6 +129,9 @@
                 [self.navigationController pushViewController:controller animated:YES];
             } else if (indexPath.row == 1) {
                 PersonalCenterUndonePlanViewController *controller = [[PersonalCenterUndonePlanViewController alloc] init];
+                [self.navigationController pushViewController:controller animated:YES];
+            } else if (indexPath.row == 2) {
+                PersonalCenterTaskStatisticsViewController *controller = [[PersonalCenterTaskStatisticsViewController alloc] init];
                 [self.navigationController pushViewController:controller animated:YES];
             }
         }

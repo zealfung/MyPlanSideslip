@@ -10,6 +10,7 @@
 #import "PlanCache.h"
 #import "FMDatabase.h"
 #import "DataCenter.h"
+#import "TaskStatistics.h"
 #import "FMDatabasePool.h"
 #import "FMDatabaseQueue.h"
 #import <BmobSDK/BmobQuery.h>
@@ -1694,6 +1695,43 @@ static NSMutableDictionary *__contactsOnlineState;
         [rs close];
         
         return total;
+    }
+}
+
++ (NSArray *)getTaskStatisticsByStartDate:(NSString *)startDate endDate:(NSString *)endDate {
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return nil ;
+            }
+        }
+        
+        NSString *account = @"";
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser currentUser];
+            account = user.objectId;
+        }
+
+        NSString *condition = [NSString stringWithFormat:@"datetime(b.createTime)>=datetime('%@') AND datetime(b.createTime)<=datetime('%@')", startDate, endDate];
+        
+        NSMutableArray *array = [NSMutableArray array];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT b.recordId, a.content as title, count(b.recordId) as statistics FROM %@ as a, %@ as b WHERE %@ AND a.account=? AND a.isDeleted=0 AND a.taskId = b.recordId GROUP BY b.recordId ORDER BY statistics DESC", str_TableName_Task, str_TableName_TaskRecord, condition];
+        
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
+        
+        while ([rs next]) {
+            
+            TaskStatistics *taskStatistics = [[TaskStatistics alloc] init];
+            taskStatistics.account = account;
+            taskStatistics.taskContent = [rs stringForColumn:@"title"];
+            taskStatistics.taskCount = [rs intForColumn:@"statistics"];
+            
+            [array addObject:taskStatistics];
+        }
+        [rs close];
+        
+        return array;
     }
 }
 

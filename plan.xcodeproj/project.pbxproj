@@ -118,6 +118,19 @@
 		136DF2051D5C0C7100CFB8FF /* ImgDefault_Square@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DF2001D5C0C7100CFB8FF /* ImgDefault_Square@2x.png */; };
 		136DF2061D5C0C7100CFB8FF /* ImgDefault_Theme@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DF2011D5C0C7100CFB8FF /* ImgDefault_Theme@2x.png */; };
 		136DF2081D5C0E9300CFB8FF /* Bg_Avatar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DF2071D5C0E9300CFB8FF /* Bg_Avatar@2x.png */; };
+		136DF21D1D5DDEA300CFB8FF /* bt_next@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DF2141D5DDEA300CFB8FF /* bt_next@2x.png */; };
+		136DF21E1D5DDEA300CFB8FF /* bt_previous@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DF2151D5DDEA300CFB8FF /* bt_previous@2x.png */; };
+		136DF21F1D5DDEA300CFB8FF /* SZCalendarCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 136DF2171D5DDEA300CFB8FF /* SZCalendarCell.m */; };
+		136DF2201D5DDEA300CFB8FF /* SZCalendarPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 136DF2191D5DDEA300CFB8FF /* SZCalendarPicker.m */; };
+		136DF2211D5DDEA300CFB8FF /* SZCalendarPicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = 136DF21A1D5DDEA300CFB8FF /* SZCalendarPicker.xib */; };
+		136DF2221D5DDEA300CFB8FF /* UIColor+ZXLazy.m in Sources */ = {isa = PBXBuildFile; fileRef = 136DF21C1D5DDEA300CFB8FF /* UIColor+ZXLazy.m */; };
+		136DF2261D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 136DF2241D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.m */; };
+		136DF2271D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 136DF2251D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.xib */; };
+		136DF22A1D5DE0D600CFB8FF /* Btn_Arrow_Left@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DF2281D5DE0D600CFB8FF /* Btn_Arrow_Left@2x.png */; };
+		136DF22B1D5DE0D600CFB8FF /* Btn_Arrow_Right@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 136DF2291D5DE0D600CFB8FF /* Btn_Arrow_Right@2x.png */; };
+		136DF22E1D5EBF2D00CFB8FF /* TaskStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 136DF22D1D5EBF2D00CFB8FF /* TaskStatistics.m */; };
+		136DF2321D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 136DF2301D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.m */; };
+		136DF2331D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 136DF2311D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.xib */; };
 		136DF57E1BEC2F7D001D6496 /* ImageBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 136DF57D1BEC2F7D001D6496 /* ImageBrowser.m */; };
 		136E6FC71D4894BB00E0E9B5 /* PostsNoImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 136E6FB81D4894BB00E0E9B5 /* PostsNoImageCell.m */; };
 		136E6FC81D4894BB00E0E9B5 /* PostsNoImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 136E6FB91D4894BB00E0E9B5 /* PostsNoImageCell.xib */; };
@@ -460,6 +473,25 @@
 		136DF2001D5C0C7100CFB8FF /* ImgDefault_Square@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ImgDefault_Square@2x.png"; sourceTree = "<group>"; };
 		136DF2011D5C0C7100CFB8FF /* ImgDefault_Theme@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "ImgDefault_Theme@2x.png"; sourceTree = "<group>"; };
 		136DF2071D5C0E9300CFB8FF /* Bg_Avatar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Bg_Avatar@2x.png"; sourceTree = "<group>"; };
+		136DF2141D5DDEA300CFB8FF /* bt_next@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bt_next@2x.png"; sourceTree = "<group>"; };
+		136DF2151D5DDEA300CFB8FF /* bt_previous@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "bt_previous@2x.png"; sourceTree = "<group>"; };
+		136DF2161D5DDEA300CFB8FF /* SZCalendarCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZCalendarCell.h; sourceTree = "<group>"; };
+		136DF2171D5DDEA300CFB8FF /* SZCalendarCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZCalendarCell.m; sourceTree = "<group>"; };
+		136DF2181D5DDEA300CFB8FF /* SZCalendarPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SZCalendarPicker.h; sourceTree = "<group>"; };
+		136DF2191D5DDEA300CFB8FF /* SZCalendarPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SZCalendarPicker.m; sourceTree = "<group>"; };
+		136DF21A1D5DDEA300CFB8FF /* SZCalendarPicker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SZCalendarPicker.xib; sourceTree = "<group>"; };
+		136DF21B1D5DDEA300CFB8FF /* UIColor+ZXLazy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ZXLazy.h"; sourceTree = "<group>"; };
+		136DF21C1D5DDEA300CFB8FF /* UIColor+ZXLazy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ZXLazy.m"; sourceTree = "<group>"; };
+		136DF2231D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterTaskStatisticsViewController.h; sourceTree = "<group>"; };
+		136DF2241D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterTaskStatisticsViewController.m; sourceTree = "<group>"; };
+		136DF2251D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonalCenterTaskStatisticsViewController.xib; sourceTree = "<group>"; };
+		136DF2281D5DE0D600CFB8FF /* Btn_Arrow_Left@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Arrow_Left@2x.png"; sourceTree = "<group>"; };
+		136DF2291D5DE0D600CFB8FF /* Btn_Arrow_Right@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_Arrow_Right@2x.png"; sourceTree = "<group>"; };
+		136DF22C1D5EBF2D00CFB8FF /* TaskStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskStatistics.h; sourceTree = "<group>"; };
+		136DF22D1D5EBF2D00CFB8FF /* TaskStatistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskStatistics.m; sourceTree = "<group>"; };
+		136DF22F1D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterTaskStatisticsCell.h; sourceTree = "<group>"; };
+		136DF2301D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterTaskStatisticsCell.m; sourceTree = "<group>"; };
+		136DF2311D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonalCenterTaskStatisticsCell.xib; sourceTree = "<group>"; };
 		136DF57C1BEC2F7D001D6496 /* ImageBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBrowser.h; sourceTree = "<group>"; };
 		136DF57D1BEC2F7D001D6496 /* ImageBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageBrowser.m; sourceTree = "<group>"; };
 		136E6FB71D4894BB00E0E9B5 /* PostsNoImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsNoImageCell.h; sourceTree = "<group>"; };
@@ -790,6 +822,12 @@
 				13F6708A1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib */,
 				13F670851CC07BD3009D2BA9 /* PersonalCenterNewViewController.h */,
 				13F670861CC07BD3009D2BA9 /* PersonalCenterNewViewController.m */,
+				136DF22F1D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.h */,
+				136DF2301D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.m */,
+				136DF2311D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.xib */,
+				136DF2231D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.h */,
+				136DF2241D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.m */,
+				136DF2251D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.xib */,
 				13C725EE1D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.h */,
 				13C725EF1D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.m */,
 			);
@@ -974,6 +1012,7 @@
 		135B21B01B900FD9005CE84A /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				136DF2131D5DDEA300CFB8FF /* Clendar */,
 				1361AFB71BCBA5E700DD5FFB /* DoImagePicker */,
 				13D406971C3D00310089D702 /* DOPNavbarMenu */,
 				13D1AD721C3F411F007734F6 /* EditingBar */,
@@ -1097,6 +1136,8 @@
 				137470C71C0AE75900B7822A /* Task.m */,
 				137470C91C0AEB0300B7822A /* TaskRecord.h */,
 				137470CA1C0AEB0300B7822A /* TaskRecord.m */,
+				136DF22C1D5EBF2D00CFB8FF /* TaskStatistics.h */,
+				136DF22D1D5EBF2D00CFB8FF /* TaskStatistics.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1106,6 +1147,8 @@
 			children = (
 				135B220C1B92B2B5005CE84A /* Btn_Add@2x.png */,
 				1385B47F1BC9EF9900CB208C /* Btn_AddPhoto@2x.png */,
+				136DF2281D5DE0D600CFB8FF /* Btn_Arrow_Left@2x.png */,
+				136DF2291D5DE0D600CFB8FF /* Btn_Arrow_Right@2x.png */,
 				13D405FE1C2E3E960089D702 /* Btn_BackToTop@2x.png */,
 				13D2F33E1CAA99E900803AB3 /* Btn_Check@2x.png */,
 				13AF64BA1C214253008E8A9E /* Btn_Clean@2x.png */,
@@ -1245,6 +1288,22 @@
 				136DF2011D5C0C7100CFB8FF /* ImgDefault_Theme@2x.png */,
 			);
 			path = ImgDefault;
+			sourceTree = "<group>";
+		};
+		136DF2131D5DDEA300CFB8FF /* Clendar */ = {
+			isa = PBXGroup;
+			children = (
+				136DF2141D5DDEA300CFB8FF /* bt_next@2x.png */,
+				136DF2151D5DDEA300CFB8FF /* bt_previous@2x.png */,
+				136DF2161D5DDEA300CFB8FF /* SZCalendarCell.h */,
+				136DF2171D5DDEA300CFB8FF /* SZCalendarCell.m */,
+				136DF2181D5DDEA300CFB8FF /* SZCalendarPicker.h */,
+				136DF2191D5DDEA300CFB8FF /* SZCalendarPicker.m */,
+				136DF21A1D5DDEA300CFB8FF /* SZCalendarPicker.xib */,
+				136DF21B1D5DDEA300CFB8FF /* UIColor+ZXLazy.h */,
+				136DF21C1D5DDEA300CFB8FF /* UIColor+ZXLazy.m */,
+			);
+			path = Clendar;
 			sourceTree = "<group>";
 		};
 		136DF5B21BEDE87D001D6496 /* ShareSDK */ = {
@@ -1760,10 +1819,12 @@
 				137700BB1B93E56A008C83FD /* Main.storyboard in Resources */,
 				137700EB1B953915008C83FD /* Icon_Logo_512@2x.png in Resources */,
 				13D1AD6B1C3E71EA007734F6 /* Btn_More@2x.png in Resources */,
+				136DF21E1D5DDEA300CFB8FF /* bt_previous@2x.png in Resources */,
 				1361AFC71BCBA5E700DD5FFB /* DoImagePickerController.xib in Resources */,
 				1310C35B1C4542FC00A2A404 /* read_me.txt in Resources */,
 				137701061B95DF67008C83FD /* Icon_Gender_F_Normal@2x.png in Resources */,
 				137470F61C159BEE00B7822A /* Icon_Menu_Messages@2x.png in Resources */,
+				136DF2211D5DDEA300CFB8FF /* SZCalendarPicker.xib in Resources */,
 				1361AFD61BCBB54800DD5FFB /* Btn_Up.png in Resources */,
 				13CC6F321C4E4280001D290F /* Icon_Tomorrow@2x.png in Resources */,
 				1310C3611C4542FC00A2A404 /* ShareSDKUI.bundle in Resources */,
@@ -1772,6 +1833,7 @@
 				137470D51C0BFF0500B7822A /* Btn_Share@2x.png in Resources */,
 				1310C35D1C4542FC00A2A404 /* ShareSDK.bundle in Resources */,
 				13D2F3401CAA99E900803AB3 /* Btn_Check@2x.png in Resources */,
+				136DF21D1D5DDEA300CFB8FF /* bt_next@2x.png in Resources */,
 				1385B47C1BC9E50D00CB208C /* Btn_Edit@2x.png in Resources */,
 				136DF2021D5C0C7100CFB8FF /* ImgDefault_Avatar_Blue@2x.png in Resources */,
 				1361AFD51BCBB54800DD5FFB /* Btn_Show@2x.png in Resources */,
@@ -1790,6 +1852,7 @@
 				131D6A431BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png in Resources */,
 				137470AB1C0943D700B7822A /* Icon_Gesture_Lock@2x.png in Resources */,
 				1310C36C1C465BA100A2A404 /* Icon_UserLevel_6@2x.png in Resources */,
+				136DF22B1D5DE0D600CFB8FF /* Btn_Arrow_Right@2x.png in Resources */,
 				137470711C05F1DC00B7822A /* Icon_AutoSync_Normal@2x.png in Resources */,
 				136E6FD01D4894BB00E0E9B5 /* PostsDetailViewController.xib in Resources */,
 				136E6FD51D4894F600E0E9B5 /* ThemeCell.xib in Resources */,
@@ -1808,6 +1871,7 @@
 				135B220D1B92B2B5005CE84A /* Btn_Add@2x.png in Resources */,
 				1310C36B1C465BA100A2A404 /* Icon_UserLevel_5@2x.png in Resources */,
 				137470AD1C0945D000B7822A /* Icon_Gesture_Unlock@2x.png in Resources */,
+				136DF22A1D5DE0D600CFB8FF /* Btn_Arrow_Left@2x.png in Resources */,
 				13BB1C8F1BE98FAE00412D6D /* Btn_Settings@2x.png in Resources */,
 				13D1AD711C3E79E8007734F6 /* Btn_Share66@2x.png in Resources */,
 				13D4061F1C301E5A0089D702 /* Btn_Posts_Comment@2x.png in Resources */,
@@ -1836,6 +1900,7 @@
 				138038F41C55FA7700E98C5F /* TaskDetailViewController.xib in Resources */,
 				135B22281B92F4C1005CE84A /* Btn_SectionUp@2x.png in Resources */,
 				1374708F1C07E66B00B7822A /* CLLockVC.xib in Resources */,
+				136DF2271D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.xib in Resources */,
 				1310C36A1C465BA100A2A404 /* Icon_UserLevel_4@2x.png in Resources */,
 				13CC6F341C4F1874001D290F /* Icon_EverydayNotify@2x.png in Resources */,
 				13D406241C3020BF0089D702 /* Btn_Posts_Like@2x.png in Resources */,
@@ -1853,6 +1918,7 @@
 				1310C3591C4542FC00A2A404 /* WeiboSDK.bundle in Resources */,
 				136E6FC81D4894BB00E0E9B5 /* PostsNoImageCell.xib in Resources */,
 				138038ED1C53C17300E98C5F /* Icon_Task_Tomato@2x.png in Resources */,
+				136DF2331D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.xib in Resources */,
 				13D1AD6D1C3E7670007734F6 /* Btn_Refresh@2x.png in Resources */,
 				13D406251C3020BF0089D702 /* Btn_Posts_Unlike@2x.png in Resources */,
 				13AF64BB1C214253008E8A9E /* Btn_Clean@2x.png in Resources */,
@@ -1938,6 +2004,7 @@
 				137470941C07E66B00B7822A /* CLLockItemView.m in Sources */,
 				13F670A41CC11A2E009D2BA9 /* PersonalCenterMyPostsViewController.m in Sources */,
 				1310C3731C47292200A2A404 /* ChangePasswordViewController.m in Sources */,
+				136DF2221D5DDEA300CFB8FF /* UIColor+ZXLazy.m in Sources */,
 				131D69F51BF466D2009FDD72 /* StatisticsCenter.m in Sources */,
 				13F670A71CC12271009D2BA9 /* SettingsPersonalViewController.m in Sources */,
 				137700BA1B93E290008C83FD /* PlanSectionView.m in Sources */,
@@ -1963,6 +2030,7 @@
 				13D916601CDDC4D7001F34EA /* TaskDetailNewViewController.m in Sources */,
 				132819421C61D1D000FB8628 /* NSLayoutConstraint+Util.m in Sources */,
 				133B07A21B9FBCA30015E752 /* HelpViewController.m in Sources */,
+				136DF21F1D5DDEA300CFB8FF /* SZCalendarCell.m in Sources */,
 				135B22091B92B126005CE84A /* UIViewController+Util.m in Sources */,
 				13D1AD921C41FAC2007734F6 /* SDWaitingView.m in Sources */,
 				13D4069A1C3D00310089D702 /* DOPNavbarMenu.m in Sources */,
@@ -1973,6 +2041,8 @@
 				137470A31C0815F100B7822A /* NSString+File.m in Sources */,
 				1361AFC31BCBA5E700DD5FFB /* AssetHelper.m in Sources */,
 				136E6FC71D4894BB00E0E9B5 /* PostsNoImageCell.m in Sources */,
+				136DF2261D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.m in Sources */,
+				136DF2201D5DDEA300CFB8FF /* SZCalendarPicker.m in Sources */,
 				135B21EA1B913F77005CE84A /* NSString+Util.m in Sources */,
 				131D6AC41C007BF3009FDD72 /* ImageScrollView.m in Sources */,
 				136E6FD81D489AED00E0E9B5 /* ThemeViewController.m in Sources */,
@@ -1980,6 +2050,7 @@
 				135B21E41B913E46005CE84A /* Settings.m in Sources */,
 				13A6ACA11BC3AAA3005A02F9 /* AddPhotoViewController.m in Sources */,
 				13A6ACA51BC3E282005A02F9 /* PageScrollView.m in Sources */,
+				136DF22E1D5EBF2D00CFB8FF /* TaskStatistics.m in Sources */,
 				131D6A8E1BFD9660009FDD72 /* ShareCenter.m in Sources */,
 				137470C41C0AE72A00B7822A /* TaskCell.m in Sources */,
 				137470931C07E66B00B7822A /* CLLockInfoView.m in Sources */,
@@ -1989,6 +2060,7 @@
 				13A6ACCD1BC6A82C005A02F9 /* FullScreenImageViewController.m in Sources */,
 				135B218C1B900394005CE84A /* AppDelegate.m in Sources */,
 				137470921C07E66B00B7822A /* CLLockNavVC.m in Sources */,
+				136DF2321D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.m in Sources */,
 				133B08431BA458610015E752 /* PlanCell.m in Sources */,
 				137700E51B9534A4008C83FD /* SettingsViewController.m in Sources */,
 				131D6A1E1BF478D1009FDD72 /* SideMenuViewController.m in Sources */,
@@ -2128,7 +2200,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				PROVISIONING_PROFILE = "8da386e1-a17d-4b6d-aee9-6ba756288efe";
+				PROVISIONING_PROFILE = "f3684b2d-a3b5-4ffd-9106-578a224ea38a";
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -2169,7 +2241,7 @@
 				LIBRARY_SEARCH_PATHS = "";
 				MTL_ENABLE_DEBUG_INFO = NO;
 				ONLY_ACTIVE_ARCH = NO;
-				PROVISIONING_PROFILE = "8da386e1-a17d-4b6d-aee9-6ba756288efe";
+				PROVISIONING_PROFILE = "f3684b2d-a3b5-4ffd-9106-578a224ea38a";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -2595,7 +2667,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.andwho.plan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8da386e1-a17d-4b6d-aee9-6ba756288efe";
+				PROVISIONING_PROFILE = "f3684b2d-a3b5-4ffd-9106-578a224ea38a";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -3020,7 +3092,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.andwho.plan;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "8da386e1-a17d-4b6d-aee9-6ba756288efe";
+				PROVISIONING_PROFILE = "f3684b2d-a3b5-4ffd-9106-578a224ea38a";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

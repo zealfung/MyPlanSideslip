@@ -18,4 +18,5 @@
 @property (nonatomic, strong) NSString *recordMaxBeginDate;//最大连续计划天数开始日期
 @property (nonatomic, strong) NSString *recordMaxEndDate;//最大连续计划天数结束日期
 @property (nonatomic, strong) NSString *updatetime;//更新时间
+
 @end

@@ -72,6 +72,9 @@
 
 + (NSString *)getTaskTotalCount;
 
+/** 按时间段统计任务完成次数 */
++ (NSArray *)getTaskStatisticsByStartDate:(NSString *)startDate endDate:(NSString *)endDate;
+
 + (Photo *)getPhotoById:(NSString *)photoid;
 
 + (Statistics *)getStatistics;
