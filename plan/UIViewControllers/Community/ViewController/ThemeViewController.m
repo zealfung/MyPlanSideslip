@@ -435,7 +435,7 @@
             cell.textLabel.font = font_Bold_16;
         }
         if (indexPath.row == 1) {
-            cell.textLabel.text = isLoadEnd ? str_PostsList_Tips1 : @"暂无数据";
+            cell.textLabel.text = isLoadEnd ? str_PostsList_Tips1 : str_PostsList_Tips3;
         }
         return cell;
     }
