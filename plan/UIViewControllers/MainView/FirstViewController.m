@@ -139,8 +139,8 @@ NSUInteger const kHoursPerDay = 24;
     
     NSUInteger avatarSize = WIDTH_FULL_SCREEN / 3;
     xMiddle = WIDTH_FULL_SCREEN / 2;
-    yOffset = iPhone4 ? HEIGHT_FULL_SCREEN / 28 : HEIGHT_FULL_SCREEN / 15;
     ySpace = HEIGHT_FULL_SCREEN / 25;
+    yOffset = iPhone4 ? HEIGHT_FULL_SCREEN / 28 : HEIGHT_FULL_SCREEN / 15 - ySpace;
     
     UIImage *image = [UIImage imageNamed:png_AvatarDefault];
     if ([Config shareInstance].settings.avatar) {
@@ -376,7 +376,7 @@ NSUInteger const kHoursPerDay = 24;
     CGFloat viewHeight = HEIGHT_FULL_SCREEN * 0.1875;
     CGFloat subviewHeight = viewHeight / 3;
 
-    UIView *statisticsBgView = [[UIView alloc] initWithFrame:CGRectMake(xOffset, yOffset, viewWidth, subviewHeight * 2)];
+    UIView *statisticsBgView = [[UIView alloc] initWithFrame:CGRectMake(xOffset, yOffset, viewWidth, subviewHeight * 4)];
     [self.view addSubview:statisticsBgView];
     [self addSeparatorForLeft:statisticsBgView];
     [self addSeparatorForMiddleLeft:statisticsBgView];
@@ -404,8 +404,7 @@ NSUInteger const kHoursPerDay = 24;
 
     {
         ThreeSubView *everydayStatisticsView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
-        
-        //plantype 1 每日计划
+
         float total = [[PlanCache getPlanTotalCount:@"ALL"] floatValue];
         [everydayStatisticsView.leftButton.titleLabel setFont:font_Normal_16];
         [everydayStatisticsView.leftButton setAllTitleColor:color_Black];
@@ -430,6 +429,82 @@ NSUInteger const kHoursPerDay = 24;
         [self addSeparatorForBottom:everydayStatisticsView];
         [everydayStatisticsView autoLayout];
         [statisticsView addSubview:everydayStatisticsView];
+    }
+    
+    ThreeSubView *titleView2 = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight * 2, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
+    [titleView2.leftButton.titleLabel setFont:font_Normal_16];
+    [titleView2.leftButton setAllTitleColor:color_Black];
+    [titleView2.leftButton setAllTitle:str_FirstView_13];
+    titleView2.fixLeftWidth = subviewWidth;
+    [titleView2.centerButton.titleLabel setFont:font_Normal_16];
+    [titleView2.centerButton setAllTitleColor:color_Black];
+    [titleView2.centerButton setAllTitle:str_FirstView_8];
+    titleView2.fixCenterWidth = subviewWidth;
+    [titleView2.rightButton.titleLabel setFont:font_Normal_16];
+    [titleView2.rightButton setAllTitleColor:color_Black];
+    [titleView2.rightButton setAllTitle:str_FirstView_9];
+    titleView2.fixRightWidth = subviewWidth;
+    [self addSeparatorForBottom:titleView2];
+    [titleView2 autoLayout];
+    [statisticsView addSubview:titleView2];
+    
+    {
+        ThreeSubView *todayStatisticsView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight * 3, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
+        
+        NSArray *array = [NSArray arrayWithArray:[PlanCache getPlan:YES startIndex:0]];
+        NSMutableArray *todayArray = [NSMutableArray array];
+        
+        NSString *todayKey = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+        NSString *key = @"";
+        for (NSInteger i = 0; i < array.count; i++) {
+            Plan *plan = array[i];
+            
+            if ([[Config shareInstance].settings.autoDelayUndonePlan isEqualToString:@"1"]
+                && [plan.iscompleted isEqualToString:@"0"]) {
+
+                key = todayKey;
+                plan.beginDate = todayKey;
+                
+            } else {
+                
+                key = plan.beginDate;
+                
+            }
+            
+            if ([key isEqualToString:todayKey]) {
+                [todayArray addObject:plan];
+            }
+        }
+        
+        float total = todayArray.count;
+        [todayStatisticsView.leftButton.titleLabel setFont:font_Normal_16];
+        [todayStatisticsView.leftButton setAllTitleColor:color_Black];
+        [todayStatisticsView.leftButton setAllTitle:[NSString stringWithFormat:@"%.0f", total]];
+        todayStatisticsView.fixLeftWidth = subviewWidth;
+        
+        float done = 0;
+        for (Plan *plan in todayArray) {
+            if ([plan.iscompleted isEqualToString:@"1"]) {
+                done ++;
+            }
+        }
+        [todayStatisticsView.centerButton.titleLabel setFont:font_Normal_16];
+        [todayStatisticsView.centerButton setAllTitleColor:color_Green_Emerald];
+        [todayStatisticsView.centerButton setAllTitle:[NSString stringWithFormat:@"%.0f", done]];
+        todayStatisticsView.fixCenterWidth = subviewWidth;
+        
+        float percent = 0;
+        if (total > 0) {
+            percent = (float)done*100 /(float)total;
+        }
+        [todayStatisticsView.rightButton.titleLabel setFont:font_Normal_16];
+        [todayStatisticsView.rightButton setAllTitleColor:color_Red];
+        [todayStatisticsView.rightButton setAllTitle:[NSString stringWithFormat:@"%.2f%%", percent]];
+        todayStatisticsView.fixRightWidth = subviewWidth;
+        
+        [self addSeparatorForBottom:todayStatisticsView];
+        [todayStatisticsView autoLayout];
+        [statisticsView addSubview:todayStatisticsView];
     }
 
     yOffset += viewHeight + 20;
