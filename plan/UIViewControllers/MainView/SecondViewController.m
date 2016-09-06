@@ -60,9 +60,10 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     self.title = STRViewTitle2;
     self.tabBarItem.title = STRViewTitle2;
     [self createNavBarButton];
-    
+
     [NotificationCenter addObserver:self selector:@selector(toPlan:) name:NTFLocalPush object:nil];
     [NotificationCenter addObserver:self selector:@selector(getPlanData) name:NTFPlanSave object:nil];
+    [NotificationCenter addObserver:self selector:@selector(getPlanData) name:NTFSettingsSave object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:NTFMessagesSave object:nil];
     
     [self loadCustomView];
@@ -288,7 +289,8 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
             [dayDateKeyArrayTmp addObject:key];
         }
         
-        [dateArray addObject:plan];
+//        [dateArray addObject:plan];
+        [dateArray insertObject:plan atIndex:0];
     }
     [dayDateKeyArray addObjectsFromArray:dayDateKeyArrayTmp];
     //日期降序排列
