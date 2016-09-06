@@ -91,6 +91,8 @@ UIKIT_EXTERN NSString *const STRViewTitle16;
 UIKIT_EXTERN NSString *const STRViewTitle17;
 /** 通用设置 */
 UIKIT_EXTERN NSString *const STRViewTitle18;
+/** 打赏作者 */
+UIKIT_EXTERN NSString *const STRViewTitle19;
 
 /** 自动同步 */
 UIKIT_EXTERN NSString *const STRSettingsViewTips1;

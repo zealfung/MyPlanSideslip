@@ -91,6 +91,8 @@ NSString *const STRViewTitle16 = @"用户身份标识说明";
 NSString *const STRViewTitle17 = @"个人设置";
 /** 通用设置 */
 NSString *const STRViewTitle18 = @"通用设置";
+/** 打赏作者 */
+NSString *const STRViewTitle19 = @"打赏作者";
 
 /** 自动同步 */
 NSString *const STRSettingsViewTips1 = @"自动同步";
