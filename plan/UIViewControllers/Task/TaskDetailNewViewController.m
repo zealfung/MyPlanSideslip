@@ -270,6 +270,8 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
     NSInteger totalCount = 0;
     if (count.length > 0) {
         totalCount = [count integerValue] + 1;
+    } else {
+        totalCount ++;
     }
     self.task.totalCount = [NSString stringWithFormat:@"%ld", (long)totalCount];
     NSString *time = [CommonFunction getTimeNowString];
@@ -279,7 +281,7 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
     taskRecord.recordId = self.task.taskId;
     taskRecord.createTime = time;
     
-    [PlanCache storeTask:self.task updateNotify:NO];
+    [PlanCache updateTaskCount:self.task];
     [PlanCache storeTaskRecord:taskRecord];
 }
 
