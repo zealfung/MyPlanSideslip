@@ -650,6 +650,56 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
++ (BOOL)updateTaskCount:(Task *)task {
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return NO;
+            }
+        }
+        
+        if (!task.taskId || !task.createTime)
+            return NO;
+        
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser currentUser];
+            task.account = user.objectId;
+        } else {
+            task.account = @"";
+        }
+        if (!task.totalCount) {
+            task.totalCount = @"0";
+        }
+        if (!task.completionDate) {
+            task.completionDate = @"";
+        }
+        if (!task.updateTime) {
+            task.updateTime = @"";
+        }
+        
+        BOOL hasRec = NO;
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", str_TableName_Task];
+        
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[task.taskId, task.account]];
+        hasRec = [rs next];
+        [rs close];
+        BOOL b = NO;
+        if (hasRec) {
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET totalCount=?, completionDate=?, updateTime=? WHERE taskId=? AND account=?", str_TableName_Task];
+            
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.totalCount, task.completionDate, task.updateTime, task.taskId, task.account]];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+
+        }
+        if (b) {
+            [NotificationCenter postNotificationName:NTFTaskSave object:nil];
+        }
+        return b;
+    }
+}
+
 + (BOOL)storeTaskRecord:(TaskRecord *)taskRecord {
     @synchronized(__db) {
         

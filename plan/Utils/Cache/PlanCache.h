@@ -26,7 +26,14 @@
 
 + (BOOL)storeStatistics:(Statistics *)statistics;
 
+/** 
+ * 保存任务
+ * updateNotify:是否需要更新提醒时间
+ */
 + (BOOL)storeTask:(Task *)task updateNotify:(BOOL)updateNotify;
+
+/** 更新任务完成次数 */
++ (BOOL)updateTaskCount:(Task *)task;
 
 + (BOOL)storeTaskRecord:(TaskRecord *)taskRecord;
 
@@ -53,7 +60,7 @@
 
 + (NSArray *)searchPlan:(NSString *)key;
 
-//ALL全部 DAY每日计划 FUTURE未来计划
+/** ALL全部 DAY每日计划 FUTURE未来计划 */
 + (NSString *)getPlanTotalCount:(NSString *)type;
 
 + (NSString *)getPlanCompletedCount;
@@ -87,7 +94,7 @@
 
 + (Plan *)findPlan:(NSString *)account planid:(NSString *)planid;
 
-//time:yyyy-MM-dd HH:mm:ss
+/** time:yyyy-MM-dd HH:mm:ss */
 + (NSArray *)getPlanDateForStatisticsByTime:(NSString *)time;
 
 + (NSArray *)getTaskForSync:(NSString *)syntime;
