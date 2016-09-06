@@ -63,6 +63,7 @@
 #define png_Icon_Menu_About @"Icon_Menu_About"
 #define png_Icon_Menu_Feedback @"Icon_Menu_Feedback"
 #define png_Icon_Menu_FiveStar @"Icon_Menu_FiveStar"
+#define png_Icon_Menu_Money @"Icon_Menu_Money"
 #define png_Icon_Menu_Help @"Icon_Menu_Help"
 #define png_Icon_Menu_PersonalCenter @"Icon_Menu_PersonalCenter"
 #define png_Icon_Menu_PhotoLine @"Icon_Menu_PhotoLine"
