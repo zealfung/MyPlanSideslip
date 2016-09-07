@@ -49,8 +49,8 @@
 }
 
 - (void)setMenuArray {
-    menuImgArray = [NSMutableArray arrayWithObjects:png_Icon_Menu_PersonalCenter, png_Icon_Menu_PhotoLine, png_Icon_Menu_Help, png_Icon_Menu_FiveStar, png_Icon_Menu_Money, png_Icon_Menu_Messages, png_Icon_Menu_About, nil];
-    menuArray = [NSMutableArray arrayWithObjects:STRViewTitle4, STRViewTitle5, STRViewTitle6, STRViewTitle7, STRViewTitle19, STRViewTitle12, STRViewTitle9, nil];
+    menuImgArray = [NSMutableArray arrayWithObjects:png_Icon_Menu_PersonalCenter, png_Icon_Menu_PhotoLine, png_Icon_Menu_Help, png_Icon_Menu_FiveStar, png_Icon_Menu_Messages, png_Icon_Menu_About, nil];
+    menuArray = [NSMutableArray arrayWithObjects:STRViewTitle4, STRViewTitle5, STRViewTitle6, STRViewTitle7, STRViewTitle12, STRViewTitle9, nil];
 }
 
 #pragma mark - Table view data source
@@ -123,7 +123,7 @@
     cell.textLabel.text = menuArray[indexPath.row];
     cell.textLabel.font = font_Normal_16;
     cell.textLabel.textColor = [UIColor whiteColor];
-    if (indexPath.row == 5 && [PlanCache hasUnreadMessages]) {
+    if (indexPath.row == 4 && [PlanCache hasUnreadMessages]) {
         [cell.imageView showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
         cell.imageView.badgeCenterOffset = CGPointMake(20, 0);
     }
@@ -158,7 +158,7 @@
             [self.sideMenuViewController hideMenuViewController];
             break;
         }
-        case 4: {//打赏作者
+//        case 4: {//打赏作者
 //            Class mailClass = (NSClassFromString(@"MFMailComposeViewController"));
 //            if (!mailClass) {
 //                [self alertButtonMessage:str_More_Feedback_Tips1];
@@ -169,14 +169,14 @@
 //                return;
 //            }
 //            [self displayMailPicker];
-            break;
-        }
-        case 5: {//系统消息
+//            break;
+//        }
+        case 4: {//系统消息
             MessagesViewController *controller = [[MessagesViewController alloc]init];
             [self setContentViewController:controller];
             break;
         }
-        case 6: {//关于我们
+        case 5: {//关于我们
             AboutViewController *controller = [[AboutViewController alloc]init];
             [self setContentViewController:controller];
         }
