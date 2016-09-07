@@ -344,6 +344,28 @@ static NSString * const kKeyMinutes = @"minutes";
     }
 }
 
+//计划提醒时间显示格式：今天，明天，或日期
++ (NSString *)getNotifyTimeStringForShow:(NSString *)time {
+    NSArray *timeSplitArray = [time componentsSeparatedByString:@" "];
+    NSString *notifyDate = @"";
+    NSString *notifyTime = @"";
+    if (timeSplitArray.count == 2) {
+        notifyDate = timeSplitArray[0];
+        notifyTime = timeSplitArray[1];
+    }
+    NSDate *today = [NSDate date];
+    NSDate *tomorrow = [today dateByAddingTimeInterval:24 * 3600];
+    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:str_DateFormatter_yyyy_MM_dd];
+    NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:str_DateFormatter_yyyy_MM_dd];
+    if ([notifyDate isEqualToString:todayString]) {
+        return [NSString stringWithFormat:@"%@ %@", STRCommonTime2, notifyTime];
+    } else if ([notifyDate isEqualToString:tomorrowString]) {
+        return [NSString stringWithFormat:@"%@ %@", STRCommonTime9, notifyTime];
+    } else {
+        return time;
+    }
+}
+
 /** toDay格式：2016-03-18 */
 + (NSInteger)howManyDaysLeft:(NSString*)toDay {
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
