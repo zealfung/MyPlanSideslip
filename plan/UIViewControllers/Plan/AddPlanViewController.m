@@ -142,7 +142,8 @@
         labelBeginDate.text = [CommonFunction getBeginDateStringForShow:beginDate];
         if ([self.plan.isnotify isEqualToString:@"1"]) {
             [switchBtnAlarm setOn:YES];
-            labelNotifyTime.text = self.plan.notifytime;
+            notifyTime = self.plan.notifytime;
+            labelNotifyTime.text = [CommonFunction getNotifyTimeStringForShow:notifyTime];
         }
     } else {
         [txtViewContent becomeFirstResponder];
@@ -212,6 +213,7 @@
         //显示时间设置器
         [self showDatePicker];
     } else {
+        notifyTime = @"";
         labelNotifyTime.text = @"";
         [self onPickerCancelBtn];
     }
@@ -226,6 +228,8 @@
     if ([switchBtnAlarm isOn]) {
         isSelectBeginDate = NO;
         [self showDatePicker];
+    } else {
+        notifyTime = @"";
     }
 }
 
@@ -238,7 +242,7 @@
     } else {
         [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
         notifyTime = [dateFormatter stringFromDate:datePicker.date];
-        labelNotifyTime.text = notifyTime;
+        labelNotifyTime.text = [CommonFunction getNotifyTimeStringForShow:notifyTime];
     }
     [self onPickerCancelBtn];
 }
@@ -247,8 +251,7 @@
     UIView *pickerView = [self.view viewWithTag:kDatePickerBgViewTag];
     [pickerView removeFromSuperview];
     
-    NSString *time = labelNotifyTime.text;
-    if (!time || [time isEqualToString:@""]) {
+    if (!notifyTime || [notifyTime isEqualToString:@""]) {
         [switchBtnAlarm setOn:NO];
     }
 }
@@ -270,7 +273,7 @@
     }
     if ([switchBtnAlarm isOn]) {
         self.plan.isnotify = @"1";
-        self.plan.notifytime = labelNotifyTime.text;
+        self.plan.notifytime = notifyTime;
     } else {
         self.plan.isnotify = @"0";
         self.plan.notifytime = @"";
