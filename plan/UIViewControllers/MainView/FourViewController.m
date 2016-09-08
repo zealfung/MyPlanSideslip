@@ -618,7 +618,7 @@
                         isLoadingTheme = NO;
                         if (!error && array.count > 0) {
                             BmobObject *obj = array[0];
-                            [weakSelf toThemeList:obj];
+                            [weakSelf toPostsDetail:obj];
                         }
                     }];
                 }
