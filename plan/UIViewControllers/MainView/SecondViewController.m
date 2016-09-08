@@ -289,8 +289,11 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
             [dayDateKeyArrayTmp addObject:key];
         }
         
-//        [dateArray addObject:plan];
-        [dateArray insertObject:plan atIndex:0];
+        if ([plan.iscompleted isEqualToString:@"1"]) {
+            [dateArray addObject:plan];
+        } else {
+            [dateArray insertObject:plan atIndex:0];
+        }
     }
     [dayDateKeyArray addObjectsFromArray:dayDateKeyArrayTmp];
     //日期降序排列
