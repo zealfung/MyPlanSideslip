@@ -66,8 +66,10 @@
     headerImagesURLArray = [NSMutableArray array];
     headerDetailURLArray = [NSMutableArray array];
     
+    [NotificationCenter addObserver:self selector:@selector(reloadData) name:NTFPostsNew object:nil];
+    [NotificationCenter addObserver:self selector:@selector(reloadData) name:NTFPostsRefresh object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:NTFMessagesSave object:nil];
-
+    
     [self initTableView];
     
     [self createBack2TopButton];

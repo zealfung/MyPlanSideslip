@@ -81,7 +81,10 @@
         [weakSelf hideHUD];
         if (error) {
             
-            NSString *errorMsg = [error.userInfo objectForKey:@"error"];
+            NSString *errorMsg = [error.userInfo objectForKey:@"NSLocalizedDescription"];
+            if (!errorMsg) {
+                errorMsg = [error.userInfo objectForKey:@"error"];
+            }
             if ([errorMsg containsString:@"incorrect"]) {
                 [weakSelf alertButtonMessage:str_LogIn_Tips1];
             } else if ([errorMsg containsString:@"connect failed"]) {
