@@ -794,7 +794,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     }
     plan.updatetime = timeNow;
     
-    [PlanCache storePlan:plan];
+    [PlanCache updatePlanState:plan];
     
     [tableViewPlan reloadData];
 }

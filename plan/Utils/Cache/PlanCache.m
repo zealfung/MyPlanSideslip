@@ -414,6 +414,57 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
++ (BOOL)updatePlanState:(Plan *)plan {
+    @synchronized(__db) {
+        
+        if (!__db.open) {
+            if (![__db open]) {
+                return NO;
+            }
+        }
+        
+        if (!plan.planid)
+            return NO;
+        
+        if ([LogIn isLogin]) {
+            BmobUser *user = [BmobUser currentUser];
+            plan.account = user.objectId;
+        } else {
+            plan.account = @"";
+        }
+        if (!plan.completetime) {
+            plan.completetime = @"";
+        }
+        if (!plan.updatetime) {
+            plan.updatetime = plan.createtime;
+        }
+        if (!plan.iscompleted) {
+            plan.iscompleted = @"0";
+        }
+        
+        BOOL hasRec = NO;
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE planid=? AND account=?", str_TableName_Plan];
+        
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[plan.planid, plan.account]];
+        hasRec = [rs next];
+        [rs close];
+        BOOL b = NO;
+        if (hasRec) {
+            
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET completetime=?, updatetime=?, iscompleted=? WHERE planid=? AND account=?", str_TableName_Plan];
+            
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.completetime, plan.updatetime, plan.iscompleted, plan.planid, plan.account]];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+            
+        }
+        if (b) {
+            [NotificationCenter postNotificationName:NTFPlanSave object:nil];
+        }
+        return b;
+    }
+}
+
 + (BOOL)storePhoto:(Photo *)photo {
     
     @synchronized(__db) {

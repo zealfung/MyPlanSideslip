@@ -22,6 +22,9 @@
 
 + (BOOL)storePlan:(Plan *)plan;
 
+/** 更新计划的完成状态 */
++ (BOOL)updatePlanState:(Plan *)plan;
+
 + (BOOL)storePhoto:(Photo *)photo;
 
 + (BOOL)storeStatistics:(Statistics *)statistics;
