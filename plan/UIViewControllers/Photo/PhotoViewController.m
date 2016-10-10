@@ -33,11 +33,16 @@
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.tableFooterView = [[UIView alloc] init];
     __weak typeof(self) weakSelf = self;
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
+        isLoadMore = NO;
+        [weakSelf reloadPhotoData];
+    }];
+    header.lastUpdatedTimeLabel.hidden = YES;
+    self.tableView.mj_header = header;
     self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         isLoadMore = YES;
         [weakSelf reloadPhotoData];
     }];
-    self.tableView.mj_footer.hidden = YES;
     
     [NotificationCenter addObserver:self selector:@selector(reloadPhotoData) name:NTFPhotoSave object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshTable) name:NTFPhotoRefreshOnly object:nil];
@@ -78,6 +83,7 @@
     } else {
         [self.tableView.mj_footer endRefreshingWithNoMoreData];
     }
+    [self.tableView.mj_header endRefreshing];
     [self.tableView.mj_footer endRefreshing];
     
     [self.tableView reloadData];
