@@ -37,9 +37,9 @@ NSInteger const kFullScreenImageArrayViewBaseTag = 20151121;
         [oneTapGestureRecognizer requireGestureRecognizerToFail:twoTapGestureRecognizer];
     }
     
-    if (!iOS7_LATER) {
+    if (!(iOS7_LATER)) {
         self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-        self.wantsFullScreenLayout = YES;
+//        self.wantsFullScreenLayout = YES;
     } else {
         self.edgesForExtendedLayout = UIRectEdgeAll;
         self.extendedLayoutIncludesOpaqueBars = YES;

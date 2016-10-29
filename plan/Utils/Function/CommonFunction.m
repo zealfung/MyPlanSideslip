@@ -109,7 +109,7 @@ static NSString * const kKeyMinutes = @"minutes";
 
 + (BOOL)isSameDay:(NSDate*)date1 date2:(NSDate*)date2 {
     NSCalendar *calendar = [NSCalendar currentCalendar];
-    unsigned unitFlags = NSYearCalendarUnit | NSMonthCalendarUnit |  NSDayCalendarUnit;
+    unsigned unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth |  NSCalendarUnitDay;
     NSDateComponents *comp1 = [calendar components:unitFlags fromDate:date1];
     NSDateComponents *comp2 = [calendar components:unitFlags fromDate:date2];
     return [comp1 day] == [comp2 day] &&

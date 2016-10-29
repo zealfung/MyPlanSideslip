@@ -79,7 +79,6 @@
 }
 
 - (UIBarButtonItem *)createBarButtonItemWithTitle:(NSString *)title titleColor:(UIColor *)color font:(UIFont *)font selector:(SEL)selector {
-    
     CGFloat btnWidth = 50,btnHeight = 44;
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     [button setTitle:title forState:UIControlStateNormal];
@@ -91,7 +90,6 @@
 }
 
 - (UIBarButtonItem *)createBarButtonItemWithNormalImageName:(NSString *)normalImageName selectedImageName:(NSString*)selectedImageName selector:(SEL)selector {
-    
     UIImage *imageNormal = [UIImage imageNamed:normalImageName];
     UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
     button.frame = CGRectMake(0, 0, imageNormal.size.width + 20, imageNormal.size.height);
@@ -101,7 +99,6 @@
 }
 
 - (UIView *)getInputAccessoryView {
-    
     UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth([[UIScreen mainScreen] applicationFrame]), 44)];
     toolBar.barStyle = UIBarStyleBlackTranslucent;
     
