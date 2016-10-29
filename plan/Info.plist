@@ -60,7 +60,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>2</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
 		<string>wechat</string>
@@ -115,8 +115,21 @@
 				<key>NSIncludesSubdomains</key>
 				<true/>
 			</dict>
+            <key>cn.bmob.www</key>
+            <dict>
+                <key>NSExceptionAllowsInsecureHTTPLoads</key>
+                <true/>
+                <key>NSExceptionRequiresForwardSecrecy</key>
+                <false/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+            </dict>
 		</dict>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>"我有计划"需要您的同意才能使用拍照功能</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>"我有计划"需要您的同意才能使用相册功能</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
