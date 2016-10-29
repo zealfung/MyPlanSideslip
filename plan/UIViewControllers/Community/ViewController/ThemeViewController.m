@@ -119,7 +119,6 @@
         //加载更多帖子数据
         [weakSelf reloadPostsData];
     }];
-    self.tableView.mj_footer.hidden = YES;
 }
 
 - (void)createBack2TopButton {
@@ -585,6 +584,7 @@
         isLoadEnd = YES;
         [weakSelf.tableView.mj_header endRefreshing];
         [weakSelf.tableView.mj_footer endRefreshing];
+        
         //记录加载时间
         [UserDefaults setObject:[NSDate date] forKey:str_PostsList_UpdatedTime];
         [UserDefaults synchronize];
@@ -593,6 +593,7 @@
             [postsArray addObjectsFromArray:array];
             [weakSelf checkIsLike:postsArray];
         } else {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
             [weakSelf hideHUD];
         }
     }];

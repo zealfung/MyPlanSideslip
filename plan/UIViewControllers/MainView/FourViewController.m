@@ -142,9 +142,8 @@
     self.tableView.showsVerticalScrollIndicator = NO;
     __weak typeof(self) weakSelf = self;
     MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        
+        isLoadMore = NO;
         [weakSelf reloadData];
-        
     }];
     header.lastUpdatedTimeLabel.hidden = YES;
     self.tableView.mj_header = header;
@@ -153,7 +152,6 @@
         //加载更多帖子数据
         [weakSelf reloadPostsData];
     }];
-    self.tableView.mj_footer.hidden = YES;
 }
 
 #pragma mark - action
@@ -203,10 +201,6 @@
         return 1;
     }
 }
-
-//- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-//    return 30.f;
-//}
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     
@@ -744,6 +738,7 @@
         isLoadEnd = YES;
         [weakSelf.tableView.mj_header endRefreshing];
         [weakSelf.tableView.mj_footer endRefreshing];
+
         //记录加载时间
         [UserDefaults setObject:[NSDate date] forKey:str_PostsList_UpdatedTime];
         [UserDefaults synchronize];
@@ -752,6 +747,7 @@
             [postsArray addObjectsFromArray:array];
             [weakSelf checkIsLike:postsArray];
         } else {
+            [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
             [weakSelf hideHUD];
         }
     }];
