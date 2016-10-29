@@ -34,11 +34,11 @@ NSString *const SZCalendarCellIdentifier = @"cell";
     
 }
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    
     [_collectionView registerClass:[SZCalendarCell class] forCellWithReuseIdentifier:SZCalendarCellIdentifier];
      _weekDayArray = @[@"日",@"一",@"二",@"三",@"四",@"五",@"六"];
-    
 }
 
 - (void)customInterface
@@ -59,7 +59,7 @@ NSString *const SZCalendarCellIdentifier = @"cell";
 - (void)setDate:(NSDate *)date
 {
     _date = date;
-    [_monthLabel setText:[NSString stringWithFormat:@"%.2d-%i",[self month:date],[self year:date]]];
+    [_monthLabel setText:[NSString stringWithFormat:@"%.2ld-%li",(long)[self month:date], (long)[self year:date]]];
     [_collectionView reloadData];
     
 }
@@ -155,7 +155,7 @@ NSString *const SZCalendarCellIdentifier = @"cell";
             [cell.dateLabel setText:@""];
         }else{
             day = i - firstWeekday + 1;
-            [cell.dateLabel setText:[NSString stringWithFormat:@"%i",day]];
+            [cell.dateLabel setText:[NSString stringWithFormat:@"%li",(long)day]];
             [cell.dateLabel setTextColor:[UIColor colorWithHexString:@"#6f6f6f"]];
             
             //this month

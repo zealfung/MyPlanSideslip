@@ -32,12 +32,10 @@
 
 - (CGFloat)widthForString:(NSString *)string font:(UIFont *)font {
     CGFloat width = 0.0f;
-    if (iOS7_LATER) {
-        NSDictionary *attributes = [NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName];
-        width = ceilf([string sizeWithAttributes:attributes].width);
-    } else {
-        width = ceilf([string sizeWithFont:font].width);
-    }
+    
+    NSDictionary *attributes = [NSDictionary dictionaryWithObject:font forKey:NSFontAttributeName];
+    width = ceilf([string sizeWithAttributes:attributes].width);
+
     return width;
 }
 

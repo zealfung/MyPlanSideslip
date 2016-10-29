@@ -342,7 +342,8 @@ typedef enum {
     
     for (KxMenuItem *menuItem in _menuItems) {
 
-        const CGSize titleSize = [menuItem.title sizeWithFont:titleFont];
+        NSDictionary *attributes = [NSDictionary dictionaryWithObject:titleFont forKey:NSFontAttributeName];
+        const CGSize titleSize = [menuItem.title sizeWithAttributes:attributes];
         const CGSize imageSize = menuItem.image.size;
 
         const CGFloat itemHeight = MAX(titleSize.height, imageSize.height) + kMarginY * 2;
