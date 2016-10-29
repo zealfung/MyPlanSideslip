@@ -40,6 +40,8 @@ NSUInteger const kBounceSpace = 20;
 }
 
 - (void)awakeFromNib {
+    [super awakeFromNib];
+    
     [self addControl];
 }
 
