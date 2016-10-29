@@ -322,7 +322,7 @@ NSUInteger const kHoursPerDay = 24;
         [minuteLeftSubView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:kMinutesPerDay]];
         [minuteLeftSubView.rightButton.titleLabel setFont:font_Normal_16];
         [minuteLeftSubView.rightButton setAllTitleColor:color_Black];
-        [minuteLeftSubView.rightButton setAllTitle:str_FirstView_13];
+        [minuteLeftSubView.rightButton setAllTitle:str_FirstView_16];
         [minuteLeftSubView autoLayout];
         [self.view addSubview:minuteLeftSubView];
         
