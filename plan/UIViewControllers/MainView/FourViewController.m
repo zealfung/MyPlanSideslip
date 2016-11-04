@@ -239,21 +239,6 @@
     }
 }
 
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-//    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, 30)];
-//    view.backgroundColor = color_e9eff1;
-//    UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(12, 10, WIDTH_FULL_SCREEN - 24, 10)];
-//    label.textColor = color_666666;
-//    label.font = font_Normal_16;
-//    if (section == 0 && themeArray.count > 0) {
-//        label.text = @"主题计划";
-//    } else {
-//        label.text = @"全部计划";
-//    }
-//    [view addSubview:label];
-//    return view;
-//}
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     if (indexPath.section == 0) {
