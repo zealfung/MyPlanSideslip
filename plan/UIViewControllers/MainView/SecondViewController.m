@@ -318,6 +318,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     if (!isLoadMore) {//重头开始加载
         futureStart = 0;
         futureDateKeyArray = [NSMutableArray array];
+        [futureDateKeyArray addObject:str_Plan_FutureTomorrow];
         [futureDateKeyArray addObject:str_Plan_FutureWeek];
         [futureDateKeyArray addObject:str_Plan_FutureMonth];
         [futureDateKeyArray addObject:str_Plan_FutureYear];
@@ -332,7 +333,9 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:str_DateFormatter_yyyy_MM_dd];
         NSInteger days = [self calculateDayFromDate:[NSDate date] toDate:beginDate];
         
-        if (days >= 0 && days <= 7) {//一星期内开始
+        if (days >= 0 && days <= 1) {//
+            key = str_Plan_FutureTomorrow;
+        } else if (days > 1 && days <= 7) {//一星期内开始
             key = str_Plan_FutureWeek;
         } else if (days > 7 && days <= 30) {//一个月内开始
             key = str_Plan_FutureMonth;
@@ -347,6 +350,10 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         [dateArray addObject:plan];
     }
     //----------------去掉没有子项的section-----------------------------------------
+    NSMutableArray *arrayTomorrow = [futurePlanDict objectForKey:str_Plan_FutureTomorrow];
+    if (!arrayTomorrow || arrayTomorrow.count == 0) {
+        [futureDateKeyArray removeObject:str_Plan_FutureTomorrow];
+    }
     NSMutableArray *arrayWeek = [futurePlanDict objectForKey:str_Plan_FutureWeek];
     if (!arrayWeek || arrayWeek.count == 0) {
         [futureDateKeyArray removeObject:str_Plan_FutureWeek];
@@ -605,7 +612,11 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
             return view;
         } else if (planType == FuturePlan && futureDateKeyArray.count > section) {
             NSString *date = futureDateKeyArray[section];
-            view = [[PlanSectionView alloc] initWithTitle:date count:@"" isAllDone:YES];
+            BOOL isAllDone = YES;
+            if ([date isEqualToString:str_Plan_FutureTomorrow]) {
+                isAllDone = NO;
+            }
+            view = [[PlanSectionView alloc] initWithTitle:date count:@"" isAllDone:isAllDone];
             view.sectionIndex = section;
             if (futureSectionFlag[section])
                 [view toggleArrow];
