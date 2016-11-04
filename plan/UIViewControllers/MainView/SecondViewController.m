@@ -168,7 +168,6 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         [weakSelf getPlanData];
         
     }];
-    tableViewPlan.mj_footer.hidden = YES;
     [self.view addSubview:tableViewPlan];
 }
 
