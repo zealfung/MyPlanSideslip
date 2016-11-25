@@ -77,7 +77,7 @@
     CGFloat iconSize = 30;
     CGFloat switchWidth = 20;
     {
-        CGFloat tipsWidth = 90;
+        CGFloat tipsWidth = 95;
         beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
         UILabel *labelBeginTimeTips = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, tipsWidth, iconSize)];
         labelBeginTimeTips.textColor = color_Black;
