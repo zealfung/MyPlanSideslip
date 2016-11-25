@@ -364,7 +364,6 @@
     if (isLoadingPosts) return;
     
     isLoadingPosts = YES;
-    [self showHUD];
     if (!isLoadMore) {
         startIndex = 0;
         postsArray = [NSMutableArray array];
@@ -373,6 +372,9 @@
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
     BmobQuery *inQuery = [BmobQuery queryWithClassName:@"UserSettings"];
     BmobUser *user = [BmobUser currentUser];
+    if (!user) {
+        return;
+    }
     [inQuery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery whereKey:@"author" matchesQuery:inQuery];//匹配我的帖子
     [bquery includeKey:@"author"];//声明该次查询需要将author关联对象信息一并查询出来
@@ -381,6 +383,8 @@
     [bquery orderByDescending:@"updatedTime"];//再按照更新时间排序
     bquery.limit = 10;
     bquery.skip = postsArray.count;
+    
+    [self showHUD];
     __weak typeof(self) weakSelf = self;
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
         //自动回顶部

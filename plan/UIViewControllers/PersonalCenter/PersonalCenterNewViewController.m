@@ -6,6 +6,8 @@
 //  Copyright © 2016年 Fengzy. All rights reserved.
 //
 
+#import <BmobSDK/BmobUser.h>
+#import "LogInViewController.h"
 #import "PersonalCenterNewCell0.h"
 #import "SettingsViewController.h"
 #import "SettingsPersonalViewController.h"
@@ -125,8 +127,14 @@
         case 1:
         {
             if (indexPath.row == 0) {
-                PersonalCenterMyPostsViewController *controller = [[PersonalCenterMyPostsViewController alloc] init];
-                [self.navigationController pushViewController:controller animated:YES];
+                BmobUser *user = [BmobUser currentUser];
+                if (user) {
+                    PersonalCenterMyPostsViewController *controller = [[PersonalCenterMyPostsViewController alloc] init];
+                    [self.navigationController pushViewController:controller animated:YES];
+                } else {
+                    LogInViewController *controller = [[LogInViewController alloc] init];
+                    [self.navigationController pushViewController:controller animated:YES];
+                }
             } else if (indexPath.row == 1) {
                 PersonalCenterUndonePlanViewController *controller = [[PersonalCenterUndonePlanViewController alloc] init];
                 [self.navigationController pushViewController:controller animated:YES];
