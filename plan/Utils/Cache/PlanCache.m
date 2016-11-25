@@ -1235,12 +1235,11 @@ static NSMutableDictionary *__contactsOnlineState;
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
-        
-        NSString *condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd]];
+
         NSString *order = @"DESC";
         
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE %@ AND account=? AND isdeleted=0 AND iscompleted=0 ORDER BY beginDate %@", str_TableName_Plan, condition, order];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=? AND isdeleted=0 AND iscompleted=0 ORDER BY beginDate %@", str_TableName_Plan, order];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
