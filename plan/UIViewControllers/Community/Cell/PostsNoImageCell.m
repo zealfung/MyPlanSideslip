@@ -24,87 +24,47 @@
     cellView.imgViewAvatar.layer.cornerRadius = cellView.imgViewAvatar.frame.size.width / 2;
     cellView.labelIsTop.hidden = YES;
     cellView.labelIsHighlight.hidden = YES;
+
+    UITapGestureRecognizer *viewEyeTapRecognizer;
+    viewEyeTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:cellView action:@selector(viewEyeTap:)];
+    viewEyeTapRecognizer.numberOfTapsRequired = 1;
+    [cellView.viewEye addGestureRecognizer:viewEyeTapRecognizer];
     
-    __weak typeof(PostsNoImageCell) *weakSelf = cellView;
+    UITapGestureRecognizer *viewCommentTapRecognizer;
+    viewCommentTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:cellView action:@selector(viewCommentTap:)];
+    viewCommentTapRecognizer.numberOfTapsRequired = 1;
+    [cellView.viewComment addGestureRecognizer:viewCommentTapRecognizer];
     
-    [cellView getNameSubViewForLeftBlock:^{
-        
-    } centerBlock:^{
-        if (weakSelf.postsCellLevelBlock) {
-            weakSelf.postsCellLevelBlock();
-        }
-    } rightBlock:^{
-        
-    }];
-    [cellView.subViewNickName autoLayout];
-    
-    [cellView getBtnSubViewForLeftBlock: ^{
-        if (weakSelf.postsCellViewBlock) {
-            weakSelf.postsCellViewBlock();
-        }
-    } centerBlock:^{
-        if (weakSelf.postsCellCommentBlock) {
-            weakSelf.postsCellCommentBlock();
-        }
-    } rightBlock: ^{
-        if (weakSelf.postsCellLikeBlock) {
-            weakSelf.postsCellLikeBlock();
-        }
-    }];
-    
-    [cellView.subViewButton autoLayout];
+    UITapGestureRecognizer *viewLikeTapRecognizer;
+    viewLikeTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:cellView action:@selector(viewLikeTap:)];
+    viewLikeTapRecognizer.numberOfTapsRequired = 1;
+    [cellView.viewLike addGestureRecognizer:viewLikeTapRecognizer];
     
     return cellView;
 }
 
-- (void)getNameSubViewForLeftBlock:(ButtonSelectBlock)leftBlock centerBlock:(ButtonSelectBlock)centerBlock rightBlock:(ButtonSelectBlock)rightBlock {
-
-    [self.subViewNickName setLeftButtonSelectBlock:leftBlock centerButtonSelectBlock:centerBlock rightButtonSelectBlock:rightBlock];
-    self.subViewNickName.backgroundColor = [UIColor clearColor];
-    
-    self.subViewNickName.fixCenterWidth = 20;
-    self.subViewNickName.centerButton.adjustsImageWhenDisabled = NO;
-    self.subViewNickName.fixRightWidth = self.subViewNickName.frame.size.width - self.subViewNickName.fixLeftWidth - self.subViewNickName.fixCenterWidth;
-    
-    self.subViewNickName.leftButton.enabled = NO;
-    self.subViewNickName.leftButton.adjustsImageWhenDisabled = NO;
-    self.subViewNickName.leftButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    self.subViewNickName.leftButton.titleLabel.font = font_Normal_16;
-    self.subViewNickName.leftButton.titleLabel.textAlignment = NSTextAlignmentLeft;
-    
-    self.subViewNickName.rightButton.enabled = NO;
+- (IBAction)userLevelClickedAction:(id)sender {
+    if (self.postsCellLevelBlock) {
+        self.postsCellLevelBlock ();
+    }
 }
 
-- (void)getBtnSubViewForLeftBlock:(ButtonSelectBlock)leftBlock centerBlock:(ButtonSelectBlock)centerBlock rightBlock:(ButtonSelectBlock)rightBlock {
-    
-    [self.subViewButton setLeftButtonSelectBlock:leftBlock centerButtonSelectBlock:centerBlock rightButtonSelectBlock:rightBlock];
-    
-    self.subViewButton.backgroundColor = [UIColor clearColor];
-    CGFloat btnWidth = WIDTH_FULL_SCREEN / 3;
-    
-    self.subViewButton.fixLeftWidth = btnWidth;
-    self.subViewButton.fixCenterWidth = btnWidth;
-    self.subViewButton.fixRightWidth = btnWidth;
-    
-    [self.subViewButton.leftButton setImage:[UIImage imageNamed:png_Icon_Posts_Eyes] forState:UIControlStateNormal];
-    [self.subViewButton.leftButton setImage:[UIImage imageNamed:png_Icon_Posts_Eyes] forState:UIControlStateSelected];
-    
-    [self.subViewButton.centerButton setImage:[UIImage imageNamed:png_Icon_Posts_Comment] forState:UIControlStateNormal];
-    [self.subViewButton.centerButton setImage:[UIImage imageNamed:png_Icon_Posts_Comment] forState:UIControlStateSelected];
-    
-    [self.subViewButton.rightButton setImage:[UIImage imageNamed:png_Icon_Posts_Praise_Normal] forState:UIControlStateNormal];
-    [self.subViewButton.rightButton setImage:[UIImage imageNamed:png_Icon_Posts_Praise_Selected] forState:UIControlStateSelected];
-    
-    self.subViewButton.leftButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-    self.subViewButton.centerButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-    self.subViewButton.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-    self.subViewButton.leftButton.titleLabel.font = font_Normal_13;
-    self.subViewButton.centerButton.titleLabel.font = font_Normal_14;
-    self.subViewButton.rightButton.titleLabel.font = font_Normal_14;
-    self.subViewButton.leftButton.titleLabel.textAlignment = NSTextAlignmentRight;
-    [self.subViewButton.leftButton setAllTitleColor:color_8f8f8f];
-    [self.subViewButton.centerButton setAllTitleColor:color_8f8f8f];
-    [self.subViewButton.rightButton setAllTitleColor:color_8f8f8f];
+- (void)viewEyeTap:(UITapGestureRecognizer*)recognizer {
+    if (self.postsCellViewBlock) {
+        self.postsCellViewBlock ();
+    }
+}
+
+- (void)viewCommentTap:(UITapGestureRecognizer*)recognizer {
+    if (self.postsCellCommentBlock) {
+        self.postsCellCommentBlock ();
+    }
+}
+
+- (void)viewLikeTap:(UITapGestureRecognizer*)recognizer {
+    if (self.postsCellLikeBlock) {
+        self.postsCellLikeBlock ();
+    }
 }
 
 @end

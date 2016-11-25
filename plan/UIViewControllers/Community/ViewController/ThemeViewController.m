@@ -360,16 +360,18 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
 
-            [cell.subViewNickName.leftButton setAllTitle:nickName];
+            cell.labelNickName.text = nickName;
             if (!gender || [gender isEqualToString:@"1"]) {
-                [cell.subViewNickName.leftButton setAllTitleColor:color_Blue];
+                cell.labelNickName.textColor = color_Blue;
             } else {
-                [cell.subViewNickName.leftButton setAllTitleColor:color_Pink];
+                cell.labelNickName.textColor = color_Pink;
             }
             if (level) {
-                [cell.subViewNickName.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+                cell.btnUserLevel.enabled = YES;
+                [cell.btnUserLevel setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+            } else {
+                cell.btnUserLevel.enabled = NO;
             }
-            [cell.subViewNickName autoLayout];
             
             cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
             cell.labelContent.text = content;
@@ -380,12 +382,13 @@
                 cell.labelIsHighlight.hidden = NO;
             }
             if (isLike) {
-                cell.subViewButton.rightButton.selected = YES;
-                [cell.subViewButton.rightButton setAllTitleColor:color_Red];
+                cell.isLiked = YES;
+                cell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Selected];
+                cell.labelLike.textColor = color_Red;
             }
-            [cell.subViewButton.leftButton setAllTitle:[CommonFunction checkNumberForThousand:readTimes]];
-            [cell.subViewButton.centerButton setAllTitle:[CommonFunction checkNumberForThousand:commentsCount]];
-            [cell.subViewButton.rightButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
+            cell.labelEye.text = [CommonFunction checkNumberForThousand:readTimes];
+            cell.labelComment.text = [CommonFunction checkNumberForThousand:commentsCount];
+            cell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
             __weak typeof(PostsNoImageCell) *weakCell = cell;
             cell.postsCellLevelBlock = ^() {
                 [weakSelf mAction:nil];
@@ -399,19 +402,21 @@
             cell.postsCellLikeBlock = ^(){
                 if ([LogIn isLogin]) {
                     BmobObject *obj = postsArray[indexPath.row];
-                    weakCell.subViewButton.rightButton.selected = !weakCell.subViewButton.rightButton.selected;
-                    if (weakCell.subViewButton.rightButton.selected) {
+                    weakCell.isLiked = !weakCell.isLiked;
+                    if (weakCell.isLiked) {
                         [weakSelf likePosts:obj];
                         NSInteger likesCount = [[obj objectForKey:@"likesCount"] integerValue];
                         likesCount += 1;
-                        [weakCell.subViewButton.rightButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
-                        [weakCell.subViewButton.rightButton setAllTitleColor:color_Red];
+                        weakCell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Selected];
+                        weakCell.labelLike.textColor = color_Red;
+                        weakCell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
                     } else {
                         [weakSelf unlikePosts:obj];
                         NSInteger likesCount = [[obj objectForKey:@"likesCount"] integerValue];
                         likesCount -= 1;
-                        [weakCell.subViewButton.rightButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
-                        [weakCell.subViewButton.rightButton setAllTitleColor:color_8f8f8f];
+                        weakCell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Normal];
+                        weakCell.labelLike.textColor = color_8f8f8f;
+                        weakCell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
                     }
                 } else {
                     [weakSelf toLogInView];
