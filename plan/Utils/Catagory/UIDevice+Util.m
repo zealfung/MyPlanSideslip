@@ -129,7 +129,6 @@
 
 #pragma mark platform type and name utils
 - (NSUInteger)platformType {
-    NSLog(@"platform = %@" ,[self platform]);
     return [UIDevice platformTypeForString:[self platform]];
 }
 
