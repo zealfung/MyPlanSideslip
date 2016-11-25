@@ -22,6 +22,9 @@
 #define IPHONE_6Plus_NAMESTRING         @"iPhone 6Plus"
 #define IPHONE_6S_NAMESTRING            @"iPhone 6S"
 #define IPHONE_6SPlus_NAMESTRING        @"iPhone 6SPlus"
+#define IPHONE_SE_NAMESTRING            @"iPhone SE"
+#define IPHONE_7_NAMESTRING             @"iPhone 7"
+#define IPHONE_7Plus_NAMESTRING         @"iPhone 7Plus"
 #define IPHONE_UNKNOWN_NAMESTRING       @"Unknown iPhone"
 
 #define IPOD_1_NAMESTRING               @"iPod touch 1"
@@ -29,16 +32,21 @@
 #define IPOD_3_NAMESTRING               @"iPod touch 3"
 #define IPOD_4_NAMESTRING               @"iPod touch 4"
 #define IPOD_5_NAMESTRING               @"iPod touch 5"
+#define IPOD_6_NAMESTRING               @"iPod touch 6"
 #define IPOD_UNKNOWN_NAMESTRING         @"Unknown iPod"
 
 #define IPAD_1_NAMESTRING               @"iPad 1"
 #define IPAD_2_NAMESTRING               @"iPad 2"
-#define THE_NEW_IPAD_NAMESTRING         @"The new iPad"
-#define IPAD_4G_NAMESTRING              @"iPad 4G"
-#define IPAD_AIR_NAMESTRING             @"iPad Air (WiFi)"
-#define IPAD_AIR_LTE_NAMESTRING         @"iPad Air (LTE)"
+#define IPAD_3_NAMESTRING               @"iPad 3"
+#define IPAD_4_NAMESTRING               @"iPad 4"
 
-#define IPAD_MINI_NAMESTRING            @"iPad mini"
+#define IPAD_AIR_NAMESTRING             @"iPad Air"
+#define IPAD_AIR2_NAMESTRING            @"iPad Air2"
+
+#define IPAD_MINI_1G_NAMESTRING         @"iPad mini1G"
+#define IPAD_MINI_2_NAMESTRING          @"iPad mini2"
+#define IPAD_MINI_3_NAMESTRING          @"iPad mini3"
+#define IPAD_MINI_4_NAMESTRING          @"iPad mini4"
 #define IPAD_UNKNOWN_NAMESTRING         @"Unknown iPad"
 
 #define APPLETV_2G_NAMESTRING           @"Apple TV 2"
@@ -84,20 +92,27 @@ typedef enum {
     UIDeviceiPhone6PlusGSMCDMA,
     UIDeviceiPhone6S,
     UIDeviceiPhone6SPlus,
+    UIDeviceiPhoneSE,
+    UIDeviceiPhone7,
+    UIDeviceiPhone7Plus,
     
     UIDeviceiPod1,
     UIDeviceiPod2,
     UIDeviceiPod3,
     UIDeviceiPod4,
     UIDeviceiPod5,
+    UIDeviceiPod6,
     
-    UIDeviceiPad1,
+    UIDeviceiPad,
     UIDeviceiPad2,
-    UIDeviceTheNewiPad,
-    UIDeviceiPad4G,
+    UIDeviceiPad3,
+    UIDeviceiPad4,
     UIDeviceiPadAir,
-    UIDeviceiPadAirLTE,
-    UIDeviceiPadMini,
+    UIDeviceiPadAir2,
+    UIDeviceiPadMini1G,
+    UIDeviceiPadMini2,
+    UIDeviceiPadMini3,
+    UIDeviceiPadMini4,
     
     UIDeviceAppleTV2,
     UIDeviceAppleTV3,
