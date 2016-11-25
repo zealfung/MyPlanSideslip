@@ -11,8 +11,8 @@
 #import "DataCenter.h"
 #import <BmobSDK/BmobACL.h>
 #import <BmobSDK/BmobFile.h>
-#import <BmobSDK/BmobObjectsBatch.h>
 #import "SDWebImageDownloader.h"
+#import <BmobSDK/BmobObjectsBatch.h>
 
 static BOOL finishSettings;
 static BOOL finishUploadAvatar;
@@ -314,6 +314,40 @@ static BOOL finishTask;
         }
         finishSettings = YES;
         [weakSelf IsAllUploadFinished];
+    }];
+}
+
++ (void)updateVersionToServerForSettings {
+    __weak typeof(self) weakSelf = self;
+    BmobUser *user = [BmobUser currentUser];
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+        if (array.count > 0) {
+            BmobObject *obj = array[0];
+            [weakSelf updateVersionForSettings:obj];
+        }
+    }];
+}
+
++ (void)updateVersionForSettings:(BmobObject *)settingsObject {
+    
+    [settingsObject setObject:[CommonFunction getAppVersion] forKey:@"appVersion"];
+    [settingsObject setObject:[CommonFunction getDeviceType] forKey:@"deviceType"];
+    [settingsObject setObject:[CommonFunction getiOSVersion] forKey:@"iOSVersion"];
+
+    BmobACL *acl = [BmobACL ACL];
+    [acl setPublicReadAccess];//设置所有人可读
+    [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
+    settingsObject.ACL = acl;
+    [settingsObject updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        if (isSuccessful) {
+            NSLog(@"更新版本号信息到服务器成功");
+        } else if (error) {
+            NSLog(@"更新版本号信息到服务器失败：%@",error);
+        } else {
+            NSLog(@"更新版本号信息到服务器遇到未知错误");
+        }
     }];
 }
 
