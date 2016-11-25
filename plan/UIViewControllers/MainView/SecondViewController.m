@@ -333,11 +333,11 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:str_DateFormatter_yyyy_MM_dd];
         NSInteger days = [self calculateDayFromDate:[NSDate date] toDate:beginDate];
         
-        if (days >= 0 && days <= 1) {//
+        if (days >= 0 && days < 1) {//
             key = str_Plan_FutureTomorrow;
-        } else if (days > 1 && days <= 7) {//一星期内开始
+        } else if (days >= 1 && days < 7) {//一星期内开始
             key = str_Plan_FutureWeek;
-        } else if (days > 7 && days <= 30) {//一个月内开始
+        } else if (days >= 7 && days < 30) {//一个月内开始
             key = str_Plan_FutureMonth;
         } else {//一个月后开始
             key = str_Plan_FutureYear;
