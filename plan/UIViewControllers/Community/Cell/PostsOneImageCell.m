@@ -21,7 +21,7 @@
     cellView.imgViewAvatar.layer.borderWidth = 1;
     cellView.imgViewAvatar.layer.borderColor = [color_dedede CGColor];
     cellView.imgViewAvatar.contentMode = UIViewContentModeScaleAspectFit;
-    cellView.imgViewAvatar.layer.cornerRadius = cellView.imgViewAvatar.frame.size.width / 2;
+    cellView.imgViewAvatar.layer.cornerRadius = 15.f;
     cellView.labelIsTop.hidden = YES;
     cellView.labelIsHighlight.hidden = YES;
     

@@ -23,8 +23,8 @@
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EPN-PL-mXR">
                         <constraints>
-                            <constraint firstAttribute="width" constant="20" id="b6r-Lh-akT"/>
-                            <constraint firstAttribute="height" constant="20" id="c3r-0y-CHb"/>
+                            <constraint firstAttribute="width" constant="15" id="b6r-Lh-akT"/>
+                            <constraint firstAttribute="height" constant="15" id="c3r-0y-CHb"/>
                         </constraints>
                         <connections>
                             <action selector="userLevelClickedAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="DmW-3j-13x"/>
