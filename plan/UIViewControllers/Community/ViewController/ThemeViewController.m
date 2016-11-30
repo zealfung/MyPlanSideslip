@@ -238,7 +238,7 @@
                 }
                 if (level) {
                     cell.btnUserLevel.enabled = YES;
-                    [cell.btnUserLevel setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+                    [cell.btnUserLevel setBackgroundImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
                 } else {
                     cell.btnUserLevel.enabled = NO;
                 }
@@ -307,7 +307,7 @@
                 }
                 if (level) {
                     cell.btnUserLevel.enabled = YES;
-                    [cell.btnUserLevel setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+                    [cell.btnUserLevel setBackgroundImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
                 } else {
                     cell.btnUserLevel.enabled = NO;
                 }
@@ -378,7 +378,7 @@
             }
             if (level) {
                 cell.btnUserLevel.enabled = YES;
-                [cell.btnUserLevel setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+                [cell.btnUserLevel setBackgroundImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
             } else {
                 cell.btnUserLevel.enabled = NO;
             }
