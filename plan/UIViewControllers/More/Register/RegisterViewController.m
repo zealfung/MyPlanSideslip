@@ -96,7 +96,7 @@
     NSString *acountEmail = [self.txtEmail.text lowercaseString];
     BmobUser *bUser = [[BmobUser alloc] init];
     bUser.username = acountEmail;
-    bUser.password = [CommonFunction md5HexDigest:self.txtPassword.text];
+    bUser.password = self.txtPassword.text;// [CommonFunction md5HexDigest:self.txtPassword.text];
     bUser.email = acountEmail;
     [bUser signUpInBackgroundWithBlock:^ (BOOL isSuccessful, NSError *error){
         
