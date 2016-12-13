@@ -451,9 +451,9 @@ static NSMutableDictionary *__contactsOnlineState;
         BOOL b = NO;
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET completetime=?, updatetime=?, iscompleted=? WHERE planid=? AND account=?", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET beginDate=?, completetime=?, updatetime=?, iscompleted=? WHERE planid=? AND account=?", str_TableName_Plan];
             
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.completetime, plan.updatetime, plan.iscompleted, plan.planid, plan.account]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.beginDate, plan.completetime, plan.updatetime, plan.iscompleted, plan.planid, plan.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
