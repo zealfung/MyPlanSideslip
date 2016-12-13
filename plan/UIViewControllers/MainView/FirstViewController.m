@@ -43,6 +43,7 @@ NSUInteger const kHoursPerDay = 24;
     NSUInteger yOffset;
     NSUInteger ySpace;
 }
+@property (strong, nonatomic) UIScrollView *scrollView;
 
 @end
 
@@ -135,7 +136,14 @@ NSUInteger const kHoursPerDay = 24;
 }
 
 - (void)createAvatar {
-    [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    if (self.scrollView) {
+        [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    } else {
+        self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, HEIGHT_FULL_VIEW)];
+        self.scrollView.backgroundColor = [UIColor whiteColor];
+        self.scrollView.showsVerticalScrollIndicator = NO;
+        [self.view addSubview:self.scrollView];
+    }
     
     NSUInteger avatarSize = WIDTH_FULL_SCREEN / 3;
     xMiddle = WIDTH_FULL_SCREEN / 2;
@@ -158,7 +166,7 @@ NSUInteger const kHoursPerDay = 24;
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toSettingsViewController)];
     [avatar addGestureRecognizer:singleTap];
     
-    [self.view addSubview:avatar];
+    [self.scrollView addSubview:avatar];
     
     yOffset += avatarSize + ySpace;
 }
@@ -189,7 +197,7 @@ NSUInteger const kHoursPerDay = 24;
     [nickNameSubView.centerButton setAllTitle:nickname];
     [nickNameSubView autoLayout];
     
-    [self.view addSubview:nickNameSubView];
+    [self.scrollView addSubview:nickNameSubView];
     
     nickNameView = nickNameSubView;
     
@@ -214,7 +222,7 @@ NSUInteger const kHoursPerDay = 24;
     [liftetimeSubView.rightButton setAllTitleColor:color_Black];
     [liftetimeSubView.rightButton setAllTitle:str_FirstView_2];
     [liftetimeSubView autoLayout];
-    [self.view addSubview:liftetimeSubView];
+    [self.scrollView addSubview:liftetimeSubView];
     
     liftetimeView = liftetimeSubView;
     
@@ -234,8 +242,8 @@ NSUInteger const kHoursPerDay = 24;
     
     NSDate *birthday = [CommonFunction NSStringDateToNSDate:birthdayFormat formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
 
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    unsigned units  = NSMonthCalendarUnit|NSDayCalendarUnit|NSYearCalendarUnit;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    unsigned units  = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
     NSDateComponents *comp = [calendar components:units fromDate:birthday];
     NSInteger year = [comp year];
     year += lifetime;
@@ -273,7 +281,7 @@ NSUInteger const kHoursPerDay = 24;
         [daysLeftSubView.rightButton setAllTitle:str_FirstView_4];
     }
     [daysLeftSubView autoLayout];
-    [self.view addSubview:daysLeftSubView];
+    [self.scrollView addSubview:daysLeftSubView];
     
     daysLeftView = daysLeftSubView;
     
@@ -298,7 +306,7 @@ NSUInteger const kHoursPerDay = 24;
         [secondsLeftSubView.rightButton setAllTitleColor:color_Black];
         [secondsLeftSubView.rightButton setAllTitle:str_FirstView_6];
         [secondsLeftSubView autoLayout];
-        [self.view addSubview:secondsLeftSubView];
+        [self.scrollView addSubview:secondsLeftSubView];
         
         secondsLeftView = secondsLeftSubView;
         
@@ -324,7 +332,7 @@ NSUInteger const kHoursPerDay = 24;
         [minuteLeftSubView.rightButton setAllTitleColor:color_Black];
         [minuteLeftSubView.rightButton setAllTitle:str_FirstView_16];
         [minuteLeftSubView autoLayout];
-        [self.view addSubview:minuteLeftSubView];
+        [self.scrollView addSubview:minuteLeftSubView];
         
         minuteLeftView = minuteLeftSubView;
         
@@ -350,7 +358,7 @@ NSUInteger const kHoursPerDay = 24;
         [hourLeftSubView.rightButton setAllTitleColor:color_Black];
         [hourLeftSubView.rightButton setAllTitle:str_FirstView_14];
         [hourLeftSubView autoLayout];
-        [self.view addSubview:hourLeftSubView];
+        [self.scrollView addSubview:hourLeftSubView];
         
         hourLeftView = hourLeftSubView;
         
@@ -377,7 +385,7 @@ NSUInteger const kHoursPerDay = 24;
     CGFloat subviewHeight = viewHeight / 3;
 
     UIView *statisticsBgView = [[UIView alloc] initWithFrame:CGRectMake(xOffset, yOffset, viewWidth, subviewHeight * 4)];
-    [self.view addSubview:statisticsBgView];
+    [self.scrollView addSubview:statisticsBgView];
     [self addSeparatorForLeft:statisticsBgView];
     [self addSeparatorForMiddleLeft:statisticsBgView];
     [self addSeparatorForMiddleRight:statisticsBgView];
@@ -507,7 +515,9 @@ NSUInteger const kHoursPerDay = 24;
         [statisticsView addSubview:todayStatisticsView];
     }
 
-    yOffset += viewHeight + 20;
+    yOffset += subviewHeight * 5 + 20;
+    
+    self.scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, yOffset);
 }
 
 - (void)createShareLogo {
@@ -524,7 +534,7 @@ NSUInteger const kHoursPerDay = 24;
     [view addSubview:labelName];
     view.hidden = YES;
     shareLogoView = view;
-    [self.view addSubview:view];
+    [self.scrollView addSubview:view];
 }
 
 - (void)addSeparatorForTop:(UIView *)view {
@@ -578,7 +588,7 @@ NSUInteger const kHoursPerDay = 24;
         [secondsLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:secondsLeft]];
         [secondsLeftView autoLayout];
         CGRect frame = secondsLeftView.frame;
-        frame.origin.x = self.view.frame.size.width / 2 - secondsLeftView.frame.size.width / 2;
+        frame.origin.x = WIDTH_FULL_SCREEN / 2 - secondsLeftView.frame.size.width / 2;
         secondsLeftView.frame = frame;
     }
     //刷新分
@@ -587,7 +597,7 @@ NSUInteger const kHoursPerDay = 24;
         [minuteLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:minutesLeft]];
         [minuteLeftView autoLayout];
         CGRect frame = minuteLeftView.frame;
-        frame.origin.x = self.view.frame.size.width / 2 - minuteLeftView.frame.size.width / 2;
+        frame.origin.x = WIDTH_FULL_SCREEN / 2 - minuteLeftView.frame.size.width / 2;
         minuteLeftView.frame = frame;
     }
     //刷新时
@@ -596,7 +606,7 @@ NSUInteger const kHoursPerDay = 24;
         [hourLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:hoursLeft]];
         [hourLeftView autoLayout];
         CGRect frame = hourLeftView.frame;
-        frame.origin.x = self.view.frame.size.width / 2 - hourLeftView.frame.size.width / 2;
+        frame.origin.x = WIDTH_FULL_SCREEN / 2 - hourLeftView.frame.size.width / 2;
         hourLeftView.frame = frame;
     }
     
@@ -613,7 +623,7 @@ NSUInteger const kHoursPerDay = 24;
         [daysLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:daysLeft]];
         [daysLeftView autoLayout];
         CGRect frame = daysLeftView.frame;
-        frame.origin.x = self.view.frame.size.width / 2 - daysLeftView.frame.size.width / 2;
+        frame.origin.x = WIDTH_FULL_SCREEN / 2 - daysLeftView.frame.size.width / 2;
         daysLeftView.frame = frame;
     }
 }
