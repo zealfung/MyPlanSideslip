@@ -157,9 +157,9 @@ NSUInteger const pageWidth = 110;
         UIToolbar* toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, pickerView.frame.size.height - kDatePickerHeight - kToolBarHeight, CGRectGetWidth(pickerView.bounds), kToolBarHeight)];
         toolbar.barStyle = UIBarStyleBlack;
         toolbar.translucent = YES;
-        UIBarButtonItem* item1 = [[UIBarButtonItem alloc] initWithTitle:str_OK style:UIBarButtonItemStylePlain target:nil action:@selector(onPickerCertainBtn)];
+        UIBarButtonItem* item1 = [[UIBarButtonItem alloc] initWithTitle:STRCommonTip27 style:UIBarButtonItemStylePlain target:nil action:@selector(onPickerCertainBtn)];
         UIBarButtonItem* item2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        UIBarButtonItem* item3 = [[UIBarButtonItem alloc] initWithTitle:str_Cancel style:UIBarButtonItemStylePlain target:nil action:@selector(onPickerCancelBtn)];
+        UIBarButtonItem* item3 = [[UIBarButtonItem alloc] initWithTitle:STRCommonTip28 style:UIBarButtonItemStylePlain target:nil action:@selector(onPickerCancelBtn)];
         NSArray* toolbarItems = [NSArray arrayWithObjects:item3, item2, item1, nil];
         [toolbar setItems:toolbarItems];
         [pickerView addSubview:toolbar];
@@ -265,12 +265,12 @@ NSUInteger const pageWidth = 110;
     [self hideHUD];
     if (result) {
         
-        [self alertToastMessage:str_Save_Success];
+        [self alertToastMessage:STRCommonTip13];
         [self.navigationController popViewControllerAnimated:YES];
         
     } else {
         
-        [self alertButtonMessage:str_Save_Fail];
+        [self alertButtonMessage:STRCommonTip14];
     }
 }
 

@@ -89,9 +89,9 @@ NSInteger const kDeleteTag = 20160110;
 
 - (DOPNavbarMenu *)menu {
     if (menu == nil) {
-        DOPNavbarMenuItem *itemRefresh = [DOPNavbarMenuItem ItemWithTitle:str_Refresh icon:[UIImage imageNamed:png_Btn_Refresh]];
-        DOPNavbarMenuItem *itemShare = [DOPNavbarMenuItem ItemWithTitle:str_Share icon:[UIImage imageNamed:png_Btn_Share66]];
-        NSString *reportTitle = isAuthor ? str_Delete : str_Report;
+        DOPNavbarMenuItem *itemRefresh = [DOPNavbarMenuItem ItemWithTitle:STRCommonTip30 icon:[UIImage imageNamed:png_Btn_Refresh]];
+        DOPNavbarMenuItem *itemShare = [DOPNavbarMenuItem ItemWithTitle:STRCommonTip31 icon:[UIImage imageNamed:png_Btn_Share66]];
+        NSString *reportTitle = isAuthor ? STRCommonTip34 : STRCommonTip32;
         NSString *reportIcon = isAuthor ? png_Btn_Delete66 : png_Btn_Report;
         DOPNavbarMenuItem *itemReport = [DOPNavbarMenuItem ItemWithTitle:reportTitle icon:[UIImage imageNamed:reportIcon]];
         menu = [[DOPNavbarMenu alloc] initWithItems:@[itemRefresh,itemShare,itemReport] width:self.view.dop_width maximumNumberInRow:numberOfItemsInRow];
@@ -128,7 +128,7 @@ NSInteger const kDeleteTag = 20160110;
         case 2:
         {
             if (isAuthor) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:str_Posts_Delete message:str_PostsList_Tips2 delegate:self cancelButtonTitle:str_Cancel otherButtonTitles:str_OK, nil];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:str_Posts_Delete message:str_PostsList_Tips2 delegate:self cancelButtonTitle:STRCommonTip28 otherButtonTitles:STRCommonTip27, nil];
                 alertView.tag = kDeleteTag;
                 [alertView show];
             } else {
@@ -206,7 +206,7 @@ NSInteger const kDeleteTag = 20160110;
     UILabel *labelCommentTitle = [[UILabel alloc] initWithFrame:CGRectMake(12, yOffset, 30, 20)];
     [labelCommentTitle setTextColor:color_666666];
     [labelCommentTitle setFont:font_Normal_13];
-    [labelCommentTitle setText:str_Comment];
+    [labelCommentTitle setText:STRCommonTip35];
     [self.scrollView addSubview:labelCommentTitle];
     //分割线
     UILabel *labelLine = [[UILabel alloc] initWithFrame:CGRectMake(12 + 30, yOffset + 9.5, WIDTH_FULL_SCREEN - 24 - 30, 1)];
@@ -252,7 +252,7 @@ NSInteger const kDeleteTag = 20160110;
     NSString *gender = [author objectForKey:@"gender"];
     NSString *level = [author objectForKey:@"level"];
     if (!nickName || nickName.length == 0) {
-        nickName = str_NickName;
+        nickName = STRCommonTip12;
     }
     NSString *avatarURL = [author objectForKey:@"avatarURL"];
     NSString *isHighlight = [self.posts objectForKey:@"isHighlight"];
@@ -302,7 +302,7 @@ NSInteger const kDeleteTag = 20160110;
         btn.layer.cornerRadius = 5;
         btn.layer.borderWidth = 1;
         btn.layer.borderColor = [color_Blue CGColor];
-        [btn setAllTitle:str_Highlight];
+        [btn setAllTitle:STRCommonTip36];
         [btn setAllTitleColor:color_Blue];
         btn.titleLabel.font = font_Normal_13;
         [self.headerView addSubview:btn];
@@ -315,7 +315,7 @@ NSInteger const kDeleteTag = 20160110;
     NSString *gender = [commentAuthor objectForKey:@"gender"];
     NSString *level = [commentAuthor objectForKey:@"level"];
     if (!nickName || nickName.length == 0) {
-        nickName = str_NickName;
+        nickName = STRCommonTip12;
     }
     NSString *avatarURL = [commentAuthor objectForKey:@"avatarURL"];
     NSInteger likesCount = [[comment objectForKey:@"likesCount"] integerValue];
@@ -371,7 +371,7 @@ NSInteger const kDeleteTag = 20160110;
     tsViewNickname.fixRightWidth = 30;
     tsViewNickname.rightButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     if ([postsUserObjectId isEqualToString:commentUserObjectId]) {
-        [tsViewNickname.rightButton setAllTitle:str_Author];
+        [tsViewNickname.rightButton setAllTitle:STRCommonTip38];
     }
     [tsViewNickname autoLayout];
     [view addSubview:tsViewNickname];
@@ -395,7 +395,7 @@ NSInteger const kDeleteTag = 20160110;
     tsViewLikes.fixLeftWidth = 30;
     [tsViewLikes.leftButton.titleLabel setFont:font_Normal_11];
     [tsViewLikes.leftButton setAllTitleColor:color_8f8f8f];
-    [tsViewLikes.leftButton setAllTitle:str_Report];
+    [tsViewLikes.leftButton setAllTitle:STRCommonTip32];
     tsViewLikes.leftButton.titleLabel.textAlignment = NSTextAlignmentCenter;
     
     tsViewLikes.fixCenterWidth = 20;
@@ -405,11 +405,11 @@ NSInteger const kDeleteTag = 20160110;
 
     tsViewLikes.fixRightWidth = 40;
     [tsViewLikes.rightButton.titleLabel setFont:font_Normal_11];
-    [tsViewLikes.rightButton setAllTitle:str_Like];
+    [tsViewLikes.rightButton setAllTitle:STRCommonTip39];
     if (likesCount > 0) {
-        [tsViewLikes.rightButton setAllTitle:[NSString stringWithFormat:@"%@%@", [CommonFunction checkNumberForThousand:likesCount], str_Like]];
+        [tsViewLikes.rightButton setAllTitle:[NSString stringWithFormat:@"%@%@", [CommonFunction checkNumberForThousand:likesCount], STRCommonTip39]];
     } else {
-        [tsViewLikes.rightButton setAllTitle:str_Like];
+        [tsViewLikes.rightButton setAllTitle:STRCommonTip39];
     }
     if (isLike) {
         tsViewLikes.rightButton.selected = YES;
@@ -441,7 +441,7 @@ NSInteger const kDeleteTag = 20160110;
         UILabel *labelReply = [[UILabel alloc] initWithFrame:CGRectMake(12, yOffset, WIDTH_FULL_SCREEN / 2, 20)];
         labelReply.textColor = color_666666;
         labelReply.font = font_Normal_13;
-        labelReply.text = [NSString stringWithFormat:@"%@ %@：", str_Reply, replyNickName];
+        labelReply.text = [NSString stringWithFormat:@"%@ %@：", STRCommonTip40, replyNickName];
         [view addSubview:labelReply];
         yOffset += 25;
     }
@@ -524,7 +524,7 @@ NSInteger const kDeleteTag = 20160110;
     
     [self.bottomBtnView.rightButton setImage:[UIImage imageNamed:png_Icon_Posts_Comment] forState:UIControlStateNormal];
     [self.bottomBtnView.rightButton setImage:[UIImage imageNamed:png_Icon_Posts_Comment] forState:UIControlStateSelected];
-    [self.bottomBtnView.rightButton setAllTitle:str_Reply];
+    [self.bottomBtnView.rightButton setAllTitle:STRCommonTip40];
     
     self.bottomBtnView.leftButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     self.bottomBtnView.centerButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
@@ -674,7 +674,7 @@ NSInteger const kDeleteTag = 20160110;
             BmobObject *commentAuthor = [selectedComment objectForKey:@"author"];
             NSString *nickName = [commentAuthor objectForKey:@"nickName"];
             if (nickName && nickName.length > 0) {
-                self.inputView.placeholder = [NSString stringWithFormat:@"%@ %@：", str_Reply, nickName];
+                self.inputView.placeholder = [NSString stringWithFormat:@"%@ %@：", STRCommonTip40, nickName];
             }
         } else {
             self.inputView.placeholder = str_PostsDetail_Comment_Tips1;
@@ -728,10 +728,10 @@ NSInteger const kDeleteTag = 20160110;
         [weakSelf hideHUD];
         if (isSuccessful) {
             [NotificationCenter postNotificationName:NTFPostsNew object:nil];
-            [weakSelf alertToastMessage:str_Delete_Success];
+            [weakSelf alertToastMessage:STRCommonTip16];
             [weakSelf.navigationController popViewControllerAnimated:YES];
         } else {
-            [weakSelf alertButtonMessage:str_Delete_Fail];
+            [weakSelf alertButtonMessage:STRCommonTip17];
         }
     }];
 }
@@ -754,9 +754,9 @@ NSInteger const kDeleteTag = 20160110;
         isAnding = NO;
         [weakSelf hideHUD];
         if (isSuccessful) {
-            [weakSelf alertToastMessage:str_Report_Success];
+            [weakSelf alertToastMessage:STRCommonTip20];
         } else {
-            [weakSelf alertButtonMessage:str_Report_Fail];
+            [weakSelf alertButtonMessage:STRCommonTip21];
         }
     }];
 }
@@ -779,9 +779,9 @@ NSInteger const kDeleteTag = 20160110;
         isAnding = NO;
         [weakSelf hideHUD];
         if (isSuccessful) {
-            [weakSelf alertToastMessage:str_Report_Success];
+            [weakSelf alertToastMessage:STRCommonTip20];
         } else {
-            [weakSelf alertButtonMessage:str_Report_Fail];
+            [weakSelf alertButtonMessage:STRCommonTip21];
         }
     }];
 }
@@ -1063,7 +1063,7 @@ NSInteger const kDeleteTag = 20160110;
             [self.posts setObject:@(commentsCount) forKey:@"commentsCount"];
             [NotificationCenter postNotificationName:NTFPostsRefresh object:nil];
             
-            [weakSelf alertToastMessage:str_Comment_Success];
+            [weakSelf alertToastMessage:STRCommonTip22];
             [weakSelf getCommets];
             
             if (selectedComment) {
@@ -1072,7 +1072,7 @@ NSInteger const kDeleteTag = 20160110;
                 [weakSelf addNoticesForReplyPosts:weakSelf.posts];
             }
         } else {
-            [weakSelf alertButtonMessage:str_Comment_Fail];
+            [weakSelf alertButtonMessage:STRCommonTip23];
             NSLog(@"%@",error);
         }
     }];

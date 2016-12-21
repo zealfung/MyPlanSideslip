@@ -173,7 +173,7 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
             
         } else {
             
-            return [self createNoDataCell:tableView indexPath:indexPath tips:str_NoPlan_Future];
+            return [self createNoDataCell:tableView indexPath:indexPath tips:STRCommonTip45];
         }
     }
 }
@@ -264,9 +264,9 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
 - (void)deletePlanWithPlan:(Plan *)plan {
     BOOL result = [PlanCache deletePlan:plan];
     if (result) {
-        [self alertToastMessage:str_Delete_Success];
+        [self alertToastMessage:STRCommonTip16];
     } else {
-        [self alertButtonMessage:str_Delete_Fail];
+        [self alertButtonMessage:STRCommonTip17];
     }
 }
 
@@ -348,11 +348,11 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
 - (void)didCellClickedDeleteButton:(id)aSender {
     PlanCell *cell = (PlanCell *)aSender;
     deletePlan = cell.plan;
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Delete_Plan
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:STRCommonTip43
                                                     message:nil
                                                    delegate:self
-                                          cancelButtonTitle:str_Cancel
-                                          otherButtonTitles:str_OK,
+                                          cancelButtonTitle:STRCommonTip28
+                                          otherButtonTitles:STRCommonTip27,
                           nil];
     alert.tag = kUndonePlanCellDeleteTag;
     [alert show];

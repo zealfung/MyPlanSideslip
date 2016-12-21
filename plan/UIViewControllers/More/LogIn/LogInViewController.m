@@ -50,8 +50,8 @@
     
     self.btnLogIn.layer.cornerRadius = 5;
     [self.btnLogIn setAllTitle:str_Settings_LogIn];
-    [self.btnRegister setAllTitle:str_Register];
-    [self.btnForgotPwd setAllTitle:str_ForgotPassword];
+    [self.btnRegister setAllTitle:STRCommonTip24];
+    [self.btnForgotPwd setAllTitle:STRCommonTip26];
 }
 
 - (IBAction)logInAction:(id)sender {

@@ -225,7 +225,7 @@
             
         } else {
             //程序正在运行
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:lastNotification.alertTitle message:lastNotification.alertBody delegate:self cancelButtonTitle:str_Cancel otherButtonTitles:str_Show, str_Notify_Later, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:lastNotification.alertTitle message:lastNotification.alertBody delegate:self cancelButtonTitle:STRCommonTip28 otherButtonTitles:STRCommonTip29, STRCommonTip42, nil];
             [alert show];
         }
     }

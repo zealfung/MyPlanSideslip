@@ -13,7 +13,7 @@
 @implementation AlertCenter
 
 + (void)alertButtonMessage:(NSString *)message {
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:str_Alert_GetIt otherButtonTitles:nil];
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:STRCommonTip27 otherButtonTitles:nil];
     [alertView show];
 }
 

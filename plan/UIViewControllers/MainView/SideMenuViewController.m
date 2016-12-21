@@ -76,7 +76,7 @@
     }
     avatar.image = image;
 
-    NSString *nickname = str_NickName;
+    NSString *nickname = STRCommonTip12;
     if ([Config shareInstance].settings.nickname) {
         
         nickname = [Config shareInstance].settings.nickname;

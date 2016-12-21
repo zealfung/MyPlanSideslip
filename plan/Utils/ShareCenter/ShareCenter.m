@@ -56,7 +56,7 @@
                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Share_Fail
                                                                            message:[NSString stringWithFormat:@"%@",error]
                                                                           delegate:nil
-                                                                 cancelButtonTitle:str_OK
+                                                                 cancelButtonTitle:STRCommonTip27
                                                                  otherButtonTitles:nil, nil];
                            [alert show];
                            break;
@@ -125,7 +125,7 @@
                            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Share_Fail
                                                                            message:[NSString stringWithFormat:@"%@",error]
                                                                           delegate:nil
-                                                                 cancelButtonTitle:str_OK
+                                                                 cancelButtonTitle:STRCommonTip27
                                                                  otherButtonTitles:nil, nil];
                            [alert show];
                            break;

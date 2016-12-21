@@ -323,7 +323,7 @@
             NSString *gender = [author objectForKey:@"gender"];
             NSString *level = [author objectForKey:@"level"];
             if (!nickName || nickName.length == 0) {
-                nickName = str_NickName;
+                nickName = STRCommonTip12;
             }
             NSString *avatarURL = [author objectForKey:@"avatarURL"];
             NSString *content = [obj objectForKey:@"content"];

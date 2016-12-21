@@ -33,6 +33,90 @@ UIKIT_EXTERN NSString *const STRCommonTip9;
 UIKIT_EXTERN NSString *const STRCommonTip10;
 /** 每年重复提醒 */
 UIKIT_EXTERN NSString *const STRCommonTip11;
+/** 昵称 */
+UIKIT_EXTERN NSString *const STRCommonTip12;
+/** 保存成功 */
+UIKIT_EXTERN NSString *const STRCommonTip13;
+/** 保存失败 */
+UIKIT_EXTERN NSString *const STRCommonTip14;
+/** 修改成功 */
+UIKIT_EXTERN NSString *const STRCommonTip15;
+/** 删除成功 */
+UIKIT_EXTERN NSString *const STRCommonTip16;
+/** 删除失败 */
+UIKIT_EXTERN NSString *const STRCommonTip17;
+/** 发送成功 */
+UIKIT_EXTERN NSString *const STRCommonTip18;
+/** 发送失败 */
+UIKIT_EXTERN NSString *const STRCommonTip19;
+/** 举报成功 */
+UIKIT_EXTERN NSString *const STRCommonTip20;
+/** 举报失败 */
+UIKIT_EXTERN NSString *const STRCommonTip21;
+/** 评论成功 */
+UIKIT_EXTERN NSString *const STRCommonTip22;
+/** 评论失败 */
+UIKIT_EXTERN NSString *const STRCommonTip23;
+/** 快速注册 */
+UIKIT_EXTERN NSString *const STRCommonTip24;
+/** 注册失败 */
+UIKIT_EXTERN NSString *const STRCommonTip25;
+/** 忘记密码 */
+UIKIT_EXTERN NSString *const STRCommonTip26;
+/** 确定 */
+UIKIT_EXTERN NSString *const STRCommonTip27;
+/** 取消 */
+UIKIT_EXTERN NSString *const STRCommonTip28;
+/** 显示 */
+UIKIT_EXTERN NSString *const STRCommonTip29;
+/** 刷新 */
+UIKIT_EXTERN NSString *const STRCommonTip30;
+/** 分享 */
+UIKIT_EXTERN NSString *const STRCommonTip31;
+/** 举报 */
+UIKIT_EXTERN NSString *const STRCommonTip32;
+/** 编辑 */
+UIKIT_EXTERN NSString *const STRCommonTip33;
+/** 删除 */
+UIKIT_EXTERN NSString *const STRCommonTip34;
+/** 评论 */
+UIKIT_EXTERN NSString *const STRCommonTip35;
+/** 精华 */
+UIKIT_EXTERN NSString *const STRCommonTip36;
+/** 置顶 */
+UIKIT_EXTERN NSString *const STRCommonTip37;
+/** 楼主 */
+UIKIT_EXTERN NSString *const STRCommonTip38;
+/** 赞 */
+UIKIT_EXTERN NSString *const STRCommonTip39;
+/** 回复 */
+UIKIT_EXTERN NSString *const STRCommonTip40;
+/** 保存 */
+UIKIT_EXTERN NSString *const STRCommonTip41;
+/** 稍后提醒 */
+UIKIT_EXTERN NSString *const STRCommonTip42;
+/** 删除该计划 */
+UIKIT_EXTERN NSString *const STRCommonTip43;
+/** 暂无每日计划 */
+UIKIT_EXTERN NSString *const STRCommonTip44;
+/** 暂无未来计划 */
+UIKIT_EXTERN NSString *const STRCommonTip45;
+/** 新增计划 */
+UIKIT_EXTERN NSString *const STRCommonTip46;
+/** 编辑计划 */
+UIKIT_EXTERN NSString *const STRCommonTip47;
+/** 设为每天提醒 */
+UIKIT_EXTERN NSString *const STRCommonTip48;
+/** 明天开始 */
+UIKIT_EXTERN NSString *const STRCommonTip49;
+/** 一星期内开始 */
+UIKIT_EXTERN NSString *const STRCommonTip50;
+/** 一个月内开始 */
+UIKIT_EXTERN NSString *const STRCommonTip51;
+/** 一个月后开始 */
+UIKIT_EXTERN NSString *const STRCommonTip52;
+/** 开始日期 */
+UIKIT_EXTERN NSString *const STRCommonTip53;
 
 /** 刚刚 */
 UIKIT_EXTERN NSString *const STRCommonTime1;
@@ -54,6 +138,16 @@ UIKIT_EXTERN NSString *const STRCommonTime8;
 UIKIT_EXTERN NSString *const STRCommonTime9;
 /** 还剩%ld天 */
 UIKIT_EXTERN NSString *const STRCommonTime10;
+/** 秒 */
+UIKIT_EXTERN NSString *const STRCommonTime11;
+/** 分钟 */
+UIKIT_EXTERN NSString *const STRCommonTime12;
+/** 小时 */
+UIKIT_EXTERN NSString *const STRCommonTime13;
+/** 天 */
+UIKIT_EXTERN NSString *const STRCommonTime14;
+/** 月 */
+UIKIT_EXTERN NSString *const STRCommonTime15;
 
 /** 我的 */
 UIKIT_EXTERN NSString *const STRViewTitle1;
@@ -93,6 +187,27 @@ UIKIT_EXTERN NSString *const STRViewTitle17;
 UIKIT_EXTERN NSString *const STRViewTitle18;
 /** 打赏作者 */
 UIKIT_EXTERN NSString *const STRViewTitle19;
+
+/** 假如你可以活到 */
+UIKIT_EXTERN NSString *const STRViewTips1;
+/** 岁 */
+UIKIT_EXTERN NSString *const STRViewTips2;
+/** 你仅剩 */
+UIKIT_EXTERN NSString *const STRViewTips3;
+/** 你的今天仅剩 */
+UIKIT_EXTERN NSString *const STRViewTips4;
+/** 全部计划 */
+UIKIT_EXTERN NSString *const STRViewTips5;
+/** 今日计划 */
+UIKIT_EXTERN NSString *const STRViewTips6;
+/** 已完成 */
+UIKIT_EXTERN NSString *const STRViewTips7;
+/** 完成率 */
+UIKIT_EXTERN NSString *const STRViewTips8;
+/** 每日计划 */
+UIKIT_EXTERN NSString *const STRViewTips9;
+/** 未来计划 */
+UIKIT_EXTERN NSString *const STRViewTips10;
 
 /** 自动同步 */
 UIKIT_EXTERN NSString *const STRSettingsViewTips1;

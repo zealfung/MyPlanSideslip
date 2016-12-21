@@ -32,7 +32,7 @@
     cellView.imgViewAvatar.layer.borderColor = [color_dedede CGColor];
     cellView.imgViewAvatar.layer.cornerRadius = cellView.imgViewAvatar.frame.size.height / 2;
     //昵称
-    NSString *nickname = str_NickName;
+    NSString *nickname = STRCommonTip12;
     if (![CommonFunction isEmptyString:[Config shareInstance].settings.nickname]) {
         nickname = [Config shareInstance].settings.nickname;
     }

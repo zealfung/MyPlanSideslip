@@ -445,19 +445,19 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
 
 - (void)setCountdownType {
     actionSheetType = 2;
-    actionSheet = [[UIActionSheet alloc] initWithTitle:STRSettingsViewTips6 delegate:self cancelButtonTitle:str_Cancel destructiveButtonTitle:nil otherButtonTitles:STRSettingsViewTips7, STRSettingsViewTips8, STRSettingsViewTips9, STRSettingsViewTips10, nil];
+    actionSheet = [[UIActionSheet alloc] initWithTitle:STRSettingsViewTips6 delegate:self cancelButtonTitle:STRCommonTip28 destructiveButtonTitle:nil otherButtonTitles:STRSettingsViewTips7, STRSettingsViewTips8, STRSettingsViewTips9, STRSettingsViewTips10, nil];
     [actionSheet showInView:self.view];
 }
 
 - (void)setDayOrMonth {
     actionSheetType = 1;
-    actionSheet = [[UIActionSheet alloc] initWithTitle:STRSettingsViewTips6 delegate:self cancelButtonTitle:str_Cancel destructiveButtonTitle:nil otherButtonTitles:STRSettingsViewTips13, STRSettingsViewTips14, nil];
+    actionSheet = [[UIActionSheet alloc] initWithTitle:STRSettingsViewTips6 delegate:self cancelButtonTitle:STRCommonTip28 destructiveButtonTitle:nil otherButtonTitles:STRSettingsViewTips13, STRSettingsViewTips14, nil];
     [actionSheet showInView:self.view];
 }
 
 - (void)setAutoDelayUndonePlan {
     actionSheetType = 3;
-    actionSheet = [[UIActionSheet alloc] initWithTitle:STRSettingsViewTips15 delegate:self cancelButtonTitle:str_Cancel destructiveButtonTitle:nil otherButtonTitles:STRSettingsViewTips16, STRSettingsViewTips17, nil];
+    actionSheet = [[UIActionSheet alloc] initWithTitle:STRSettingsViewTips15 delegate:self cancelButtonTitle:STRCommonTip28 destructiveButtonTitle:nil otherButtonTitles:STRSettingsViewTips16, STRSettingsViewTips17, nil];
     [actionSheet showInView:self.view];
 }
 
@@ -563,7 +563,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     if (hasPwd) {
         [CLLockVC showModifyLockVCInVC:self successBlock:^(CLLockVC *lockVC, NSString *pwd) {
             
-            [weakSelf alertToastMessage:str_Modify_Success];
+            [weakSelf alertToastMessage:STRCommonTip15];
             [lockVC dismiss:.5f];
         }];
     }

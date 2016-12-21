@@ -219,10 +219,10 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
                 [weakSelf saveForPhoto];
             }
             [NotificationCenter postNotificationName:NTFPostsNew object:nil];
-            [weakSelf alertToastMessage:str_Send_Success];
+            [weakSelf alertToastMessage:STRCommonTip18];
             [weakSelf.navigationController popViewControllerAnimated:YES];
         } else {
-            [weakSelf alertButtonMessage:str_Send_Fail];
+            [weakSelf alertButtonMessage:STRCommonTip19];
             NSLog(@"%@",error);
         }
     }];
@@ -246,7 +246,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
             }
         } else {
             [weakSelf hideHUD];
-            [weakSelf alertButtonMessage:str_Send_Fail];
+            [weakSelf alertButtonMessage:STRCommonTip19];
         }
     } withProgressBlock:^(CGFloat progress) {
         CGFloat smallProgress = progress;

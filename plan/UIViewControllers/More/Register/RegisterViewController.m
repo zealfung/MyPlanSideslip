@@ -35,8 +35,8 @@
     self.txtPassword.placeholder = str_Register_Tips7;
     self.txtPassword.inputAccessoryView = [self getInputAccessoryView];
     self.btnRegister.layer.cornerRadius = 5;
-    [self.btnRegister setAllTitle:str_Register];
-    [self.btnforgotPwd setAllTitle:str_ForgotPassword];
+    [self.btnRegister setAllTitle:STRCommonTip24];
+    [self.btnforgotPwd setAllTitle:STRCommonTip26];
     self.labelTips.text = str_Register_Tips8;
 }
 
@@ -107,7 +107,7 @@
             [weakSelf.navigationController popViewControllerAnimated:YES];
         } else {
             [BmobUser logout];
-            [weakSelf alertButtonMessage:str_Register_Fail];
+            [weakSelf alertButtonMessage:STRCommonTip25];
         }
     }];
 }

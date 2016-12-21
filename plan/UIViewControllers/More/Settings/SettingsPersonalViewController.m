@@ -527,7 +527,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
         
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:str_Settings_SetAvatar_Tips1
                                                                  delegate:self
-                                                        cancelButtonTitle:str_Cancel
+                                                        cancelButtonTitle:STRCommonTip28
                                                    destructiveButtonTitle:nil
                                                         otherButtonTitles:str_Settings_SetAvatar_Camera, str_Settings_SetAvatar_Album, nil];
         [actionSheet showInView:self.view];
@@ -536,7 +536,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
         
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:str_Settings_SetAvatar_Tips2
                                                                  delegate:self
-                                                        cancelButtonTitle:str_Cancel
+                                                        cancelButtonTitle:STRCommonTip28
                                                    destructiveButtonTitle:nil
                                                         otherButtonTitles:str_Settings_SetAvatar_Album, nil];
         [actionSheet showInView:self.view];
@@ -570,7 +570,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
         [PlanCache storePersonalSettings:[Config shareInstance].settings];
         
         [nickThreeSubView.centerButton setAllTitle:text];
-        [self alertToastMessage:str_Save_Success];
+        [self alertToastMessage:STRCommonTip13];
         [weakSelf.navigationController popViewControllerAnimated:YES];
     };
     [self.navigationController pushViewController:controller animated:YES];
@@ -595,7 +595,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
         [PlanCache storePersonalSettings:[Config shareInstance].settings];
         
         [signatureThreeSubView.centerButton setAllTitle:text];
-        [self alertToastMessage:str_Save_Success];
+        [self alertToastMessage:STRCommonTip13];
         [weakSelf.navigationController popViewControllerAnimated:YES];
     };
     [self.navigationController pushViewController:controller animated:YES];
@@ -625,7 +625,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
         [PlanCache storePersonalSettings:[Config shareInstance].settings];
         
         [lifeThreeSubView.centerButton setAllTitle:text];
-        [self alertToastMessage:str_Save_Success];
+        [self alertToastMessage:STRCommonTip13];
         [weakSelf.navigationController popViewControllerAnimated:YES];
     };
     [self.navigationController pushViewController:controller animated:YES];
@@ -671,7 +671,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
     if (hasPwd) {
         [CLLockVC showModifyLockVCInVC:self successBlock:^(CLLockVC *lockVC, NSString *pwd) {
             
-            [weakSelf alertToastMessage:str_Modify_Success];
+            [weakSelf alertToastMessage:STRCommonTip15];
             [lockVC dismiss:.5f];
         }];
     }
@@ -705,9 +705,9 @@ NSString *const kEdgeWhiteSpace = @"  ";
         UIToolbar* toolbar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, pickerView.frame.size.height - kDatePickerHeight - kToolBarHeight, CGRectGetWidth(pickerView.bounds), kToolBarHeight)];
         toolbar.barStyle = UIBarStyleBlack;
         toolbar.translucent = YES;
-        UIBarButtonItem* item1 = [[UIBarButtonItem alloc] initWithTitle:str_OK style:UIBarButtonItemStylePlain target:nil action:@selector(onPickerCertainBtn)];
+        UIBarButtonItem* item1 = [[UIBarButtonItem alloc] initWithTitle:STRCommonTip27 style:UIBarButtonItemStylePlain target:nil action:@selector(onPickerCertainBtn)];
         UIBarButtonItem* item2 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
-        UIBarButtonItem* item3 = [[UIBarButtonItem alloc] initWithTitle:str_Cancel style:UIBarButtonItemStylePlain target:nil action:@selector(onPickerCancelBtn)];
+        UIBarButtonItem* item3 = [[UIBarButtonItem alloc] initWithTitle:STRCommonTip28 style:UIBarButtonItemStylePlain target:nil action:@selector(onPickerCancelBtn)];
         NSArray* toolbarItems = [NSArray arrayWithObjects:item3, item2, item1, nil];
         [toolbar setItems:toolbarItems];
         [pickerView addSubview:toolbar];

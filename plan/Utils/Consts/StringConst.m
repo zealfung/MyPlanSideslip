@@ -33,6 +33,91 @@ NSString *const STRCommonTip9 = @"每周重复提醒";
 NSString *const STRCommonTip10 = @"每月重复提醒";
 /** 每年重复提醒 */
 NSString *const STRCommonTip11 = @"每年重复提醒";
+/** 昵称 */
+NSString *const STRCommonTip12 = @"昵称";
+/** 保存成功 */
+NSString *const STRCommonTip13 = @"保存成功";
+/** 保存失败 */
+NSString *const STRCommonTip14 = @"保存失败";
+/** 修改成功 */
+NSString *const STRCommonTip15 = @"修改成功";
+/** 删除成功 */
+NSString *const STRCommonTip16 = @"删除成功";
+/** 删除失败 */
+NSString *const STRCommonTip17 = @"删除失败";
+/** 发送成功 */
+NSString *const STRCommonTip18 = @"发送成功";
+/** 发送失败 */
+NSString *const STRCommonTip19 = @"发送失败";
+/** 举报成功 */
+NSString *const STRCommonTip20 = @"举报成功";
+/** 举报失败 */
+NSString *const STRCommonTip21 = @"举报失败";
+/** 评论成功 */
+NSString *const STRCommonTip22 = @"评论成功";
+/** 评论失败 */
+NSString *const STRCommonTip23 = @"评论失败";
+/** 快速注册 */
+NSString *const STRCommonTip24 = @"快速注册";
+/** 注册失败 */
+NSString *const STRCommonTip25 = @"注册失败";
+/** 忘记密码 */
+NSString *const STRCommonTip26 = @"忘记密码";
+/** 确定 */
+NSString *const STRCommonTip27 = @"确定";
+/** 取消 */
+NSString *const STRCommonTip28 = @"取消";
+/** 显示 */
+NSString *const STRCommonTip29 = @"显示";
+/** 刷新 */
+NSString *const STRCommonTip30 = @"刷新";
+/** 分享 */
+NSString *const STRCommonTip31 = @"分享";
+/** 举报 */
+NSString *const STRCommonTip32 = @"举报";
+/** 编辑 */
+NSString *const STRCommonTip33 = @"编辑";
+/** 删除 */
+NSString *const STRCommonTip34 = @"删除";
+/** 评论 */
+NSString *const STRCommonTip35 = @"评论";
+/** 精华 */
+NSString *const STRCommonTip36 = @"精华";
+/** 置顶 */
+NSString *const STRCommonTip37 = @"置顶";
+/** 楼主 */
+NSString *const STRCommonTip38 = @"楼主";
+/** 赞 */
+NSString *const STRCommonTip39 = @"赞";
+/** 回复 */
+NSString *const STRCommonTip40 = @"回复";
+/** 保存 */
+NSString *const STRCommonTip41 = @"保存";
+/** 稍后提醒 */
+NSString *const STRCommonTip42 = @"稍后提醒";
+/** 删除该计划 */
+NSString *const STRCommonTip43 = @"删除该计划";
+/** 暂无每日计划 */
+NSString *const STRCommonTip44 = @"暂无每日计划";
+/** 暂无未来计划 */
+NSString *const STRCommonTip45 = @"暂无未来计划";
+/** 新增计划 */
+NSString *const STRCommonTip46 = @"新增计划";
+/** 编辑计划 */
+NSString *const STRCommonTip47 = @"编辑计划";
+/** 设为每天提醒 */
+NSString *const STRCommonTip48 = @"设为每天提醒";
+/** 明天开始 */
+NSString *const STRCommonTip49 = @"明天开始";
+/** 一星期内开始 */
+NSString *const STRCommonTip50 = @"一星期内开始";
+/** 一个月内开始 */
+NSString *const STRCommonTip51 = @"一个月内开始";
+/** 一个月后开始 */
+NSString *const STRCommonTip52 = @"一个月后开始";
+/** 开始日期 */
+NSString *const STRCommonTip53 = @"开始日期：";
+
 
 /** 刚刚 */
 NSString *const STRCommonTime1 = @"刚刚";
@@ -54,6 +139,16 @@ NSString *const STRCommonTime8 = @"%ld个月前";
 NSString *const STRCommonTime9 = @"明天";
 /** 还剩%ld天 */
 NSString *const STRCommonTime10 = @"还剩%ld天";
+/** 秒 */
+NSString *const STRCommonTime11 = @"秒";
+/** 分钟 */
+NSString *const STRCommonTime12 = @"分钟";
+/** 小时 */
+NSString *const STRCommonTime13 = @"小时";
+/** 天 */
+NSString *const STRCommonTime14 = @"天";
+/** 月 */
+NSString *const STRCommonTime15 = @"月";
 
 /** 我的 */
 NSString *const STRViewTitle1 = @"我的";
@@ -93,6 +188,27 @@ NSString *const STRViewTitle17 = @"个人设置";
 NSString *const STRViewTitle18 = @"通用设置";
 /** 打赏作者 */
 NSString *const STRViewTitle19 = @"打赏作者";
+
+/** 假如你可以活到 */
+NSString *const STRViewTips1 = @"假如你可以活到";
+/** 岁 */
+NSString *const STRViewTips2 = @"岁";
+/** 你仅剩 */
+NSString *const STRViewTips3 = @"你仅剩";
+/** 你的今天仅剩 */
+NSString *const STRViewTips4 = @"你的今天仅剩";
+/** 全部计划 */
+NSString *const STRViewTips5 = @"全部计划";
+/** 今日计划 */
+NSString *const STRViewTips6 = @"今日计划";
+/** 已完成 */
+NSString *const STRViewTips7 = @"已完成";
+/** 完成率 */
+NSString *const STRViewTips8 = @"完成率";
+/** 每日计划 */
+NSString *const STRViewTips9 = @"每日计划";
+/** 未来计划 */
+NSString *const STRViewTips10 = @"未来计划";
 
 /** 自动同步 */
 NSString *const STRSettingsViewTips1 = @"自动同步";

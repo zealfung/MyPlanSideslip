@@ -189,8 +189,8 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     [menuTabView.centerButton setAllTitleColor:[CommonFunction getGenderColor]];
     menuTabView.leftButton.titleLabel.font = font_Bold_18;
     menuTabView.centerButton.titleLabel.font = font_Bold_18;
-    [menuTabView.leftButton setAllTitle:str_FirstView_11];
-    [menuTabView.centerButton setAllTitle:str_FirstView_12];
+    [menuTabView.leftButton setAllTitle:STRViewTips9];
+    [menuTabView.centerButton setAllTitle:STRViewTips10];
     [menuTabView autoLayout];
     [self.view addSubview:menuTabView];
     {
@@ -318,10 +318,10 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     if (!isLoadMore) {//重头开始加载
         futureStart = 0;
         futureDateKeyArray = [NSMutableArray array];
-        [futureDateKeyArray addObject:str_Plan_FutureTomorrow];
-        [futureDateKeyArray addObject:str_Plan_FutureWeek];
-        [futureDateKeyArray addObject:str_Plan_FutureMonth];
-        [futureDateKeyArray addObject:str_Plan_FutureYear];
+        [futureDateKeyArray addObject:STRCommonTip49];
+        [futureDateKeyArray addObject:STRCommonTip50];
+        [futureDateKeyArray addObject:STRCommonTip51];
+        [futureDateKeyArray addObject:STRCommonTip52];
         futurePlanDict = [NSMutableDictionary dictionary];
     }
     NSArray *array = [NSArray arrayWithArray:[PlanCache getPlan:NO startIndex:futureStart]];
@@ -334,13 +334,13 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         NSInteger days = [self calculateDayFromDate:[NSDate date] toDate:beginDate];
         
         if (days >= 0 && days < 1) {//
-            key = str_Plan_FutureTomorrow;
+            key = STRCommonTip49;
         } else if (days >= 1 && days < 7) {//一星期内开始
-            key = str_Plan_FutureWeek;
+            key = STRCommonTip50;
         } else if (days >= 7 && days < 30) {//一个月内开始
-            key = str_Plan_FutureMonth;
+            key = STRCommonTip51;
         } else {//一个月后开始
-            key = str_Plan_FutureYear;
+            key = STRCommonTip52;
         }
         NSMutableArray *dateArray = [futurePlanDict objectForKey:key];
         if (!dateArray) {
@@ -350,21 +350,21 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         [dateArray addObject:plan];
     }
     //----------------去掉没有子项的section-----------------------------------------
-    NSMutableArray *arrayTomorrow = [futurePlanDict objectForKey:str_Plan_FutureTomorrow];
+    NSMutableArray *arrayTomorrow = [futurePlanDict objectForKey:STRCommonTip49];
     if (!arrayTomorrow || arrayTomorrow.count == 0) {
-        [futureDateKeyArray removeObject:str_Plan_FutureTomorrow];
+        [futureDateKeyArray removeObject:STRCommonTip49];
     }
-    NSMutableArray *arrayWeek = [futurePlanDict objectForKey:str_Plan_FutureWeek];
+    NSMutableArray *arrayWeek = [futurePlanDict objectForKey:STRCommonTip50];
     if (!arrayWeek || arrayWeek.count == 0) {
-        [futureDateKeyArray removeObject:str_Plan_FutureWeek];
+        [futureDateKeyArray removeObject:STRCommonTip50];
     }
-    NSMutableArray *arrayMonth = [futurePlanDict objectForKey:str_Plan_FutureMonth];
+    NSMutableArray *arrayMonth = [futurePlanDict objectForKey:STRCommonTip51];
     if (!arrayMonth || arrayMonth.count == 0) {
-        [futureDateKeyArray removeObject:str_Plan_FutureMonth];
+        [futureDateKeyArray removeObject:STRCommonTip51];
     }
-    NSMutableArray *arrayYear = [futurePlanDict objectForKey:str_Plan_FutureYear];
+    NSMutableArray *arrayYear = [futurePlanDict objectForKey:STRCommonTip52];
     if (!arrayYear || arrayYear.count == 0) {
-        [futureDateKeyArray removeObject:str_Plan_FutureYear];
+        [futureDateKeyArray removeObject:STRCommonTip52];
     }
     //----------------------------------------------------------------------------
     NSUInteger sections = futureDateKeyArray.count;
@@ -525,7 +525,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                 }
             } else {
                 
-                return [self createNoDataCell:tableView indexPath:indexPath tips:str_NoPlan_EveryDay];
+                return [self createNoDataCell:tableView indexPath:indexPath tips:STRCommonTip44];
             }
         } else if (planType == FuturePlan) {
             if(indexPath.section < futureDateKeyArray.count) {
@@ -548,7 +548,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                 }
             } else {
                 
-                return [self createNoDataCell:tableView indexPath:indexPath tips:str_NoPlan_Future];
+                return [self createNoDataCell:tableView indexPath:indexPath tips:STRCommonTip45];
             }
         }
     }
@@ -613,7 +613,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         } else if (planType == FuturePlan && futureDateKeyArray.count > section) {
             NSString *date = futureDateKeyArray[section];
             BOOL isAllDone = YES;
-            if ([date isEqualToString:str_Plan_FutureTomorrow]) {
+            if ([date isEqualToString:STRCommonTip49]) {
                 isAllDone = NO;
             }
             view = [[PlanSectionView alloc] initWithTitle:date count:@"" isAllDone:isAllDone];
@@ -813,9 +813,9 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 - (void)deletePlanWithPlan:(Plan *)plan {
     BOOL result = [PlanCache deletePlan:plan];
     if (result) {
-        [self alertToastMessage:str_Delete_Success];
+        [self alertToastMessage:STRCommonTip16];
     } else {
-        [self alertButtonMessage:str_Delete_Fail];
+        [self alertButtonMessage:STRCommonTip17];
     }
 }
 
@@ -897,11 +897,11 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 - (void)didCellClickedDeleteButton:(id)aSender {
     PlanCell *cell = (PlanCell *)aSender;
     deletePlan = cell.plan;
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Delete_Plan
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:STRCommonTip43
                                                     message:nil
                                                    delegate:self
-                                          cancelButtonTitle:str_Cancel
-                                          otherButtonTitles:str_OK,
+                                          cancelButtonTitle:STRCommonTip28
+                                          otherButtonTitles:STRCommonTip27,
                           nil];
     alert.tag = kPlanCellDeleteTag;
     [alert show];

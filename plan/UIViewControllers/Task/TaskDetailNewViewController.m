@@ -127,11 +127,11 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
 - (void)showMenu:(UIButton *)sender {
     NSArray *menuItems =
     @[
-      [KxMenuItem menuItem:str_Edit
+      [KxMenuItem menuItem:STRCommonTip33
                      image:[UIImage imageNamed:png_Btn_Edit]
                     target:self
                     action:@selector(editAction:)],
-      [KxMenuItem menuItem:str_Delete
+      [KxMenuItem menuItem:STRCommonTip34
                      image:[UIImage imageNamed:png_Btn_Delete]
                     target:self
                     action:@selector(deleteAction:)],
@@ -159,8 +159,8 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Task_Delete_Tips
                                                     message:nil
                                                    delegate:self
-                                          cancelButtonTitle:str_Cancel
-                                          otherButtonTitles:str_OK,
+                                          cancelButtonTitle:STRCommonTip28
+                                          otherButtonTitles:STRCommonTip27,
                           nil];
     
     alert.tag = kTaskDeleteNewTag;
@@ -175,12 +175,12 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
             BOOL result = [PlanCache deleteTask:self.task];
             if (result) {
                 
-                [self alertToastMessage:str_Delete_Success];
+                [self alertToastMessage:STRCommonTip16];
                 [self.navigationController popViewControllerAnimated:YES];
                 
             } else {
                 
-                [self alertButtonMessage:str_Delete_Fail];
+                [self alertButtonMessage:STRCommonTip17];
             }
         }
     }
