@@ -138,7 +138,7 @@
         }
         
         if (indexPath.row == 4) {
-            cell.textLabel.text = str_Photo_Tips1;
+            cell.textLabel.text = STRViewTips31;
         }
         return cell;
     }

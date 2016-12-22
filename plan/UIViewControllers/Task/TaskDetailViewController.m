@@ -22,7 +22,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = str_Task_Detail;
+    self.title = STRViewTitle20;
     [self createRightBarButton];
     
     [NotificationCenter addObserver:self selector:@selector(reloadTaskData) name:NTFTaskSave object:nil];
@@ -66,14 +66,14 @@ NSUInteger const kTaskDeleteTag = 20151201;
         self.labelTomato.hidden = YES;
         self.imgViewAlarmConstraint.constant = 10;
         self.labelAlarmConstraint.constant = 10;
-        [self.btnStart setAllTitle:str_Task_Tips8];
+        [self.btnStart setAllTitle:STRViewTips45];
     } else {
         self.imgViewTomato.hidden = NO;
         self.labelTomato.hidden = NO;
         self.imgViewAlarmConstraint.constant = 40;
         self.labelAlarmConstraint.constant = 40;
-        self.labelTomato.text = [NSString stringWithFormat:@"%@ %@ %@", str_Task_Tips10, self.task.tomatoMinute, str_Task_Tips3];
-        [self.btnStart setAllTitle:str_Task_Tips9];
+        self.labelTomato.text = [NSString stringWithFormat:@"%@ %@ %@", STRViewTips47, self.task.tomatoMinute, STRCommonTime12];
+        [self.btnStart setAllTitle:STRViewTips46];
     }
     if ([self.task.isNotify isEqualToString:@"0"]) {
         self.imgViewAlarm.hidden = YES;
@@ -83,7 +83,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
     } else {
         self.imgViewAlarm.hidden = NO;
         self.labelAlram.hidden = NO;
-        self.labelAlram.text = [NSString stringWithFormat:@"%@%@", str_Task_Tips11, self.task.notifyTime];
+        self.labelAlram.text = [NSString stringWithFormat:@"%@%@", STRViewTips48, self.task.notifyTime];
     }
     if ([self.task.isRepeat isEqualToString:@"0"]) {
         self.imgViewRepeat.hidden = YES;
@@ -164,7 +164,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
 }
 
 - (void)deleteAction:(UIButton *)sender {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Task_Delete_Tips
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:STRViewTips40
                                                     message:nil
                                                    delegate:self
                                           cancelButtonTitle:STRCommonTip28
@@ -229,7 +229,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
             cell.textLabel.font = font_Normal_13;
         }
         TaskRecord *taskRecord = finishRecordArray[indexPath.row];
-        cell.textLabel.text = [NSString stringWithFormat:@"%@%@", str_Task_Tips13, taskRecord.createTime];
+        cell.textLabel.text = [NSString stringWithFormat:@"%@%@", STRViewTips50, taskRecord.createTime];
         return cell;
         
     } else {
@@ -250,7 +250,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
             cell.textLabel.font = font_Bold_16;
         }
         if (indexPath.row == 1) {
-            cell.textLabel.text = str_Task_Tips12;
+            cell.textLabel.text = STRViewTips49;
         }
         
         return cell;
@@ -289,7 +289,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
 
                 [self addRecord];
                 self.btnStart.enabled = YES;
-                [self.btnStart setAllTitle:str_Task_Tips9];
+                [self.btnStart setAllTitle:STRViewTips46];
                 [self.btnStart setBackgroundColor:color_0BA32A];
             });
         } else {

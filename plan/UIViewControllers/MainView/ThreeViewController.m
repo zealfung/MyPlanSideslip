@@ -229,7 +229,7 @@
             cell.textLabel.font = font_Bold_16;
         }
         if (indexPath.row == 4) {
-            cell.textLabel.text = str_Task_Tips1;
+            cell.textLabel.text = STRViewTips38;
         }
         return cell;
     }

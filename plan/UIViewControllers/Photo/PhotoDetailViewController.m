@@ -31,7 +31,7 @@ NSUInteger const kPhotoDeleteTag = 20151011;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = str_Photo_Detail;
+    self.title = STRViewTips32;
     self.view.backgroundColor = color_eeeeee;
     
     [NotificationCenter addObserver:self selector:@selector(refreshData) name:NTFPhotoSave object:nil];
@@ -97,10 +97,10 @@ NSUInteger const kPhotoDeleteTag = 20151011;
 }
 
 - (void)createLabelTimeAndLocation {
-    NSString *timeAndLocation = [NSString stringWithFormat:str_Photo_Detail_Tips1, self.photo.phototime];
+    NSString *timeAndLocation = [NSString stringWithFormat:STRViewTips35, self.photo.phototime];
     if (self.photo.location && self.photo.location.length > 0) {
         
-        timeAndLocation = [NSString stringWithFormat:str_Photo_Detail_Tips2, timeAndLocation, self.photo.location];
+        timeAndLocation = [NSString stringWithFormat:STRViewTips36, timeAndLocation, self.photo.location];
     }
     yOffset -= 30;
     UILabel *labelTimeAndLocation = [[UILabel alloc] initWithFrame:CGRectMake(xMargins, yOffset, WIDTH_FULL_SCREEN - xMargins * 2, 30)];
@@ -171,7 +171,7 @@ NSUInteger const kPhotoDeleteTag = 20151011;
 }
 
 - (void)deleteAction:(UIButton *)sender {
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Photo_Delete_Tips
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:STRViewTips37
                                                     message:nil
                                                    delegate:self
                                           cancelButtonTitle:STRCommonTip28

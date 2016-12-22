@@ -128,7 +128,7 @@ NSInteger const kDeleteTag = 20160110;
         case 2:
         {
             if (isAuthor) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:str_Posts_Delete message:str_PostsList_Tips2 delegate:self cancelButtonTitle:STRCommonTip28 otherButtonTitles:STRCommonTip27, nil];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:STRViewTips52 message:str_PostsList_Tips2 delegate:self cancelButtonTitle:STRCommonTip28 otherButtonTitles:STRCommonTip27, nil];
                 alertView.tag = kDeleteTag;
                 [alertView show];
             } else {
@@ -1095,7 +1095,7 @@ NSInteger const kDeleteTag = 20160110;
             NSString *isForbidden = [obj objectForKey:@"isForbidden"];
             
             if ([isForbidden isEqualToString:@"1"]) {
-                [weakSelf alertButtonMessage:str_Posts_Add_Tips5];
+                [weakSelf alertButtonMessage:STRViewTips57];
             } else {
                 [weakSelf sendContent:content];
             }

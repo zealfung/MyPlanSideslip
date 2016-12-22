@@ -73,7 +73,7 @@ CGFloat kPhotoCellHeight;
         labelLocation.textAlignment = NSTextAlignmentRight;
         labelLocation.font = font_Normal_16;
         labelLocation.textColor = [CommonFunction getGenderColor];
-        labelLocation.text = [NSString stringWithFormat:@"%@%@", str_Photo_Location, photo.location];
+        labelLocation.text = [NSString stringWithFormat:@"%@%@", STRViewTips33, photo.location];
         [cell addSubview:labelLocation];
     }
     xOffset = CGRectGetMaxX(lineView.frame) + xMargins;
@@ -165,7 +165,7 @@ CGFloat kPhotoCellHeight;
 }
 
 + (NSString *)getAge:(NSDate *)photoDate {
-    NSString *unknow = [NSString stringWithFormat:@"X%@", str_Photo_Age];
+    NSString *unknow = [NSString stringWithFormat:@"X%@", STRViewTips2];
     if (![Config shareInstance].settings.birthday
         || [Config shareInstance].settings.birthday.length == 0) {
         return unknow;
@@ -176,7 +176,7 @@ CGFloat kPhotoCellHeight;
         return unknow;
     } else {
         long age = secondsBetweenDates / (365 * 24 * 60 * 60);
-        return [NSString stringWithFormat:@"%ld%@", age, str_Photo_Age];
+        return [NSString stringWithFormat:@"%ld%@", age, STRViewTips2];
     }
 }
 

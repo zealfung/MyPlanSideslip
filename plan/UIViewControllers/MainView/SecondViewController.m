@@ -318,10 +318,10 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     if (!isLoadMore) {//重头开始加载
         futureStart = 0;
         futureDateKeyArray = [NSMutableArray array];
-        [futureDateKeyArray addObject:STRCommonTip49];
-        [futureDateKeyArray addObject:STRCommonTip50];
-        [futureDateKeyArray addObject:STRCommonTip51];
-        [futureDateKeyArray addObject:STRCommonTip52];
+        [futureDateKeyArray addObject:STRViewTips17];
+        [futureDateKeyArray addObject:STRViewTips18];
+        [futureDateKeyArray addObject:STRViewTips19];
+        [futureDateKeyArray addObject:STRViewTips20];
         futurePlanDict = [NSMutableDictionary dictionary];
     }
     NSArray *array = [NSArray arrayWithArray:[PlanCache getPlan:NO startIndex:futureStart]];
@@ -334,13 +334,13 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         NSInteger days = [self calculateDayFromDate:[NSDate date] toDate:beginDate];
         
         if (days >= 0 && days < 1) {//
-            key = STRCommonTip49;
+            key = STRViewTips17;
         } else if (days >= 1 && days < 7) {//一星期内开始
-            key = STRCommonTip50;
+            key = STRViewTips18;
         } else if (days >= 7 && days < 30) {//一个月内开始
-            key = STRCommonTip51;
+            key = STRViewTips19;
         } else {//一个月后开始
-            key = STRCommonTip52;
+            key = STRViewTips20;
         }
         NSMutableArray *dateArray = [futurePlanDict objectForKey:key];
         if (!dateArray) {
@@ -350,21 +350,21 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         [dateArray addObject:plan];
     }
     //----------------去掉没有子项的section-----------------------------------------
-    NSMutableArray *arrayTomorrow = [futurePlanDict objectForKey:STRCommonTip49];
+    NSMutableArray *arrayTomorrow = [futurePlanDict objectForKey:STRViewTips17];
     if (!arrayTomorrow || arrayTomorrow.count == 0) {
-        [futureDateKeyArray removeObject:STRCommonTip49];
+        [futureDateKeyArray removeObject:STRViewTips17];
     }
-    NSMutableArray *arrayWeek = [futurePlanDict objectForKey:STRCommonTip50];
+    NSMutableArray *arrayWeek = [futurePlanDict objectForKey:STRViewTips18];
     if (!arrayWeek || arrayWeek.count == 0) {
-        [futureDateKeyArray removeObject:STRCommonTip50];
+        [futureDateKeyArray removeObject:STRViewTips18];
     }
-    NSMutableArray *arrayMonth = [futurePlanDict objectForKey:STRCommonTip51];
+    NSMutableArray *arrayMonth = [futurePlanDict objectForKey:STRViewTips19];
     if (!arrayMonth || arrayMonth.count == 0) {
-        [futureDateKeyArray removeObject:STRCommonTip51];
+        [futureDateKeyArray removeObject:STRViewTips19];
     }
-    NSMutableArray *arrayYear = [futurePlanDict objectForKey:STRCommonTip52];
+    NSMutableArray *arrayYear = [futurePlanDict objectForKey:STRViewTips20];
     if (!arrayYear || arrayYear.count == 0) {
-        [futureDateKeyArray removeObject:STRCommonTip52];
+        [futureDateKeyArray removeObject:STRViewTips20];
     }
     //----------------------------------------------------------------------------
     NSUInteger sections = futureDateKeyArray.count;
@@ -525,7 +525,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                 }
             } else {
                 
-                return [self createNoDataCell:tableView indexPath:indexPath tips:STRCommonTip44];
+                return [self createNoDataCell:tableView indexPath:indexPath tips:STRViewTips12];
             }
         } else if (planType == FuturePlan) {
             if(indexPath.section < futureDateKeyArray.count) {
@@ -548,7 +548,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                 }
             } else {
                 
-                return [self createNoDataCell:tableView indexPath:indexPath tips:STRCommonTip45];
+                return [self createNoDataCell:tableView indexPath:indexPath tips:STRViewTips13];
             }
         }
     }
@@ -613,7 +613,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         } else if (planType == FuturePlan && futureDateKeyArray.count > section) {
             NSString *date = futureDateKeyArray[section];
             BOOL isAllDone = YES;
-            if ([date isEqualToString:STRCommonTip49]) {
+            if ([date isEqualToString:STRViewTips17]) {
                 isAllDone = NO;
             }
             view = [[PlanSectionView alloc] initWithTitle:date count:@"" isAllDone:isAllDone];
@@ -897,7 +897,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 - (void)didCellClickedDeleteButton:(id)aSender {
     PlanCell *cell = (PlanCell *)aSender;
     deletePlan = cell.plan;
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:STRCommonTip43
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:STRViewTips11
                                                     message:nil
                                                    delegate:self
                                           cancelButtonTitle:STRCommonTip28

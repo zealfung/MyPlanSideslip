@@ -31,9 +31,9 @@
     [super viewDidLoad];
     
     if (self.operationType == Add) {
-        self.title = STRCommonTip46;
+        self.title = STRViewTips14;
     } else {
-        self.title = STRCommonTip47;
+        self.title = STRViewTips15;
     }
     
     [self createRightBarButton];
@@ -82,7 +82,7 @@
         UILabel *labelBeginTimeTips = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, tipsWidth, iconSize)];
         labelBeginTimeTips.textColor = color_Black;
         labelBeginTimeTips.font = font_Normal_18;
-        labelBeginTimeTips.text = STRCommonTip53;
+        labelBeginTimeTips.text = STRViewTips21;
         [self.view addSubview:labelBeginTimeTips];
         
         UILabel *labelBeginTime = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset + tipsWidth, yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2 - tipsWidth, iconSize)];

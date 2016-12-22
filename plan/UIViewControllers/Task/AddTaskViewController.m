@@ -32,9 +32,9 @@
 
 - (void)setControls {
     if (self.operationType == Add) {
-        self.title = str_Task_Add;
+        self.title = STRViewTitle21;
     } else if (self.operationType == Edit) {
-        self.title = str_Task_Edit;
+        self.title = STRViewTitle22;
     }
     [self createRightBarButton];
     
@@ -51,9 +51,9 @@
     self.txtMinute.hidden = YES;
     self.txtMinute.text = @"25";
     self.txtMinute.inputAccessoryView = [self getInputAccessoryView];
-    self.labelTomatoTips1.text = str_Task_Tips2;
-    self.labelTomatoTips2.text = str_Task_Tips3;
-    self.labelTomatoTips3.text = str_Task_Tips4;
+    self.labelTomatoTips1.text = STRViewTips39;
+    self.labelTomatoTips2.text = STRCommonTime12;
+    self.labelTomatoTips3.text = STRViewTips41;
     
     self.labelAlarmTime.hidden = YES;
     self.labelAlarmTime.userInteractionEnabled = YES;
@@ -128,10 +128,10 @@
     }
     if (isTomato) {
         if (self.txtMinute.text.length == 0) {
-            [self alertButtonMessage:str_Task_Tips5];
+            [self alertButtonMessage:STRViewTips42];
             return;
         } else if ([self.txtMinute.text integerValue] == 0) {
-            [self alertButtonMessage:str_Task_Tips6];
+            [self alertButtonMessage:STRViewTips43];
             return;
         }
     }
@@ -151,7 +151,7 @@
         NSDate *notifyDate = [CommonFunction NSStringDateToNSDate:self.task.notifyTime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
         NSTimeInterval iNotify = [notifyDate timeIntervalSince1970];
         if (iNotify - iNow <= 10) {//提醒时间已经过期了
-            [self alertButtonMessage:str_Task_Tips14];
+            [self alertButtonMessage:STRViewTips51];
             return;
         }
         self.task.isNotify = @"1";
@@ -182,7 +182,7 @@
 #pragma mark - UITextViewDelegate
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     NSString *text = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if ([text isEqualToString:str_Photo_Add_Tips1]) {
+    if ([text isEqualToString:STRViewTips24]) {
         textView.text = @"";
         textView.textColor = color_333333;
     }
@@ -191,7 +191,7 @@
 - (void)textViewDidEndEditing:(UITextView *)textView {
     NSString *text = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (text.length == 0) {
-        textView.text = str_Photo_Add_Tips1;
+        textView.text = STRViewTips24;
         textView.textColor = color_8f8f8f;
     }
 }
@@ -260,7 +260,7 @@
         NSDate *notifyTime = [CommonFunction NSStringDateToNSDate:self.task.notifyTime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
         if ([notifyTime compare:[NSDate date]] == NSOrderedAscending) {
             [self.switchRepeat setOn:NO];
-            [self alertButtonMessage:str_Task_Tips14];
+            [self alertButtonMessage:STRViewTips51];
             return;
         }
         self.labelRepeat.hidden = NO;
@@ -330,7 +330,7 @@
 }
 
 - (void)showRepeatActionSheet {
-    repeatActionSheet = [[UIActionSheet alloc] initWithTitle:str_Task_Tips7 delegate:self cancelButtonTitle:STRCommonTip28 destructiveButtonTitle:nil otherButtonTitles:STRCommonTip8, STRCommonTip9, STRCommonTip10, STRCommonTip11, nil];
+    repeatActionSheet = [[UIActionSheet alloc] initWithTitle:STRViewTips44 delegate:self cancelButtonTitle:STRCommonTip28 destructiveButtonTitle:nil otherButtonTitles:STRCommonTip8, STRCommonTip9, STRCommonTip10, STRCommonTip11, nil];
     [repeatActionSheet showInView:self.view];
 }
 

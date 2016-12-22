@@ -95,28 +95,6 @@ NSString *const STRCommonTip40 = @"回复";
 NSString *const STRCommonTip41 = @"保存";
 /** 稍后提醒 */
 NSString *const STRCommonTip42 = @"稍后提醒";
-/** 删除该计划 */
-NSString *const STRCommonTip43 = @"删除该计划";
-/** 暂无每日计划 */
-NSString *const STRCommonTip44 = @"暂无每日计划";
-/** 暂无未来计划 */
-NSString *const STRCommonTip45 = @"暂无未来计划";
-/** 新增计划 */
-NSString *const STRCommonTip46 = @"新增计划";
-/** 编辑计划 */
-NSString *const STRCommonTip47 = @"编辑计划";
-/** 设为每天提醒 */
-NSString *const STRCommonTip48 = @"设为每天提醒";
-/** 明天开始 */
-NSString *const STRCommonTip49 = @"明天开始";
-/** 一星期内开始 */
-NSString *const STRCommonTip50 = @"一星期内开始";
-/** 一个月内开始 */
-NSString *const STRCommonTip51 = @"一个月内开始";
-/** 一个月后开始 */
-NSString *const STRCommonTip52 = @"一个月后开始";
-/** 开始日期 */
-NSString *const STRCommonTip53 = @"开始日期：";
 
 
 /** 刚刚 */
@@ -188,6 +166,14 @@ NSString *const STRViewTitle17 = @"个人设置";
 NSString *const STRViewTitle18 = @"通用设置";
 /** 打赏作者 */
 NSString *const STRViewTitle19 = @"打赏作者";
+/** 任务详情 */
+NSString *const STRViewTitle20 = @"任务详情";
+/** 新建任务 */
+NSString *const STRViewTitle21 = @"新建任务";
+/** 编辑任务 */
+NSString *const STRViewTitle22 = @"编辑任务";
+/** 发帖 */
+NSString *const STRViewTitle23 = @"发帖";
 
 /** 假如你可以活到 */
 NSString *const STRViewTips1 = @"假如你可以活到";
@@ -209,6 +195,102 @@ NSString *const STRViewTips8 = @"完成率";
 NSString *const STRViewTips9 = @"每日计划";
 /** 未来计划 */
 NSString *const STRViewTips10 = @"未来计划";
+/** 删除该计划 */
+NSString *const STRViewTips11 = @"删除该计划";
+/** 暂无每日计划 */
+NSString *const STRViewTips12 = @"暂无每日计划";
+/** 暂无未来计划 */
+NSString *const STRViewTips13 = @"暂无未来计划";
+/** 新增计划 */
+NSString *const STRViewTips14 = @"新增计划";
+/** 编辑计划 */
+NSString *const STRViewTips15 = @"编辑计划";
+/** 设为每天提醒 */
+NSString *const STRViewTips16 = @"设为每天提醒";
+/** 明天开始 */
+NSString *const STRViewTips17 = @"明天开始";
+/** 一星期内开始 */
+NSString *const STRViewTips18 = @"一星期内开始";
+/** 一个月内开始 */
+NSString *const STRViewTips19 = @"一个月内开始";
+/** 一个月后开始 */
+NSString *const STRViewTips20 = @"一个月后开始";
+/** 开始日期 */
+NSString *const STRViewTips21 = @"开始日期：";
+/** 新增影像 */
+NSString *const STRViewTips22 = @"新增影像";
+/** 编辑影像 */
+NSString *const STRViewTips23 = @"编辑影像";
+/** 写点什么... */
+NSString *const STRViewTips24 = @"写点什么...";
+/** 请选择添加照片的方式 */
+NSString *const STRViewTips25 = @"请选择添加照片的方式";
+/** 请选择照片 */
+NSString *const STRViewTips26 = @"请选择照片";
+/** 可选9张照片 */
+NSString *const STRViewTips27 = @"可选9张照片";
+/** 至少留一张照片吧~ */
+NSString *const STRViewTips28 = @"至少留一张照片吧~";
+/** 已选%ld张/还可选%ld张照片 */
+NSString *const STRViewTips29 = @"已选%ld张/还可选%ld张照片";
+/** 拍照地点 */
+NSString *const STRViewTips30 = @"拍照地点";
+/** 暂无影像 */
+NSString *const STRViewTips31 = @"暂无影像";
+/** 影像详情 */
+NSString *const STRViewTips32 = @"影像详情";
+/** 地点： */
+NSString *const STRViewTips33 = @"地点：";
+/** 时间： */
+NSString *const STRViewTips34 = @"时间：";
+/** 时间：%@ */
+NSString *const STRViewTips35 = @"时间：%@";
+/** %@   地点：%@ */
+NSString *const STRViewTips36 = @"%@   地点：%@";
+/** 删除该影像 */
+NSString *const STRViewTips37 = @"删除该影像";
+/** 暂无任务 */
+NSString *const STRViewTips38 = @"暂无任务";
+/** 每次 */
+NSString *const STRViewTips39 = @"每次";
+/** 删除该任务 */
+NSString *const STRViewTips40 = @"删除该任务";
+/** 番茄工作法是简单易行的时间管理方法，选择一个待完成的任务，将番茄时间设为25分钟，专注工作，中途不允许做任何与该任务无关的事，直到番茄时钟响起。番茄工作法极大地提高了工作的效率，还会有意想不到的成就感。 */
+NSString *const STRViewTips41 = @"番茄工作法是简单易行的时间管理方法，选择一个待完成的任务，将番茄时间设为25分钟，专注工作，中途不允许做任何与该任务无关的事，直到番茄时钟响起。番茄工作法极大地提高了工作的效率，还会有意想不到的成就感。";
+/** 请输入番茄工作法的时间 */
+NSString *const STRViewTips42 = @"请输入番茄工作法的时间";
+/** 每次番茄工作法的时间必须大于0分钟 */
+NSString *const STRViewTips43 = @"每次番茄工作法的时间必须大于0分钟";
+/** 设置重复提醒 */
+NSString *const STRViewTips44 = @"设置重复提醒";
+/** 完成一次 */
+NSString *const STRViewTips45 = @"完成一次";
+/** 开始番茄 */
+NSString *const STRViewTips46 = @"开始番茄";
+/** 番茄时间每次 */
+NSString *const STRViewTips47 = @"番茄时间每次";
+/** 任务提醒时间： */
+NSString *const STRViewTips48 = @"任务提醒时间：";
+/** 暂无完成记录 */
+NSString *const STRViewTips49 = @"暂无完成记录";
+/** 完成时间： */
+NSString *const STRViewTips50 = @"完成时间：";
+/** 提醒时间已经过期了，请先更新提醒时间再设置重复提醒 */
+NSString *const STRViewTips51 = @"提醒时间已经过期了，请先更新提醒时间再设置重复提醒";
+/** 删除帖子 */
+NSString *const STRViewTips52 = @"删除帖子";
+/** 可选2张照片 */
+NSString *const STRViewTips53 = @"可选2张照片";
+/** 至少写点什么或留一张照片吧~ */
+NSString *const STRViewTips54 = @"至少写点什么或留一张照片吧~";
+/** 同时保存到岁月影像 */
+NSString *const STRViewTips55 = @"同时保存到岁月影像";
+/** 你已被禁止发帖 */
+NSString *const STRViewTips56 = @"你已被禁止发帖";
+/** 你已被禁止回复 */
+NSString *const STRViewTips57 = @"你已被禁止回复";
+
+
 
 /** 自动同步 */
 NSString *const STRSettingsViewTips1 = @"自动同步";

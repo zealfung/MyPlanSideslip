@@ -173,7 +173,7 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
             
         } else {
             
-            return [self createNoDataCell:tableView indexPath:indexPath tips:STRCommonTip45];
+            return [self createNoDataCell:tableView indexPath:indexPath tips:STRViewTips13];
         }
     }
 }
@@ -348,7 +348,7 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
 - (void)didCellClickedDeleteButton:(id)aSender {
     PlanCell *cell = (PlanCell *)aSender;
     deletePlan = cell.plan;
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:STRCommonTip43
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:STRViewTips11
                                                     message:nil
                                                    delegate:self
                                           cancelButtonTitle:STRCommonTip28

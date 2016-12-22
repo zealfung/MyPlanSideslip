@@ -35,9 +35,9 @@ NSUInteger const pageWidth = 110;
     [super viewDidLoad];
     
     if (self.operationType == Add) {
-        self.title = str_Photo_Add;
+        self.title = STRViewTips22;
     } else {
-        self.title = str_Photo_Edit;
+        self.title = STRViewTips23;
     }
     
     canAddPhoto = YES;
@@ -60,8 +60,8 @@ NSUInteger const pageWidth = 110;
 }
 
 - (void)loadCustomView {
-    self.labelTime.text = str_Photo_Date;
-    self.labelLocation.text = str_Photo_Location;
+    self.labelTime.text = STRViewTips34;
+    self.labelLocation.text = STRViewTips33;
     //描述
     if (self.operationType == Edit
         && self.photo.content
@@ -73,7 +73,7 @@ NSUInteger const pageWidth = 110;
     } else {
         
         self.textViewContent.textColor = color_8f8f8f;
-        self.textViewContent.text = str_Photo_Add_Tips1;
+        self.textViewContent.text = STRViewTips24;
     }
     self.textViewContent.inputAccessoryView = [self getInputAccessoryView];
     self.textViewContent.delegate = self;
@@ -99,7 +99,7 @@ NSUInteger const pageWidth = 110;
         self.textFieldLocation.text = self.photo.location;
     }
     self.textFieldLocation.inputAccessoryView = [self getInputAccessoryView];
-    self.textFieldLocation.placeholder = str_Photo_Add_Tips7;
+    self.textFieldLocation.placeholder = STRViewTips30;
     self.textFieldLocation.delegate = self;
     self.textFieldLocation.tag = 1;
     //照片
@@ -134,7 +134,7 @@ NSUInteger const pageWidth = 110;
     label.font = font_Normal_16;
     label.textColor = color_8f8f8f;
     label.textAlignment = NSTextAlignmentCenter;
-    label.text = str_Photo_Add_Tips4;
+    label.text = STRViewTips27;
     [self.viewPhoto addSubview:label];
     self.tipsLabel = label;
     
@@ -222,7 +222,7 @@ NSUInteger const pageWidth = 110;
 #pragma mark - action
 - (void)saveAction:(UIButton *)button {
     if (self.photoArray.count < 2) {
-        [self alertButtonMessage:str_Photo_Add_Tips5];
+        [self alertButtonMessage:STRViewTips28];
         return;
     }
     [self.view endEditing:YES];
@@ -245,7 +245,7 @@ NSUInteger const pageWidth = 110;
         
         self.photo.updatetime = timeNow;
     }
-    if (![self.textViewContent.text isEqualToString:str_Photo_Add_Tips1]) {
+    if (![self.textViewContent.text isEqualToString:STRViewTips24]) {
         
         self.photo.content = self.textViewContent.text;
     }
@@ -282,7 +282,7 @@ NSUInteger const pageWidth = 110;
 #pragma mark - UITextViewDelegate
 - (void)textViewDidBeginEditing:(UITextView *)textView {
     NSString *text = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if ([text isEqualToString:str_Photo_Add_Tips1]) {
+    if ([text isEqualToString:STRViewTips24]) {
         textView.text = @"";
         textView.textColor = color_333333;
     }
@@ -291,7 +291,7 @@ NSUInteger const pageWidth = 110;
 - (void)textViewDidEndEditing:(UITextView *)textView {
     NSString *text = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
     if (text.length == 0) {
-        textView.text = str_Photo_Add_Tips1;
+        textView.text = STRViewTips24;
         textView.textColor = color_8f8f8f;
     }
 }
@@ -394,11 +394,11 @@ NSUInteger const pageWidth = 110;
 
 - (void)pageScrollView:(PageScrollView *)pageScrollView didScrollToPage:(NSInteger)pageNumber {
     if (self.photoArray.count == 1) {
-        self.tipsLabel.text = str_Photo_Add_Tips4;
+        self.tipsLabel.text = STRViewTips27;
     } else if (self.photoArray.count > 1) {
         long selectedCount = canAddPhoto ? self.photoArray.count - 1 : self.photoArray.count;
         long canSelectCount = photoMax - selectedCount;
-        self.tipsLabel.text = [NSString stringWithFormat:str_Photo_Add_Tips6, selectedCount, canSelectCount];
+        self.tipsLabel.text = [NSString stringWithFormat:STRViewTips29, selectedCount, canSelectCount];
     }
 }
 

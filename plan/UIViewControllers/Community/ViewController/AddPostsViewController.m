@@ -42,7 +42,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = str_Posts_Add;
+    self.title = STRViewTitle23;
     [self createRightBarButton];
     
     canAddPhoto = YES;
@@ -71,7 +71,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     
     self.btnCheckbox.hidden = YES;
     self.labelCheckbox.hidden = YES;
-    self.labelCheckbox.text = str_Posts_Add_Tips3;
+    self.labelCheckbox.text = STRViewTips55;
 
     NSData *addImage = UIImageJPEGRepresentation([UIImage imageNamed:png_Btn_AddPhoto], 1);
     [photoArray addObject:addImage];
@@ -92,7 +92,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     label.font = font_Normal_16;
     label.textColor = color_8f8f8f;
     label.textAlignment = NSTextAlignmentCenter;
-    label.text = str_Posts_Add_Tips1;
+    label.text = STRViewTips53;
     [self.viewPhoto addSubview:label];
     tipsLabel = label;
     
@@ -128,7 +128,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
             NSString *isForbidden = [obj objectForKey:@"isForbidden"];
             
             if ([isForbidden isEqualToString:@"1"]) {
-                [weakSelf alertButtonMessage:str_Posts_Add_Tips4];
+                [weakSelf alertButtonMessage:STRViewTips56];
             } else {
                 [weakSelf savePosts];
             }
@@ -142,7 +142,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
     [self.view endEditing:YES];
     content = self.textViewContent.text;
     if (content.length == 0 && photoArray.count < 2) {
-        [self alertButtonMessage:str_Posts_Add_Tips2];
+        [self alertButtonMessage:STRViewTips54];
         return;
     }
     
@@ -331,11 +331,11 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 
 - (void)pageScrollView:(PageScrollView *)pageScrollView didScrollToPage:(NSInteger)pageNumber {
     if (photoArray.count == 1) {
-        tipsLabel.text = str_Posts_Add_Tips1;
+        tipsLabel.text = STRViewTips53;
     } else if (photoArray.count > 1) {
         long selectedCount = canAddPhoto ? photoArray.count - 1 : photoArray.count;
         long canSelectCount = imgMax - selectedCount;
-        tipsLabel.text = [NSString stringWithFormat:str_Photo_Add_Tips6, selectedCount, canSelectCount];
+        tipsLabel.text = [NSString stringWithFormat:STRViewTips29, selectedCount, canSelectCount];
     }
 }
 

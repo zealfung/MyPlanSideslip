@@ -95,28 +95,6 @@ UIKIT_EXTERN NSString *const STRCommonTip40;
 UIKIT_EXTERN NSString *const STRCommonTip41;
 /** 稍后提醒 */
 UIKIT_EXTERN NSString *const STRCommonTip42;
-/** 删除该计划 */
-UIKIT_EXTERN NSString *const STRCommonTip43;
-/** 暂无每日计划 */
-UIKIT_EXTERN NSString *const STRCommonTip44;
-/** 暂无未来计划 */
-UIKIT_EXTERN NSString *const STRCommonTip45;
-/** 新增计划 */
-UIKIT_EXTERN NSString *const STRCommonTip46;
-/** 编辑计划 */
-UIKIT_EXTERN NSString *const STRCommonTip47;
-/** 设为每天提醒 */
-UIKIT_EXTERN NSString *const STRCommonTip48;
-/** 明天开始 */
-UIKIT_EXTERN NSString *const STRCommonTip49;
-/** 一星期内开始 */
-UIKIT_EXTERN NSString *const STRCommonTip50;
-/** 一个月内开始 */
-UIKIT_EXTERN NSString *const STRCommonTip51;
-/** 一个月后开始 */
-UIKIT_EXTERN NSString *const STRCommonTip52;
-/** 开始日期 */
-UIKIT_EXTERN NSString *const STRCommonTip53;
 
 /** 刚刚 */
 UIKIT_EXTERN NSString *const STRCommonTime1;
@@ -187,6 +165,14 @@ UIKIT_EXTERN NSString *const STRViewTitle17;
 UIKIT_EXTERN NSString *const STRViewTitle18;
 /** 打赏作者 */
 UIKIT_EXTERN NSString *const STRViewTitle19;
+/** 任务详情 */
+UIKIT_EXTERN NSString *const STRViewTitle20;
+/** 新建任务 */
+UIKIT_EXTERN NSString *const STRViewTitle21;
+/** 编辑任务 */
+UIKIT_EXTERN NSString *const STRViewTitle22;
+/** 发帖 */
+UIKIT_EXTERN NSString *const STRViewTitle23;
 
 /** 假如你可以活到 */
 UIKIT_EXTERN NSString *const STRViewTips1;
@@ -208,6 +194,100 @@ UIKIT_EXTERN NSString *const STRViewTips8;
 UIKIT_EXTERN NSString *const STRViewTips9;
 /** 未来计划 */
 UIKIT_EXTERN NSString *const STRViewTips10;
+/** 删除该计划 */
+UIKIT_EXTERN NSString *const STRViewTips11;
+/** 暂无每日计划 */
+UIKIT_EXTERN NSString *const STRViewTips12;
+/** 暂无未来计划 */
+UIKIT_EXTERN NSString *const STRViewTips13;
+/** 新增计划 */
+UIKIT_EXTERN NSString *const STRViewTips14;
+/** 编辑计划 */
+UIKIT_EXTERN NSString *const STRViewTips15;
+/** 设为每天提醒 */
+UIKIT_EXTERN NSString *const STRViewTips16;
+/** 明天开始 */
+UIKIT_EXTERN NSString *const STRViewTips17;
+/** 一星期内开始 */
+UIKIT_EXTERN NSString *const STRViewTips18;
+/** 一个月内开始 */
+UIKIT_EXTERN NSString *const STRViewTips19;
+/** 一个月后开始 */
+UIKIT_EXTERN NSString *const STRViewTips20;
+/** 开始日期 */
+UIKIT_EXTERN NSString *const STRViewTips21;
+/** 新增影像 */
+UIKIT_EXTERN NSString *const STRViewTips22;
+/** 编辑影像 */
+UIKIT_EXTERN NSString *const STRViewTips23;
+/** 写点什么... */
+UIKIT_EXTERN NSString *const STRViewTips24;
+/** 请选择添加照片的方式 */
+UIKIT_EXTERN NSString *const STRViewTips25;
+/** 请选择照片 */
+UIKIT_EXTERN NSString *const STRViewTips26;
+/** 可选9张照片 */
+UIKIT_EXTERN NSString *const STRViewTips27;
+/** 至少留一张照片吧~ */
+UIKIT_EXTERN NSString *const STRViewTips28;
+/** 已选%ld张/还可选%ld张照片 */
+UIKIT_EXTERN NSString *const STRViewTips29;
+/** 拍照地点 */
+UIKIT_EXTERN NSString *const STRViewTips30;
+/** 暂无影像 */
+UIKIT_EXTERN NSString *const STRViewTips31;
+/** 影像详情 */
+UIKIT_EXTERN NSString *const STRViewTips32;
+/** 地点： */
+UIKIT_EXTERN NSString *const STRViewTips33;
+/** 时间： */
+UIKIT_EXTERN NSString *const STRViewTips34;
+/** 时间：%@ */
+UIKIT_EXTERN NSString *const STRViewTips35;
+/** %@   地点：%@ */
+UIKIT_EXTERN NSString *const STRViewTips36;
+/** 删除该影像 */
+UIKIT_EXTERN NSString *const STRViewTips37;
+/** 暂无任务 */
+UIKIT_EXTERN NSString *const STRViewTips38;
+/** 每次 */
+UIKIT_EXTERN NSString *const STRViewTips39;
+/** 删除该任务 */
+UIKIT_EXTERN NSString *const STRViewTips40;
+/** 番茄工作法是简单易行的时间管理方法，选择一个待完成的任务，将番茄时间设为25分钟，专注工作，中途不允许做任何与该任务无关的事，直到番茄时钟响起。番茄工作法极大地提高了工作的效率，还会有意想不到的成就感。 */
+UIKIT_EXTERN NSString *const STRViewTips41;
+/** 请输入番茄工作法的时间 */
+UIKIT_EXTERN NSString *const STRViewTips42;
+/** 每次番茄工作法的时间必须大于0分钟 */
+UIKIT_EXTERN NSString *const STRViewTips43;
+/** 设置重复提醒 */
+UIKIT_EXTERN NSString *const STRViewTips44;
+/** 完成一次 */
+UIKIT_EXTERN NSString *const STRViewTips45;
+/** 开始番茄 */
+UIKIT_EXTERN NSString *const STRViewTips46;
+/** 番茄时间每次 */
+UIKIT_EXTERN NSString *const STRViewTips47;
+/** 任务提醒时间： */
+UIKIT_EXTERN NSString *const STRViewTips48;
+/** 暂无完成记录 */
+UIKIT_EXTERN NSString *const STRViewTips49;
+/** 完成时间： */
+UIKIT_EXTERN NSString *const STRViewTips50;
+/** 提醒时间已经过期了，请先更新提醒时间再设置重复提醒 */
+UIKIT_EXTERN NSString *const STRViewTips51;
+/** 删除帖子 */
+UIKIT_EXTERN NSString *const STRViewTips52;
+/** 可选2张照片 */
+UIKIT_EXTERN NSString *const STRViewTips53;
+/** 至少写点什么或留一张照片吧~ */
+UIKIT_EXTERN NSString *const STRViewTips54;
+/** 同时保存到岁月影像 */
+UIKIT_EXTERN NSString *const STRViewTips55;
+/** 你已被禁止发帖 */
+UIKIT_EXTERN NSString *const STRViewTips56;
+/** 你已被禁止回复 */
+UIKIT_EXTERN NSString *const STRViewTips57;
 
 /** 自动同步 */
 UIKIT_EXTERN NSString *const STRSettingsViewTips1;
