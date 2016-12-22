@@ -150,7 +150,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
 
 - (ThreeSubView *)getAccountView {
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock:nil rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Acount]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRViewTips70]];
     threeSubView.fixRightWidth = kEdgeInset;
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
     BmobUser *user = [BmobUser currentUser];
@@ -277,7 +277,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
         [weakSelf setAvatar];
     } rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Avatar]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRViewTips71]];
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth;
     [threeSubView autoLayout];
     
@@ -310,13 +310,13 @@ NSString *const kEdgeWhiteSpace = @"  ";
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
         [weakSelf toSetNickNameViewController];
     } rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Nickname]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRCommonTip12]];
     threeSubView.fixRightWidth = kEdgeInset;
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
     
     NSString *userNickName = [Config shareInstance].settings.nickname;
     if (userNickName.length == 0) {
-        userNickName = str_Settings_Nickname_Tips;
+        userNickName = STRViewTips72;
     }
     [threeSubView.centerButton setAllTitle:userNickName];
     [threeSubView autoLayout];
@@ -336,14 +336,14 @@ NSString *const kEdgeWhiteSpace = @"  ";
     threeSubView.fixCenterWidth = 55;
     [threeSubView.centerButton setImage:[UIImage imageNamed:png_Icon_Gender_M_Normal] forState:UIControlStateNormal];
     [threeSubView.centerButton setImage:[UIImage imageNamed:png_Icon_Gender_M_Selected] forState:UIControlStateSelected];
-    [threeSubView.centerButton setAllTitle:str_Settings_Gender_M];
+    [threeSubView.centerButton setAllTitle:STRViewTips76];
     
     threeSubView.fixRightWidth = 55;
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Gender_F_Normal] forState:UIControlStateNormal];
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Gender_F_Selected] forState:UIControlStateSelected];
-    [threeSubView.rightButton setAllTitle:str_Settings_Gender_F];
+    [threeSubView.rightButton setAllTitle:STRViewTips77];
     
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Gender]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRViewTips75]];
     threeSubView.fixLeftWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixCenterWidth;
     
     threeSubView.centerButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
@@ -370,13 +370,13 @@ NSString *const kEdgeWhiteSpace = @"  ";
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
         [weakSelf setBirthday];
     } rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Birthday]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRViewTips78]];
     threeSubView.fixRightWidth = kEdgeInset;
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
     
     NSString *birthday = [Config shareInstance].settings.birthday;
     if (birthday.length == 0) {
-        birthday = str_Settings_Birthday_Tips;
+        birthday = STRViewTips79;
     }
     [threeSubView.centerButton setAllTitle:birthday];
     [threeSubView autoLayout];
@@ -389,13 +389,13 @@ NSString *const kEdgeWhiteSpace = @"  ";
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
         [weakSelf toSetLifeViewController];
     } rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Lifespan]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRViewTips80]];
     threeSubView.fixRightWidth = kEdgeInset;
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
     
     NSString *lifetime = [Config shareInstance].settings.lifespan;
     if (lifetime.length == 0) {
-        lifetime = str_Settings_Lifespan_Tips;
+        lifetime = STRViewTips81;
     }
     [threeSubView.centerButton setAllTitle:lifetime];
     [threeSubView autoLayout];
@@ -408,13 +408,13 @@ NSString *const kEdgeWhiteSpace = @"  ";
     ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
         [weakSelf toSetSignatureViewController];
     } rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_Signature]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRViewTips73]];
     threeSubView.fixRightWidth = kEdgeInset;
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
     
     NSString *signature = [Config shareInstance].settings.signature;
     if (signature.length == 0) {
-        signature = str_Settings_Signature_Tips;
+        signature = STRViewTips74;
     }
     [threeSubView.centerButton setAllTitle:signature];
     [threeSubView autoLayout];
@@ -434,7 +434,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
     threeSubView.fixRightWidth = 55;
     [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Arrow_Right] forState:UIControlStateNormal];
     
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:str_Settings_ChangePassword]];
+    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRViewTips85]];
     threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixLeftWidth;
     threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
     
@@ -449,7 +449,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
     button.titleLabel.font = font_Bold_18;
     button.layer.cornerRadius = 5;
     button.clipsToBounds = YES;
-    [button setAllTitle:str_Settings_LogIn];
+    [button setAllTitle:STRViewTitle25];
     [button addTarget:self action:@selector(logInAction) forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
@@ -460,7 +460,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
     button.titleLabel.font = font_Bold_18;
     button.layer.cornerRadius = 5;
     button.clipsToBounds = YES;
-    [button setAllTitle:str_Settings_LogOut];
+    [button setAllTitle:STRViewTips84];
     [button addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
     return button;
 }
@@ -525,20 +525,20 @@ NSString *const kEdgeWhiteSpace = @"  ";
     
     if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
         
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:str_Settings_SetAvatar_Tips1
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:STRViewTips82
                                                                  delegate:self
                                                         cancelButtonTitle:STRCommonTip28
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:str_Settings_SetAvatar_Camera, str_Settings_SetAvatar_Album, nil];
+                                                        otherButtonTitles:STRCommonTip46, STRCommonTip45, nil];
         [actionSheet showInView:self.view];
         
     } else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
         
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:str_Settings_SetAvatar_Tips2
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:STRViewTips83
                                                                  delegate:self
                                                         cancelButtonTitle:STRCommonTip28
                                                    destructiveButtonTitle:nil
-                                                        otherButtonTitles:str_Settings_SetAvatar_Album, nil];
+                                                        otherButtonTitles:STRCommonTip45, nil];
         [actionSheet showInView:self.view];
         
     } else {
@@ -758,7 +758,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
     [Config shareInstance].settings.birthday = birthday;
     
     if (birthday.length == 0) {
-        birthday = str_Settings_Birthday_Tips;
+        birthday = STRViewTips79;
     }
     [birthThreeSubView.centerButton setAllTitle:birthday];
     
@@ -810,7 +810,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
     
     if (buttonIndex==[actionSheet cancelButtonIndex]) {
         
-    } else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:str_Settings_SetAvatar_Camera]) {
+    } else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:STRCommonTip46]) {
         //拍照
         if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
             
@@ -829,7 +829,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
             [self alertButtonMessage:STRCommonTip2];
         }
         
-    } else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:str_Settings_SetAvatar_Album]) {
+    } else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:STRCommonTip45]) {
         //从相册选择
         if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
             

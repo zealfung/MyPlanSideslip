@@ -39,7 +39,7 @@
     cellView.labelNickname.text = nickname;
     cellView.labelNickname.textColor = [CommonFunction getGenderColor];
     //个性签名
-    NSString *signature = str_PersonalCenter_SubTitle9;
+    NSString *signature = STRViewTips61;
     if (![CommonFunction isEmptyString:[Config shareInstance].settings.signature]) {
         signature = [Config shareInstance].settings.signature;
     }

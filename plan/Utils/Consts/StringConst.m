@@ -95,7 +95,14 @@ NSString *const STRCommonTip40 = @"回复";
 NSString *const STRCommonTip41 = @"保存";
 /** 稍后提醒 */
 NSString *const STRCommonTip42 = @"稍后提醒";
-
+/** 网络罢工啦，点击重试~ */
+NSString *const STRCommonTip43 = @"网络罢工啦，点击重试~";
+/** 暂无内容 */
+NSString *const STRCommonTip44 = @"暂无内容";
+/** 从相册选择 */
+NSString *const STRCommonTip45 = @"从相册选择";
+/** 拍照 */
+NSString *const STRCommonTip46 = @"拍照";
 
 /** 刚刚 */
 NSString *const STRCommonTime1 = @"刚刚";
@@ -127,6 +134,7 @@ NSString *const STRCommonTime13 = @"小时";
 NSString *const STRCommonTime14 = @"天";
 /** 月 */
 NSString *const STRCommonTime15 = @"月";
+
 
 /** 我的 */
 NSString *const STRViewTitle1 = @"我的";
@@ -174,6 +182,11 @@ NSString *const STRViewTitle21 = @"新建任务";
 NSString *const STRViewTitle22 = @"编辑任务";
 /** 发帖 */
 NSString *const STRViewTitle23 = @"发帖";
+/** 更多 */
+NSString *const STRViewTitle24 = @"更多";
+/** 登录 */
+NSString *const STRViewTitle25 = @"登录";
+
 
 /** 假如你可以活到 */
 NSString *const STRViewTips1 = @"假如你可以活到";
@@ -289,7 +302,66 @@ NSString *const STRViewTips55 = @"同时保存到岁月影像";
 NSString *const STRViewTips56 = @"你已被禁止发帖";
 /** 你已被禁止回复 */
 NSString *const STRViewTips57 = @"你已被禁止回复";
+/** 如果确定，将删除该帖子 */
+NSString *const STRViewTips58 = @"如果确定，将删除该帖子";
+/** 评论一下 */
+NSString *const STRViewTips59 = @"评论一下";
+/** 暂无评论，快占沙发~ */
+NSString *const STRViewTips60 = @"暂无评论，快占沙发~";
+/** 编辑个性签名 */
+NSString *const STRViewTips61 = @"编辑个性签名";
+/** 当前系统版本不支持应用内发送邮件功能 */
+NSString *const STRViewTips62 = @"当前系统版本不支持应用内发送邮件功能";
+/** 你还没有设置邮件账户 */
+NSString *const STRViewTips63 = @"你还没有设置邮件账户";
+/** 请输入你的建议或反馈~ */
+NSString *const STRViewTips64 = @"请输入你的建议或反馈~";
+/** 取消编辑邮件 */
+NSString *const STRViewTips65 = @"取消编辑邮件";
+/** 保存邮件成功 */
+NSString *const STRViewTips66 = @"保存邮件成功";
+/** 发送邮件成功 */
+NSString *const STRViewTips67 = @"发送邮件成功";
+/** 保存或者发送邮件失败 */
+NSString *const STRViewTips68 = @"保存或者发送邮件失败";
+/** 我有计划 For iOS */
+NSString *const STRViewTips69 = @"我有计划 For iOS";
+/** 账号 */
+NSString *const STRViewTips70 = @"账号";
+/** 头像 */
+NSString *const STRViewTips71 = @"头像";
+/** 点击修改昵称 */
+NSString *const STRViewTips72 = @"点击修改昵称";
+/** 签名 */
+NSString *const STRViewTips73 = @"签名";
+/** 点击设置个性签名 */
+NSString *const STRViewTips74 = @"点击设置个性签名";
+/** 性别 */
+NSString *const STRViewTips75 = @"性别";
+/**  男 */
+NSString *const STRViewTips76 = @" 男";
+/**  女 */
+NSString *const STRViewTips77 = @" 女";
+/** 生日 */
+NSString *const STRViewTips78 = @"生日";
+/** 点击设置生日 */
+NSString *const STRViewTips79 = @"点击设置生日";
+/** 岁数 */
+NSString *const STRViewTips80 = @"岁数";
+/** 点击设置岁数 */
+NSString *const STRViewTips81 = @"点击设置岁数";
+/** 亲，请选择更新头像的方式！ */
+NSString *const STRViewTips82 = @"亲，请选择更新头像的方式！";
+/** 亲，请选择头像！ */
+NSString *const STRViewTips83 = @"亲，请选择头像！";
+/** 注销登录 */
+NSString *const STRViewTips84 = @"注销登录";
+/** 修改密码 */
+NSString *const STRViewTips85 = @"修改密码";
 
+
+
+#define str_Settings_ChangePassword @"修改密码"
 
 
 /** 自动同步 */

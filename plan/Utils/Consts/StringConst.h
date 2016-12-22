@@ -95,6 +95,14 @@ UIKIT_EXTERN NSString *const STRCommonTip40;
 UIKIT_EXTERN NSString *const STRCommonTip41;
 /** 稍后提醒 */
 UIKIT_EXTERN NSString *const STRCommonTip42;
+/** 网络罢工啦，点击重试~ */
+UIKIT_EXTERN NSString *const STRCommonTip43;
+/** 暂无内容 */
+UIKIT_EXTERN NSString *const STRCommonTip44;
+/** 从相册选择 */
+UIKIT_EXTERN NSString *const STRCommonTip45;
+/** 拍照 */
+UIKIT_EXTERN NSString *const STRCommonTip46;
 
 /** 刚刚 */
 UIKIT_EXTERN NSString *const STRCommonTime1;
@@ -173,6 +181,10 @@ UIKIT_EXTERN NSString *const STRViewTitle21;
 UIKIT_EXTERN NSString *const STRViewTitle22;
 /** 发帖 */
 UIKIT_EXTERN NSString *const STRViewTitle23;
+/** 更多 */
+UIKIT_EXTERN NSString *const STRViewTitle24;
+/** 登录 */
+UIKIT_EXTERN NSString *const STRViewTitle25;
 
 /** 假如你可以活到 */
 UIKIT_EXTERN NSString *const STRViewTips1;
@@ -288,6 +300,62 @@ UIKIT_EXTERN NSString *const STRViewTips55;
 UIKIT_EXTERN NSString *const STRViewTips56;
 /** 你已被禁止回复 */
 UIKIT_EXTERN NSString *const STRViewTips57;
+/** 如果确定，将删除该帖子 */
+UIKIT_EXTERN NSString *const STRViewTips58;
+/** 评论一下 */
+UIKIT_EXTERN NSString *const STRViewTips59;
+/** 暂无评论，快占沙发~ */
+UIKIT_EXTERN NSString *const STRViewTips60;
+/** 编辑个性签名 */
+UIKIT_EXTERN NSString *const STRViewTips61;
+/** 当前系统版本不支持应用内发送邮件功能 */
+UIKIT_EXTERN NSString *const STRViewTips62;
+/** 你还没有设置邮件账户 */
+UIKIT_EXTERN NSString *const STRViewTips63;
+/** 请输入你的建议或反馈~ */
+UIKIT_EXTERN NSString *const STRViewTips64;
+/** 取消编辑邮件 */
+UIKIT_EXTERN NSString *const STRViewTips65;
+/** 保存邮件成功 */
+UIKIT_EXTERN NSString *const STRViewTips66;
+/** 发送邮件成功 */
+UIKIT_EXTERN NSString *const STRViewTips67;
+/** 保存或者发送邮件失败 */
+UIKIT_EXTERN NSString *const STRViewTips68;
+/** 我有计划 For iOS */
+UIKIT_EXTERN NSString *const STRViewTips69;
+/** 账号 */
+UIKIT_EXTERN NSString *const STRViewTips70;
+/** 头像 */
+UIKIT_EXTERN NSString *const STRViewTips71;
+/** 点击修改昵称 */
+UIKIT_EXTERN NSString *const STRViewTips72;
+/** 签名 */
+UIKIT_EXTERN NSString *const STRViewTips73;
+/** 点击设置个性签名 */
+UIKIT_EXTERN NSString *const STRViewTips74;
+/** 性别 */
+UIKIT_EXTERN NSString *const STRViewTips75;
+/**  男 */
+UIKIT_EXTERN NSString *const STRViewTips76;
+/**  女 */
+UIKIT_EXTERN NSString *const STRViewTips77;
+/** 生日 */
+UIKIT_EXTERN NSString *const STRViewTips78;
+/** 点击设置生日 */
+UIKIT_EXTERN NSString *const STRViewTips79;
+/** 岁数 */
+UIKIT_EXTERN NSString *const STRViewTips80;
+/** 点击设置岁数 */
+UIKIT_EXTERN NSString *const STRViewTips81;
+/** 亲，请选择更新头像的方式！ */
+UIKIT_EXTERN NSString *const STRViewTips82;
+/** 亲，请选择头像！ */
+UIKIT_EXTERN NSString *const STRViewTips83;
+/** 注销登录 */
+UIKIT_EXTERN NSString *const STRViewTips84;
+/** 修改密码 */
+UIKIT_EXTERN NSString *const STRViewTips85;
 
 /** 自动同步 */
 UIKIT_EXTERN NSString *const STRSettingsViewTips1;

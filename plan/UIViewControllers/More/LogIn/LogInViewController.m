@@ -23,7 +23,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.title = str_Settings_LogIn;
+    self.title = STRViewTitle25;
     [self setControls];
 }
 
@@ -49,7 +49,7 @@
     }
     
     self.btnLogIn.layer.cornerRadius = 5;
-    [self.btnLogIn setAllTitle:str_Settings_LogIn];
+    [self.btnLogIn setAllTitle:STRViewTitle25];
     [self.btnRegister setAllTitle:STRCommonTip24];
     [self.btnForgotPwd setAllTitle:STRCommonTip26];
 }

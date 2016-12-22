@@ -215,13 +215,13 @@
     
     //设置主题
     NSString *device = [NSString stringWithFormat:@"（%@，iOS%@）", [CommonFunction getDeviceType], [CommonFunction getiOSVersion]];
-    NSString *subject = [NSString stringWithFormat:@"%@ V%@%@", str_More_Feedback_Tips8, [CommonFunction getAppVersion], device];
+    NSString *subject = [NSString stringWithFormat:@"%@ V%@%@", STRViewTips69, [CommonFunction getAppVersion], device];
     [mailPicker setSubject:subject];
     //添加收件人
     NSArray *toRecipients = [NSArray arrayWithObject:str_Feedback_Email];
     [mailPicker setToRecipients: toRecipients];
     
-    [mailPicker setMessageBody:str_More_Feedback_Tips3 isHTML:YES];
+    [mailPicker setMessageBody:STRViewTips64 isHTML:YES];
     [self presentViewController:mailPicker animated:YES completion:nil];
     
 }
@@ -234,16 +234,16 @@
     NSString *msg;
     switch (result) {
         case MFMailComposeResultCancelled:
-            msg = str_More_Feedback_Tips4;
+            msg = STRViewTips65;
             break;
         case MFMailComposeResultSaved:
-            [self alertToastMessage:str_More_Feedback_Tips5];
+            [self alertToastMessage:STRViewTips66];
             break;
         case MFMailComposeResultSent:
-            [self alertToastMessage:str_More_Feedback_Tips6];
+            [self alertToastMessage:STRViewTips67];
             break;
         case MFMailComposeResultFailed:
-            [self alertButtonMessage:str_More_Feedback_Tips7];
+            [self alertButtonMessage:STRViewTips68];
             break;
         default:
             msg = @"";

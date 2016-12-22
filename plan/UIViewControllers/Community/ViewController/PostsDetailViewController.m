@@ -57,7 +57,7 @@ NSInteger const kDeleteTag = 20160110;
     self.inputView.returnKeyType = UIReturnKeySend;
     [self.inputView setBorderWidth:1.0f andColor:color_eeeeee];
     self.inputView.backgroundColor = color_F2F3F5;
-    [self.inputView setUpWithPlaceholder:str_PostsDetail_Comment_Tips1];
+    [self.inputView setUpWithPlaceholder:STRViewTips59];
     self.inputView.delegate = self;
     self.inputView.hidden = YES;
     self.inputViewHeightConstraint = [NSLayoutConstraint constraintWithItem:self.inputView attribute:NSLayoutAttributeHeight         relatedBy:NSLayoutRelationEqual
@@ -128,7 +128,7 @@ NSInteger const kDeleteTag = 20160110;
         case 2:
         {
             if (isAuthor) {
-                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:STRViewTips52 message:str_PostsList_Tips2 delegate:self cancelButtonTitle:STRCommonTip28 otherButtonTitles:STRCommonTip27, nil];
+                UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:STRViewTips52 message:STRViewTips58 delegate:self cancelButtonTitle:STRCommonTip28 otherButtonTitles:STRCommonTip27, nil];
                 alertView.tag = kDeleteTag;
                 [alertView show];
             } else {
@@ -229,7 +229,7 @@ NSInteger const kDeleteTag = 20160110;
         [labelNoComment setTextColor:color_666666];
         [labelNoComment setFont:font_Normal_16];
         labelNoComment.textAlignment = NSTextAlignmentCenter;
-        [labelNoComment setText:str_PostsDetail_Comment_Tips2];
+        [labelNoComment setText:STRViewTips60];
         [self.scrollView addSubview:labelNoComment];
         yOffset += 100;
     }
@@ -677,7 +677,7 @@ NSInteger const kDeleteTag = 20160110;
                 self.inputView.placeholder = [NSString stringWithFormat:@"%@ %@：", STRCommonTip40, nickName];
             }
         } else {
-            self.inputView.placeholder = str_PostsDetail_Comment_Tips1;
+            self.inputView.placeholder = STRViewTips59;
         }
         [self.inputView becomeFirstResponder];
     } else {
