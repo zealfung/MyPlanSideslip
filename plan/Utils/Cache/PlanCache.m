@@ -110,25 +110,15 @@ static NSMutableDictionary *__contactsOnlineState;
         
     } else {//新增字段
         //新增未完计划设置字段2016-06-30
-        NSString *autoDelayUndonePlan = @"autoDelayUndonePlan";
-        if (![__db columnExists:autoDelayUndonePlan inTableWithName:str_TableName_Settings]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, autoDelayUndonePlan];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
-        //新增显示剩余日月设置字段2016-04-27
-        NSString *dayOrMonth = @"dayOrMonth";
-        if (![__db columnExists:dayOrMonth inTableWithName:str_TableName_Settings]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, dayOrMonth];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
+//        NSString *autoDelayUndonePlan = @"autoDelayUndonePlan";
+//        if (![__db columnExists:autoDelayUndonePlan inTableWithName:str_TableName_Settings]) {
+//            
+//            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Settings, autoDelayUndonePlan];
+//            
+//            BOOL b = [__db executeUpdate:sqlString];
+//            
+//            FMDBQuickCheck(b, sqlString, __db);
+//        }
     }
     
     // 计划
@@ -166,15 +156,7 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMDBQuickCheck(b, sqlString, __db);
     } else { //新增字段
-        NSString *updateTime = @"updatetime";
-        if (![__db columnExists:updateTime inTableWithName:str_TableName_Statistics]) {
-            
-            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",str_TableName_Statistics, updateTime];
-            
-            BOOL b = [__db executeUpdate:sqlString];
-            
-            FMDBQuickCheck(b, sqlString, __db);
-        }
+
     }
     
     //任务
