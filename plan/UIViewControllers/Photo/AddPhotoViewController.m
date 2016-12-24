@@ -85,7 +85,7 @@ NSUInteger const pageWidth = 110;
         
     } else {
         
-        self.textFieldTime.text = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+        self.textFieldTime.text = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     }
     [self.textFieldTime addTarget:self action:@selector(setPhotoTime) forControlEvents:UIControlEventTouchDown];
     self.textFieldTime.inputView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -175,7 +175,7 @@ NSUInteger const pageWidth = 110;
                                                                 defaultComponents.year - 100,
                                                                 defaultComponents.month,
                                                                 defaultComponents.day]
-                                                     formatter:str_DateFormatter_yyyy_MM_dd];
+                                                     formatter:STRDateFormatterType4];
         
         picker.minimumDate = minDate;
         [pickerView addSubview:picker];
@@ -185,7 +185,7 @@ NSUInteger const pageWidth = 110;
         
         if (photoDate) {
             
-            NSDate *date = [CommonFunction NSStringDateToNSDate:photoDate formatter:str_DateFormatter_yyyy_MM_dd];
+            NSDate *date = [CommonFunction NSStringDateToNSDate:photoDate formatter:STRDateFormatterType4];
             if (date) {
                 
                 [self.datePicker setDate:date animated:YES];
@@ -197,7 +197,7 @@ NSUInteger const pageWidth = 110;
                                                                         defaultComponents.year,
                                                                         defaultComponents.month,
                                                                         defaultComponents.day]
-                                                             formatter:str_DateFormatter_yyyy_MM_dd];
+                                                             formatter:STRDateFormatterType4];
             self.datePicker.date = defaultDate;
         }
     }
@@ -207,7 +207,7 @@ NSUInteger const pageWidth = 110;
 
 - (void)onPickerCertainBtn {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd];
+    [dateFormatter setDateFormat:STRDateFormatterType4];
     NSString *photoTime = [dateFormatter stringFromDate:self.datePicker.date];
     self.textFieldTime.text = photoTime;
     UIView *pickerView = [self.view viewWithTag:kDatePickerBgViewTag];
@@ -229,7 +229,7 @@ NSUInteger const pageWidth = 110;
     [self showHUD];
     
     NSString *timeNow = [CommonFunction getTimeNowString];
-    NSString* photoid = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyyMMddHHmmss];
+    NSString* photoid = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType2];
     
     if (self.operationType == Add) {
         

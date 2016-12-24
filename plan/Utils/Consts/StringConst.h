@@ -11,6 +11,13 @@
 /** 理想生活，我有计划 */
 UIKIT_EXTERN NSString *const STRAppSlogan;
 
+/** http://myplan.bmob.cn/ */
+UIKIT_EXTERN NSString *const STRAppWebsite;
+/** fengziyi@outlook.com */
+UIKIT_EXTERN NSString *const STRFeedbackEmail;
+/** http://www.fengziyi.com */
+UIKIT_EXTERN NSString *const STRAppWebsite1;
+
 /** 请到“设置”-“隐私”-“照片”中找到”我有计划“，将按钮打开，允许访问相册 */
 UIKIT_EXTERN NSString *const STRCommonTip1;
 /** 请到“设置”-“隐私”-“相机”中找到”我有计划“，将按钮打开，允许使用摄像头 */
@@ -103,6 +110,12 @@ UIKIT_EXTERN NSString *const STRCommonTip44;
 UIKIT_EXTERN NSString *const STRCommonTip45;
 /** 拍照 */
 UIKIT_EXTERN NSString *const STRCommonTip46;
+/** 当前版本： */
+UIKIT_EXTERN NSString *const STRCommonTip47;
+/** ©2015-2017 Andwho Inc. */
+UIKIT_EXTERN NSString *const STRCommonTip48;
+/** MyPlan */
+UIKIT_EXTERN NSString *const STRCommonTip49;
 
 /** 刚刚 */
 UIKIT_EXTERN NSString *const STRCommonTime1;
@@ -356,6 +369,80 @@ UIKIT_EXTERN NSString *const STRViewTips83;
 UIKIT_EXTERN NSString *const STRViewTips84;
 /** 修改密码 */
 UIKIT_EXTERN NSString *const STRViewTips85;
+/** 邮箱地址Email */
+UIKIT_EXTERN NSString *const STRViewTips86;
+/** 请输入邮箱地址 */
+UIKIT_EXTERN NSString *const STRViewTips87;
+/** 邮箱地址格式不正确 */
+UIKIT_EXTERN NSString *const STRViewTips88;
+/** 请输入密码 */
+UIKIT_EXTERN NSString *const STRViewTips89;
+/** 该邮箱账号已经注册，如果密码丢失，可通过“忘记密码”找回 */
+UIKIT_EXTERN NSString *const STRViewTips90;
+/** 我们给你的邮箱发了一封验证邮件，请先验证邮件后再登录使用 */
+UIKIT_EXTERN NSString *const STRViewTips91;
+/** 密码Password */
+UIKIT_EXTERN NSString *const STRViewTips92;
+/** 温馨提示：注册邮箱需要接收系统的验证邮件，请填写真实有效的邮箱地址。 */
+UIKIT_EXTERN NSString *const STRViewTips93;
+/** 账号或密码不正确 */
+UIKIT_EXTERN NSString *const STRViewTips94;
+/** 你的账号邮箱还没通过验证，请先登录账号邮箱查看验证邮件 */
+UIKIT_EXTERN NSString *const STRViewTips95;
+/** 找回密码 */
+UIKIT_EXTERN NSString *const STRViewTips96;
+/** 我们给你的邮箱发了一封重置密码的邮件，请注意查收 */
+UIKIT_EXTERN NSString *const STRViewTips97;
+/** 请输入当前密码 */
+UIKIT_EXTERN NSString *const STRViewTips98;
+/** 请输入新密码 */
+UIKIT_EXTERN NSString *const STRViewTips99;
+/** 请再输入一次新密码 */
+UIKIT_EXTERN NSString *const STRViewTips100;
+/** 两次新密码输入不一样 */
+UIKIT_EXTERN NSString *const STRViewTips101;
+/** 修改密码成功 */
+UIKIT_EXTERN NSString *const STRViewTips102;
+/** 修改密码失败 */
+UIKIT_EXTERN NSString *const STRViewTips103;
+/** 使用新密码登录失败 */
+UIKIT_EXTERN NSString *const STRViewTips104;
+/** 旧密码不正确 */
+UIKIT_EXTERN NSString *const STRViewTips105;
+/** 你已经5天没有新建计划了，要坚持哦~ */
+UIKIT_EXTERN NSString *const STRViewTips106;
+/** 分享成功 */
+UIKIT_EXTERN NSString *const STRViewTips107;
+/** 分享失败 */
+UIKIT_EXTERN NSString *const STRViewTips108;
+/** 取消分享 */
+UIKIT_EXTERN NSString *const STRViewTips109;
+/** 来自我有计划iOS版 */
+UIKIT_EXTERN NSString *const STRViewTips110;
+/** 做计划管时间的好APP：我有计划 */
+UIKIT_EXTERN NSString *const STRViewTips111;
+/** 暂无消息 */
+UIKIT_EXTERN NSString *const STRViewTips112;
+/** 已读信息清理完毕 */
+UIKIT_EXTERN NSString *const STRViewTips113;
+/** 查看更多详情>>> */
+UIKIT_EXTERN NSString *const STRViewTips114;
+/** 获取详情失败，请稍后再试 */
+UIKIT_EXTERN NSString *const STRViewTips115;
+/** 有人 */
+UIKIT_EXTERN NSString *const STRViewTips116;
+/** 赞了你的帖子 */
+UIKIT_EXTERN NSString *const STRViewTips117;
+/** 赞了你的评论 */
+UIKIT_EXTERN NSString *const STRViewTips118;
+/** 回复了你的帖子 */
+UIKIT_EXTERN NSString *const STRViewTips119;
+/** 回复了你的评论 */
+UIKIT_EXTERN NSString *const STRViewTips120;
+/** 正在同步数据... */
+UIKIT_EXTERN NSString *const STRViewTips121;
+/** 同步数据完成 */
+UIKIT_EXTERN NSString *const STRViewTips122;
 
 /** 自动同步 */
 UIKIT_EXTERN NSString *const STRSettingsViewTips1;
@@ -391,3 +478,58 @@ UIKIT_EXTERN NSString *const STRSettingsViewTips15;
 UIKIT_EXTERN NSString *const STRSettingsViewTips16;
 /** 未完计划自动延期 */
 UIKIT_EXTERN NSString *const STRSettingsViewTips17;
+/** 设置昵称 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips18;
+/** 请输入昵称 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips19;
+/** 昵称不能大于10个字符！ */
+UIKIT_EXTERN NSString *const STRSettingsViewTips20;
+/** 设置签名 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips21;
+/** 请输入个性签名 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips22;
+/** 设置岁数 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips23;
+/** 请输入岁数 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips24;
+/** 请输入你希望倒计时的岁数 */
+UIKIT_EXTERN NSString *const STRSettingsViewTips25;
+/** 别闹，请填写正常人的寿命！ */
+UIKIT_EXTERN NSString *const STRSettingsViewTips26;
+
+/** yyyy-MM-dd HH:mm:ss */
+UIKIT_EXTERN NSString *const STRDateFormatterType1;
+/** yyyyMMddHHmmss */
+UIKIT_EXTERN NSString *const STRDateFormatterType2;
+/** yyyy-MM-dd HH:mm */
+UIKIT_EXTERN NSString *const STRDateFormatterType3;
+/** yyyy-MM-dd */
+UIKIT_EXTERN NSString *const STRDateFormatterType4;
+
+/** t_settings */
+UIKIT_EXTERN NSString *const STRTableName1;
+/** t_plan */
+UIKIT_EXTERN NSString *const STRTableName2;
+/** t_photo */
+UIKIT_EXTERN NSString *const STRTableName3;
+/** t_statistics */
+UIKIT_EXTERN NSString *const STRTableName4;
+/** t_task */
+UIKIT_EXTERN NSString *const STRTableName5;
+/** t_taskrecord */
+UIKIT_EXTERN NSString *const STRTableName6;
+/** t_messages */
+UIKIT_EXTERN NSString *const STRTableName7;
+
+/** kBeginDateFlag20160128 */
+UIKIT_EXTERN NSString *const STRBeginDateFlag;
+/** kTmpFlag20160229 */
+UIKIT_EXTERN NSString *const STRCleanCacheFlag;
+/** kPlanListLastLoadDataTime */
+UIKIT_EXTERN NSString *const STRPlanListFlag;
+/** kPostsListLastLoadDataTime */
+UIKIT_EXTERN NSString *const STRPostsListFlag;
+/** 20150912083000 */
+UIKIT_EXTERN NSString *const STRFiveDayFlag1;
+/** 2015-09-12 08:30:00 */
+UIKIT_EXTERN NSString *const STRFiveDayFlag2;

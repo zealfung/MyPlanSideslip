@@ -29,15 +29,15 @@
 }
 
 - (void)setControls {
-    self.txtEmail.placeholder = str_Register_Tips1;
+    self.txtEmail.placeholder = STRViewTips86;
     self.txtEmail.inputAccessoryView = [self getInputAccessoryView];
     [self.txtEmail becomeFirstResponder];
-    self.txtPassword.placeholder = str_Register_Tips7;
+    self.txtPassword.placeholder = STRViewTips92;
     self.txtPassword.inputAccessoryView = [self getInputAccessoryView];
     self.btnRegister.layer.cornerRadius = 5;
     [self.btnRegister setAllTitle:STRCommonTip24];
     [self.btnforgotPwd setAllTitle:STRCommonTip26];
-    self.labelTips.text = str_Register_Tips8;
+    self.labelTips.text = STRViewTips93;
 }
 
 - (IBAction)registerAction:(id)sender {
@@ -53,17 +53,17 @@
 
 - (BOOL)checkInput {
     if (self.txtEmail.text.length == 0) {
-        [self alertToastMessage:str_Register_Tips2];
+        [self alertToastMessage:STRViewTips87];
         [self.txtEmail becomeFirstResponder];
         return NO;
     }
     if (![CommonFunction validateEmail:self.txtEmail.text]) {
-        [self alertToastMessage:str_Register_Tips3];
+        [self alertToastMessage:STRViewTips88];
         [self.txtEmail becomeFirstResponder];
         return NO;
     }
     if (self.txtPassword.text.length == 0) {
-        [self alertToastMessage:str_Register_Tips4];
+        [self alertToastMessage:STRViewTips89];
         [self.txtPassword becomeFirstResponder];
         return NO;
     }
@@ -83,7 +83,7 @@
         } else {
             if (array && array.count > 0) {//已存在
                 [weakSelf hideHUD];
-                [weakSelf alertButtonMessage:str_Register_Tips5];
+                [weakSelf alertButtonMessage:STRViewTips90];
             } else {//可注册
                 [weakSelf registerUser];
             }
@@ -103,7 +103,7 @@
         [weakSelf hideHUD];
         if (isSuccessful){
             [weakSelf addSettingsToServer];
-            [weakSelf alertButtonMessage:str_Register_Tips6];
+            [weakSelf alertButtonMessage:STRViewTips91];
             [weakSelf.navigationController popViewControllerAnimated:YES];
         } else {
             [BmobUser logout];

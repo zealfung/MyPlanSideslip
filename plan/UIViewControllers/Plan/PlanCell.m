@@ -236,7 +236,7 @@ NSUInteger const kBounceSpace = 20;
 - (void)setPlan:(Plan *)plan {
     _plan = plan;
     labelContent.text = plan.content;
-    NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:str_DateFormatter_yyyy_MM_dd];
+    NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
     if ([plan.iscompleted isEqualToString:@"0"]
         && [beginDate compare:[NSDate date]] == NSOrderedDescending) {
         labelBeginDate.text = [CommonFunction getBeginDateStringForShow:plan.beginDate];

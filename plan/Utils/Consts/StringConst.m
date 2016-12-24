@@ -11,6 +11,13 @@
 /** 理想生活，我有计划 */
 NSString *const STRAppSlogan = @"理想生活，我有计划";
 
+/** http://myplan.bmob.cn/ */
+NSString *const STRAppWebsite = @"http://myplan.bmob.cn/";
+/** fengziyi@outlook.com */
+NSString *const STRFeedbackEmail = @"fengziyi@outlook.com";
+/** http://www.fengziyi.com */
+NSString *const STRAppWebsite1 = @"http://www.fengziyi.com";
+
 /** 请到“设置”-“隐私”-“照片”中找到”我有计划“，将按钮打开，允许访问相册 */
 NSString *const STRCommonTip1 = @"请到“设置”-“隐私”-“照片”中找到”我有计划“，将按钮打开，允许访问相册";
 /** 请到“设置”-“隐私”-“相机”中找到”我有计划“，将按钮打开，允许使用摄像头 */
@@ -103,6 +110,13 @@ NSString *const STRCommonTip44 = @"暂无内容";
 NSString *const STRCommonTip45 = @"从相册选择";
 /** 拍照 */
 NSString *const STRCommonTip46 = @"拍照";
+/** 当前版本： */
+NSString *const STRCommonTip47 = @"当前版本：";
+/** ©2015-2017 Andwho Inc. */
+NSString *const STRCommonTip48 = @"©2015-2017 Andwho Inc.";
+/** MyPlan */
+NSString *const STRCommonTip49 = @"MyPlan";
+
 
 /** 刚刚 */
 NSString *const STRCommonTime1 = @"刚刚";
@@ -358,11 +372,80 @@ NSString *const STRViewTips83 = @"亲，请选择头像！";
 NSString *const STRViewTips84 = @"注销登录";
 /** 修改密码 */
 NSString *const STRViewTips85 = @"修改密码";
-
-
-
-#define str_Settings_ChangePassword @"修改密码"
-
+/** 邮箱地址Email */
+NSString *const STRViewTips86 = @"邮箱地址Email";
+/** 请输入邮箱地址 */
+NSString *const STRViewTips87 = @"请输入邮箱地址";
+/** 邮箱地址格式不正确 */
+NSString *const STRViewTips88 = @"邮箱地址格式不正确";
+/** 请输入密码 */
+NSString *const STRViewTips89 = @"请输入密码";
+/** 该邮箱账号已经注册，如果密码丢失，可通过“忘记密码”找回 */
+NSString *const STRViewTips90 = @"该邮箱账号已经注册，如果密码丢失，可通过“忘记密码”找回";
+/** 我们给你的邮箱发了一封验证邮件，请先验证邮件后再登录使用 */
+NSString *const STRViewTips91 = @"我们给你的邮箱发了一封验证邮件，请先验证邮件后再登录使用";
+/** 密码Password */
+NSString *const STRViewTips92 = @"密码Password";
+/** 温馨提示：注册邮箱需要接收系统的验证邮件，请填写真实有效的邮箱地址。 */
+NSString *const STRViewTips93 = @"温馨提示：注册邮箱需要接收系统的验证邮件，请填写真实有效的邮箱地址。";
+/** 账号或密码不正确 */
+NSString *const STRViewTips94 = @"账号或密码不正确";
+/** 你的账号邮箱还没通过验证，请先登录账号邮箱查看验证邮件 */
+NSString *const STRViewTips95 = @"你的账号邮箱还没通过验证，请先登录账号邮箱查看验证邮件";
+/** 找回密码 */
+NSString *const STRViewTips96 = @"找回密码";
+/** 我们给你的邮箱发了一封重置密码的邮件，请注意查收 */
+NSString *const STRViewTips97 = @"我们给你的邮箱发了一封重置密码的邮件，请注意查收";
+/** 请输入当前密码 */
+NSString *const STRViewTips98 = @"请输入当前密码";
+/** 请输入新密码 */
+NSString *const STRViewTips99 = @"请输入新密码";
+/** 请再输入一次新密码 */
+NSString *const STRViewTips100 = @"请再输入一次新密码";
+/** 两次新密码输入不一样 */
+NSString *const STRViewTips101 = @"两次新密码输入不一样";
+/** 修改密码成功 */
+NSString *const STRViewTips102 = @"修改密码成功";
+/** 修改密码失败 */
+NSString *const STRViewTips103 = @"修改密码失败";
+/** 使用新密码登录失败 */
+NSString *const STRViewTips104 = @"使用新密码登录失败";
+/** 旧密码不正确 */
+NSString *const STRViewTips105 = @"旧密码不正确";
+/** 你已经5天没有新建计划了，要坚持哦~ */
+NSString *const STRViewTips106 = @"你已经5天没有新建计划了，要坚持哦~";
+/** 分享成功 */
+NSString *const STRViewTips107 = @"分享成功";
+/** 分享失败 */
+NSString *const STRViewTips108 = @"分享失败";
+/** 取消分享 */
+NSString *const STRViewTips109 = @"取消分享";
+/** 来自我有计划iOS版 */
+NSString *const STRViewTips110 = @"来自我有计划iOS版";
+/** 做计划管时间的好APP：我有计划 */
+NSString *const STRViewTips111 = @"做计划管时间的好APP：我有计划";
+/** 暂无消息 */
+NSString *const STRViewTips112 = @"暂无消息";
+/** 已读信息清理完毕 */
+NSString *const STRViewTips113 = @"已读信息清理完毕";
+/** 查看更多详情>>> */
+NSString *const STRViewTips114 = @"查看更多详情>>>";
+/** 获取详情失败，请稍后再试 */
+NSString *const STRViewTips115 = @"获取详情失败，请稍后再试";
+/** 有人 */
+NSString *const STRViewTips116 = @"有人";
+/** 赞了你的帖子 */
+NSString *const STRViewTips117 = @"赞了你的帖子";
+/** 赞了你的评论 */
+NSString *const STRViewTips118 = @"赞了你的评论";
+/** 回复了你的帖子 */
+NSString *const STRViewTips119 = @"回复了你的帖子";
+/** 回复了你的评论 */
+NSString *const STRViewTips120 = @"回复了你的评论";
+/** 正在同步数据... */
+NSString *const STRViewTips121 = @"正在同步数据...";
+/** 同步数据完成 */
+NSString *const STRViewTips122 = @"同步数据完成";
 
 /** 自动同步 */
 NSString *const STRSettingsViewTips1 = @"自动同步";
@@ -398,3 +481,59 @@ NSString *const STRSettingsViewTips15 = @"未完计划";
 NSString *const STRSettingsViewTips16 = @"未完计划不延期";
 /** 未完计划自动延期 */
 NSString *const STRSettingsViewTips17 = @"未完计划自动延期";
+/** 设置昵称 */
+NSString *const STRSettingsViewTips18 = @"设置昵称";
+/** 请输入昵称 */
+NSString *const STRSettingsViewTips19 = @"请输入昵称";
+/** 昵称不能大于10个字符！ */
+NSString *const STRSettingsViewTips20 = @"昵称不能大于10个字符！";
+/** 设置签名 */
+NSString *const STRSettingsViewTips21 = @"设置签名";
+/** 请输入个性签名 */
+NSString *const STRSettingsViewTips22 = @"请输入个性签名";
+/** 设置岁数 */
+NSString *const STRSettingsViewTips23 = @"设置岁数";
+/** 请输入岁数 */
+NSString *const STRSettingsViewTips24 = @"请输入岁数";
+/** 请输入你希望倒计时的岁数 */
+NSString *const STRSettingsViewTips25 = @"请输入你希望倒计时的岁数";
+/** 别闹，请填写正常人的寿命！ */
+NSString *const STRSettingsViewTips26 = @"别闹，请填写正常人的寿命！";
+
+/** yyyy-MM-dd HH:mm:ss */
+NSString *const STRDateFormatterType1 = @"yyyy-MM-dd HH:mm:ss";
+/** yyyyMMddHHmmss */
+NSString *const STRDateFormatterType2 = @"yyyyMMddHHmmss";
+/** yyyy-MM-dd HH:mm */
+NSString *const STRDateFormatterType3 = @"yyyy-MM-dd HH:mm";
+/** yyyy-MM-dd */
+NSString *const STRDateFormatterType4 = @"yyyy-MM-dd";
+
+/** t_settings */
+NSString *const STRTableName1 = @"t_settings";
+/** t_plan */
+NSString *const STRTableName2 = @"t_plan";
+/** t_photo */
+NSString *const STRTableName3 = @"t_photo";
+/** t_statistics */
+NSString *const STRTableName4 = @"t_statistics";
+/** t_task */
+NSString *const STRTableName5 = @"t_task";
+/** t_taskrecord */
+NSString *const STRTableName6 = @"t_taskrecord";
+/** t_messages */
+NSString *const STRTableName7 = @"t_messages";
+
+
+/** kBeginDateFlag20160128 */
+NSString *const STRBeginDateFlag = @"kBeginDateFlag20160128";
+/** kTmpFlag20160229 */
+NSString *const STRCleanCacheFlag = @"kTmpFlag20160229";
+/** kPlanListLastLoadDataTime */
+NSString *const STRPlanListFlag = @"kPlanListLastLoadDataTime";
+/** kPostsListLastLoadDataTime */
+NSString *const STRPostsListFlag = @"kPostsListLastLoadDataTime";
+/** 20150912083000 */
+NSString *const STRFiveDayFlag1 = @"20150912083000";
+/** 2015-09-12 08:30:00 */
+NSString *const STRFiveDayFlag2 = @"2015-09-12 08:30:00";

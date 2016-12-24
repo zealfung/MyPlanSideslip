@@ -39,7 +39,7 @@
     [self showLogo];
     
     {
-        NSString *content = str_About_Name;
+        NSString *content = STRCommonTip49;
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,0,0)];
         [label setNumberOfLines:0];
         label.lineBreakMode = NSLineBreakByWordWrapping;
@@ -57,7 +57,7 @@
         self.yOffset += labelsize.height + 10;
     }
     {
-        NSString *content = str_About_Copyright;
+        NSString *content = STRCommonTip48;
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,0,0)];
         [label setNumberOfLines:0];
         label.lineBreakMode = NSLineBreakByWordWrapping;
@@ -93,7 +93,7 @@
     self.bgImageView = imageView;
  
     {
-        NSString *version = [NSString stringWithFormat:@"%@%@", str_About_Version, [CommonFunction getAppVersion]];
+        NSString *version = [NSString stringWithFormat:@"%@%@", STRCommonTip47, [CommonFunction getAppVersion]];
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,0,0)];
         [label setNumberOfLines:0];
         label.lineBreakMode = NSLineBreakByWordWrapping;

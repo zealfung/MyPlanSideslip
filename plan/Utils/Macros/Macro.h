@@ -12,7 +12,6 @@
 #import "FontMacro.h"
 #import "ColorMacro.h"
 #import "ImageMacro.h"
-#import "StringMacro.h"
 #import "CommonMacro.h"
 #import "StringConst.h"
 #import "UIImageView+WebCache.h"

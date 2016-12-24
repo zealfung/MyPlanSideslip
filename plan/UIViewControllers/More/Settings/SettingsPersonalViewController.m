@@ -549,20 +549,20 @@ NSString *const kEdgeWhiteSpace = @"  ";
 - (void)toSetNickNameViewController {
     __weak typeof(self) weakSelf = self;
     SettingsSetTextViewController *controller = [[SettingsSetTextViewController alloc] init];
-    controller.title = str_Set_Nickname;
-    controller.textFieldPlaceholder = str_Set_Nickname_Tips1;
+    controller.title = STRSettingsViewTips18;
+    controller.textFieldPlaceholder = STRSettingsViewTips19;
     controller.setType = SetNickName;
     controller.finishedBlock = ^(NSString *text) {
         
         text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
         if (text.length > 10) {
-            [weakSelf alertButtonMessage:str_Set_Nickname_Tips2];
+            [weakSelf alertButtonMessage:STRSettingsViewTips20];
             return;
         }
         
         if (text.length == 0) {
-            [weakSelf alertButtonMessage:str_Set_Nickname_Tips1];
+            [weakSelf alertButtonMessage:STRSettingsViewTips19];
             return;
         }
         
@@ -579,15 +579,15 @@ NSString *const kEdgeWhiteSpace = @"  ";
 - (void)toSetSignatureViewController {
     __weak typeof(self) weakSelf = self;
     SettingsSetTextViewController *controller = [[SettingsSetTextViewController alloc] init];
-    controller.title = str_Set_Signature;
-    controller.textFieldPlaceholder = str_Set_Signature_Tips1;
+    controller.title = STRSettingsViewTips21;
+    controller.textFieldPlaceholder = STRSettingsViewTips22;
     controller.setType = SetNickName;
     controller.finishedBlock = ^(NSString *text) {
         
         text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
         if (text.length == 0) {
-            [weakSelf alertButtonMessage:str_Set_Signature_Tips1];
+            [weakSelf alertButtonMessage:STRSettingsViewTips22];
             return;
         }
         
@@ -604,20 +604,20 @@ NSString *const kEdgeWhiteSpace = @"  ";
 - (void)toSetLifeViewController {
     __weak typeof(self) weakSelf = self;
     SettingsSetTextViewController *controller = [[SettingsSetTextViewController alloc] init];
-    controller.title = str_Set_Lifespan;
-    controller.textFieldPlaceholder = str_Set_Lifespan_Tips1;
+    controller.title = STRSettingsViewTips23;
+    controller.textFieldPlaceholder = STRSettingsViewTips24;
     controller.setType = SetLife;
     controller.finishedBlock = ^(NSString *text) {
         
         text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
         if (text.length == 0) {
-            [weakSelf alertButtonMessage:str_Set_Lifespan_Tips2];
+            [weakSelf alertButtonMessage:STRSettingsViewTips25];
             return;
         }
         
         if ([text intValue]> 130) {
-            [weakSelf alertButtonMessage:str_Set_Lifespan_Tips3];
+            [weakSelf alertButtonMessage:STRSettingsViewTips26];
             return;
         }
         
@@ -723,7 +723,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                                                                 defaultComponents.year - 100,
                                                                 defaultComponents.month,
                                                                 defaultComponents.day]
-                                                     formatter:str_DateFormatter_yyyy_MM_dd];
+                                                     formatter:STRDateFormatterType4];
         
         picker.minimumDate = minDate;
         [pickerView addSubview:picker];
@@ -732,7 +732,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
         NSString *birthday = [Config shareInstance].settings.birthday;
         
         if (birthday) {
-            NSDate *date = [CommonFunction NSStringDateToNSDate:birthday formatter:str_DateFormatter_yyyy_MM_dd];
+            NSDate *date = [CommonFunction NSStringDateToNSDate:birthday formatter:STRDateFormatterType4];
             if (date) {
                 [datePicker setDate:date animated:YES];
             }
@@ -741,7 +741,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                                                                         defaultComponents.year - 20,
                                                                         defaultComponents.month,
                                                                         defaultComponents.day]
-                                                             formatter:str_DateFormatter_yyyy_MM_dd];
+                                                             formatter:STRDateFormatterType4];
             datePicker.date = defaultDate;
         }
     }
@@ -752,7 +752,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
 
 - (void)onPickerCertainBtn {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd];
+    [dateFormatter setDateFormat:STRDateFormatterType4];
     NSString *birthday = [dateFormatter stringFromDate:datePicker.date];
     
     [Config shareInstance].settings.birthday = birthday;
@@ -801,7 +801,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
 }
 
 - (void)syncDataAction {
-    [AlertCenter alertNavBarYellowMessage:str_Sync_Begin];
+    [AlertCenter alertNavBarYellowMessage:STRViewTips121];
     [DataCenter startSyncData];
 }
 

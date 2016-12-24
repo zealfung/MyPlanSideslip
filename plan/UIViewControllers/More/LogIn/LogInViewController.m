@@ -33,11 +33,11 @@
 
 - (void)setControls {
 
-    self.txtEmail.placeholder = str_Register_Tips1;
+    self.txtEmail.placeholder = STRViewTips86;
     self.txtEmail.inputAccessoryView = [self getInputAccessoryView];
     [self.txtEmail becomeFirstResponder];
 
-    self.txtPassword.placeholder = str_Register_Tips7;
+    self.txtPassword.placeholder = STRViewTips92;
     self.txtPassword.inputAccessoryView = [self getInputAccessoryView];
 
     if ([LogIn isLogin]) {
@@ -57,17 +57,17 @@
 - (IBAction)logInAction:(id)sender {
     //检查输入
     if (self.txtEmail.text.length == 0) {
-        [self alertToastMessage:str_Register_Tips2];
+        [self alertToastMessage:STRViewTips87];
         [self.txtEmail becomeFirstResponder];
         return;
     }
     if (![CommonFunction validateEmail:self.txtEmail.text]) {
-        [self alertToastMessage:str_Register_Tips3];
+        [self alertToastMessage:STRViewTips88];
         [self.txtEmail becomeFirstResponder];
         return;
     }
     if (self.txtPassword.text.length == 0) {
-        [self alertToastMessage:str_Register_Tips4];
+        [self alertToastMessage:STRViewTips89];
         [self.txtPassword becomeFirstResponder];
         return;
     }
@@ -86,7 +86,7 @@
                 errorMsg = [error.userInfo objectForKey:@"error"];
             }
             if ([errorMsg containsString:@"incorrect"]) {
-                [weakSelf alertButtonMessage:str_LogIn_Tips1];
+                [weakSelf alertButtonMessage:STRViewTips94];
             } else if ([errorMsg containsString:@"connect failed"]) {
                 [weakSelf alertButtonMessage:@"登录超时，请稍后再试"];
             }
@@ -102,7 +102,7 @@
                     [delegate.window reloadInputViews];
                 } else {
                     //登录后自动同步一次数据
-                    [AlertCenter alertNavBarYellowMessage:str_Sync_Begin];
+                    [AlertCenter alertNavBarYellowMessage:STRViewTips121];
                     [DataCenter startSyncData];
                     [NotificationCenter postNotificationName:NTFLogIn object:nil];
                     [weakSelf.navigationController popViewControllerAnimated:YES];
@@ -115,7 +115,7 @@
             } else {
                 //用户没验证过邮箱
                 [BmobUser logout];
-                [weakSelf alertButtonMessage:str_LogIn_Tips2];
+                [weakSelf alertButtonMessage:STRViewTips95];
                 [user verifyEmailInBackgroundWithEmailAddress:acountEmail];
             }
         }

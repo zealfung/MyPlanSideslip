@@ -134,7 +134,7 @@
     NSString *subject = [NSString stringWithFormat:@"%@ V%@%@", STRViewTips69, [CommonFunction getAppVersion], device];
     [mailPicker setSubject:subject];
     //添加收件人
-    NSArray *toRecipients = [NSArray arrayWithObject:str_Feedback_Email];
+    NSArray *toRecipients = [NSArray arrayWithObject:STRFeedbackEmail];
     [mailPicker setToRecipients: toRecipients];
     
     [mailPicker setMessageBody:STRViewTips64 isHTML:YES];

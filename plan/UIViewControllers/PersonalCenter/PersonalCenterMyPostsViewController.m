@@ -412,7 +412,7 @@
         [weakSelf.tableView.mj_header endRefreshing];
         [weakSelf.tableView.mj_footer endRefreshing];
         //记录加载时间
-        [UserDefaults setObject:[NSDate date] forKey:str_PostsList_UpdatedTime];
+        [UserDefaults setObject:[NSDate date] forKey:STRPostsListFlag];
         [UserDefaults synchronize];
         
         if (!error && array.count > 0) {

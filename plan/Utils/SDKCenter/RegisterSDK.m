@@ -42,7 +42,7 @@
         
         switch (platformType) {
             case SSDKPlatformTypeSinaWeibo:
-                [appInfo SSDKSetupSinaWeiboByAppKey:IDSTRSinaWeiboAppKey appSecret:IDSTRSinaWeiboAppSecret redirectUri:str_SinaWeibo_RedirectURI authType:SSDKAuthTypeBoth];
+                [appInfo SSDKSetupSinaWeiboByAppKey:IDSTRSinaWeiboAppKey appSecret:IDSTRSinaWeiboAppSecret redirectUri:STRAppWebsite1 authType:SSDKAuthTypeBoth];
                 break;
             case SSDKPlatformTypeQQ:
                 [appInfo SSDKSetupQQByAppId:IDSTRQQAppID appKey:IDSTRQQAppKey authType:SSDKAuthTypeBoth];

@@ -101,8 +101,8 @@ static NSMutableDictionary *__contactsOnlineState;
     [__db setShouldCacheStatements:YES];
     
     // 个人设置
-    if (![__db tableExists:str_TableName_Settings]) {
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (objectId TEXT, account TEXT, nickname TEXT, birthday TEXT, email TEXT, gender TEXT, lifespan TEXT, syntime TEXT, avatar BLOB, avatarURL TEXT, centerTop BLOB, centerTopURL TEXT, isAutoSync TEXT, isUseGestureLock TEXT, isShowGestureTrack TEXT, gesturePasswod TEXT, updatetime TEXT, createtime TEXT, countdownType TEXT, dayOrMonth TEXT, autoDelayUndonePlan TEXT, signature TEXT)", str_TableName_Settings];
+    if (![__db tableExists:STRTableName1]) {
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (objectId TEXT, account TEXT, nickname TEXT, birthday TEXT, email TEXT, gender TEXT, lifespan TEXT, syntime TEXT, avatar BLOB, avatarURL TEXT, centerTop BLOB, centerTopURL TEXT, isAutoSync TEXT, isUseGestureLock TEXT, isShowGestureTrack TEXT, gesturePasswod TEXT, updatetime TEXT, createtime TEXT, countdownType TEXT, dayOrMonth TEXT, autoDelayUndonePlan TEXT, signature TEXT)", STRTableName1];
         
         BOOL b = [__db executeUpdate:sqlString];
         
@@ -122,9 +122,9 @@ static NSMutableDictionary *__contactsOnlineState;
     }
     
     // 计划
-    if (![__db tableExists:str_TableName_Plan]) {
+    if (![__db tableExists:STRTableName2]) {
         
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, planid TEXT, content TEXT, createtime TEXT, completetime TEXT, updatetime TEXT, iscompleted TEXT, isnotify TEXT, notifytime TEXT, beginDate TEXT, isdeleted TEXT)", str_TableName_Plan];
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, planid TEXT, content TEXT, createtime TEXT, completetime TEXT, updatetime TEXT, iscompleted TEXT, isnotify TEXT, notifytime TEXT, beginDate TEXT, isdeleted TEXT)", STRTableName2];
         
         BOOL b = [__db executeUpdate:sqlString];
         
@@ -135,9 +135,9 @@ static NSMutableDictionary *__contactsOnlineState;
     }
     
     //相册
-    if (![__db tableExists:str_TableName_Photo]) {
+    if (![__db tableExists:STRTableName3]) {
         
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, photoid TEXT, content TEXT, createtime TEXT, phototime TEXT, updatetime TEXT, location TEXT, photo1 BLOB, photo2 BLOB, photo3 BLOB, photo4 BLOB, photo5 BLOB, photo6 BLOB, photo7 BLOB, photo8 BLOB, photo9 BLOB, photo1URL TEXT, photo2URL TEXT, photo3URL TEXT, photo4URL TEXT, photo5URL TEXT, photo6URL TEXT, photo7URL TEXT, photo8URL TEXT, photo9URL TEXT, isdeleted TEXT)", str_TableName_Photo];
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, photoid TEXT, content TEXT, createtime TEXT, phototime TEXT, updatetime TEXT, location TEXT, photo1 BLOB, photo2 BLOB, photo3 BLOB, photo4 BLOB, photo5 BLOB, photo6 BLOB, photo7 BLOB, photo8 BLOB, photo9 BLOB, photo1URL TEXT, photo2URL TEXT, photo3URL TEXT, photo4URL TEXT, photo5URL TEXT, photo6URL TEXT, photo7URL TEXT, photo8URL TEXT, photo9URL TEXT, isdeleted TEXT)", STRTableName3];
         
         BOOL b = [__db executeUpdate:sqlString];
         
@@ -148,9 +148,9 @@ static NSMutableDictionary *__contactsOnlineState;
     }
     
     //统计
-    if (![__db tableExists:str_TableName_Statistics]) {
+    if (![__db tableExists:STRTableName4]) {
         
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, recentMax TEXT, recentMaxBeginDate TEXT, recentMaxEndDate TEXT, recordMax TEXT, recordMaxBeginDate TEXT, recordMaxEndDate TEXT, updatetime TEXT)", str_TableName_Statistics];
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, recentMax TEXT, recentMaxBeginDate TEXT, recentMaxEndDate TEXT, recordMax TEXT, recordMaxBeginDate TEXT, recordMaxEndDate TEXT, updatetime TEXT)", STRTableName4];
         
         BOOL b = [__db executeUpdate:sqlString];
         
@@ -160,9 +160,9 @@ static NSMutableDictionary *__contactsOnlineState;
     }
     
     //任务
-    if (![__db tableExists:str_TableName_Task]) {
+    if (![__db tableExists:STRTableName5]) {
         
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, taskId TEXT, content TEXT, totalCount TEXT, completionDate TEXT, createTime TEXT, updateTime TEXT, isNotify TEXT, notifyTime TEXT, isTomato TEXT, tomatoMinute TEXT, isRepeat TEXT, repeatType TEXT, taskOrder TEXT, isDeleted TEXT)", str_TableName_Task];
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, taskId TEXT, content TEXT, totalCount TEXT, completionDate TEXT, createTime TEXT, updateTime TEXT, isNotify TEXT, notifyTime TEXT, isTomato TEXT, tomatoMinute TEXT, isRepeat TEXT, repeatType TEXT, taskOrder TEXT, isDeleted TEXT)", STRTableName5];
         
         BOOL b = [__db executeUpdate:sqlString];
         
@@ -172,9 +172,9 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 
     //任务记录
-    if (![__db tableExists:str_TableName_TaskRecord]) {
+    if (![__db tableExists:STRTableName6]) {
         
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (recordId TEXT, createTime TEXT)", str_TableName_TaskRecord];
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (recordId TEXT, createTime TEXT)", STRTableName6];
         
         BOOL b = [__db executeUpdate:sqlString];
         
@@ -182,9 +182,9 @@ static NSMutableDictionary *__contactsOnlineState;
     }
     
     //系统消息
-    if (![__db tableExists:str_TableName_Messages]) {
+    if (![__db tableExists:STRTableName7]) {
         
-        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, messageId TEXT, title TEXT, content TEXT, detailURL TEXT, imgURLArray BLOB, hasRead TEXT, canShare TEXT, messageType TEXT, createTime TEXT)", str_TableName_Messages];
+        NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, messageId TEXT, title TEXT, content TEXT, detailURL TEXT, imgURLArray BLOB, hasRead TEXT, canShare TEXT, messageType TEXT, createTime TEXT)", STRTableName7];
         
         BOOL b = [__db executeUpdate:sqlString];
         
@@ -277,13 +277,13 @@ static NSMutableDictionary *__contactsOnlineState;
         settings.updatetime = timeNow;
 
         BOOL hasRec = NO;
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", str_TableName_Settings];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", STRTableName1];
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[settings.account]];
         hasRec = [rs next];
         [rs close];
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET objectId=?, nickname=?, birthday=?, email=?, gender=?, lifespan=?, avatar=?, avatarURL=?, centerTop=?, centerTopURL=?, isAutoSync=?, isUseGestureLock=?, isShowGestureTrack=?, gesturePasswod=?, createtime=?, updatetime=?, syntime=?, countdownType=?, dayOrMonth=?, autoDelayUndonePlan=?, signature=?  WHERE account=?", str_TableName_Settings];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET objectId=?, nickname=?, birthday=?, email=?, gender=?, lifespan=?, avatar=?, avatarURL=?, centerTop=?, centerTopURL=?, isAutoSync=?, isUseGestureLock=?, isShowGestureTrack=?, gesturePasswod=?, createtime=?, updatetime=?, syntime=?, countdownType=?, dayOrMonth=?, autoDelayUndonePlan=?, signature=?  WHERE account=?", STRTableName1];
             
             BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.objectId, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, settings.avatar, settings.avatarURL, settings.centerTop, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.createtime, settings.updatetime, settings.syntime, settings.countdownType, settings.dayOrMonth, settings.autoDelayUndonePlan, settings.signature, settings.account]];
             
@@ -291,7 +291,7 @@ static NSMutableDictionary *__contactsOnlineState;
             
         } else {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(objectId, account, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, isUseGestureLock, isShowGestureTrack, gesturePasswod, createtime, updatetime, syntime, countdownType, dayOrMonth, autoDelayUndonePlan, signature) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Settings];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(objectId, account, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, isUseGestureLock, isShowGestureTrack, gesturePasswod, createtime, updatetime, syntime, countdownType, dayOrMonth, autoDelayUndonePlan, signature) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", STRTableName1];
             
             BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.objectId, settings.account, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, settings.avatar, settings.avatarURL, settings.centerTop, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.createtime, settings.updatetime, settings.syntime, settings.countdownType, settings.dayOrMonth, settings.autoDelayUndonePlan, settings.signature]];
 
@@ -341,7 +341,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         BOOL hasRec = NO;
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE planid=? AND account=?", str_TableName_Plan];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE planid=? AND account=?", STRTableName2];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[plan.planid, plan.account]];
         hasRec = [rs next];
@@ -349,7 +349,7 @@ static NSMutableDictionary *__contactsOnlineState;
         BOOL b = NO;
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, createtime=?, completetime=?, updatetime=?, iscompleted=?, isnotify=?, notifytime=?, beginDate=?, isdeleted=? WHERE planid=? AND account=?", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, createtime=?, completetime=?, updatetime=?, iscompleted=?, isnotify=?, notifytime=?, beginDate=?, isdeleted=? WHERE planid=? AND account=?", STRTableName2];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.beginDate, plan.isdeleted, plan.planid, plan.account]];
             
@@ -370,7 +370,7 @@ static NSMutableDictionary *__contactsOnlineState;
             }
         } else {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", STRTableName2];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.account, plan.planid, plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.beginDate, plan.isdeleted]];
             
@@ -385,7 +385,7 @@ static NSMutableDictionary *__contactsOnlineState;
             [self setFiveDayNotification];
         }
         if (b) {
-            NSString *flag = [UserDefaults objectForKey:str_SetBeginDate_Flag];
+            NSString *flag = [UserDefaults objectForKey:STRBeginDateFlag];
             if (!flag || ![flag isEqualToString:@"1"]) {
 
             } else {
@@ -425,7 +425,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         BOOL hasRec = NO;
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE planid=? AND account=?", str_TableName_Plan];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE planid=? AND account=?", STRTableName2];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[plan.planid, plan.account]];
         hasRec = [rs next];
@@ -433,7 +433,7 @@ static NSMutableDictionary *__contactsOnlineState;
         BOOL b = NO;
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET beginDate=?, completetime=?, updatetime=?, iscompleted=? WHERE planid=? AND account=?", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET beginDate=?, completetime=?, updatetime=?, iscompleted=? WHERE planid=? AND account=?", STRTableName2];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.beginDate, plan.completetime, plan.updatetime, plan.iscompleted, plan.planid, plan.account]];
             
@@ -488,7 +488,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
 
         BOOL hasRec = NO;
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE photoid=? AND account=?", str_TableName_Photo];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE photoid=? AND account=?", STRTableName3];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[photo.photoid, photo.account]];
         hasRec = [rs next];
@@ -496,7 +496,7 @@ static NSMutableDictionary *__contactsOnlineState;
         BOOL b = NO;
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, createtime=?, phototime=?, updatetime=?, location=?, photo1=?, photo2=?, photo3=?, photo4=?, photo5=?, photo6=?, photo7=?, photo8=?, photo9=?, photo1URL=?, photo2URL=?, photo3URL=?, photo4URL=?, photo5URL=?, photo6URL=?, photo7URL=?, photo8URL=?, photo9URL=? WHERE photoid=? AND account=?", str_TableName_Photo];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, createtime=?, phototime=?, updatetime=?, location=?, photo1=?, photo2=?, photo3=?, photo4=?, photo5=?, photo6=?, photo7=?, photo8=?, photo9=?, photo1URL=?, photo2URL=?, photo3URL=?, photo4URL=?, photo5URL=?, photo6URL=?, photo7URL=?, photo8URL=?, photo9URL=? WHERE photoid=? AND account=?", STRTableName3];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[photo.content, photo.createtime, photo.phototime, photo.updatetime, photo.location, photoDataArray[0], photoDataArray[1], photoDataArray[2], photoDataArray[3], photoDataArray[4], photoDataArray[5], photoDataArray[6], photoDataArray[7], photoDataArray[8], photo.photoURLArray[0], photo.photoURLArray[1], photo.photoURLArray[2], photo.photoURLArray[3], photo.photoURLArray[4], photo.photoURLArray[5], photo.photoURLArray[6], photo.photoURLArray[7], photo.photoURLArray[8], photo.photoid, photo.account]];
             
@@ -504,7 +504,7 @@ static NSMutableDictionary *__contactsOnlineState;
 
         } else {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL, isdeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Photo];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL, isdeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", STRTableName3];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[photo.account, photo.photoid, photo.content, photo.createtime, photo.phototime, photo.updatetime, photo.location, photoDataArray[0], photoDataArray[1], photoDataArray[2], photoDataArray[3], photoDataArray[4], photoDataArray[5], photoDataArray[6], photoDataArray[7], photoDataArray[8], photo.photoURLArray[0], photo.photoURLArray[1], photo.photoURLArray[2], photo.photoURLArray[3], photo.photoURLArray[4], photo.photoURLArray[5], photo.photoURLArray[6], photo.photoURLArray[7], photo.photoURLArray[8], @"0"]];
             
@@ -555,14 +555,14 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         BOOL hasRec = NO;
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", str_TableName_Statistics];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", STRTableName4];
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[statistics.account]];
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET recentMax=?, recentMaxBeginDate=?, recentMaxEndDate=?, recordMax=?, recordMaxBeginDate=?, recordMaxEndDate=?, updatetime=? WHERE account=?", str_TableName_Statistics];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET recentMax=?, recentMaxBeginDate=?, recentMaxEndDate=?, recordMax=?, recordMaxBeginDate=?, recordMaxEndDate=?, updatetime=? WHERE account=?", STRTableName4];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[statistics.recentMax, statistics.recentMaxBeginDate, statistics.recentMaxEndDate, statistics.recordMax, statistics.recordMaxBeginDate, statistics.recordMaxEndDate, statistics.updatetime, statistics.account]];
             
@@ -570,7 +570,7 @@ static NSMutableDictionary *__contactsOnlineState;
             
         } else {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, recentMax, recentMaxBeginDate, recentMaxEndDate, recordMax, recordMaxBeginDate, recordMaxEndDate, updatetime) values(?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Statistics];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, recentMax, recentMaxBeginDate, recentMaxEndDate, recordMax, recordMaxBeginDate, recordMaxEndDate, updatetime) values(?, ?, ?, ?, ?, ?, ?, ?)", STRTableName4];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[statistics.account, statistics.recentMax, statistics.recentMaxBeginDate, statistics.recentMaxEndDate, statistics.recordMax, statistics.recordMaxBeginDate, statistics.recordMaxEndDate, statistics.updatetime]];
             
@@ -637,14 +637,14 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         BOOL hasRec = NO;
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", str_TableName_Task];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", STRTableName5];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[task.taskId, task.account]];
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
         if (hasRec) {
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, totalCount=?, completionDate=?, updateTime=?, isNotify=?, notifyTime=?, isTomato=?, tomatoMinute=?, isRepeat=?, repeatType=?, taskOrder=? WHERE taskId=? AND account=?", str_TableName_Task];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, totalCount=?, completionDate=?, updateTime=?, isNotify=?, notifyTime=?, isTomato=?, tomatoMinute=?, isRepeat=?, repeatType=?, taskOrder=? WHERE taskId=? AND account=?", STRTableName5];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.content, task.totalCount, task.completionDate, task.updateTime, task.isNotify, task.notifyTime, task.isTomato, task.tomatoMinute, task.isRepeat, task.repeatType, task.taskOrder, task.taskId, task.account]];
             
@@ -663,7 +663,7 @@ static NSMutableDictionary *__contactsOnlineState;
             }
         } else {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder, isDeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Task];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder, isDeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", STRTableName5];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.account, task.taskId, task.content, task.totalCount, task.completionDate, task.createTime, task.updateTime, task.isNotify, task.notifyTime, task.isTomato, task.tomatoMinute, task.isRepeat, task.repeatType, task.taskOrder, @"0"]];
             
@@ -712,14 +712,14 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         BOOL hasRec = NO;
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", str_TableName_Task];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", STRTableName5];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[task.taskId, task.account]];
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
         if (hasRec) {
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET totalCount=?, completionDate=?, updateTime=? WHERE taskId=? AND account=?", str_TableName_Task];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET totalCount=?, completionDate=?, updateTime=? WHERE taskId=? AND account=?", STRTableName5];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.totalCount, task.completionDate, task.updateTime, task.taskId, task.account]];
             
@@ -745,7 +745,7 @@ static NSMutableDictionary *__contactsOnlineState;
         if (!taskRecord.recordId || !taskRecord.createTime)
             return NO;
 
-        NSString *sqlString = [NSString stringWithFormat:@"INSERT INTO %@(recordId, createTime) values(?, ?)", str_TableName_TaskRecord];
+        NSString *sqlString = [NSString stringWithFormat:@"INSERT INTO %@(recordId, createTime) values(?, ?)", STRTableName6];
  
         BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[taskRecord.recordId, taskRecord.createTime]];
         
@@ -800,7 +800,7 @@ static NSMutableDictionary *__contactsOnlineState;
         NSData *imgURLArrayData = [NSKeyedArchiver archivedDataWithRootObject:message.imgURLArray];
         
         BOOL hasRec = NO;
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE messageId=? AND account=?", str_TableName_Messages];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE messageId=? AND account=?", STRTableName7];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[message.messageId, account]];
         hasRec = [rs next];
@@ -808,7 +808,7 @@ static NSMutableDictionary *__contactsOnlineState;
         BOOL b = NO;
         if (!hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, messageId, title, content, detailURL, imgURLArray, hasRead, canShare, messageType, createTime) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", str_TableName_Messages];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, messageId, title, content, detailURL, imgURLArray, hasRead, canShare, messageType, createTime) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", STRTableName7];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[account, message.messageId, message.title, message.content, message.detailURL, imgURLArrayData, @"0", message.canShare, message.messageType, message.createTime]];
             
@@ -839,7 +839,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         BOOL hasRec = NO;
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE messageId=? AND account=?", str_TableName_Messages];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE messageId=? AND account=?", STRTableName7];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[message.messageId, account]];
         hasRec = [rs next];
@@ -847,7 +847,7 @@ static NSMutableDictionary *__contactsOnlineState;
         BOOL b = NO;
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET hasRead=1 WHERE messageId=? AND account=?", str_TableName_Messages];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET hasRead=1 WHERE messageId=? AND account=?", STRTableName7];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[message.messageId, account]];
             
@@ -877,7 +877,7 @@ static NSMutableDictionary *__contactsOnlineState;
         plan.updatetime = [CommonFunction getTimeNowString];
         
         BOOL hasRec = NO;
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE planid=? AND account=?", str_TableName_Plan];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE planid=? AND account=?", STRTableName2];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[plan.planid, plan.account]];
         hasRec = [rs next];
@@ -885,7 +885,7 @@ static NSMutableDictionary *__contactsOnlineState;
         BOOL b = NO;
         if (hasRec) {
 
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET isdeleted=1, updatetime=?  WHERE planid=? AND account=?", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET isdeleted=1, updatetime=?  WHERE planid=? AND account=?", STRTableName2];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.updatetime, plan.planid, plan.account]];
             
@@ -922,7 +922,7 @@ static NSMutableDictionary *__contactsOnlineState;
         photo.updatetime = [CommonFunction getTimeNowString];
         
         BOOL hasRec = NO;
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE photoid=? AND account=?", str_TableName_Photo];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE photoid=? AND account=?", STRTableName3];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[photo.photoid, photo.account]];
         hasRec = [rs next];
@@ -930,7 +930,7 @@ static NSMutableDictionary *__contactsOnlineState;
         BOOL b = NO;
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET isdeleted=1, updatetime=? WHERE photoid=? AND account=?", str_TableName_Photo];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET isdeleted=1, updatetime=? WHERE photoid=? AND account=?", STRTableName3];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[photo.updatetime, photo.photoid, photo.account]];
             
@@ -961,7 +961,7 @@ static NSMutableDictionary *__contactsOnlineState;
         task.updateTime = [CommonFunction getTimeNowString];
         
         BOOL hasRec = NO;
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", str_TableName_Task];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", STRTableName5];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[task.taskId, task.account]];
         hasRec = [rs next];
@@ -969,7 +969,7 @@ static NSMutableDictionary *__contactsOnlineState;
         BOOL b = NO;
         if (hasRec) {
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET isdeleted=1, updateTime=?  WHERE taskId=? AND account=?", str_TableName_Task];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET isdeleted=1, updateTime=?  WHERE taskId=? AND account=?", STRTableName5];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.updateTime, task.taskId, task.account]];
             
@@ -1002,7 +1002,7 @@ static NSMutableDictionary *__contactsOnlineState;
             account = user.objectId;
         }
         
-        NSString *sqlString = [NSString stringWithFormat:@"DELETE FROM %@ WHERE hasRead=1 AND account=?", str_TableName_Messages];
+        NSString *sqlString = [NSString stringWithFormat:@"DELETE FROM %@ WHERE hasRead=1 AND account=?", STRTableName7];
         BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[account]];
         
         FMDBQuickCheck(b, sqlString, __db);
@@ -1028,7 +1028,7 @@ static NSMutableDictionary *__contactsOnlineState;
             account = user.objectId;
         }
 
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=? AND hasRead=0", str_TableName_Messages];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=? AND hasRead=0", STRTableName7];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
@@ -1061,7 +1061,7 @@ static NSMutableDictionary *__contactsOnlineState;
             settings.account = @"";
         }
 
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT objectId, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, isUseGestureLock, isShowGestureTrack, gesturePasswod, createtime, updatetime, syntime, countdownType, dayOrMonth, autoDelayUndonePlan, signature FROM %@ WHERE account=?", str_TableName_Settings];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT objectId, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, isUseGestureLock, isShowGestureTrack, gesturePasswod, createtime, updatetime, syntime, countdownType, dayOrMonth, autoDelayUndonePlan, signature FROM %@ WHERE account=?", STRTableName1];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[settings.account]];
         while ([rs next]) {
@@ -1137,23 +1137,23 @@ static NSMutableDictionary *__contactsOnlineState;
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
             //处理上次升级后本地数据显示不全的问题
-            NSString *tmp = [UserDefaults objectForKey:str_Tmp_Flag1];
+            NSString *tmp = [UserDefaults objectForKey:STRCleanCacheFlag];
             if (!tmp || ![tmp isEqualToString:@"1"]) {
                 //计划
-                NSString *sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=?", str_TableName_Plan];
+                NSString *sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=?", STRTableName2];
                 BOOL b1 = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId]];
                 FMDBQuickCheck(b1, sqlString, __db);
                 //影像
-                sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=?", str_TableName_Photo];
+                sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=?", STRTableName3];
                 BOOL b2 = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId]];
                 FMDBQuickCheck(b2, sqlString, __db);
                 //任务
-                sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=?", str_TableName_Task];
+                sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=?", STRTableName5];
                 BOOL b3 = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId]];
                 FMDBQuickCheck(b3, sqlString, __db);
                 
                 if (b1 && b2 && b3) {
-                    [UserDefaults setObject:@"1" forKey:str_Tmp_Flag1];
+                    [UserDefaults setObject:@"1" forKey:STRCleanCacheFlag];
                     [UserDefaults synchronize];
                 }
             }
@@ -1162,15 +1162,15 @@ static NSMutableDictionary *__contactsOnlineState;
         NSString *condition = @"";
         NSString *order = @"";
         if (isEverydayPlan) {
-            condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd]];
+            condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
             order = @"DESC";
         } else {
-            condition = [NSString stringWithFormat:@"datetime(beginDate)>datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd]];
+            condition = [NSString stringWithFormat:@"datetime(beginDate)>datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
             order = @"ASC";
         }
         
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE %@ AND account=? AND isdeleted=0 ORDER BY iscompleted, beginDate %@ Limit ? Offset ?", str_TableName_Plan, condition, order];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE %@ AND account=? AND isdeleted=0 ORDER BY iscompleted, beginDate %@ Limit ? Offset ?", STRTableName2, condition, order];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, @(kPlanLoadMax), @(startIndex)]];
         
@@ -1191,8 +1191,8 @@ static NSMutableDictionary *__contactsOnlineState;
             
             if (!plan.beginDate
                 || plan.beginDate.length == 0) {
-                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:str_DateFormatter_yyyy_MM_dd];
+                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
+                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
             }
             
             [array addObject:plan];
@@ -1221,7 +1221,7 @@ static NSMutableDictionary *__contactsOnlineState;
         NSString *order = @"DESC";
         
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=? AND isdeleted=0 AND iscompleted=0 ORDER BY beginDate %@", str_TableName_Plan, order];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=? AND isdeleted=0 AND iscompleted=0 ORDER BY beginDate %@", STRTableName2, order];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
@@ -1242,8 +1242,8 @@ static NSMutableDictionary *__contactsOnlineState;
             
             if (!plan.beginDate
                 || plan.beginDate.length == 0) {
-                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:str_DateFormatter_yyyy_MM_dd];
+                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
+                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
             }
             
             [array addObject:plan];
@@ -1273,7 +1273,7 @@ static NSMutableDictionary *__contactsOnlineState;
         NSString *order = @"DESC";
         
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE %@ AND account=? AND isdeleted=0 ORDER BY iscompleted, beginDate %@", str_TableName_Plan, condition, order];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE %@ AND account=? AND isdeleted=0 ORDER BY iscompleted, beginDate %@", STRTableName2, condition, order];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
@@ -1294,8 +1294,8 @@ static NSMutableDictionary *__contactsOnlineState;
             
             if (!plan.beginDate
                 || plan.beginDate.length == 0) {
-                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:str_DateFormatter_yyyy_MM_dd];
+                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
+                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
             }
             
             [array addObject:plan];
@@ -1322,7 +1322,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL FROM %@ WHERE account=? AND isdeleted=0 ORDER BY phototime DESC, createtime DESC Limit ? Offset ?", str_TableName_Photo];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL FROM %@ WHERE account=? AND isdeleted=0 ORDER BY phototime DESC, createtime DESC Limit ? Offset ?", STRTableName3];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, @(kPhotoLoadMax), @(startIndex)]];
         
@@ -1380,7 +1380,7 @@ static NSMutableDictionary *__contactsOnlineState;
             account = user.objectId;
         }
         
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL FROM %@ WHERE account=? AND photoid=?", str_TableName_Photo];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL FROM %@ WHERE account=? AND photoid=?", STRTableName3];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, photoid]];
         
@@ -1435,7 +1435,7 @@ static NSMutableDictionary *__contactsOnlineState;
             statistics.account = @"";
         }
         
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT recentMax, recentMaxBeginDate, recentMaxEndDate, recordMax, recordMaxBeginDate, recordMaxEndDate, updatetime FROM %@ WHERE account=?", str_TableName_Statistics];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT recentMax, recentMaxBeginDate, recentMaxEndDate, recordMax, recordMaxBeginDate, recordMaxEndDate, updatetime FROM %@ WHERE account=?", STRTableName4];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[statistics.account]];
         while ([rs next]) {
@@ -1475,7 +1475,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
 
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND isDeleted=0 ORDER BY cast(taskOrder as integer) ASC, createTime DESC", str_TableName_Task];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND isDeleted=0 ORDER BY cast(taskOrder as integer) ASC, createTime DESC", STRTableName5];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
@@ -1533,7 +1533,7 @@ static NSMutableDictionary *__contactsOnlineState;
             account = user.objectId;
         }
 
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND taskId=? ORDER BY cast(taskOrder as integer) ASC, createTime DESC", str_TableName_Task];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND taskId=? ORDER BY cast(taskOrder as integer) ASC, createTime DESC", STRTableName5];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, taskId]];
         
@@ -1587,7 +1587,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT recordId, createTime FROM %@ WHERE recordId=? ORDER BY createTime DESC", str_TableName_TaskRecord];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT recordId, createTime FROM %@ WHERE recordId=? ORDER BY createTime DESC", STRTableName6];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[recordId]];
         
@@ -1621,7 +1621,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT messageId, title, content, detailURL, imgURLArray, hasRead, canShare, messageType, createTime FROM %@ WHERE account=? ORDER BY hasRead ASC, createTime DESC", str_TableName_Messages];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT messageId, title, content, detailURL, imgURLArray, hasRead, canShare, messageType, createTime FROM %@ WHERE account=? ORDER BY hasRead ASC, createTime DESC", STRTableName7];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
@@ -1666,16 +1666,16 @@ static NSMutableDictionary *__contactsOnlineState;
         NSString *sqlString = @"";
         if ([type isEqualToString:@"DAY"]) {
             
-            NSString *condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd]];
-            sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE %@ AND account=? AND isdeleted=0", str_TableName_Plan, condition];
+            NSString *condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
+            sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE %@ AND account=? AND isdeleted=0", STRTableName2, condition];
             
         } else if ([type isEqualToString:@"FUTURE"]) {
             
-            NSString *condition = [NSString stringWithFormat:@"datetime(beginDate)>datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd]];
-            sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE %@ AND account=? AND isdeleted=0", str_TableName_Plan, condition];
+            NSString *condition = [NSString stringWithFormat:@"datetime(beginDate)>datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
+            sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE %@ AND account=? AND isdeleted=0", STRTableName2, condition];
 
         } else {
-            sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE account=? AND isdeleted=0", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE account=? AND isdeleted=0", STRTableName2];
         }
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
@@ -1706,7 +1706,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         NSString *completed = @"0";
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as completed FROM %@ WHERE account=? AND iscompleted=1 AND isdeleted=0", str_TableName_Plan];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as completed FROM %@ WHERE account=? AND iscompleted=1 AND isdeleted=0", STRTableName2];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
@@ -1736,7 +1736,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         NSString *total = @"0";
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE account=? AND isdeleted=0", str_TableName_Photo];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE account=? AND isdeleted=0", STRTableName3];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
@@ -1766,7 +1766,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         NSString *total = @"0";
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE account=? AND isDeleted=0", str_TableName_Task];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE account=? AND isDeleted=0", STRTableName5];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
@@ -1798,7 +1798,7 @@ static NSMutableDictionary *__contactsOnlineState;
         NSString *condition = [NSString stringWithFormat:@"datetime(b.createTime)>=datetime('%@') AND datetime(b.createTime)<=datetime('%@')", startDate, endDate];
         
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT b.recordId, a.content as title, count(b.recordId) as statistics FROM %@ as a, %@ as b WHERE %@ AND a.account=? AND a.isDeleted=0 AND a.taskId = b.recordId GROUP BY b.recordId ORDER BY statistics DESC", str_TableName_Task, str_TableName_TaskRecord, condition];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT b.recordId, a.content as title, count(b.recordId) as statistics FROM %@ as a, %@ as b WHERE %@ AND a.account=? AND a.isDeleted=0 AND a.taskId = b.recordId GROUP BY b.recordId ORDER BY statistics DESC", STRTableName5, STRTableName6, condition];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
@@ -1819,7 +1819,7 @@ static NSMutableDictionary *__contactsOnlineState;
 
 + (void)addPlanNotification:(Plan *)plan {
     //时间格式：yyyy-MM-dd HH:mm
-    NSDate *date = [CommonFunction NSStringDateToNSDate:plan.notifytime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
+    NSDate *date = [CommonFunction NSStringDateToNSDate:plan.notifytime formatter:STRDateFormatterType3];
     
     if (!date) return;
     
@@ -1854,7 +1854,7 @@ static NSMutableDictionary *__contactsOnlineState;
 
 + (void)addTaskNotification:(Task *)task {
     //时间格式：yyyy-MM-dd HH:mm
-    NSDate *date = [CommonFunction NSStringDateToNSDate:task.notifyTime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
+    NSDate *date = [CommonFunction NSStringDateToNSDate:task.notifyTime formatter:STRDateFormatterType3];
     
     if (!date) return;
 
@@ -1923,14 +1923,14 @@ static NSMutableDictionary *__contactsOnlineState;
     for (UILocalNotification *item in arry) {
         NSDictionary *sourceN = item.userInfo;
         NSString *tag = [sourceN objectForKey:@"tag"];
-        if ([tag longLongValue] == [Notify_FiveDay_Tag longLongValue]) {
+        if ([tag longLongValue] == [STRFiveDayFlag1 longLongValue]) {
             hasFiveDayNotification = YES;
             break;
         }
     }
     
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
+    [dateFormatter setDateFormat:STRDateFormatterType3];
     NSString *fiveDayLater = [dateFormatter stringFromDate:[[NSDate date] dateByAddingTimeInterval:5 * 24 * 3600]];
     BmobUser *user = [BmobUser currentUser];
     NSString *account = @"";
@@ -1939,13 +1939,13 @@ static NSMutableDictionary *__contactsOnlineState;
     }
     Plan *fiveDayPlan = [[Plan alloc] init];
     fiveDayPlan.account = account;
-    fiveDayPlan.planid = Notify_FiveDay_Tag;
-    fiveDayPlan.createtime = Notify_FiveDay_Time;
-    [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd];
+    fiveDayPlan.planid = STRFiveDayFlag1;
+    fiveDayPlan.createtime = STRFiveDayFlag2;
+    [dateFormatter setDateFormat:STRDateFormatterType4];
     fiveDayPlan.beginDate = [dateFormatter stringFromDate:[[NSDate date] dateByAddingTimeInterval:5 * 24 * 3600]];
     fiveDayPlan.iscompleted = @"0";
-    fiveDayPlan.completetime = Notify_FiveDay_Time;
-    fiveDayPlan.content = str_Notify_Tips2;
+    fiveDayPlan.completetime = STRFiveDayFlag2;
+    fiveDayPlan.content = STRViewTips106;
     fiveDayPlan.notifytime = fiveDayLater;
     
     if (hasFiveDayNotification) {//更新提醒时间
@@ -1973,13 +1973,13 @@ static NSMutableDictionary *__contactsOnlineState;
                  *     防止同一个账号在本地有两份设置数据
                  */
                 //设置
-                NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", str_TableName_Settings];
+                NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", STRTableName1];
                 FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[@""]];
                 BOOL hasRec = [rs next];
                 [rs close];
                 if (hasRec) {
                     
-                    NSString *sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", str_TableName_Settings];
+                    NSString *sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName1];
                     
                     BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
                     
@@ -1992,13 +1992,13 @@ static NSMutableDictionary *__contactsOnlineState;
     
     //计划
     BOOL hasRec = NO;
-    NSString *sqlString = [NSString stringWithFormat:@"SELECT planid FROM %@ WHERE account=?", str_TableName_Plan];
+    NSString *sqlString = [NSString stringWithFormat:@"SELECT planid FROM %@ WHERE account=?", STRTableName2];
     FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[@""]];
     hasRec = [rs next];
     [rs close];
     if (hasRec) {
         
-        sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", str_TableName_Plan];
+        sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName2];
         
         BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
         
@@ -2007,13 +2007,13 @@ static NSMutableDictionary *__contactsOnlineState;
     [NotificationCenter postNotificationName:NTFPlanSave object:nil];
     //影像
     hasRec = NO;
-    sqlString = [NSString stringWithFormat:@"SELECT photoid FROM %@ WHERE account=?", str_TableName_Photo];
+    sqlString = [NSString stringWithFormat:@"SELECT photoid FROM %@ WHERE account=?", STRTableName3];
     rs = [__db executeQuery:sqlString withArgumentsInArray:@[@""]];
     hasRec = [rs next];
     [rs close];
     if (hasRec) {
         
-        sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", str_TableName_Photo];
+        sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName3];
         
         BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
         
@@ -2022,13 +2022,13 @@ static NSMutableDictionary *__contactsOnlineState;
     [NotificationCenter postNotificationName:NTFPhotoSave object:nil];
     //任务
     hasRec = NO;
-    sqlString = [NSString stringWithFormat:@"SELECT taskId FROM %@ WHERE account=?", str_TableName_Task];
+    sqlString = [NSString stringWithFormat:@"SELECT taskId FROM %@ WHERE account=?", STRTableName5];
     rs = [__db executeQuery:sqlString withArgumentsInArray:@[@""]];
     hasRec = [rs next];
     [rs close];
     if (hasRec) {
         
-        sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", str_TableName_Task];
+        sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName5];
         
         BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
         
@@ -2059,9 +2059,9 @@ static NSMutableDictionary *__contactsOnlineState;
         NSString *sqlString = @"";
         if (syntime) {
             NSString *condition = [NSString stringWithFormat:@"datetime(updatetime)>=datetime('%@')", syntime];
-            sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=? AND %@", str_TableName_Plan, condition];
+            sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=? AND %@", STRTableName2, condition];
         } else {
-            sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=?", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=?", STRTableName2];
         }
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
@@ -2083,8 +2083,8 @@ static NSMutableDictionary *__contactsOnlineState;
             
             if (!plan.beginDate
                 || plan.beginDate.length == 0) {
-                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:str_DateFormatter_yyyy_MM_dd];
+                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
+                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
             }
             
             [array addObject:plan];
@@ -2104,7 +2104,7 @@ static NSMutableDictionary *__contactsOnlineState;
             }
         }
         
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=? AND planid =?", str_TableName_Plan];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=? AND planid =?", STRTableName2];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, planid]];
         
@@ -2125,8 +2125,8 @@ static NSMutableDictionary *__contactsOnlineState;
             
             if (!plan.beginDate
                 || plan.beginDate.length == 0) {
-                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:str_DateFormatter_yyyy_MM_dd];
+                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
+                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
             }
         }
         [rs close];
@@ -2157,9 +2157,9 @@ static NSMutableDictionary *__contactsOnlineState;
         NSString *sqlString = @"";
         if (syntime) {
             NSString *condition = [NSString stringWithFormat:@"datetime(updatetime)>=datetime('%@')", syntime];
-            sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL, isdeleted FROM %@ WHERE account=? AND %@", str_TableName_Photo, condition];
+            sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL, isdeleted FROM %@ WHERE account=? AND %@", STRTableName3, condition];
         } else {
-            sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL, isdeleted FROM %@ WHERE account=?", str_TableName_Photo];
+            sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL, isdeleted FROM %@ WHERE account=?", STRTableName3];
         }
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
@@ -2226,12 +2226,12 @@ static NSMutableDictionary *__contactsOnlineState;
         FMResultSet *rs;
         if (time) {
             
-            sqlString = [NSString stringWithFormat:@"SELECT createtime FROM %@ WHERE account=? AND createtime >? ORDER BY createtime", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"SELECT createtime FROM %@ WHERE account=? AND createtime >? ORDER BY createtime", STRTableName2];
             rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, time]];
             
         } else {
             
-            sqlString = [NSString stringWithFormat:@"SELECT createtime FROM %@ WHERE account=? ORDER BY createtime", str_TableName_Plan];
+            sqlString = [NSString stringWithFormat:@"SELECT createtime FROM %@ WHERE account=? ORDER BY createtime", STRTableName2];
             rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         }
 
@@ -2270,9 +2270,9 @@ static NSMutableDictionary *__contactsOnlineState;
         NSString *sqlString = @"";
         if (syntime) {
             NSString *condition = [NSString stringWithFormat:@"datetime(updatetime)>=datetime('%@')", syntime];
-            sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND %@", str_TableName_Task, condition];
+            sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND %@", STRTableName5, condition];
         } else {
-            sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=?", str_TableName_Task];
+            sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=?", STRTableName5];
         }
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
@@ -2340,9 +2340,9 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *sqlString = @"";
         if (syntime) {
-            sqlString = [NSString stringWithFormat:@"SELECT recordId, createTime FROM %@ WHERE recordId=? AND createTime >=?", str_TableName_TaskRecord];
+            sqlString = [NSString stringWithFormat:@"SELECT recordId, createTime FROM %@ WHERE recordId=? AND createTime >=?", STRTableName6];
         } else {
-            sqlString = [NSString stringWithFormat:@"SELECT recordId, createTime FROM %@ WHERE recordId=?", str_TableName_TaskRecord];
+            sqlString = [NSString stringWithFormat:@"SELECT recordId, createTime FROM %@ WHERE recordId=?", STRTableName6];
         }
         
         FMResultSet *rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[taskId]] : [__db executeQuery:sqlString withArgumentsInArray:@[taskId, syntime]];
@@ -2370,7 +2370,7 @@ static NSMutableDictionary *__contactsOnlineState;
             }
         }
         
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND taskId =?", str_TableName_Task];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND taskId =?", STRTableName5];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, taskId]];
         

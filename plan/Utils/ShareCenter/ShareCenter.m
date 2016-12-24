@@ -25,9 +25,9 @@
     //1、创建分享参数
     NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
     NSArray* imageArray = @[shareImg];
-    [shareParams SSDKSetupShareParamsByText:str_Share_Tips3
+    [shareParams SSDKSetupShareParamsByText:STRViewTips111
                                      images:imageArray
-                                        url:[NSURL URLWithString:str_Website_URL]
+                                        url:[NSURL URLWithString:STRAppWebsite]
                                       title:STRAppSlogan
                                        type:SSDKContentTypeImage];
     
@@ -48,12 +48,12 @@
                        }
                        case SSDKResponseStateSuccess:
                        {
-                           [AlertCenter alertToastMessage:str_Share_Success];
+                           [AlertCenter alertToastMessage:STRViewTips107];
                            break;
                        }
                        case SSDKResponseStateFail:
                        {
-                           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Share_Fail
+                           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:STRViewTips108
                                                                            message:[NSString stringWithFormat:@"%@",error]
                                                                           delegate:nil
                                                                  cancelButtonTitle:STRCommonTip27
@@ -63,7 +63,7 @@
                        }
                        case SSDKResponseStateCancel:
                        {
-                           //                           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:str_Share_Cancel
+                           //                           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:STRViewTips109
                            //                                                                               message:nil
                            //                                                                              delegate:nil
                            //                                                                     cancelButtonTitle:str_OK
@@ -89,7 +89,7 @@
  */
 + (void)showShareActionSheet:(UIView *)view title:(NSString *)title content:(NSString *)content shareUrl:(NSString *)shareUrl sharedImageURL:(NSString *)sharedImageURL {
     if (!shareUrl || [shareUrl isEqualToString:@""]) {
-        shareUrl = str_Website_URL;
+        shareUrl = STRAppWebsite;
     }
     //1、创建分享参数
     NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
@@ -117,12 +117,12 @@
                        }
                        case SSDKResponseStateSuccess:
                        {
-                           [AlertCenter alertToastMessage:str_Share_Success];
+                           [AlertCenter alertToastMessage:STRViewTips107];
                            break;
                        }
                        case SSDKResponseStateFail:
                        {
-                           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:str_Share_Fail
+                           UIAlertView *alert = [[UIAlertView alloc] initWithTitle:STRViewTips108
                                                                            message:[NSString stringWithFormat:@"%@",error]
                                                                           delegate:nil
                                                                  cancelButtonTitle:STRCommonTip27
@@ -132,7 +132,7 @@
                        }
                        case SSDKResponseStateCancel:
                        {
-//                           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:str_Share_Cancel
+//                           UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:STRViewTips109
 //                                                                               message:nil
 //                                                                              delegate:nil
 //                                                                     cancelButtonTitle:str_OK

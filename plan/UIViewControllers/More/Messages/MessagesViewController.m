@@ -61,7 +61,7 @@
 
 - (void)cleanHasRead {
     [PlanCache cleanHasReadMessages];
-    [self alertToastMessage:str_Messages_Tips2];
+    [self alertToastMessage:STRViewTips113];
 }
 
 #pragma mark - Table view data source
@@ -121,7 +121,7 @@
             cell.textLabel.font = font_Bold_16;
         }
         if (indexPath.row == 4) {
-            cell.textLabel.text = str_Messages_Tips1;
+            cell.textLabel.text = STRViewTips112;
         }
         return cell;
     }
@@ -182,7 +182,7 @@
         
         if (error){
             [weakSelf hideHUD];
-            [weakSelf alertToastMessage:str_Messages_Tips4];
+            [weakSelf alertToastMessage:STRViewTips115];
         } else {
             if (object) {
                 [weakSelf isLikedPost:object];
@@ -196,7 +196,7 @@
                 }
             } else {
                 [weakSelf hideHUD];
-                [weakSelf alertToastMessage:str_Messages_Tips4];
+                [weakSelf alertToastMessage:STRViewTips115];
             }
         }
     }];

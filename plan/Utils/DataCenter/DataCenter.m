@@ -23,13 +23,13 @@ static BOOL finishTask;
 @implementation DataCenter
 
 + (void)setPlanBeginDate {
-    NSString *flag = [UserDefaults objectForKey:str_SetBeginDate_Flag];
+    NSString *flag = [UserDefaults objectForKey:STRBeginDateFlag];
     if (!flag || ![flag isEqualToString:@"1"]) {
         NSArray *array = [PlanCache getPlanForSync:nil];
         for (Plan *plan in array) {
             [PlanCache storePlan:plan];
         }
-        [UserDefaults setObject:@"1" forKey:str_SetBeginDate_Flag];
+        [UserDefaults setObject:@"1" forKey:STRBeginDateFlag];
         [UserDefaults synchronize];
     }
 }
@@ -46,7 +46,7 @@ static BOOL finishTask;
     [PlanCache linkedLocalDataToAccount];
     
     //优化同步逻辑后，把本地数据都过一遍，防止之前同步落下的数据
-    NSString *tmp = [UserDefaults objectForKey:str_Tmp_Flag];
+    NSString *tmp = [UserDefaults objectForKey:STRCleanCacheFlag];
     if (!tmp || ![tmp isEqualToString:@"1"]) {
         [Config shareInstance].settings.syntime = @"2015-09-01 09:09:09";
     }
@@ -73,9 +73,9 @@ static BOOL finishTask;
     finishPlan = NO;
     finishTask = NO;
     //优化同步逻辑后，把本地数据都过一遍，防止之前同步落下的数据
-    NSString *tmp = [UserDefaults objectForKey:str_Tmp_Flag];
+    NSString *tmp = [UserDefaults objectForKey:STRCleanCacheFlag];
     if (!tmp || ![tmp isEqualToString:@"1"]) {
-        [UserDefaults setObject:@"1" forKey:str_Tmp_Flag];
+        [UserDefaults setObject:@"1" forKey:STRCleanCacheFlag];
         [UserDefaults synchronize];
     }
 }
@@ -87,7 +87,7 @@ static BOOL finishTask;
         && finishPlan
         && finishTask) {
         [Config shareInstance].isSyncingData = NO;
-        [AlertCenter alertNavBarGreenMessage:str_Sync_End];
+        [AlertCenter alertNavBarGreenMessage:STRViewTips122];
     }
 }
 
@@ -136,8 +136,8 @@ static BOOL finishTask;
                     [weakSelf syncServerToLocalForSettings:obj];
                 } else if ([Config shareInstance].settings.updatetime.length > 0
                            && serverUpdatedTime.length > 0) {
-                    NSDate *localUpdatedTime = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                    NSDate *serverUpdatetime = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    NSDate *localUpdatedTime = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.updatetime formatter:STRDateFormatterType1];
+                    NSDate *serverUpdatetime = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:STRDateFormatterType1];
                     
                     if ([localUpdatedTime compare:serverUpdatetime] == NSOrderedAscending) {
                         //服务器的设置较新
@@ -517,8 +517,8 @@ static BOOL finishTask;
                     
                 } else {
                     
-                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:plan.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:plan.updatetime formatter:STRDateFormatterType1];
+                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:STRDateFormatterType1];
                     
                     if ([localDate compare:serverDate] == NSOrderedAscending) {
                         
@@ -604,8 +604,8 @@ static BOOL finishTask;
                 Plan *plan = [PlanCache findPlan:user.objectId planid:[obj objectForKey:@"planId"]];
                 if (plan.content) {
                     
-                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:plan.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"updatedTime"] formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:plan.updatetime formatter:STRDateFormatterType1];
+                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"updatedTime"] formatter:STRDateFormatterType1];
                     
                     if ([localDate compare:serverDate] == NSOrderedAscending) {
                         //服务器的较新
@@ -642,7 +642,7 @@ static BOOL finishTask;
 
 + (void)startSyncPhoto {
     //优化同步逻辑后，把本地数据都过一遍，防止之前同步落下的数据
-    NSString *tmp = [UserDefaults objectForKey:str_Tmp_Flag];
+    NSString *tmp = [UserDefaults objectForKey:STRCleanCacheFlag];
     if (!tmp || ![tmp isEqualToString:@"1"]) {
         [self syncLocalToServerForPhoto];
     } else {
@@ -668,13 +668,13 @@ static BOOL finishTask;
             if (array.count > 0) {
                 BmobObject *obj = array[0];
                 //优化同步逻辑后，把本地数据都过一遍，防止之前同步落下的数据
-                NSString *tmp = [UserDefaults objectForKey:str_Tmp_Flag];
+                NSString *tmp = [UserDefaults objectForKey:STRCleanCacheFlag];
                 if (!tmp || ![tmp isEqualToString:@"1"]) {
                     [weakSelf updatePhotoForServer:photo obj:obj];
                 } else {
                     NSString *serverUpdatedTime = [obj objectForKey:@"updatedTime"];
-                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:photo.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:photo.updatetime formatter:STRDateFormatterType1];
+                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:STRDateFormatterType1];
                     
                     if ([localDate compare:serverDate] == NSOrderedAscending) {
                         
@@ -793,8 +793,8 @@ static BOOL finishTask;
             for (BmobObject *obj in array) {
                 Photo *photo = [PlanCache getPhotoById:[obj objectForKey:@"photoId"]];
                 if (photo.createtime) {
-                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:photo.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"updatedTime"] formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:photo.updatetime formatter:STRDateFormatterType1];
+                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"updatedTime"] formatter:STRDateFormatterType1];
                     
                     if ([localDate compare:serverDate] == NSOrderedAscending) {
                         //服务器的较新
@@ -886,8 +886,8 @@ static BOOL finishTask;
             if (array.count > 0) {
                 BmobObject *obj = array[0];
                 NSString *serverUpdatedTime = [obj objectForKey:@"updatedTime"];
-                NSDate *localDate = [CommonFunction NSStringDateToNSDate:task.updateTime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                NSDate *localDate = [CommonFunction NSStringDateToNSDate:task.updateTime formatter:STRDateFormatterType1];
+                NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:STRDateFormatterType1];
                 
                 if ([localDate compare:serverDate] == NSOrderedAscending) {
                     
@@ -1009,8 +1009,8 @@ static BOOL finishTask;
                 Task *task = [PlanCache findTask:user.objectId taskId:[obj objectForKey:@"taskId"]];
                 if (task.content) {
                     
-                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:task.updateTime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
-                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"updatedTime"] formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:task.updateTime formatter:STRDateFormatterType1];
+                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"updatedTime"] formatter:STRDateFormatterType1];
                     
                     if ([localDate compare:serverDate] == NSOrderedAscending) {
                         //服务器的较新
@@ -1095,7 +1095,7 @@ static BOOL finishTask;
             message.imgURLArray = [obj objectForKey:@"imgURLArray"];
             message.canShare = [obj objectForKey:@"canShare"];
             message.messageType = @"1";
-            message.createTime = [CommonFunction NSDateToNSString:obj.createdAt formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+            message.createTime = [CommonFunction NSDateToNSString:obj.createdAt formatter:STRDateFormatterType1];
             
             [PlanCache storeMessages:message];
         }
@@ -1115,22 +1115,22 @@ static BOOL finishTask;
                 BmobObject *author = [obj objectForKey:@"fromUser"];
                 NSString *noticeType = [obj objectForKey:@"noticeType"];
                 NSString *nickName = [author objectForKey:@"nickName"];
-                if (!nickName || nickName.length == 0) nickName = str_Messages_Tips5;
+                if (!nickName || nickName.length == 0) nickName = STRViewTips116;
                 
                 Messages *message = [[Messages alloc] init];
                 message.messageId = obj.objectId;
                 switch ([noticeType integerValue]) {//通知类型：1赞帖子 2赞评论 3回复帖子 4回复评论
                     case 1:
-                        message.title = [NSString stringWithFormat:@"%@ %@", nickName, str_Messages_Tips6];
+                        message.title = [NSString stringWithFormat:@"%@ %@", nickName, STRViewTips117];
                         break;
                     case 2:
-                        message.title = [NSString stringWithFormat:@"%@ %@", nickName, str_Messages_Tips7];
+                        message.title = [NSString stringWithFormat:@"%@ %@", nickName, STRViewTips118];
                         break;
                     case 3:
-                        message.title = [NSString stringWithFormat:@"%@ %@", nickName, str_Messages_Tips8];
+                        message.title = [NSString stringWithFormat:@"%@ %@", nickName, STRViewTips119];
                         break;
                     case 4:
-                        message.title = [NSString stringWithFormat:@"%@ %@", nickName, str_Messages_Tips9];
+                        message.title = [NSString stringWithFormat:@"%@ %@", nickName, STRViewTips120];
                         break;
                     default:
                         break;
@@ -1139,7 +1139,7 @@ static BOOL finishTask;
                 message.detailURL = [obj objectForKey:@"postsObjectId"];
                 message.canShare = @"0";
                 message.messageType = @"2";
-                message.createTime = [CommonFunction NSDateToNSString:obj.createdAt formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+                message.createTime = [CommonFunction NSDateToNSString:obj.createdAt formatter:STRDateFormatterType1];
                 
                 [PlanCache storeMessages:message];
             }

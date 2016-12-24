@@ -78,7 +78,7 @@
     CGFloat switchWidth = 20;
     {
         CGFloat tipsWidth = 95;
-        beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+        beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
         UILabel *labelBeginTimeTips = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset, yOffset, tipsWidth, iconSize)];
         labelBeginTimeTips.textColor = color_Black;
         labelBeginTimeTips.font = font_Normal_18;
@@ -236,11 +236,11 @@
 - (void)onPickerCertainBtn {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     if (isSelectBeginDate) {
-        [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd];
+        [dateFormatter setDateFormat:STRDateFormatterType4];
         beginDate = [dateFormatter stringFromDate:datePicker.date];
         labelBeginDate.text = [CommonFunction getBeginDateStringForShow:beginDate];
     } else {
-        [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
+        [dateFormatter setDateFormat:STRDateFormatterType3];
         notifyTime = [dateFormatter stringFromDate:datePicker.date];
         labelNotifyTime.text = [CommonFunction getNotifyTimeStringForShow:notifyTime];
     }
@@ -259,7 +259,7 @@
 - (void)savePlan {
     [self.view endEditing:YES];
     NSString *timeNow = [CommonFunction getTimeNowString];
-    NSString *planid = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyyMMddHHmmss];
+    NSString *planid = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType2];
 
     if (self.operationType == Add) {
         self.plan = [[Plan alloc]init];

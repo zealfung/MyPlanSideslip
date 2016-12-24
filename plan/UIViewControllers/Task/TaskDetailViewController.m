@@ -118,7 +118,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
     self.tableRecord.dataSource = self;
     self.tableRecord.delegate = self;
     
-    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     if ([self.task.isTomato isEqualToString:@"0"]
         && [self.task.completionDate isEqualToString:date]) {
         self.btnStart.enabled = NO;
@@ -306,7 +306,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
 }
 
 - (void)addRecord {
-    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     self.task.completionDate = date;
     NSString *count = self.task.totalCount;
     NSInteger totalCount = 0;

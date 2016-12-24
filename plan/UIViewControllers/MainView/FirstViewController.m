@@ -240,7 +240,7 @@ NSUInteger const kHoursPerDay = 24;
         birthdayFormat = [NSString stringWithFormat:@"%@ 00:00:00", [Config shareInstance].settings.birthday];
     }
     
-    NSDate *birthday = [CommonFunction NSStringDateToNSDate:birthdayFormat formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+    NSDate *birthday = [CommonFunction NSStringDateToNSDate:birthdayFormat formatter:STRDateFormatterType1];
 
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     unsigned units  = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
@@ -462,7 +462,7 @@ NSUInteger const kHoursPerDay = 24;
         NSArray *array = [NSArray arrayWithArray:[PlanCache getPlan:YES startIndex:0]];
         NSMutableArray *todayArray = [NSMutableArray array];
         
-        NSString *todayKey = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+        NSString *todayKey = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
         NSString *key = @"";
         for (NSInteger i = 0; i < array.count; i++) {
             Plan *plan = array[i];
@@ -528,7 +528,7 @@ NSUInteger const kHoursPerDay = 24;
     logo.image = [UIImage imageNamed:png_Icon_Logo_512];
     [view addSubview:logo];
     UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(viewHeight + 2, 0, viewWidth - viewHeight - 2, viewHeight)];
-    labelName.text = str_Share_Tips1;
+    labelName.text = STRViewTips110;
     labelName.font = font_Normal_10;
     labelName.textColor = [CommonFunction getGenderColor];
     [view addSubview:labelName];

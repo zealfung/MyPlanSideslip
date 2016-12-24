@@ -62,7 +62,7 @@
 }
 
 - (void)shareAction {
-    [ShareCenter showShareActionSheet:self.view title:str_Share_Tips3 content:self.message.content shareUrl:self.message.detailURL sharedImageURL:@""];
+    [ShareCenter showShareActionSheet:self.view title:STRViewTips111 content:self.message.content shareUrl:self.message.detailURL sharedImageURL:@""];
 }
 
 - (void)loadCustomView {
@@ -123,7 +123,7 @@
         button.frame = CGRectMake(12, yOffset, 150, 30);
         button.backgroundColor = [UIColor clearColor];
         button.titleLabel.font = font_Normal_16;
-        [button setAllTitle:str_Messages_Tips3];
+        [button setAllTitle:STRViewTips114];
         [button setAllTitleColor:[CommonFunction getGenderColor]];
         [button addTarget:self action:@selector(detailAction:) forControlEvents:UIControlEventTouchUpInside];
         [scrollView addSubview:button];

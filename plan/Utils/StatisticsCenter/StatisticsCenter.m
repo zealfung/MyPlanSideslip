@@ -19,7 +19,7 @@ static BOOL isCheckingIn;
 + (BOOL)isCheckInToday {
     Statistics *statistics = [PlanCache getStatistics];
     if (statistics.updatetime && statistics.updatetime.length > 0) {
-        NSDate *lastCheckInDate = [CommonFunction NSStringDateToNSDate:statistics.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+        NSDate *lastCheckInDate = [CommonFunction NSStringDateToNSDate:statistics.updatetime formatter:STRDateFormatterType1];
         //已签到
         return [CommonFunction isSameDay:[NSDate date] date2:lastCheckInDate];
     }
@@ -33,7 +33,7 @@ static BOOL isCheckingIn;
     
     Statistics *statistics = [PlanCache getStatistics];
     if (statistics.updatetime && statistics.updatetime.length > 0) {
-        NSDate *lastCheckInDate = [CommonFunction NSStringDateToNSDate:statistics.updatetime formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+        NSDate *lastCheckInDate = [CommonFunction NSStringDateToNSDate:statistics.updatetime formatter:STRDateFormatterType1];
         //已签到
         if ([CommonFunction isSameDay:[NSDate date] date2:lastCheckInDate]) return;
     }

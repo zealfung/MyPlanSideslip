@@ -142,7 +142,7 @@
             Plan *plan = [[Plan alloc] init];
             plan.account = [dict objectForKey:@"account"];
             plan.planid = [dict objectForKey:@"tag"];
-            if ([plan.planid isEqualToString:Notify_FiveDay_Tag]) {
+            if ([plan.planid isEqualToString:STRFiveDayFlag1]) {
                 //5天未新建计划提醒，不需要跳转到计划详情
                 return;
             }
@@ -183,11 +183,11 @@
     plan.isnotify = @"1";
     plan.notifytime = [dict objectForKey:@"notifytime"];
     
-    if ([plan.planid isEqualToString:Notify_FiveDay_Tag]) {
+    if ([plan.planid isEqualToString:STRFiveDayFlag1]) {
         //如果还是没有新建计划，每天提醒一次
         NSDate *tomorrow = [[NSDate date] dateByAddingTimeInterval:24 * 3600];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-        [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
+        [dateFormatter setDateFormat:STRDateFormatterType3];
         NSString *fiveDayTomorrow = [dateFormatter stringFromDate:tomorrow];
         plan.notifytime = fiveDayTomorrow;
         [PlanCache updatePlanNotification:plan];
@@ -211,7 +211,7 @@
                 Plan *plan = [[Plan alloc] init];
                 plan.account = [dict objectForKey:@"account"];
                 plan.planid = [dict objectForKey:@"tag"];
-                if ([plan.planid isEqualToString:Notify_FiveDay_Tag]) {
+                if ([plan.planid isEqualToString:STRFiveDayFlag1]) {
                     //5天未新建计划提醒，不需要跳转到计划详情
                     return;
                 }

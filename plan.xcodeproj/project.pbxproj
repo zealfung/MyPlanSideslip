@@ -404,7 +404,6 @@
 		135B21B81B9012BD005CE84A /* PrefixHeader.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		135B21D01B909955005CE84A /* Config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Config.h; sourceTree = "<group>"; };
 		135B21D11B909955005CE84A /* Config.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Config.m; sourceTree = "<group>"; };
-		135B21D31B909A8F005CE84A /* StringMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StringMacro.h; sourceTree = "<group>"; };
 		135B21D41B909B14005CE84A /* ImageMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ImageMacro.h; sourceTree = "<group>"; };
 		135B21D71B909EAB005CE84A /* FontMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontMacro.h; sourceTree = "<group>"; };
 		135B21D81B90A024005CE84A /* ColorMacro.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColorMacro.h; sourceTree = "<group>"; };
@@ -1047,7 +1046,6 @@
 				135B21D71B909EAB005CE84A /* FontMacro.h */,
 				135B21D41B909B14005CE84A /* ImageMacro.h */,
 				135B21B61B9011FF005CE84A /* Macro.h */,
-				135B21D31B909A8F005CE84A /* StringMacro.h */,
 			);
 			path = Macros;
 			sourceTree = "<group>";

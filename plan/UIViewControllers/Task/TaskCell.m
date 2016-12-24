@@ -30,7 +30,7 @@
         [cellView.imgViewTomato setVisibility:UIViewVisibilityGone affectedMarginDirections:UIViewMarginDirectionAll];
 //    }
     
-    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     if (
 //        [task.isTomato isEqualToString:@"0"]
 //        &&
@@ -58,7 +58,7 @@
 }
 
 - (IBAction)doneAction:(id)sender {
-    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     self.task.completionDate = date;
     NSString *count = self.task.totalCount;
     NSInteger totalCount = 0;

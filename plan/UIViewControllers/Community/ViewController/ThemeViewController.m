@@ -79,7 +79,7 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     //计算最近一次加载数据时间是否已经超过十分钟，如果是，就自动刷新一次数据
-    NSDate *lastUpdatedTime = [UserDefaults objectForKey:str_PostsList_UpdatedTime];
+    NSDate *lastUpdatedTime = [UserDefaults objectForKey:STRPostsListFlag];
     if (lastUpdatedTime) {
         NSTimeInterval last = [lastUpdatedTime timeIntervalSince1970];
         NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
@@ -601,7 +601,7 @@
         [weakSelf.tableView.mj_footer endRefreshing];
         
         //记录加载时间
-        [UserDefaults setObject:[NSDate date] forKey:str_PostsList_UpdatedTime];
+        [UserDefaults setObject:[NSDate date] forKey:STRPostsListFlag];
         [UserDefaults synchronize];
         
         if (!error && array.count > 0) {

@@ -78,7 +78,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     //计算最近一次加载数据时间是否已经超过十分钟，如果是，就自动刷新一次数据
-    NSDate *lastUpdatedTime = [UserDefaults objectForKey:str_PlanList_UpdatedTime];
+    NSDate *lastUpdatedTime = [UserDefaults objectForKey:STRPlanListFlag];
     if (lastUpdatedTime) {
         NSTimeInterval last = [lastUpdatedTime timeIntervalSince1970];
         NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
@@ -86,7 +86,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         if ((now-last)/60 > 5) {//大于五分钟，自动重载一次数据
             [self getPlanData];
             //记录刷新时间
-            [UserDefaults setObject:[NSDate date] forKey:str_PlanList_UpdatedTime];
+            [UserDefaults setObject:[NSDate date] forKey:STRPlanListFlag];
             [UserDefaults synchronize];
         }
     }
@@ -272,7 +272,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         if ([[Config shareInstance].settings.autoDelayUndonePlan isEqualToString:@"1"]
             && [plan.iscompleted isEqualToString:@"0"]) {
             
-            key = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+            key = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
             plan.beginDate = key;
             
         } else {
@@ -330,7 +330,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     for (NSInteger i = 0; i < array.count; i++) {
         Plan *plan = array[i];
         
-        NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:str_DateFormatter_yyyy_MM_dd];
+        NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
         NSInteger days = [self calculateDayFromDate:[NSDate date] toDate:beginDate];
         
         if (days >= 0 && days < 1) {//
@@ -662,9 +662,9 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     NSDate *today = [NSDate date];
     NSDate *yesterday = [today dateByAddingTimeInterval:-24 * 3600];
     NSDate *tomorrow = [today dateByAddingTimeInterval:24 * 3600];
-    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:str_DateFormatter_yyyy_MM_dd];
-    NSString *yesterdayString = [CommonFunction NSDateToNSString:yesterday formatter:str_DateFormatter_yyyy_MM_dd];
-    NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:str_DateFormatter_yyyy_MM_dd];
+    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:STRDateFormatterType4];
+    NSString *yesterdayString = [CommonFunction NSDateToNSString:yesterday formatter:STRDateFormatterType4];
+    NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:STRDateFormatterType4];
     if ([date isEqualToString:todayString]) {
         return [NSString stringWithFormat:@"%@ • %@", date, STRCommonTime2];
     } else if ([date isEqualToString:yesterdayString]) {
@@ -678,7 +678,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 - (BOOL)isToday:(NSString *)date {
     NSDate *today = [NSDate date];
-    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:str_DateFormatter_yyyy_MM_dd];
+    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:STRDateFormatterType4];
     if ([date isEqualToString:todayString]) {
         return YES;
     } else {
@@ -755,7 +755,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     Plan *plan = [[Plan alloc] init];
     plan.account = [dict objectForKey:@"account"];
     plan.planid = [dict objectForKey:@"tag"];
-    if ([plan.planid isEqualToString:Notify_FiveDay_Tag]) {
+    if ([plan.planid isEqualToString:STRFiveDayFlag1]) {
         //5天未新建计划提醒，不需要跳转到计划详情
         return;
     }
@@ -786,17 +786,17 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 //修改计划完成状态
 - (void)changePlanCompleteStatus:(Plan *)plan {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmmss];
+    [dateFormatter setDateFormat:STRDateFormatterType1];
     NSString *timeNow = [dateFormatter stringFromDate:[NSDate date]];
     //1完成 0未完成
     if ([plan.iscompleted isEqualToString:@"0"]) {
         plan.iscompleted = @"1";
         plan.completetime = timeNow;
         //如果预计开始时间是在今天之后的，属于提前完成，把预计开始时间设成今天
-        NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:str_DateFormatter_yyyy_MM_dd];
+        NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
         NSInteger days = [self calculateDayFromDate:[NSDate date] toDate:beginDate];
         if (days > 0) {
-            plan.beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyy_MM_dd];
+            plan.beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
         }
     } else {
         plan.iscompleted = @"0";

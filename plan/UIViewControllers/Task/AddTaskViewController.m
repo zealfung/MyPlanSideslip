@@ -137,7 +137,7 @@
     }
     
     NSString *timeNow = [CommonFunction getTimeNowString];
-    NSString *taskId = [CommonFunction NSDateToNSString:[NSDate date] formatter:str_DateFormatter_yyyyMMddHHmmss];
+    NSString *taskId = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType2];
     if (self.operationType == Add) {
         self.task.taskId = taskId;
         self.task.createTime = timeNow;
@@ -148,7 +148,7 @@
     self.task.content = content;
     if (isAlarm) {
         NSTimeInterval iNow = [[NSDate date] timeIntervalSince1970];
-        NSDate *notifyDate = [CommonFunction NSStringDateToNSDate:self.task.notifyTime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
+        NSDate *notifyDate = [CommonFunction NSStringDateToNSDate:self.task.notifyTime formatter:STRDateFormatterType3];
         NSTimeInterval iNotify = [notifyDate timeIntervalSince1970];
         if (iNotify - iNow <= 10) {//提醒时间已经过期了
             [self alertButtonMessage:STRViewTips51];
@@ -257,7 +257,7 @@
     BOOL isButtonOn = [btnSwitch isOn];
     isRepeat = isButtonOn;
     if (isButtonOn) {
-        NSDate *notifyTime = [CommonFunction NSStringDateToNSDate:self.task.notifyTime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
+        NSDate *notifyTime = [CommonFunction NSStringDateToNSDate:self.task.notifyTime formatter:STRDateFormatterType3];
         if ([notifyTime compare:[NSDate date]] == NSOrderedAscending) {
             [self.switchRepeat setOn:NO];
             [self alertButtonMessage:STRViewTips51];
@@ -311,7 +311,7 @@
 
 - (void)onPickerCertainBtn {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmm];
+    [dateFormatter setDateFormat:STRDateFormatterType3];
     self.task.notifyTime = [dateFormatter stringFromDate:datePicker.date];
     self.labelAlarmTime.text = self.task.notifyTime;
     [self onPickerCancelBtn];

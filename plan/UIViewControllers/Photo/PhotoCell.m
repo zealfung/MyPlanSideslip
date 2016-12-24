@@ -33,7 +33,7 @@ CGFloat kPhotoCellHeight;
     CGFloat dateHeight = 30;
     CGFloat btnAgeSize = 45;
     
-    NSDate *photoDate = [CommonFunction NSStringDateToNSDate:photo.phototime formatter:str_DateFormatter_yyyy_MM_dd];
+    NSDate *photoDate = [CommonFunction NSStringDateToNSDate:photo.phototime formatter:STRDateFormatterType4];
     
     UILabel *labelYear = [[UILabel alloc] initWithFrame:CGRectMake(xOffset, yOffset, dateWidth, dateHeight)];
     labelYear.textAlignment = NSTextAlignmentCenter;
@@ -170,7 +170,7 @@ CGFloat kPhotoCellHeight;
         || [Config shareInstance].settings.birthday.length == 0) {
         return unknow;
     }
-    NSDate *birthday = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.birthday formatter:str_DateFormatter_yyyy_MM_dd];
+    NSDate *birthday = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.birthday formatter:STRDateFormatterType4];
     NSTimeInterval secondsBetweenDates= [photoDate timeIntervalSinceDate:birthday];
     if(secondsBetweenDates < 0) {
         return unknow;

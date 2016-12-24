@@ -28,11 +28,11 @@
 
 - (void)setControls {
     self.txtEmail.text = self.email;
-    self.txtEmail.placeholder = str_Register_Tips1;
+    self.txtEmail.placeholder = STRViewTips86;
     self.txtEmail.inputAccessoryView = [self getInputAccessoryView];
     [self.txtEmail becomeFirstResponder];
     self.btnSubmit.layer.cornerRadius = 5;
-    [self.btnSubmit setAllTitle:str_ForgotPassword_Tips1];
+    [self.btnSubmit setAllTitle:STRViewTips96];
 }
 
 - (IBAction)submitAction:(id)sender {
@@ -42,12 +42,12 @@
 
 - (BOOL)checkInput {
     if (self.txtEmail.text.length == 0) {
-        [self alertToastMessage:str_Register_Tips2];
+        [self alertToastMessage:STRViewTips87];
         [self.txtEmail becomeFirstResponder];
         return NO;
     }
     if (![CommonFunction validateEmail:self.txtEmail.text]) {
-        [self alertToastMessage:str_Register_Tips3];
+        [self alertToastMessage:STRViewTips88];
         [self.txtEmail becomeFirstResponder];
         return NO;
     }
@@ -56,7 +56,7 @@
 
 - (void)submit {
     [BmobUser requestPasswordResetInBackgroundWithEmail:self.txtEmail.text];
-    [self alertButtonMessage:str_ForgotPassword_Tips2];
+    [self alertButtonMessage:STRViewTips97];
     NSArray *array = self.navigationController.viewControllers;
     for (UIViewController *controller in array) {
         if ([controller isKindOfClass:[SettingsViewController class]]) {

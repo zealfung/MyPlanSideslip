@@ -36,7 +36,7 @@ static NSString * const kKeyMinutes = @"minutes";
 //获取当前时间字符串：yyyy-MM-dd HH:mm:ss
 + (NSString *)getTimeNowString {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:str_DateFormatter_yyyy_MM_dd_HHmmss];
+    [dateFormatter setDateFormat:STRDateFormatterType1];
     NSString *timeNow = [dateFormatter stringFromDate:[NSDate date]];
     return timeNow;
 }
@@ -162,7 +162,7 @@ static NSString * const kKeyMinutes = @"minutes";
     } else if (minutes < 12 * 30 * 24 * 60) {
         return [NSString stringWithFormat:STRCommonTime8, (long)minutes / (60 * 24 * 30)];
     } else {
-        return [CommonFunction NSDateToNSString:date formatter:str_DateFormatter_yyyy_MM_dd_HHmmss];
+        return [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType1];
     }
 }
 
@@ -333,8 +333,8 @@ static NSString * const kKeyMinutes = @"minutes";
 + (NSString *)getBeginDateStringForShow:(NSString *)date {
     NSDate *today = [NSDate date];
     NSDate *tomorrow = [today dateByAddingTimeInterval:24 * 3600];
-    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:str_DateFormatter_yyyy_MM_dd];
-    NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:str_DateFormatter_yyyy_MM_dd];
+    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:STRDateFormatterType4];
+    NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:STRDateFormatterType4];
     if ([date isEqualToString:todayString]) {
         return STRCommonTime2;
     } else if ([date isEqualToString:tomorrowString]) {
@@ -355,8 +355,8 @@ static NSString * const kKeyMinutes = @"minutes";
     }
     NSDate *today = [NSDate date];
     NSDate *tomorrow = [today dateByAddingTimeInterval:24 * 3600];
-    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:str_DateFormatter_yyyy_MM_dd];
-    NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:str_DateFormatter_yyyy_MM_dd];
+    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:STRDateFormatterType4];
+    NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:STRDateFormatterType4];
     if ([notifyDate isEqualToString:todayString]) {
         return [NSString stringWithFormat:@"%@ %@", STRCommonTime2, notifyTime];
     } else if ([notifyDate isEqualToString:tomorrowString]) {
@@ -390,7 +390,7 @@ static NSString * const kKeyMinutes = @"minutes";
 /** 更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效 */
 + (NSString *)updateNotifyTime:(NSString *)notifyTime {
     
-    NSDate *oldNotifyTime = [CommonFunction NSStringDateToNSDate:notifyTime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
+    NSDate *oldNotifyTime = [CommonFunction NSStringDateToNSDate:notifyTime formatter:STRDateFormatterType3];
     
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
     unsigned units  = NSMonthCalendarUnit|NSDayCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit;
@@ -407,7 +407,7 @@ static NSString * const kKeyMinutes = @"minutes";
         newNotifyTime = [calendar dateFromComponents:compToday];
     }
     
-    return [CommonFunction NSDateToNSString:newNotifyTime formatter:str_DateFormatter_yyyy_MM_dd_HHmm];
+    return [CommonFunction NSDateToNSString:newNotifyTime formatter:STRDateFormatterType3];
 }
 
 @end
