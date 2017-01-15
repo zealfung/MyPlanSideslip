@@ -50,6 +50,7 @@
 #define png_Btn_Plan_Delete @"Btn_Plan_Delete"
 #define png_Btn_Photo_Delete @"Btn_Photo_Delete"
 
+#define png_Icon_Arrow_Left @"Icon_Arrow_Left"
 #define png_Icon_Arrow_Right @"Icon_Arrow_Right"
 #define png_Icon_Logo_512 @"Icon_Logo_512"
 #define png_Icon_Gender_F_Normal @"Icon_Gender_F_Normal"
