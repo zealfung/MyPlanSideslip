@@ -11,7 +11,7 @@
 #import "PlanCell.h"
 #import "PlanCache.h"
 #import "ThreeSubView.h"
-#import "AddPlanViewController.h"
+#import "PlanDetailViewController.h"
 #import "PersonalCenterUndonePlanViewController.h"
 
 NSUInteger const kUndonePlanCellDeleteTag = 9527;
@@ -232,9 +232,9 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
     }
 }
 
-- (void)toPlanDetailWithPlan:(Plan *)plan {
-    AddPlanViewController *controller = [[AddPlanViewController alloc]init];
-    controller.operationType = Edit;
+- (void)toPlanDetailWithPlan:(Plan *)plan
+{
+    PlanDetailViewController *controller = [[PlanDetailViewController alloc]init];
     controller.plan = plan;
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];

@@ -15,7 +15,8 @@
 #import "PlanSectionView.h"
 #import <BmobSDK/BmobUser.h>
 #import "SecondViewController.h"
-#import "AddPlanViewController.h"
+#import "PlanAddViewController.h"
+#import "PlanDetailViewController.h"
 
 NSUInteger const kPlan_MenuHeight = 44;
 NSUInteger const kPlan_MenuLineHeight = 3;
@@ -687,9 +688,9 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     return dic;
 }
 
-- (void)addAction:(UIButton *)button {
-    AddPlanViewController *controller = [[AddPlanViewController alloc] init];
-    controller.operationType = Add;
+- (void)addAction:(UIButton *)button
+{
+    PlanAddViewController *controller = [[PlanAddViewController alloc] init];
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -755,8 +756,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 }
 
 - (void)toPlanDetailWithPlan:(Plan *)plan {
-    AddPlanViewController *controller = [[AddPlanViewController alloc]init];
-    controller.operationType = Edit;
+    PlanDetailViewController *controller = [[PlanDetailViewController alloc] init];
     controller.plan = plan;
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
