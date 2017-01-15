@@ -7,11 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UIViewController+Util.h"
 
 @interface FatherViewController : UIViewController
 
-@property (nonatomic, strong, readonly) UIButton *backButton;
-@property (nonatomic, assign) BOOL isPush;//是否是push进来的
 @property (nonatomic, strong) NSString *hudText;
 
 //创建导航栏文字按钮
@@ -22,11 +21,6 @@
 
 //键盘顶部按钮栏
 - (UIView *)getInputAccessoryView;
-
-- (void)backAction:(UIButton*)sender;
-
-//返回,可被重写
-- (void)willBack;
 
 //检查TabBar未读小红点
 - (void)checkUnread:(UITabBar *)tabbar index:(int)index;

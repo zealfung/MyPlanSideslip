@@ -12,42 +12,21 @@
 
 @interface FatherViewController ()
 
-@property (nonatomic, strong, readwrite) UIButton *backButton;
 @property (nonatomic, weak) MBProgressHUD *hud;
 
 @end
 
 @implementation FatherViewController
 
-@synthesize isPush;
-
-- (id)init {
-    self = [super init];
-    if (self) {
-        
-        self.isPush = YES;
-    }
-    return self;
-}
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        
-        self.isPush = YES;
-    }
-    return self;
-}
-
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
-    if (iOS7_LATER) {
-        
+    if (iOS7_LATER)
+    {
         self.edgesForExtendedLayout = UIRectEdgeBottom | UIRectEdgeLeft | UIRectEdgeRight;
         self.extendedLayoutIncludesOpaqueBars = YES;
         self.automaticallyAdjustsScrollViewInsets = NO;
         [self setNeedsStatusBarAppearanceUpdate];
-        
     }
     self.view.backgroundColor = color_Background;
 
@@ -65,16 +44,19 @@
     [self.navigationController.navigationBar setTitleTextAttributes:dict];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
     [self.view endEditing:YES];
 }
 
-- (void)dealloc {
+- (void)dealloc
+{
     [NotificationCenter removeObserver:self];
 }
 
@@ -119,23 +101,6 @@
 
 - (void)endInputAction:(UIBarButtonItem *)barButtonItem {
     [self.view endEditing:YES];
-}
-
-- (void)willBack {
-}
-
-- (void)backAction:(UIButton*)sender {
-    [self willBack];
-    if(isPush) {
-        
-        if (self.navigationController) {
-            
-            [self.navigationController popViewControllerAnimated:YES];
-        }
-    } else {
-        
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }
 }
 
 - (void)checkUnread:(UITabBar *)tabbar index:(int)index {
