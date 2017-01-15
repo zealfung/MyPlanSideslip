@@ -9,7 +9,6 @@
 #import "LogIn.h"
 #import "MJRefresh.h"
 #import "ThemeNewCell.h"
-#import "WZLBadgeImport.h"
 #import "PostsNoImageCell.h"
 #import <BmobSDK/BmobUser.h>
 #import "WebViewController.h"
@@ -22,7 +21,6 @@
 #import "LogInViewController.h"
 #import "ThemeViewController.h"
 #import <BmobSDK/BmobRelation.h>
-#import <RESideMenu/RESideMenu.h>
 #import "AddPostsViewController.h"
 #import "UserLevelViewController.h"
 #import "PostsDetailViewController.h"
@@ -57,7 +55,6 @@
     [super viewDidLoad];
     self.title = STRViewTitle14;
     self.tabBarItem.title = STRViewTitle14;
-    [self createNavBarButton];
 
     userTagsArray = [NSArray array];
     postsArray = [NSMutableArray array];
@@ -68,8 +65,7 @@
     
     [NotificationCenter addObserver:self selector:@selector(reloadData) name:NTFPostsNew object:nil];
     [NotificationCenter addObserver:self selector:@selector(reloadData) name:NTFPostsRefresh object:nil];
-    [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:NTFMessagesSave object:nil];
-    
+
     [self initTableView];
     
     [self createBack2TopButton];
@@ -79,7 +75,6 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self refreshRedDot];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -100,11 +95,6 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)createNavBarButton {
-    self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction:)];
-//    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
-}
-
 - (void)createBack2TopButton {
     btnBackToTop = [[UIButton alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - 60, HEIGHT_FULL_VIEW - 120, 50, 50)];
     [btnBackToTop setBackgroundImage:[UIImage imageNamed:png_Btn_BackToTop] forState:UIControlStateNormal];
@@ -115,16 +105,6 @@
     [self.tableView addSubview:btnBackToTop];
     [self.tableView bringSubviewToFront:btnBackToTop];
     buttonY = btnBackToTop.frame.origin.y;
-}
-
-- (void)refreshRedDot {
-    //小红点
-    if ([PlanCache hasUnreadMessages]) {
-        [self.leftBarButtonItem showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
-        self.leftBarButtonItem.badgeCenterOffset = CGPointMake(-8, 0);
-    } else {
-        [self.leftBarButtonItem clearBadge];
-    }
 }
 
 - (void)reloadData {
@@ -152,11 +132,6 @@
         //加载更多帖子数据
         [weakSelf reloadPostsData];
     }];
-}
-
-#pragma mark - action
-- (void)leftMenuAction:(UIButton *)button {
-    [self.sideMenuViewController presentLeftMenuViewController];
 }
 
 - (UIView *)createTableHeaderView {

@@ -12,12 +12,10 @@
 #import "PlanCache.h"
 #import "MJRefresh.h"
 #import "ThreeSubView.h"
-#import "WZLBadgeImport.h"
 #import "PlanSectionView.h"
 #import <BmobSDK/BmobUser.h>
 #import "SecondViewController.h"
 #import "AddPlanViewController.h"
-#import <RESideMenu/RESideMenu.h>
 
 NSUInteger const kPlan_MenuHeight = 44;
 NSUInteger const kPlan_MenuLineHeight = 3;
@@ -64,15 +62,12 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     [NotificationCenter addObserver:self selector:@selector(toPlan:) name:NTFLocalPush object:nil];
     [NotificationCenter addObserver:self selector:@selector(getPlanData) name:NTFPlanSave object:nil];
     [NotificationCenter addObserver:self selector:@selector(getPlanData) name:NTFSettingsSave object:nil];
-    [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:NTFMessagesSave object:nil];
     
     [self loadCustomView];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self refreshRedDot];
-    [self checkUnread:self.tabBarController.tabBar index:1];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -100,18 +95,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 }
 
 - (void)createNavBarButton {
-    self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction:)];
     self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
-}
-
-//刷新小红点
-- (void)refreshRedDot {
-    if ([PlanCache hasUnreadMessages]) {
-        [self.leftBarButtonItem showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
-        self.leftBarButtonItem.badgeCenterOffset = CGPointMake(-8, 0);
-    } else {
-        [self.leftBarButtonItem clearBadge];
-    }
 }
 
 //初始化自定义界面
@@ -701,11 +685,6 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     [dic setObject:@(result) forKey:@"isAllDone"];
     [dic setObject:count forKey:@"count"];
     return dic;
-}
-
-#pragma mark - action
-- (void)leftMenuAction:(UIButton *)button {
-    [self.sideMenuViewController presentLeftMenuViewController];
 }
 
 - (void)addAction:(UIButton *)button {

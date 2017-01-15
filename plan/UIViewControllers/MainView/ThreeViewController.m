@@ -8,11 +8,9 @@
 
 #import "Task.h"
 #import "TaskCell.h"
-#import "WZLBadgeImport.h"
 #import <BmobSDK/BmobUser.h>
 #import "ThreeViewController.h"
 #import "AddTaskNewViewController.h"
-#import <RESideMenu/RESideMenu.h>
 #import "TaskDetailNewViewController.h"
 
 @interface ThreeViewController () <UIGestureRecognizerDelegate> {
@@ -40,13 +38,10 @@
     taskArray = [NSMutableArray array];
     [NotificationCenter addObserver:self selector:@selector(toTask:) name:NTFLocalPush object:nil];
     [NotificationCenter addObserver:self selector:@selector(reloadTaskData) name:NTFTaskSave object:nil];
-    [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:NTFMessagesSave object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [self reloadTaskData];
-    [self checkUnread:self.tabBarController.tabBar index:2];
-    [self refreshRedDot];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -58,13 +53,7 @@
 }
 
 - (void)createNavBarButton {
-    self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction:)];
     self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
-}
-
-#pragma mark - action
-- (void)leftMenuAction:(UIButton *)button {
-    [self.sideMenuViewController presentLeftMenuViewController];
 }
 
 - (void)addAction:(UIButton *)button {
@@ -100,11 +89,13 @@
     }
 }
 
-- (void)reloadTaskData {
+- (void)reloadTaskData
+{
     if (isTableEditing) return;
     
-    taskArray = [PlanCache getTask];
-    if (taskArray.count > 0) {
+    taskArray = [NSMutableArray arrayWithArray:[PlanCache getTask]];
+    if (taskArray.count > 0)
+    {
         longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
         longPress.minimumPressDuration = 1.0;
         longPress.delegate = self;
@@ -113,27 +104,20 @@
     [self.tableView reloadData];
 }
 
-- (void)refreshRedDot {
-    //小红点
-    if ([PlanCache hasUnreadMessages]) {
-        [self.leftBarButtonItem showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
-        self.leftBarButtonItem.badgeCenterOffset = CGPointMake(-8, 0);
-    } else {
-        [self.leftBarButtonItem clearBadge];
-    }
-}
-
-- (void)toTask:(NSNotification*)notification {
+- (void)toTask:(NSNotification*)notification
+{
     NSDictionary *dict = notification.userInfo;
     NSInteger type = [[dict objectForKey:@"type"] integerValue];
-    if (type != 1) {//非任务提醒
+    if (type != 1)
+    {//非任务提醒
         return;
     }
     Task *task = [[Task alloc] init];
     task.account = [dict objectForKey:@"account"];
     BmobUser *user = [BmobUser currentUser];
     if ((user && [task.account isEqualToString:user.objectId])
-        || (!user && [task.account isEqualToString:@""])) {
+        || (!user && [task.account isEqualToString:@""]))
+    {
         
         task.taskId = [dict objectForKey:@"tag"];
         task.content = [dict objectForKey:@"content"];
@@ -186,8 +170,10 @@
     }
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-    if (taskArray.count > 0) {
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    if (taskArray.count > 0)
+    {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, 44.f)];
         view.backgroundColor = [UIColor whiteColor];
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset, 0, WIDTH_FULL_SCREEN - kEdgeInset * 2, 43.f)];
@@ -200,19 +186,25 @@
         labelLine.backgroundColor = color_dedede;
         [view addSubview:labelLine];
         return view;
-    } else {
-        return nil;
+    }
+    else
+    {
+        return [[UIView alloc] init];
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row < taskArray.count) {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row < taskArray.count)
+    {
         tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         Task *task = taskArray[indexPath.row];
         TaskCell *cell = [TaskCell cellView:task];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
-    } else {
+    }
+    else
+    {
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         static NSString *noTaskCellIdentifier = @"noTaskCellIdentifier";
         
@@ -235,8 +227,10 @@
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row < taskArray.count) {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row < taskArray.count)
+    {
         TaskDetailNewViewController *controller = [[TaskDetailNewViewController alloc]init];
         controller.task = taskArray[indexPath.row];
         controller.hidesBottomBarWhenPushed = YES;
@@ -244,21 +238,25 @@
     }
 }
 
-- (void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer {
+- (void)handleLongPress:(UILongPressGestureRecognizer *)gestureRecognizer
+{
     if(gestureRecognizer.state == UIGestureRecognizerStateBegan
-       && !self.tableView.editing) {
+       && !self.tableView.editing)
+    {
         [self orderAction];
     }
 }
 
 #pragma mark 选择编辑模式，添加模式很少用,默认是删除
-- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return UITableViewCellEditingStyleNone;
 }
 
 #pragma mark 排序 当移动了某一行时候会调用
 //编辑状态下，只要实现这个方法，就能实现拖动排序
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
+{
     //取出要拖动的模型数据
     Task *task = taskArray[sourceIndexPath.row];
     //删除之前行的数据
