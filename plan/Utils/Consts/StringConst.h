@@ -116,6 +116,10 @@ UIKIT_EXTERN NSString *const STRCommonTip47;
 UIKIT_EXTERN NSString *const STRCommonTip48;
 /** MyPlan */
 UIKIT_EXTERN NSString *const STRCommonTip49;
+/** 每天重复 */
+UIKIT_EXTERN NSString *const STRCommonTip50;
+/** 备注 */
+UIKIT_EXTERN NSString *const STRCommonTip51;
 
 /** 刚刚 */
 UIKIT_EXTERN NSString *const STRCommonTime1;
@@ -198,6 +202,8 @@ UIKIT_EXTERN NSString *const STRViewTitle23;
 UIKIT_EXTERN NSString *const STRViewTitle24;
 /** 登录 */
 UIKIT_EXTERN NSString *const STRViewTitle25;
+/** 计划详情 */
+UIKIT_EXTERN NSString *const STRViewTitle26;
 
 /** 假如你可以活到 */
 UIKIT_EXTERN NSString *const STRViewTips1;

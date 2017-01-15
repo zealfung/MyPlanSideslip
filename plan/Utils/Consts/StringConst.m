@@ -116,6 +116,10 @@ NSString *const STRCommonTip47 = @"当前版本：";
 NSString *const STRCommonTip48 = @"©2015-2017 Andwho Inc.";
 /** MyPlan */
 NSString *const STRCommonTip49 = @"MyPlan";
+/** 每天重复 */
+NSString *const STRCommonTip50 = @"每天重复";
+/** 备注 */
+NSString *const STRCommonTip51 = @"备注";
 
 
 /** 刚刚 */
@@ -200,6 +204,8 @@ NSString *const STRViewTitle23 = @"发帖";
 NSString *const STRViewTitle24 = @"更多";
 /** 登录 */
 NSString *const STRViewTitle25 = @"登录";
+/** 计划详情 */
+NSString *const STRViewTitle26 = @"计划详情";
 
 
 /** 假如你可以活到 */
