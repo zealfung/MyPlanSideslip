@@ -8,7 +8,7 @@
 
 #import "ModelBase.h"
 
-@interface Settings : ModelBase <NSCoding, NSCopying>
+@interface Settings : ModelBase
 
 /** 对应服务器表的objectId */
 @property (nonatomic, strong) NSString *objectId;

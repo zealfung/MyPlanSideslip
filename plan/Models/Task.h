@@ -8,7 +8,7 @@
 
 #import "ModelBase.h"
 
-@interface Task : ModelBase <NSCoding, NSCopying>
+@interface Task : ModelBase
 
 /** 任务id */
 @property (nonatomic, strong) NSString *taskId;
@@ -20,10 +20,12 @@
 @property (nonatomic, strong) NSString *totalCount;
 /** 最近一次的完成日期，格式：2016-04-12 17:59:59 */
 @property (nonatomic, strong) NSString *completionDate;
-/** 提醒时间，格式：2016-04-12 16:58 */
+/** 创建时间，格式：2016-04-12 17:59:59 */
 @property (nonatomic, strong) NSString *createTime;
+/** 更新时间 */
 @property (nonatomic, strong) NSString *updateTime;
-@property (nonatomic, strong) NSString *isNotify; //是否提醒: 1是 0否
+/** 是否提醒: 1是 0否 */
+@property (nonatomic, strong) NSString *isNotify;
 /** 提醒时间，格式：2016-04-12 16:58 */
 @property (nonatomic, strong) NSString *notifyTime;
 /** 是否已删除 1是 0否 */

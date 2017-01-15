@@ -10,17 +10,11 @@
 
 @interface ModelBase : NSObject
 
-+ (instancetype)modelObjectWithDictionary:(NSDictionary *)dict;
-
-- (instancetype)initWithDictionary:(NSDictionary *)dict;
-
-- (NSDictionary *)dictionaryRepresentation;
 
 @end
 
 
 @interface NSDictionary (ModelBase)
 
-- (id)objectOrNilForKey:(id)aKey;
 
 @end

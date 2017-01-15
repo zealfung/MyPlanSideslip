@@ -8,9 +8,11 @@
 
 #import "ModelBase.h"
 
-@interface TaskRecord : ModelBase <NSCoding, NSCopying>
+@interface TaskRecord : ModelBase
 
+/** 记录ID */
 @property (nonatomic, strong) NSString *recordId;
+/** 创建时间 */
 @property (nonatomic, strong) NSString *createTime;
 
 @end

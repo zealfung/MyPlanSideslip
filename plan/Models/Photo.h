@@ -8,17 +8,27 @@
 
 #import "ModelBase.h"
 
-@interface Photo : ModelBase <NSCoding, NSCopying>
+@interface Photo : ModelBase
 
+/** 影像ID */
 @property (nonatomic, strong) NSString *photoid;
+/** 所属账号 */
 @property (nonatomic, strong) NSString *account;
+/** 内容 */
 @property (nonatomic, strong) NSString *content;
+/** 创建时间 */
 @property (nonatomic, strong) NSString *createtime;
-@property (nonatomic, strong) NSString *phototime;//拍照时间
+/** 拍照时间 */
+@property (nonatomic, strong) NSString *phototime;
+/** 更新时间 */
 @property (nonatomic, strong) NSString *updatetime;
-@property (nonatomic, strong) NSString *location; //拍照地点
+/** 拍照地点 */
+@property (nonatomic, strong) NSString *location;
+/** 照片数组 */
 @property (nonatomic, strong) NSMutableArray *photoArray;
+/** 照片地址数组 */
 @property (nonatomic, strong) NSMutableArray *photoURLArray;
-@property (nonatomic, strong) NSString *isdeleted; //是否已删除 1是 0否
+/** 是否已删除：0否，1是 */
+@property (nonatomic, strong) NSString *isdeleted;
 
 @end
