@@ -54,33 +54,36 @@ static NSString *__currentPlistPath;
 static NSString *__offlineMsgPlistPath;
 static NSMutableDictionary *__contactsOnlineState;
 
-+ (void)initialize {
-    
++ (void)initialize
+{
     NSLog(@"Is SQLite compiled with it's thread safe options turned on? %@!", [FMDatabase isSQLiteThreadSafe] ? @"Yes" : @"No");
-    
 }
 
 #pragma mark -重置当前用户本地数据库链接
-+ (void)resetCurrentLogin {
-    
++ (void)resetCurrentLogin
+{
     [__db close];
     __db = nil;
     
-    if (__currentPath) {
+    if (__currentPath)
+    {
         __currentPath = nil;
     }
     
-    if (__currentPlistPath) {
+    if (__currentPlistPath)
+    {
         __currentPlistPath = nil;
     }
     
-    if (__offlineMsgPlistPath) {
+    if (__offlineMsgPlistPath)
+    {
         __offlineMsgPlistPath = nil;
     }
 }
 
 #pragma mark -打开当前用户本地数据库链接
-+ (void)openDBWithAccount:(NSString *)account {
++ (void)openDBWithAccount:(NSString *)account
+{
     
     [PlanCache resetCurrentLogin];
     
@@ -92,7 +95,8 @@ static NSMutableDictionary *__contactsOnlineState;
     __currentPath = [fileName copy];
     __db = [FMDatabase databaseWithPath:fileName];
     
-    if (![__db open]) {
+    if (![__db open])
+    {
         NSLog(@"Could not open db:%@", fileName);
         
         return;
@@ -101,14 +105,16 @@ static NSMutableDictionary *__contactsOnlineState;
     [__db setShouldCacheStatements:YES];
     
     // 个人设置
-    if (![__db tableExists:STRTableName1]) {
+    if (![__db tableExists:STRTableName1])
+    {
         NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (objectId TEXT, account TEXT, nickname TEXT, birthday TEXT, email TEXT, gender TEXT, lifespan TEXT, syntime TEXT, avatar BLOB, avatarURL TEXT, centerTop BLOB, centerTopURL TEXT, isAutoSync TEXT, isUseGestureLock TEXT, isShowGestureTrack TEXT, gesturePasswod TEXT, updatetime TEXT, createtime TEXT, countdownType TEXT, dayOrMonth TEXT, autoDelayUndonePlan TEXT, signature TEXT)", STRTableName1];
         
         BOOL b = [__db executeUpdate:sqlString];
         
         FMDBQuickCheck(b, sqlString, __db);
-        
-    } else {//新增字段
+    }
+    else
+    {//新增字段
         //新增未完计划设置字段2016-06-30
 //        NSString *autoDelayUndonePlan = @"autoDelayUndonePlan";
 //        if (![__db columnExists:autoDelayUndonePlan inTableWithName:str_TableName_Settings]) {
@@ -122,58 +128,83 @@ static NSMutableDictionary *__contactsOnlineState;
     }
     
     // 计划
-    if (![__db tableExists:STRTableName2]) {
-        
+    if (![__db tableExists:STRTableName2])
+    {
         NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, planid TEXT, content TEXT, createtime TEXT, completetime TEXT, updatetime TEXT, iscompleted TEXT, isnotify TEXT, notifytime TEXT, beginDate TEXT, isdeleted TEXT)", STRTableName2];
         
         BOOL b = [__db executeUpdate:sqlString];
         
         FMDBQuickCheck(b, sqlString, __db);
-        
-    } else { //新增字段
-
+    }
+    else
+    { //新增字段
+        //新增每日重复字段2017-1-12
+        NSString *isRepeat = @"isRepeat";
+        if (![__db columnExists:isRepeat inTableWithName:STRTableName2])
+        {
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",STRTableName2, isRepeat];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        //新增备注字段2017-1-12
+        NSString *remark = @"remark";
+        if (![__db columnExists:remark inTableWithName:STRTableName2])
+        {
+            NSString *sqlString = [NSString stringWithFormat:@"ALTER TABLE %@ ADD %@ TEXT",STRTableName2, remark];
+            
+            BOOL b = [__db executeUpdate:sqlString];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
     }
     
     //相册
-    if (![__db tableExists:STRTableName3]) {
-        
+    if (![__db tableExists:STRTableName3])
+    {
         NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, photoid TEXT, content TEXT, createtime TEXT, phototime TEXT, updatetime TEXT, location TEXT, photo1 BLOB, photo2 BLOB, photo3 BLOB, photo4 BLOB, photo5 BLOB, photo6 BLOB, photo7 BLOB, photo8 BLOB, photo9 BLOB, photo1URL TEXT, photo2URL TEXT, photo3URL TEXT, photo4URL TEXT, photo5URL TEXT, photo6URL TEXT, photo7URL TEXT, photo8URL TEXT, photo9URL TEXT, isdeleted TEXT)", STRTableName3];
         
         BOOL b = [__db executeUpdate:sqlString];
         
         FMDBQuickCheck(b, sqlString, __db);
-        
-    } else { //新增字段
+    }
+    else
+    { //新增字段
  
     }
     
     //统计
-    if (![__db tableExists:STRTableName4]) {
-        
+    if (![__db tableExists:STRTableName4])
+    {
         NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, recentMax TEXT, recentMaxBeginDate TEXT, recentMaxEndDate TEXT, recordMax TEXT, recordMaxBeginDate TEXT, recordMaxEndDate TEXT, updatetime TEXT)", STRTableName4];
         
         BOOL b = [__db executeUpdate:sqlString];
         
         FMDBQuickCheck(b, sqlString, __db);
-    } else { //新增字段
+    }
+    else
+    { //新增字段
 
     }
     
     //任务
-    if (![__db tableExists:STRTableName5]) {
-        
+    if (![__db tableExists:STRTableName5])
+    {
         NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, taskId TEXT, content TEXT, totalCount TEXT, completionDate TEXT, createTime TEXT, updateTime TEXT, isNotify TEXT, notifyTime TEXT, isTomato TEXT, tomatoMinute TEXT, isRepeat TEXT, repeatType TEXT, taskOrder TEXT, isDeleted TEXT)", STRTableName5];
         
         BOOL b = [__db executeUpdate:sqlString];
         
         FMDBQuickCheck(b, sqlString, __db);
-    } else { //新增字段
+    }
+    else
+    { //新增字段
         
     }
 
     //任务记录
-    if (![__db tableExists:STRTableName6]) {
-        
+    if (![__db tableExists:STRTableName6])
+    {
         NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (recordId TEXT, createTime TEXT)", STRTableName6];
         
         BOOL b = [__db executeUpdate:sqlString];
@@ -182,96 +213,123 @@ static NSMutableDictionary *__contactsOnlineState;
     }
     
     //系统消息
-    if (![__db tableExists:STRTableName7]) {
-        
+    if (![__db tableExists:STRTableName7])
+    {
         NSString *sqlString = [NSString stringWithFormat:@"CREATE TABLE %@ (account TEXT, messageId TEXT, title TEXT, content TEXT, detailURL TEXT, imgURLArray BLOB, hasRead TEXT, canShare TEXT, messageType TEXT, createTime TEXT)", STRTableName7];
         
         BOOL b = [__db executeUpdate:sqlString];
         
         FMDBQuickCheck(b, sqlString, __db);
-    } else {
+    }
+    else
+    {
         
     }
 }
 
-+ (void)storePersonalSettings:(Settings *)settings {
-    
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (void)storePersonalSettings:(Settings *)settings
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return ;
             }
         }
         
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             settings.account = user.objectId;
-        } else {
+        }
+        else
+        {
             settings.account = @"";
         }
-        if (!settings.objectId) {
+        if (!settings.objectId)
+        {
             settings.objectId = @"";
         }
-        if (!settings.nickname) {
+        if (!settings.nickname)
+        {
             settings.nickname = @"";
         }
-        if (!settings.birthday) {
+        if (!settings.birthday)
+        {
             settings.birthday = @"";
         }
-        if (!settings.email) {
+        if (!settings.email)
+        {
             settings.email = @"";
         }
         if (!settings.gender) {
             settings.gender = @"0";
         }
-        if (!settings.lifespan) {
+        if (!settings.lifespan)
+        {
             settings.lifespan = @"";
         }
-        if (!settings.password) {
+        if (!settings.password)
+        {
             settings.password = @"";
         }
-        if (!settings.avatar) {
+        if (!settings.avatar)
+        {
             settings.avatar = [NSData data];
         }
-        if (!settings.avatarURL) {
+        if (!settings.avatarURL)
+        {
             settings.avatarURL = @"";
         }
-        if (!settings.centerTop) {
+        if (!settings.centerTop)
+        {
             settings.centerTop = [NSData data];
         }
-        if (!settings.centerTopURL) {
+        if (!settings.centerTopURL)
+        {
             settings.centerTopURL = @"";
         }
-        if (!settings.isAutoSync) {
+        if (!settings.isAutoSync)
+        {
             settings.isAutoSync = @"0";
         }
-        if (!settings.isUseGestureLock) {
+        if (!settings.isUseGestureLock)
+        {
             settings.isUseGestureLock = @"0";
         }
-        if (!settings.isShowGestureTrack) {
+        if (!settings.isShowGestureTrack)
+        {
             settings.isShowGestureTrack = @"1";
         }
-        if (!settings.gesturePasswod) {
+        if (!settings.gesturePasswod)
+        {
             settings.gesturePasswod = @"";
         }
-        if (!settings.countdownType) {
+        if (!settings.countdownType)
+        {
             settings.countdownType = @"0";
         }
-        if (!settings.dayOrMonth) {
+        if (!settings.dayOrMonth)
+        {
             settings.dayOrMonth = @"0";
         }
-        if (!settings.autoDelayUndonePlan) {
+        if (!settings.autoDelayUndonePlan)
+        {
             settings.autoDelayUndonePlan = @"0";
         }
-        if (!settings.signature) {
+        if (!settings.signature)
+        {
             settings.signature = @"";
         }
-        if (!settings.syntime || settings.syntime.length == 0) {
+        if (!settings.syntime || settings.syntime.length == 0)
+        {
             settings.syntime = @"2015-09-01 09:09:09";
         }
         NSString *timeNow = [CommonFunction getTimeNowString];
-        if (!settings.createtime || settings.createtime.length == 0) {
+        if (!settings.createtime || settings.createtime.length == 0)
+        {
             settings.createtime = timeNow;
         }
         settings.updatetime = timeNow;
@@ -281,16 +339,16 @@ static NSMutableDictionary *__contactsOnlineState;
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[settings.account]];
         hasRec = [rs next];
         [rs close];
-        if (hasRec) {
-            
+        if (hasRec)
+        {
             sqlString = [NSString stringWithFormat:@"UPDATE %@ SET objectId=?, nickname=?, birthday=?, email=?, gender=?, lifespan=?, avatar=?, avatarURL=?, centerTop=?, centerTopURL=?, isAutoSync=?, isUseGestureLock=?, isShowGestureTrack=?, gesturePasswod=?, createtime=?, updatetime=?, syntime=?, countdownType=?, dayOrMonth=?, autoDelayUndonePlan=?, signature=?  WHERE account=?", STRTableName1];
             
             BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.objectId, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, settings.avatar, settings.avatarURL, settings.centerTop, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.createtime, settings.updatetime, settings.syntime, settings.countdownType, settings.dayOrMonth, settings.autoDelayUndonePlan, settings.signature, settings.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
-            
-        } else {
-            
+        }
+        else
+        {
             sqlString = [NSString stringWithFormat:@"INSERT INTO %@(objectId, account, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, isUseGestureLock, isShowGestureTrack, gesturePasswod, createtime, updatetime, syntime, countdownType, dayOrMonth, autoDelayUndonePlan, signature) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", STRTableName1];
             
             BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.objectId, settings.account, settings.nickname, settings.birthday, settings.email, settings.gender, settings.lifespan, settings.avatar, settings.avatarURL, settings.centerTop, settings.centerTopURL, settings.isAutoSync, settings.isUseGestureLock, settings.isShowGestureTrack, settings.gesturePasswod, settings.createtime, settings.updatetime, settings.syntime, settings.countdownType, settings.dayOrMonth, settings.autoDelayUndonePlan, settings.signature]];
@@ -303,11 +361,14 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (BOOL)storePlan:(Plan *)plan {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (BOOL)storePlan:(Plan *)plan
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return NO;
             }
         }
@@ -315,29 +376,46 @@ static NSMutableDictionary *__contactsOnlineState;
         if (!plan.planid || !plan.content || !plan.createtime)
             return NO;
         
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             plan.account = user.objectId;
-        } else {
+        }
+        else
+        {
             plan.account = @"";
         }
-        if (!plan.completetime) {
+        if (!plan.completetime)
+        {
             plan.completetime = @"";
         }
-        if (!plan.updatetime) {
+        if (!plan.updatetime)
+        {
             plan.updatetime = plan.createtime;
         }
-        if (!plan.iscompleted) {
+        if (!plan.iscompleted)
+        {
             plan.iscompleted = @"0";
         }
-        if (!plan.beginDate) {
+        if (!plan.beginDate)
+        {
             plan.beginDate = [[plan.createtime componentsSeparatedByString:@" "] objectAtIndex:0];
         }
-        if (!plan.notifytime) {
+        if (!plan.notifytime)
+        {
             plan.notifytime = @"";
         }
-        if (!plan.isdeleted) {
+        if (!plan.isdeleted)
+        {
             plan.isdeleted = @"0";
+        }
+        if (!plan.isRepeat)
+        {
+            plan.isRepeat = @"0";
+        }
+        if (!plan.remark)
+        {
+            plan.remark = @"";
         }
         
         BOOL hasRec = NO;
@@ -347,48 +425,53 @@ static NSMutableDictionary *__contactsOnlineState;
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
-        if (hasRec) {
+        if (hasRec)
+        {
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, createtime=?, completetime=?, updatetime=?, iscompleted=?, isnotify=?, notifytime=?, beginDate=?, isdeleted=?, isRepeat=?, remark=? WHERE planid=? AND account=?", STRTableName2];
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, createtime=?, completetime=?, updatetime=?, iscompleted=?, isnotify=?, notifytime=?, beginDate=?, isdeleted=? WHERE planid=? AND account=?", STRTableName2];
-            
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.beginDate, plan.isdeleted, plan.planid, plan.account]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.beginDate, plan.isdeleted, plan.isRepeat, plan.remark, plan.planid, plan.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
             //更新提醒
             if (b && [plan.isnotify isEqualToString:@"1"]
-                && [plan.iscompleted isEqualToString:@"0"]) {
-                
+                && [plan.iscompleted isEqualToString:@"0"])
+            {
                 //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
                 plan.notifytime = [CommonFunction updateNotifyTime:plan.notifytime];
                 
                 [self updatePlanNotification:plan];
-                
-            } else {
-                
+            }
+            else
+            {
                 [self cancelPlanNotification:plan.planid];
             }
-        } else {
+        }
+        else
+        {
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted, isRepeat) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", STRTableName2];
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", STRTableName2];
-            
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.account, plan.planid, plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.beginDate, plan.isdeleted]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.account, plan.planid, plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.beginDate, plan.isdeleted, plan.isRepeat]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
             //添加提醒
-            if (b && [plan.isnotify isEqualToString:@"1"]) {
-                
+            if (b && [plan.isnotify isEqualToString:@"1"])
+            {
                 [self addPlanNotification:plan];
             }
             //更新5天没有新建计划的提醒时间
             [self setFiveDayNotification];
         }
-        if (b) {
+        if (b)
+        {
             NSString *flag = [UserDefaults objectForKey:STRBeginDateFlag];
-            if (!flag || ![flag isEqualToString:@"1"]) {
+            if (!flag || ![flag isEqualToString:@"1"])
+            {
 
-            } else {
+            }
+            else
+            {
                 [NotificationCenter postNotificationName:NTFPlanSave object:nil];
             }
         }
@@ -396,11 +479,14 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (BOOL)updatePlanState:(Plan *)plan {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (BOOL)updatePlanState:(Plan *)plan
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return NO;
             }
         }
@@ -408,20 +494,34 @@ static NSMutableDictionary *__contactsOnlineState;
         if (!plan.planid)
             return NO;
         
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             plan.account = user.objectId;
-        } else {
+        }
+        else
+        {
             plan.account = @"";
         }
-        if (!plan.completetime) {
+        if (!plan.completetime)
+        {
             plan.completetime = @"";
         }
-        if (!plan.updatetime) {
+        if (!plan.updatetime)
+        {
             plan.updatetime = plan.createtime;
         }
-        if (!plan.iscompleted) {
+        if (!plan.iscompleted)
+        {
             plan.iscompleted = @"0";
+        }
+        if (!plan.isRepeat)
+        {
+            plan.isRepeat = @"0";
+        }
+        if (!plan.remark)
+        {
+            plan.remark = @"";
         }
         
         BOOL hasRec = NO;
@@ -431,28 +531,30 @@ static NSMutableDictionary *__contactsOnlineState;
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
-        if (hasRec) {
+        if (hasRec)
+        {
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET beginDate=?, completetime=?, updatetime=?, iscompleted=?, isRepeat=?, remark=? WHERE planid=? AND account=?", STRTableName2];
             
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET beginDate=?, completetime=?, updatetime=?, iscompleted=? WHERE planid=? AND account=?", STRTableName2];
-            
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.beginDate, plan.completetime, plan.updatetime, plan.iscompleted, plan.planid, plan.account]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.beginDate, plan.completetime, plan.updatetime, plan.iscompleted, plan.isRepeat, plan.remark, plan.planid, plan.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
-            
         }
-        if (b) {
+        if (b)
+        {
             [NotificationCenter postNotificationName:NTFPlanSave object:nil];
         }
         return b;
     }
 }
 
-+ (BOOL)storePhoto:(Photo *)photo {
-    
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (BOOL)storePhoto:(Photo *)photo
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return NO;
             }
         }
@@ -460,29 +562,40 @@ static NSMutableDictionary *__contactsOnlineState;
         if (!photo.photoid || !photo.createtime)
             return NO;
         
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             photo.account = user.objectId;
-        } else {
+        }
+        else
+        {
             photo.account = @"";
         }
-        if (!photo.content) {
+        if (!photo.content)
+        {
             photo.content = @"";
         }
-        if (!photo.phototime) {
+        if (!photo.phototime)
+        {
             photo.phototime = @"";
         }
-        if (!photo.updatetime) {
+        if (!photo.updatetime)
+        {
             photo.updatetime = photo.createtime;
         }
-        if (!photo.location) {
+        if (!photo.location)
+        {
             photo.location = @"";
         }
         NSMutableArray *photoDataArray = [NSMutableArray arrayWithCapacity:9];
-        for (NSInteger i = 0; i < 9; i++) {
-            if (i < photo.photoArray.count) {
+        for (NSInteger i = 0; i < 9; i++)
+        {
+            if (i < photo.photoArray.count)
+            {
                 [photoDataArray addObject:photo.photoArray[i]];
-            } else {
+            }
+            else
+            {
                 [photoDataArray addObject:[NSData data]];
             }
         }
@@ -494,63 +607,77 @@ static NSMutableDictionary *__contactsOnlineState;
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
-        if (hasRec) {
-            
+        if (hasRec)
+        {
             sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, createtime=?, phototime=?, updatetime=?, location=?, photo1=?, photo2=?, photo3=?, photo4=?, photo5=?, photo6=?, photo7=?, photo8=?, photo9=?, photo1URL=?, photo2URL=?, photo3URL=?, photo4URL=?, photo5URL=?, photo6URL=?, photo7URL=?, photo8URL=?, photo9URL=? WHERE photoid=? AND account=?", STRTableName3];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[photo.content, photo.createtime, photo.phototime, photo.updatetime, photo.location, photoDataArray[0], photoDataArray[1], photoDataArray[2], photoDataArray[3], photoDataArray[4], photoDataArray[5], photoDataArray[6], photoDataArray[7], photoDataArray[8], photo.photoURLArray[0], photo.photoURLArray[1], photo.photoURLArray[2], photo.photoURLArray[3], photo.photoURLArray[4], photo.photoURLArray[5], photo.photoURLArray[6], photo.photoURLArray[7], photo.photoURLArray[8], photo.photoid, photo.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
-
-        } else {
-            
+        }
+        else
+        {
             sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL, isdeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", STRTableName3];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[photo.account, photo.photoid, photo.content, photo.createtime, photo.phototime, photo.updatetime, photo.location, photoDataArray[0], photoDataArray[1], photoDataArray[2], photoDataArray[3], photoDataArray[4], photoDataArray[5], photoDataArray[6], photoDataArray[7], photoDataArray[8], photo.photoURLArray[0], photo.photoURLArray[1], photo.photoURLArray[2], photo.photoURLArray[3], photo.photoURLArray[4], photo.photoURLArray[5], photo.photoURLArray[6], photo.photoURLArray[7], photo.photoURLArray[8], @"0"]];
             
             FMDBQuickCheck(b, sqlString, __db);
         }
-        if (b) {
+        if (b)
+        {
             [NotificationCenter postNotificationName:NTFPhotoSave object:nil];
         }
         return b;
     }
 }
 
-+ (BOOL)storeStatistics:(Statistics *)statistics {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (BOOL)storeStatistics:(Statistics *)statistics
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return NO;
             }
         }
         
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             statistics.account = user.objectId;
-        } else {
+        }
+        else
+        {
             return NO;
         }
-        if (!statistics.recentMax) {
+        if (!statistics.recentMax)
+        {
             statistics.recentMax = @"0";
         }
-        if (!statistics.recentMaxBeginDate) {
+        if (!statistics.recentMaxBeginDate)
+        {
             statistics.recentMaxBeginDate = @"";
         }
-        if (!statistics.recentMaxEndDate) {
+        if (!statistics.recentMaxEndDate)
+        {
             statistics.recentMaxEndDate = @"";
         }
-        if (!statistics.recordMax) {
+        if (!statistics.recordMax)
+        {
             statistics.recordMax = @"0";
         }
-        if (!statistics.recordMaxBeginDate) {
+        if (!statistics.recordMaxBeginDate)
+        {
             statistics.recordMaxBeginDate = @"";
         }
-        if (!statistics.recordMaxEndDate) {
+        if (!statistics.recordMaxEndDate)
+        {
             statistics.recordMaxEndDate = @"";
         }
-        if (!statistics.updatetime) {
+        if (!statistics.updatetime)
+        {
             statistics.updatetime = @"";
         }
         
@@ -560,16 +687,16 @@ static NSMutableDictionary *__contactsOnlineState;
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
-        if (hasRec) {
-            
+        if (hasRec)
+        {
             sqlString = [NSString stringWithFormat:@"UPDATE %@ SET recentMax=?, recentMaxBeginDate=?, recentMaxEndDate=?, recordMax=?, recordMaxBeginDate=?, recordMaxEndDate=?, updatetime=? WHERE account=?", STRTableName4];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[statistics.recentMax, statistics.recentMaxBeginDate, statistics.recentMaxEndDate, statistics.recordMax, statistics.recordMaxBeginDate, statistics.recordMaxEndDate, statistics.updatetime, statistics.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
-            
-        } else {
-            
+        }
+        else
+        {
             sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, recentMax, recentMaxBeginDate, recentMaxEndDate, recordMax, recordMaxBeginDate, recordMaxEndDate, updatetime) values(?, ?, ?, ?, ?, ?, ?, ?)", STRTableName4];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[statistics.account, statistics.recentMax, statistics.recentMaxBeginDate, statistics.recentMaxEndDate, statistics.recordMax, statistics.recordMaxBeginDate, statistics.recordMaxEndDate, statistics.updatetime]];
@@ -581,58 +708,65 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (BOOL)storeTask:(Task *)task updateNotify:(BOOL)updateNotify {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
-                return NO;
-            }
++ (BOOL)storeTask:(Task *)task updateNotify:(BOOL)updateNotify
+{
+    @synchronized(__db)
+    {
+        if (![__db open])
+        {
+            return NO;
         }
         
         if (!task.taskId || !task.createTime)
             return NO;
         
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             task.account = user.objectId;
-        } else {
+        }
+        else
+        {
             task.account = @"";
         }
-        if (!task.content) {
+        if (!task.content)
+        {
             task.content = @"";
         }
-        if (!task.totalCount) {
+        if (!task.totalCount)
+        {
             task.totalCount = @"0";
         }
-        if (!task.completionDate) {
+        if (!task.completionDate)
+        {
             task.completionDate = @"";
         }
-        if (!task.updateTime) {
+        if (!task.updateTime)
+        {
             task.updateTime = @"";
         }
-        if (!task.isNotify) {
+        if (!task.isNotify)
+        {
             task.isNotify = @"0";
         }
-        if (!task.notifyTime) {
+        if (!task.notifyTime)
+        {
             task.notifyTime = @"";
         }
-        if (!task.isDeleted) {
+        if (!task.isDeleted)
+        {
             task.isDeleted = @"0";
         }
-        if (!task.isTomato) {
-            task.isTomato = @"0";
-        }
-        if (!task.tomatoMinute) {
-            task.tomatoMinute = @"";
-        }
-        if (!task.isRepeat) {
+        if (!task.isRepeat)
+        {
             task.isRepeat = @"0";
         }
-        if (!task.repeatType) {
+        if (!task.repeatType)
+        {
             task.repeatType = @"4";
         }
-        if (!task.taskOrder) {
+        if (!task.taskOrder)
+        {
             task.taskOrder = @"";
         }
         
@@ -644,50 +778,61 @@ static NSMutableDictionary *__contactsOnlineState;
         [rs close];
         BOOL b = NO;
         if (hasRec) {
-            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, totalCount=?, completionDate=?, updateTime=?, isNotify=?, notifyTime=?, isTomato=?, tomatoMinute=?, isRepeat=?, repeatType=?, taskOrder=? WHERE taskId=? AND account=?", STRTableName5];
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET content=?, totalCount=?, completionDate=?, updateTime=?, isNotify=?, notifyTime=?, isRepeat=?, repeatType=?, taskOrder=? WHERE taskId=? AND account=?", STRTableName5];
             
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.content, task.totalCount, task.completionDate, task.updateTime, task.isNotify, task.notifyTime, task.isTomato, task.tomatoMinute, task.isRepeat, task.repeatType, task.taskOrder, task.taskId, task.account]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.content, task.totalCount, task.completionDate, task.updateTime, task.isNotify, task.notifyTime, task.isRepeat, task.repeatType, task.taskOrder, task.taskId, task.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
             //更新提醒
-            if (b && updateNotify) {
-                if ([task.isNotify isEqualToString:@"1"]) {
+            if (b && updateNotify)
+            {
+                if ([task.isNotify isEqualToString:@"1"])
+                {
                     //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
                     task.notifyTime = [CommonFunction updateNotifyTime:task.notifyTime];
                     
                     [self updateTaskNotification:task];
-                } else {
+                }
+                else
+                {
                     [self cancelTaskNotification:task.taskId];
                 }
             }
-        } else {
+        }
+        else
+        {
             
-            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder, isDeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", STRTableName5];
+            sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isRepeat, repeatType, taskOrder, isDeleted) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", STRTableName5];
             
-            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.account, task.taskId, task.content, task.totalCount, task.completionDate, task.createTime, task.updateTime, task.isNotify, task.notifyTime, task.isTomato, task.tomatoMinute, task.isRepeat, task.repeatType, task.taskOrder, @"0"]];
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.account, task.taskId, task.content, task.totalCount, task.completionDate, task.createTime, task.updateTime, task.isNotify, task.notifyTime, task.isRepeat, task.repeatType, task.taskOrder, @"0"]];
             
             FMDBQuickCheck(b, sqlString, __db);
             
             //添加提醒
-            if (b && [task.isNotify isEqualToString:@"1"]) {
+            if (b && [task.isNotify isEqualToString:@"1"])
+            {
                 [self addTaskNotification:task];
             }
             //更新5天没有新建计划的提醒时间
             [self setFiveDayNotification];
         }
-        if (b) {
+        if (b)
+        {
             [NotificationCenter postNotificationName:NTFTaskSave object:nil];
         }
         return b;
     }
 }
 
-+ (BOOL)updateTaskCount:(Task *)task {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (BOOL)updateTaskCount:(Task *)task
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return NO;
             }
         }
@@ -695,19 +840,25 @@ static NSMutableDictionary *__contactsOnlineState;
         if (!task.taskId || !task.createTime)
             return NO;
         
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             task.account = user.objectId;
-        } else {
+        }
+        else
+        {
             task.account = @"";
         }
-        if (!task.totalCount) {
+        if (!task.totalCount)
+        {
             task.totalCount = @"0";
         }
-        if (!task.completionDate) {
+        if (!task.completionDate)
+        {
             task.completionDate = @"";
         }
-        if (!task.updateTime) {
+        if (!task.updateTime)
+        {
             task.updateTime = @"";
         }
         
@@ -718,26 +869,30 @@ static NSMutableDictionary *__contactsOnlineState;
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
-        if (hasRec) {
+        if (hasRec)
+        {
             sqlString = [NSString stringWithFormat:@"UPDATE %@ SET totalCount=?, completionDate=?, updateTime=? WHERE taskId=? AND account=?", STRTableName5];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.totalCount, task.completionDate, task.updateTime, task.taskId, task.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
-
         }
-        if (b) {
+        if (b)
+        {
             [NotificationCenter postNotificationName:NTFTaskSave object:nil];
         }
         return b;
     }
 }
 
-+ (BOOL)storeTaskRecord:(TaskRecord *)taskRecord {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (BOOL)storeTaskRecord:(TaskRecord *)taskRecord
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return NO;
             }
         }
@@ -751,18 +906,22 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMDBQuickCheck(b, sqlString, __db);
         
-        if (b) {
+        if (b)
+        {
             [NotificationCenter postNotificationName:NTFTaskRecordSave object:nil];
         }
         return b;
     }
 }
 
-+ (BOOL)storeMessages:(Messages *)message {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (BOOL)storeMessages:(Messages *)message
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return NO;
             }
         }
@@ -771,29 +930,37 @@ static NSMutableDictionary *__contactsOnlineState;
             return NO;
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
-        if (!message.title) {
+        if (!message.title)
+        {
             message.title = @"";
         }
-        if (!message.content) {
+        if (!message.content)
+        {
             message.content = @"";
         }
-        if (!message.detailURL) {
+        if (!message.detailURL)
+        {
             message.detailURL = @"";
         }
-        if (!message.imgURLArray) {
+        if (!message.imgURLArray)
+        {
             message.imgURLArray = [NSArray array];
         }
-        if (!message.canShare) {
+        if (!message.canShare)
+        {
             message.canShare = @"0";
         }
-        if (!message.messageType) {
+        if (!message.messageType)
+        {
             message.messageType = @"1";
         }
-        if (!message.createTime) {
+        if (!message.createTime)
+        {
             message.createTime = [CommonFunction getTimeNowString];
         }
         
@@ -806,8 +973,8 @@ static NSMutableDictionary *__contactsOnlineState;
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
-        if (!hasRec) {
-            
+        if (!hasRec)
+        {
             sqlString = [NSString stringWithFormat:@"INSERT INTO %@(account, messageId, title, content, detailURL, imgURLArray, hasRead, canShare, messageType, createTime) values(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", STRTableName7];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[account, message.messageId, message.title, message.content, message.detailURL, imgURLArrayData, @"0", message.canShare, message.messageType, message.createTime]];
@@ -820,11 +987,14 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (BOOL)setMessagesRead:(Messages *)message {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (BOOL)setMessagesRead:(Messages *)message
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return NO;
             }
         }
@@ -833,7 +1003,8 @@ static NSMutableDictionary *__contactsOnlineState;
             return NO;
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -845,8 +1016,8 @@ static NSMutableDictionary *__contactsOnlineState;
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
-        if (hasRec) {
-            
+        if (hasRec)
+        {
             sqlString = [NSString stringWithFormat:@"UPDATE %@ SET hasRead=1 WHERE messageId=? AND account=?", STRTableName7];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[message.messageId, account]];
@@ -859,19 +1030,25 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (BOOL)deletePlan:(Plan *)plan {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (BOOL)deletePlan:(Plan *)plan
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return NO;
             }
         }
         
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             plan.account = user.objectId;
-        } else {
+        }
+        else
+        {
             plan.account = @"";
         }
         plan.updatetime = [CommonFunction getTimeNowString];
@@ -883,8 +1060,8 @@ static NSMutableDictionary *__contactsOnlineState;
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
-        if (hasRec) {
-
+        if (hasRec)
+        {
             sqlString = [NSString stringWithFormat:@"UPDATE %@ SET isdeleted=1, updatetime=?  WHERE planid=? AND account=?", STRTableName2];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.updatetime, plan.planid, plan.account]];
@@ -892,31 +1069,38 @@ static NSMutableDictionary *__contactsOnlineState;
             FMDBQuickCheck(b, sqlString, __db);
             
             //取消提醒
-            if (b && [plan.isnotify isEqualToString:@"1"]) {
-                
+            if (b && [plan.isnotify isEqualToString:@"1"])
+            {
                 [self cancelPlanNotification:plan.planid];
             }
         }
-        if (b) {
+        if (b)
+        {
             [NotificationCenter postNotificationName:NTFPlanSave object:nil];
         }
         return b;
     }
 }
 
-+ (BOOL)deletePhoto:(Photo *)photo {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (BOOL)deletePhoto:(Photo *)photo
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return NO;
             }
         }
         
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             photo.account = user.objectId;
-        } else {
+        }
+        else
+        {
             photo.account = @"";
         }
         photo.updatetime = [CommonFunction getTimeNowString];
@@ -928,34 +1112,41 @@ static NSMutableDictionary *__contactsOnlineState;
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
-        if (hasRec) {
-            
+        if (hasRec)
+        {
             sqlString = [NSString stringWithFormat:@"UPDATE %@ SET isdeleted=1, updatetime=? WHERE photoid=? AND account=?", STRTableName3];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[photo.updatetime, photo.photoid, photo.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
         }
-        if (b) {
+        if (b)
+        {
             [NotificationCenter postNotificationName:NTFPhotoSave object:nil];
         }
         return b;
     }
 }
 
-+ (BOOL)deleteTask:(Task *)task {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (BOOL)deleteTask:(Task *)task
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return NO;
             }
         }
         
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             task.account = user.objectId;
-        } else {
+        }
+        else
+        {
             task.account = @"";
         }
         task.updateTime = [CommonFunction getTimeNowString];
@@ -967,8 +1158,8 @@ static NSMutableDictionary *__contactsOnlineState;
         hasRec = [rs next];
         [rs close];
         BOOL b = NO;
-        if (hasRec) {
-            
+        if (hasRec)
+        {
             sqlString = [NSString stringWithFormat:@"UPDATE %@ SET isdeleted=1, updateTime=?  WHERE taskId=? AND account=?", STRTableName5];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.updateTime, task.taskId, task.account]];
@@ -976,28 +1167,34 @@ static NSMutableDictionary *__contactsOnlineState;
             FMDBQuickCheck(b, sqlString, __db);
             
             //取消提醒
-            if (b && [task.isNotify isEqualToString:@"1"]) {
+            if (b && [task.isNotify isEqualToString:@"1"])
+            {
                 [self cancelTaskNotification:task.taskId];
             }
         }
-        if (b) {
+        if (b)
+        {
             [NotificationCenter postNotificationName:NTFTaskSave object:nil];
         }
         return b;
     }
 }
 
-+ (BOOL)cleanHasReadMessages {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (BOOL)cleanHasReadMessages
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return NO;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -1013,17 +1210,21 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (BOOL)hasUnreadMessages {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (BOOL)hasUnreadMessages
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return NO ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -1033,8 +1234,8 @@ static NSMutableDictionary *__contactsOnlineState;
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
         BOOL b = NO;
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             b = YES;
             break;
         }
@@ -1044,27 +1245,34 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (Settings *)getPersonalSettings {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (Settings *)getPersonalSettings
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil;
             }
         }
 
         Settings *settings = [[Settings alloc] init];
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             settings.account = user.objectId;
-        } else {
+        }
+        else
+        {
             settings.account = @"";
         }
 
         NSString *sqlString = [NSString stringWithFormat:@"SELECT objectId, nickname, birthday, email, gender, lifespan, avatar, avatarURL, centerTop, centerTopURL, isAutoSync, isUseGestureLock, isShowGestureTrack, gesturePasswod, createtime, updatetime, syntime, countdownType, dayOrMonth, autoDelayUndonePlan, signature FROM %@ WHERE account=?", STRTableName1];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[settings.account]];
-        while ([rs next]) {
+        while ([rs next])
+        {
             settings.objectId = [rs stringForColumn:@"objectId"];
             settings.nickname = [rs stringForColumn:@"nickname"];
             settings.birthday = [rs stringForColumn:@"birthday"];
@@ -1072,12 +1280,14 @@ static NSMutableDictionary *__contactsOnlineState;
             settings.gender = [rs stringForColumn:@"gender"];
             settings.lifespan = [rs stringForColumn:@"lifespan"];
             settings.avatar = [rs dataForColumn:@"avatar"];
-            if (!settings.avatar) {
+            if (!settings.avatar)
+            {
                 settings.avatar = UIImageJPEGRepresentation([UIImage imageNamed:png_AvatarDefault], 1);
             }
             settings.avatarURL = [rs stringForColumn:@"avatarURL"];
             settings.centerTop = [rs dataForColumn:@"centerTop"];
-            if (!settings.centerTop) {
+            if (!settings.centerTop)
+            {
                 settings.centerTop = UIImageJPEGRepresentation([UIImage imageNamed:png_Bg_SideTop], 1);
             }
             settings.centerTopURL = [rs stringForColumn:@"centerTopURL"];
@@ -1092,28 +1302,36 @@ static NSMutableDictionary *__contactsOnlineState;
             settings.dayOrMonth = [rs stringForColumn:@"dayOrMonth"];
             settings.autoDelayUndonePlan = [rs stringForColumn:@"autoDelayUndonePlan"];
             settings.signature = [rs stringForColumn:@"signature"];
-            if (!settings.isAutoSync) {
+            if (!settings.isAutoSync)
+            {
                 settings.isAutoSync = @"0";
             }
-            if (!settings.isUseGestureLock) {
+            if (!settings.isUseGestureLock)
+            {
                 settings.isUseGestureLock = @"0";
             }
-            if (!settings.isShowGestureTrack) {
+            if (!settings.isShowGestureTrack)
+            {
                 settings.isShowGestureTrack = @"1";
             }
-            if (!settings.objectId) {
+            if (!settings.objectId)
+            {
                 settings.objectId = @"";
             }
-            if (!settings.countdownType) {
+            if (!settings.countdownType)
+            {
                 settings.countdownType = @"0";
             }
-            if (!settings.dayOrMonth) {
+            if (!settings.dayOrMonth)
+            {
                 settings.dayOrMonth = @"0";
             }
-            if (!settings.autoDelayUndonePlan) {
+            if (!settings.autoDelayUndonePlan)
+            {
                 settings.autoDelayUndonePlan = @"0";
             }
-            if (!settings.signature) {
+            if (!settings.signature)
+            {
                 settings.signature = @"";
             }
         }
@@ -1123,22 +1341,27 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSArray *)getPlan:(BOOL)isEverydayPlan startIndex:(NSInteger)startIndex {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSArray *)getPlan:(BOOL)isEverydayPlan startIndex:(NSInteger)startIndex
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
             //处理上次升级后本地数据显示不全的问题
             NSString *tmp = [UserDefaults objectForKey:STRCleanCacheFlag];
-            if (!tmp || ![tmp isEqualToString:@"1"]) {
+            if (!tmp || ![tmp isEqualToString:@"1"])
+            {
                 //计划
                 NSString *sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=?", STRTableName2];
                 BOOL b1 = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId]];
@@ -1152,7 +1375,8 @@ static NSMutableDictionary *__contactsOnlineState;
                 BOOL b3 = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId]];
                 FMDBQuickCheck(b3, sqlString, __db);
                 
-                if (b1 && b2 && b3) {
+                if (b1 && b2 && b3)
+                {
                     [UserDefaults setObject:@"1" forKey:STRCleanCacheFlag];
                     [UserDefaults synchronize];
                 }
@@ -1161,10 +1385,13 @@ static NSMutableDictionary *__contactsOnlineState;
         
         NSString *condition = @"";
         NSString *order = @"";
-        if (isEverydayPlan) {
+        if (isEverydayPlan)
+        {
             condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
             order = @"DESC";
-        } else {
+        }
+        else
+        {
             condition = [NSString stringWithFormat:@"datetime(beginDate)>datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
             order = @"ASC";
         }
@@ -1174,8 +1401,8 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, @(kPlanLoadMax), @(startIndex)]];
         
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             Plan *plan = [[Plan alloc] init];
             plan.account = account;
             plan.planid = [rs stringForColumn:@"planid"];
@@ -1190,7 +1417,8 @@ static NSMutableDictionary *__contactsOnlineState;
             plan.isdeleted = [rs stringForColumn:@"isdeleted"];
             
             if (!plan.beginDate
-                || plan.beginDate.length == 0) {
+                || plan.beginDate.length == 0)
+            {
                 NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
                 plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
             }
@@ -1203,17 +1431,21 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSArray *)getUndonePlan {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSArray *)getUndonePlan
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -1225,8 +1457,8 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             Plan *plan = [[Plan alloc] init];
             plan.account = account;
             plan.planid = [rs stringForColumn:@"planid"];
@@ -1239,9 +1471,11 @@ static NSMutableDictionary *__contactsOnlineState;
             plan.notifytime = [rs stringForColumn:@"notifytime"];
             plan.beginDate = [rs stringForColumn:@"beginDate"];
             plan.isdeleted = [rs stringForColumn:@"isdeleted"];
+            plan.isRepeat = [rs stringForColumn:@"isRepeat"];
+            plan.remark = [rs stringForColumn:@"remark"];
             
-            if (!plan.beginDate
-                || plan.beginDate.length == 0) {
+            if (!plan.beginDate || plan.beginDate.length == 0)
+            {
                 NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
                 plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
             }
@@ -1254,17 +1488,21 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSArray *)searchPlan:(NSString *)key {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSArray *)searchPlan:(NSString *)key
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -1277,8 +1515,8 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             Plan *plan = [[Plan alloc] init];
             plan.account = account;
             plan.planid = [rs stringForColumn:@"planid"];
@@ -1293,7 +1531,8 @@ static NSMutableDictionary *__contactsOnlineState;
             plan.isdeleted = [rs stringForColumn:@"isdeleted"];
             
             if (!plan.beginDate
-                || plan.beginDate.length == 0) {
+                || plan.beginDate.length == 0)
+            {
                 NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
                 plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
             }
@@ -1306,17 +1545,21 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSArray *)getPhoto:(NSInteger)startIndex {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSArray *)getPhoto:(NSInteger)startIndex
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -1326,8 +1569,8 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, @(kPhotoLoadMax), @(startIndex)]];
         
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             Photo *photo = [[Photo alloc] init];
             photo.account = account;
             photo.photoid = [rs stringForColumn:@"photoid"];
@@ -1337,24 +1580,28 @@ static NSMutableDictionary *__contactsOnlineState;
             photo.updatetime = [rs stringForColumn:@"updatetime"];
             photo.location = [rs stringForColumn:@"location"];
             photo.photoURLArray = [NSMutableArray arrayWithCapacity:9];
-            for (NSInteger n = 0; n < 9; n++) {
+            for (NSInteger n = 0; n < 9; n++)
+            {
                 NSString *url = [NSString stringWithFormat:@"photo%ldURL", (long)(n + 1)];
-                if ([rs stringForColumn:url]) {
+                if ([rs stringForColumn:url])
+                {
                     photo.photoURLArray[n] = [rs stringForColumn:url];
-                } else {
+                }
+                else
+                {
                     photo.photoURLArray[n] = @"";
                 }
-                
             }
             photo.photoArray = [NSMutableArray arrayWithCapacity:9];
-            for (NSInteger m = 0; m < 9; m++) {
+            for (NSInteger m = 0; m < 9; m++)
+            {
                 NSString *photoName = [NSString stringWithFormat:@"photo%ld", (long)(m + 1)];
                 NSData *imageData = [rs dataForColumn:photoName];
-                if (imageData) {
+                if (imageData)
+                {
                     photo.photoArray[m] = imageData;
                 }
             }
-            
             [array addObject:photo];
         }
         [rs close];
@@ -1363,19 +1610,23 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (Photo *)getPhotoById:(NSString *)photoid {
-    @synchronized(__db) {
-        
++ (Photo *)getPhotoById:(NSString *)photoid
+{
+    @synchronized(__db)
+    {
         Photo *photo = [[Photo alloc] init];
         
-        if (!__db.open) {
-            if (![__db open]) {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return photo ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -1384,8 +1635,8 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, photoid]];
         
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             photo.account = account;
             photo.photoid = [rs stringForColumn:@"photoid"];
             photo.content = [rs stringForColumn:@"content"];
@@ -1395,19 +1646,25 @@ static NSMutableDictionary *__contactsOnlineState;
             photo.location = [rs stringForColumn:@"location"];
             photo.isdeleted = @"0";
             photo.photoURLArray = [NSMutableArray arrayWithCapacity:9];
-            for (NSInteger n = 0; n < 9; n++) {
+            for (NSInteger n = 0; n < 9; n++)
+            {
                 NSString *url = [NSString stringWithFormat:@"photo%ldURL", (long)(n + 1)];
-                if ([rs stringForColumn:url]) {
+                if ([rs stringForColumn:url])
+                {
                     photo.photoURLArray[n] = [rs stringForColumn:url];
-                } else {
+                }
+                else
+                {
                     photo.photoURLArray[n] = @"";
                 }
             }
             photo.photoArray = [NSMutableArray arrayWithCapacity:9];
-            for (NSInteger i = 0; i < 9; i++) {
+            for (NSInteger i = 0; i < 9; i++)
+            {
                 NSString *photoName = [NSString stringWithFormat:@"photo%ld", (long)(i + 1)];
                 NSData *imageData = [rs dataForColumn:photoName];
-                if (imageData) {
+                if (imageData)
+                {
                     photo.photoArray[i] = imageData;
                 }
             }
@@ -1418,28 +1675,34 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (Statistics *)getStatistics {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (Statistics *)getStatistics
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil;
             }
         }
         
         Statistics *statistics = [[Statistics alloc] init];
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             statistics.account = user.objectId;
-        } else {
+        }
+        else
+        {
             statistics.account = @"";
         }
         
         NSString *sqlString = [NSString stringWithFormat:@"SELECT recentMax, recentMaxBeginDate, recentMaxEndDate, recordMax, recordMaxBeginDate, recordMaxEndDate, updatetime FROM %@ WHERE account=?", STRTableName4];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[statistics.account]];
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             statistics.recentMax = [rs stringForColumn:@"recentMax"];
             statistics.recentMaxBeginDate = [rs stringForColumn:@"recentMaxBeginDate"];
             statistics.recentMaxEndDate = [rs stringForColumn:@"recentMaxEndDate"];
@@ -1449,27 +1712,33 @@ static NSMutableDictionary *__contactsOnlineState;
             statistics.updatetime = [rs stringForColumn:@"updatetime"];
         }
         [rs close];
-        if (!statistics.recentMax) {
+        if (!statistics.recentMax)
+        {
             statistics.recentMax = @"0";
         }
-        if (!statistics.recordMax) {
+        if (!statistics.recordMax)
+        {
             statistics.recordMax = @"0";
         }
         return statistics;
     }
 }
 
-+ (NSMutableArray *)getTask {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSMutableArray *)getTask
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -1479,8 +1748,8 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             Task *task = [[Task alloc] init];
             task.account = account;
             task.taskId = [rs stringForColumn:@"taskId"];
@@ -1498,16 +1767,20 @@ static NSMutableDictionary *__contactsOnlineState;
             task.taskOrder = [rs stringForColumn:@"taskOrder"];
             task.isDeleted = @"0";
             
-            if (!task.isTomato) {
+            if (!task.isTomato)
+            {
                 task.isTomato = @"0";
             }
-            if (!task.tomatoMinute) {
+            if (!task.tomatoMinute)
+            {
                 task.tomatoMinute = @"";
             }
-            if (!task.isRepeat) {
+            if (!task.isRepeat)
+            {
                 task.isRepeat = @"0";
             }
-            if (!task.repeatType) {
+            if (!task.repeatType)
+            {
                 task.repeatType = @"4";
             }
             [array addObject:task];
@@ -1518,17 +1791,21 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (Task *)getTaskById:(NSString *)taskId {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (Task *)getTaskById:(NSString *)taskId
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -1539,8 +1816,8 @@ static NSMutableDictionary *__contactsOnlineState;
         
         Task *task = [[Task alloc] init];
         
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             task.account = account;
             task.taskId = [rs stringForColumn:@"taskId"];
             task.content = [rs stringForColumn:@"content"];
@@ -1557,16 +1834,20 @@ static NSMutableDictionary *__contactsOnlineState;
             task.taskOrder = [rs stringForColumn:@"taskOrder"];
             task.isDeleted = @"0";
             
-            if (!task.isTomato) {
+            if (!task.isTomato)
+            {
                 task.isTomato = @"0";
             }
-            if (!task.tomatoMinute) {
+            if (!task.tomatoMinute)
+            {
                 task.tomatoMinute = @"";
             }
-            if (!task.isRepeat) {
+            if (!task.isRepeat)
+            {
                 task.isRepeat = @"0";
             }
-            if (!task.repeatType) {
+            if (!task.repeatType)
+            {
                 task.repeatType = @"4";
             }
             return task;
@@ -1577,11 +1858,14 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSArray *)getTaskRecord:(NSString *)recordId {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSArray *)getTaskRecord:(NSString *)recordId
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
@@ -1591,8 +1875,8 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[recordId]];
         
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             TaskRecord *taskRecord = [[TaskRecord alloc] init];
             taskRecord.recordId = recordId;
             taskRecord.createTime = [rs stringForColumn:@"createTime"];
@@ -1605,17 +1889,21 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSArray *)getMessages {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSArray *)getMessages
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -1625,8 +1913,8 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             Messages *message = [[Messages alloc] init];
             message.messageId = [rs stringForColumn:@"messageId"];
             message.title = [rs stringForColumn:@"title"];
@@ -1647,41 +1935,48 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSString *)getPlanTotalCount:(NSString*)type {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSString *)getPlanTotalCount:(NSString*)type
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
         
         NSString *total = @"0";
         NSString *sqlString = @"";
-        if ([type isEqualToString:@"DAY"]) {
-            
+        if ([type isEqualToString:@"DAY"])
+        {
             NSString *condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
             sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE %@ AND account=? AND isdeleted=0", STRTableName2, condition];
             
-        } else if ([type isEqualToString:@"FUTURE"]) {
-            
+        }
+        else if ([type isEqualToString:@"FUTURE"])
+        {
             NSString *condition = [NSString stringWithFormat:@"datetime(beginDate)>datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
             sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE %@ AND account=? AND isdeleted=0", STRTableName2, condition];
 
-        } else {
+        }
+        else
+        {
             sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE account=? AND isdeleted=0", STRTableName2];
         }
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
-        if([rs next]) {
-            
+        if([rs next])
+        {
             total = [rs stringForColumn:@"total"];
         }
         [rs close];
@@ -1690,17 +1985,21 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSString *)getPlanCompletedCount {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSString *)getPlanCompletedCount
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -1710,8 +2009,8 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
-        if([rs next]) {
-            
+        if([rs next])
+        {
             completed = [rs stringForColumn:@"completed"];
         }
         [rs close];
@@ -1720,17 +2019,21 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSString *)getPhotoTotalCount {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSString *)getPhotoTotalCount
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -1740,8 +2043,8 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
-        if([rs next]) {
-            
+        if([rs next])
+        {
             total = [rs stringForColumn:@"total"];
         }
         [rs close];
@@ -1750,17 +2053,21 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSString *)getTaskTotalCount {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSString *)getTaskTotalCount
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -1770,8 +2077,8 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
-        if([rs next]) {
-            
+        if([rs next])
+        {
             total = [rs stringForColumn:@"total"];
         }
         [rs close];
@@ -1780,17 +2087,21 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSArray *)getTaskStatisticsByStartDate:(NSString *)startDate endDate:(NSString *)endDate {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSArray *)getTaskStatisticsByStartDate:(NSString *)startDate endDate:(NSString *)endDate
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -1802,8 +2113,8 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             TaskStatistics *taskStatistics = [[TaskStatistics alloc] init];
             taskStatistics.account = account;
             taskStatistics.taskContent = [rs stringForColumn:@"title"];
@@ -1817,7 +2128,8 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (void)addPlanNotification:(Plan *)plan {
++ (void)addPlanNotification:(Plan *)plan
+{
     //时间格式：yyyy-MM-dd HH:mm
     NSDate *date = [CommonFunction NSStringDateToNSDate:plan.notifytime formatter:STRDateFormatterType3];
     
@@ -1837,22 +2149,26 @@ static NSMutableDictionary *__contactsOnlineState;
     [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
 }
 
-+ (void)updatePlanNotification:(Plan *)plan {
++ (void)updatePlanNotification:(Plan *)plan
+{
     //首先取消该计划的本地所有通知
     [self cancelPlanNotification:plan.planid];
     //重新添加新的通知
     [self addPlanNotification:plan];
 }
 
-+ (void)cancelPlanNotification:(NSString*)planid {
++ (void)cancelPlanNotification:(NSString*)planid
+{
     //取消该计划的本地所有通知
     NSArray *array = [LocalNotificationManager getNotificationWithTag:planid type:NotificationTypePlan];
-    for (UILocalNotification *item in array) {
+    for (UILocalNotification *item in array)
+    {
         [LocalNotificationManager cancelNotification:item];
     }
 }
 
-+ (void)addTaskNotification:(Task *)task {
++ (void)addTaskNotification:(Task *)task
+{
     //时间格式：yyyy-MM-dd HH:mm
     NSDate *date = [CommonFunction NSStringDateToNSDate:task.notifyTime formatter:STRDateFormatterType3];
     
@@ -1875,9 +2191,11 @@ static NSMutableDictionary *__contactsOnlineState;
     [destDic setObject:task.isRepeat forKey:@"isRepeat"];
     [destDic setObject:task.repeatType forKey:@"repeatType"];
     [destDic setObject:task.taskOrder forKey:@"taskOrder"];
-    if ([task.isRepeat isEqualToString:@"1"]) {
+    if ([task.isRepeat isEqualToString:@"1"])
+    {
         NSCalendarUnit repeatUnit = NSCalendarUnitEra;
-        switch ([task.repeatType integerValue]) {
+        switch ([task.repeatType integerValue])
+        {
             case 0://每日
                 repeatUnit = NSCalendarUnitDay;
                 break;
@@ -1894,36 +2212,43 @@ static NSMutableDictionary *__contactsOnlineState;
                 break;
         }
         [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:task.content repeatInterval:repeatUnit];
-    } else {
+    }
+    else
+    {
         [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:task.content];
     }
 }
 
-+ (void)updateTaskNotification:(Task *)task {
++ (void)updateTaskNotification:(Task *)task
+{
     //首先取消该任务的本地所有通知
     [self cancelTaskNotification:task.taskId];
     //重新添加新的通知
     [self addTaskNotification:task];
 }
 
-+ (void)cancelTaskNotification:(NSString*)taskId {
++ (void)cancelTaskNotification:(NSString*)taskId
+{
     //取消该任务的本地所有通知
     NSArray *array = [LocalNotificationManager getNotificationWithTag:taskId type:NotificationTypeTask];
-    for (UILocalNotification *item in array) {
+    for (UILocalNotification *item in array)
+    {
         [LocalNotificationManager cancelNotification:item];
     }
 }
 
-+ (void)setFiveDayNotification {
-    
++ (void)setFiveDayNotification
+{
     BOOL hasFiveDayNotification = NO;
     
     NSArray *arry = [LocalNotificationManager getAllLocalNotification];
     //查询是否已经添加过5天未新建计划的提醒
-    for (UILocalNotification *item in arry) {
+    for (UILocalNotification *item in arry)
+    {
         NSDictionary *sourceN = item.userInfo;
         NSString *tag = [sourceN objectForKey:@"tag"];
-        if ([tag longLongValue] == [STRFiveDayFlag1 longLongValue]) {
+        if ([tag longLongValue] == [STRFiveDayFlag1 longLongValue])
+        {
             hasFiveDayNotification = YES;
             break;
         }
@@ -1934,7 +2259,8 @@ static NSMutableDictionary *__contactsOnlineState;
     NSString *fiveDayLater = [dateFormatter stringFromDate:[[NSDate date] dateByAddingTimeInterval:5 * 24 * 3600]];
     BmobUser *user = [BmobUser currentUser];
     NSString *account = @"";
-    if (user) {
+    if (user)
+    {
         account = user.objectId;
     }
     Plan *fiveDayPlan = [[Plan alloc] init];
@@ -1948,25 +2274,30 @@ static NSMutableDictionary *__contactsOnlineState;
     fiveDayPlan.content = STRViewTips106;
     fiveDayPlan.notifytime = fiveDayLater;
     
-    if (hasFiveDayNotification) {//更新提醒时间
+    if (hasFiveDayNotification)
+    {//更新提醒时间
         [self updatePlanNotification:fiveDayPlan];
-    } else {//新建提醒
+    }
+    else
+    {//新建提醒
         [self addPlanNotification:fiveDayPlan];
     }
 }
 
-+ (void)linkedLocalDataToAccount {
-    
++ (void)linkedLocalDataToAccount
+{
     BmobUser *user = [BmobUser currentUser];
     if (!user) return;
     
     [Config shareInstance].settings = [PlanCache getPersonalSettings];
-    if (![Config shareInstance].settings.createtime) {
-        
+    if (![Config shareInstance].settings.createtime)
+    {
         BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
         [bquery whereKey:@"userObjectId" equalTo:user.objectId];
-        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-            if (array.count == 0) {
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+        {
+            if (array.count == 0)
+            {
                 /*
                  *说明：只要在本地没有已登录账号的设置数据时才关联
                  *     如果本地已经有已登录账号的设置数据，则不关联
@@ -1977,8 +2308,8 @@ static NSMutableDictionary *__contactsOnlineState;
                 FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[@""]];
                 BOOL hasRec = [rs next];
                 [rs close];
-                if (hasRec) {
-                    
+                if (hasRec)
+                {
                     NSString *sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName1];
                     
                     BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
@@ -1996,8 +2327,8 @@ static NSMutableDictionary *__contactsOnlineState;
     FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[@""]];
     hasRec = [rs next];
     [rs close];
-    if (hasRec) {
-        
+    if (hasRec)
+    {
         sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName2];
         
         BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
@@ -2011,8 +2342,8 @@ static NSMutableDictionary *__contactsOnlineState;
     rs = [__db executeQuery:sqlString withArgumentsInArray:@[@""]];
     hasRec = [rs next];
     [rs close];
-    if (hasRec) {
-        
+    if (hasRec)
+    {
         sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName3];
         
         BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
@@ -2026,8 +2357,8 @@ static NSMutableDictionary *__contactsOnlineState;
     rs = [__db executeQuery:sqlString withArgumentsInArray:@[@""]];
     hasRec = [rs next];
     [rs close];
-    if (hasRec) {
-        
+    if (hasRec)
+    {
         sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName5];
         
         BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
@@ -2037,11 +2368,14 @@ static NSMutableDictionary *__contactsOnlineState;
     [NotificationCenter postNotificationName:NTFTaskSave object:nil];
 }
 
-+ (NSArray *)getPlanForSync:(NSString *)syntime {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSArray *)getPlanForSync:(NSString *)syntime
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
@@ -2049,25 +2383,31 @@ static NSMutableDictionary *__contactsOnlineState;
         NSMutableArray *array = [NSMutableArray array];
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
-        } else {
+        }
+        else
+        {
             return array;
         }
         
         NSString *sqlString = @"";
-        if (syntime) {
+        if (syntime)
+        {
             NSString *condition = [NSString stringWithFormat:@"datetime(updatetime)>=datetime('%@')", syntime];
             sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=? AND %@", STRTableName2, condition];
-        } else {
+        }
+        else
+        {
             sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=?", STRTableName2];
         }
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             Plan *plan = [[Plan alloc] init];
             plan.account = account;
             plan.planid = [rs stringForColumn:@"planid"];
@@ -2082,7 +2422,8 @@ static NSMutableDictionary *__contactsOnlineState;
             plan.isdeleted = [rs stringForColumn:@"isdeleted"];
             
             if (!plan.beginDate
-                || plan.beginDate.length == 0) {
+                || plan.beginDate.length == 0)
+            {
                 NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
                 plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
             }
@@ -2095,11 +2436,14 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (Plan *)findPlan:(NSString *)account planid:(NSString *)planid {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (Plan *)findPlan:(NSString *)account planid:(NSString *)planid
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
@@ -2109,8 +2453,8 @@ static NSMutableDictionary *__contactsOnlineState;
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, planid]];
         
         Plan *plan = [[Plan alloc] init];
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             plan.account = account;
             plan.planid = [rs stringForColumn:@"planid"];
             plan.content = [rs stringForColumn:@"content"];
@@ -2124,7 +2468,8 @@ static NSMutableDictionary *__contactsOnlineState;
             plan.isdeleted = [rs stringForColumn:@"isdeleted"];
             
             if (!plan.beginDate
-                || plan.beginDate.length == 0) {
+                || plan.beginDate.length == 0)
+            {
                 NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
                 plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
             }
@@ -2135,11 +2480,14 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSArray *)getPhotoForSync:(NSString *)syntime {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSArray *)getPhotoForSync:(NSString *)syntime
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
@@ -2147,24 +2495,31 @@ static NSMutableDictionary *__contactsOnlineState;
         NSMutableArray *array = [NSMutableArray array];
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
-        } else {
+        }
+        else
+        {
             return array;
         }
         
         NSString *sqlString = @"";
-        if (syntime) {
+        if (syntime)
+        {
             NSString *condition = [NSString stringWithFormat:@"datetime(updatetime)>=datetime('%@')", syntime];
             sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL, isdeleted FROM %@ WHERE account=? AND %@", STRTableName3, condition];
-        } else {
+        }
+        else
+        {
             sqlString = [NSString stringWithFormat:@"SELECT photoid, content, createtime, phototime, updatetime, location, photo1, photo2, photo3, photo4, photo5, photo6, photo7, photo8, photo9, photo1URL, photo2URL, photo3URL, photo4URL, photo5URL, photo6URL, photo7URL, photo8URL, photo9URL, isdeleted FROM %@ WHERE account=?", STRTableName3];
         }
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         
-        while ([rs next]) {
+        while ([rs next])
+        {
             Photo *photo = [[Photo alloc] init];
             photo.account = account;
             photo.photoid = [rs stringForColumn:@"photoid"];
@@ -2175,26 +2530,34 @@ static NSMutableDictionary *__contactsOnlineState;
             photo.location = [rs stringForColumn:@"location"];
             photo.isdeleted = [rs stringForColumn:@"isdeleted"];
             photo.photoURLArray = [NSMutableArray arrayWithCapacity:9];
-            for (NSInteger n = 0; n < 9; n++) {
+            for (NSInteger n = 0; n < 9; n++)
+            {
                 NSString *url = [NSString stringWithFormat:@"photo%ldURL", (long)(n + 1)];
-                if ([rs stringForColumn:url]) {
+                if ([rs stringForColumn:url])
+                {
                     photo.photoURLArray[n] = [rs stringForColumn:url];
-                } else {
+                }
+                else
+                {
                     photo.photoURLArray[n] = @"";
                 }
             }
             photo.photoArray = [NSMutableArray arrayWithCapacity:9];
-            for (NSInteger m = 0; m < 9; m++) {
+            for (NSInteger m = 0; m < 9; m++)
+            {
                 NSString *photoName = [NSString stringWithFormat:@"photo%ld", (long)(m + 1)];
                 NSData *imageData = [rs dataForColumn:photoName];
-                if (imageData) {
+                if (imageData)
+                {
                     photo.photoArray[m] = imageData;
                 }
             }
-            if (!photo.content) {
+            if (!photo.content)
+            {
                 photo.content = @"";
             }
-            if (!photo.location) {
+            if (!photo.location)
+            {
                 photo.location = @"";
             }
             [array addObject:photo];
@@ -2206,17 +2569,21 @@ static NSMutableDictionary *__contactsOnlineState;
 }
 
 //time : yyyy-MM-dd HH:mm:ss
-+ (NSArray *)getPlanDateForStatisticsByTime:(NSString *)time {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSArray *)getPlanDateForStatisticsByTime:(NSString *)time
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -2224,22 +2591,23 @@ static NSMutableDictionary *__contactsOnlineState;
         NSMutableArray *array = [NSMutableArray array];
         NSString *sqlString = @"";
         FMResultSet *rs;
-        if (time) {
-            
+        if (time)
+        {
             sqlString = [NSString stringWithFormat:@"SELECT createtime FROM %@ WHERE account=? AND createtime >? ORDER BY createtime", STRTableName2];
             rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, time]];
-            
-        } else {
-            
+        }
+        else
+        {
             sqlString = [NSString stringWithFormat:@"SELECT createtime FROM %@ WHERE account=? ORDER BY createtime", STRTableName2];
             rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         }
 
-        while ([rs next]) {
-
+        while ([rs next])
+        {
             NSString *time = [rs stringForColumn:@"createtime"];
             NSString *date = [[time componentsSeparatedByString:@" "] objectAtIndex:0];
-            if (![array containsObject:date]) {
+            if (![array containsObject:date])
+            {
                 [array addObject:date];
             }
         }
@@ -2247,20 +2615,23 @@ static NSMutableDictionary *__contactsOnlineState;
         
         return array;
     }
-    
 }
 
-+ (NSArray *)getTaskForSync:(NSString *)syntime {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSArray *)getTaskForSync:(NSString *)syntime
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
         
         NSString *account = @"";
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             BmobUser *user = [BmobUser currentUser];
             account = user.objectId;
         }
@@ -2268,17 +2639,20 @@ static NSMutableDictionary *__contactsOnlineState;
         NSMutableArray *array = [NSMutableArray array];
         
         NSString *sqlString = @"";
-        if (syntime) {
+        if (syntime)
+        {
             NSString *condition = [NSString stringWithFormat:@"datetime(updatetime)>=datetime('%@')", syntime];
             sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND %@", STRTableName5, condition];
-        } else {
+        }
+        else
+        {
             sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=?", STRTableName5];
         }
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
 
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             Task *task = [[Task alloc] init];
             task.account = account;
             task.taskId = [rs stringForColumn:@"taskId"];
@@ -2295,28 +2669,36 @@ static NSMutableDictionary *__contactsOnlineState;
             task.isRepeat = [rs stringForColumn:@"isRepeat"];
             task.repeatType = [rs stringForColumn:@"repeatType"];
             task.taskOrder = [rs stringForColumn:@"taskOrder"];
-            if (!task.completionDate) {
+            if (!task.completionDate)
+            {
                 task.completionDate = @"";
             }
-            if (!task.isNotify) {
+            if (!task.isNotify)
+            {
                 task.isNotify = @"0";
             }
-            if (!task.notifyTime) {
+            if (!task.notifyTime)
+            {
                 task.notifyTime = @"";
             }
-            if (!task.isTomato) {
+            if (!task.isTomato)
+            {
                 task.isTomato = @"0";
             }
-            if (!task.tomatoMinute) {
+            if (!task.tomatoMinute)
+            {
                 task.tomatoMinute = @"";
             }
-            if (!task.isRepeat) {
+            if (!task.isRepeat)
+            {
                 task.isRepeat = @"0";
             }
-            if (!task.repeatType) {
+            if (!task.repeatType)
+            {
                 task.repeatType = @"";
             }
-            if (!task.taskOrder) {
+            if (!task.taskOrder)
+            {
                 task.taskOrder = @"";
             }
             [array addObject:task];
@@ -2327,11 +2709,14 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSArray *)getTaskRecordForSyncByTaskId:(NSString *)taskId syntime:(NSString *)syntime {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (NSArray *)getTaskRecordForSyncByTaskId:(NSString *)taskId syntime:(NSString *)syntime
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
@@ -2339,16 +2724,19 @@ static NSMutableDictionary *__contactsOnlineState;
         NSMutableArray *array = [NSMutableArray array];
         
         NSString *sqlString = @"";
-        if (syntime) {
+        if (syntime)
+        {
             sqlString = [NSString stringWithFormat:@"SELECT recordId, createTime FROM %@ WHERE recordId=? AND createTime >=?", STRTableName6];
-        } else {
+        }
+        else
+        {
             sqlString = [NSString stringWithFormat:@"SELECT recordId, createTime FROM %@ WHERE recordId=?", STRTableName6];
         }
         
         FMResultSet *rs = syntime == nil ? [__db executeQuery:sqlString withArgumentsInArray:@[taskId]] : [__db executeQuery:sqlString withArgumentsInArray:@[taskId, syntime]];
         
-        while ([rs next]) {
-            
+        while ([rs next])
+        {
             TaskRecord *taskRecord = [[TaskRecord alloc] init];
             taskRecord.recordId = taskId;
             taskRecord.createTime = [rs stringForColumn:@"createTime"];
@@ -2361,11 +2749,14 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (Task *)findTask:(NSString *)account taskId:(NSString *)taskId {
-    @synchronized(__db) {
-        
-        if (!__db.open) {
-            if (![__db open]) {
++ (Task *)findTask:(NSString *)account taskId:(NSString *)taskId
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
                 return nil ;
             }
         }
@@ -2375,7 +2766,8 @@ static NSMutableDictionary *__contactsOnlineState;
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, taskId]];
         
         Task *task = [[Task alloc] init];
-        while ([rs next]) {
+        while ([rs next])
+        {
             task.account = account;
             task.taskId = taskId;
             task.content = [rs stringForColumn:@"content"];
@@ -2391,28 +2783,36 @@ static NSMutableDictionary *__contactsOnlineState;
             task.isRepeat = [rs stringForColumn:@"isRepeat"];
             task.repeatType = [rs stringForColumn:@"repeatType"];
             task.taskOrder = [rs stringForColumn:@"taskOrder"];
-            if (!task.completionDate) {
+            if (!task.completionDate)
+            {
                 task.completionDate = @"";
             }
-            if (!task.isNotify) {
+            if (!task.isNotify)
+            {
                 task.isNotify = @"0";
             }
-            if (!task.notifyTime) {
+            if (!task.notifyTime)
+            {
                 task.notifyTime = @"";
             }
-            if (!task.isTomato) {
+            if (!task.isTomato)
+            {
                 task.isTomato = @"0";
             }
-            if (!task.tomatoMinute) {
+            if (!task.tomatoMinute)
+            {
                 task.tomatoMinute = @"";
             }
-            if (!task.isRepeat) {
+            if (!task.isRepeat)
+            {
                 task.isRepeat = @"0";
             }
-            if (!task.repeatType) {
+            if (!task.repeatType)
+            {
                 task.repeatType = @"";
             }
-            if (!task.taskOrder) {
+            if (!task.taskOrder)
+            {
                 task.taskOrder = @"";
             }
         }
