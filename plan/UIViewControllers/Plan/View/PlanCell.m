@@ -12,75 +12,83 @@
 NSUInteger const kPlanCellHeight = 60;
 NSUInteger const kBounceSpace = 20;
 
-@implementation PlanCell {
-    
-    UIButton *btnDone;
-    UILabel *labelContent;
-    UILabel *labelBeginDate;
-    UILabel *labelDateLeft;
-    UIImageView *imgViewAlarm;
-}
+@interface PlanCell ()
+
+@property (nonatomic, strong) UIButton *btnDone;
+@property (nonatomic, strong) UILabel *labelContent;
+@property (nonatomic, strong) UILabel *labelBeginDate;
+@property (nonatomic, strong) UILabel *labelDateLeft;
+@property (nonatomic, strong) UIImageView *imgViewAlarm;
+@property (nonatomic, assign) CGFloat startLocation;
+@property (nonatomic, assign) BOOL hideMenuView;
+
+@end
+
+@implementation PlanCell
 
 @synthesize plan = _plan;
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
-    
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        
-        if (_moveContentView == nil) {
-            _moveContentView = [[UIView alloc] init];
-            _moveContentView.backgroundColor = [UIColor whiteColor];
+    if (self)
+    {
+        if (self.moveContentView == nil)
+        {
+            self.moveContentView = [[UIView alloc] init];
+            self.moveContentView.backgroundColor = [UIColor whiteColor];
         }
-        [self.contentView addSubview:_moveContentView];
+        [self.contentView addSubview:self.moveContentView];
         [self setBackgroundColor:[UIColor whiteColor]];
         [self addControl];
     }
     return self;
 }
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
     
     [self addControl];
 }
 
-- (void)addControl {
+- (void)addControl
+{
     UIView *menuContetnView = [[UIView alloc] init];
     menuContetnView.hidden = YES;
     menuContetnView.tag = 100;
 
-    UIButton *vBtnDone = [UIButton buttonWithType:UIButtonTypeCustom];
-    [vBtnDone setAllBackgroundImage:[UIImage imageNamed:png_Btn_Plan_Done]];
-    [vBtnDone addTarget:self action:@selector(btnDoneAction:) forControlEvents:UIControlEventTouchUpInside];
-    [vBtnDone setTag:1001];
-    btnDone = vBtnDone;
+    UIButton *btnDone = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnDone setAllBackgroundImage:[UIImage imageNamed:png_Btn_Plan_Done]];
+    [btnDone addTarget:self action:@selector(btnDoneAction:) forControlEvents:UIControlEventTouchUpInside];
+    [btnDone setTag:1001];
+    self.btnDone = btnDone;
     
-    UIButton *vBtnDelete = [UIButton buttonWithType:UIButtonTypeCustom];
-    [vBtnDelete setAllBackgroundImage:[UIImage imageNamed:png_Btn_Plan_Delete]];
-    [vBtnDelete addTarget:self action:@selector(deleteButtonClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [vBtnDelete setTag:1002];
+    UIButton *btnDelete = [UIButton buttonWithType:UIButtonTypeCustom];
+    [btnDelete setAllBackgroundImage:[UIImage imageNamed:png_Btn_Plan_Delete]];
+    [btnDelete addTarget:self action:@selector(btnDeleteAction:) forControlEvents:UIControlEventTouchUpInside];
+    [btnDelete setTag:1002];
 
-    labelContent = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset, 0, WIDTH_FULL_SCREEN - kEdgeInset * 2, kPlanCellHeight)];
-    labelContent.textColor = color_333333;
-    [labelContent setFont:font_Normal_20];
-    [labelContent setNumberOfLines:1];
-    [labelContent setBackgroundColor:[UIColor clearColor]];
+    self.labelContent = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset, 0, WIDTH_FULL_SCREEN - kEdgeInset * 2, kPlanCellHeight)];
+    self.labelContent.textColor = color_333333;
+    [self.labelContent setFont:font_Normal_20];
+    [self.labelContent setNumberOfLines:1];
+    [self.labelContent setBackgroundColor:[UIColor clearColor]];
     
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didContentClicked:)];
-    [labelContent addGestureRecognizer:tapGestureRecognizer];
-    labelContent.userInteractionEnabled = YES;
+    [self.labelContent addGestureRecognizer:tapGestureRecognizer];
+    self.labelContent.userInteractionEnabled = YES;
     
-    imgViewAlarm = [[UIImageView alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - kEdgeInset * 2 - kPlanCellHeight / 3, kPlanCellHeight / 6, kPlanCellHeight / 3, kPlanCellHeight / 3)];
-    imgViewAlarm.image = [UIImage imageNamed:png_Icon_Alarm];
-    imgViewAlarm.hidden = YES;
-    [labelContent addSubview:imgViewAlarm];
+    self.imgViewAlarm = [[UIImageView alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - kEdgeInset * 2 - kPlanCellHeight / 3, kPlanCellHeight / 6, kPlanCellHeight / 3, kPlanCellHeight / 3)];
+    self.imgViewAlarm.image = [UIImage imageNamed:png_Icon_Alarm];
+    self.imgViewAlarm.hidden = YES;
+    [self.labelContent addSubview:self.imgViewAlarm];
     
     UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 60, 15)];
     labelDate.textColor = color_666666;
     labelDate.font = font_Normal_10;
-    labelBeginDate = labelDate;
-    [labelContent addSubview:labelDate];
+    self.labelBeginDate = labelDate;
+    [self.labelContent addSubview:labelDate];
     
     UILabel *labelDateleft = [[UILabel alloc] initWithFrame:CGRectMake(60, 0, 60, 15)];
     labelDateleft.backgroundColor = color_e9eff1;
@@ -89,12 +97,12 @@ NSUInteger const kBounceSpace = 20;
     labelDateleft.font = font_Normal_10;
     labelDateleft.clipsToBounds = YES;
     labelDateleft.layer.cornerRadius = 7.5;
-    labelDateLeft = labelDateleft;
-    [labelContent addSubview:labelDateleft];
+    self.labelDateLeft = labelDateleft;
+    [self.labelContent addSubview:labelDateleft];
     
-    [menuContetnView addSubview:vBtnDone];
-    [menuContetnView addSubview:vBtnDelete];
-    [_moveContentView addSubview:labelContent];
+    [menuContetnView addSubview:btnDone];
+    [menuContetnView addSubview:btnDelete];
+    [self.moveContentView addSubview:self.labelContent];
     [self.contentView insertSubview:menuContetnView atIndex:0];
     
     UIPanGestureRecognizer *vPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePan:)];
@@ -102,85 +110,109 @@ NSUInteger const kBounceSpace = 20;
     [self.contentView addGestureRecognizer:vPanGesture];
 }
 
-- (void)layoutSubviews {
+- (void)layoutSubviews
+{
     [super layoutSubviews];
 
-    [_moveContentView setFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, self.frame.size.height)];
-    UIView *vMenuView = [self.contentView viewWithTag:100];
-    vMenuView.frame =CGRectMake(WIDTH_FULL_SCREEN - kPlanCellHeight * 2, 0, kPlanCellHeight * 2, self.frame.size.height);
+    [self.moveContentView setFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, self.frame.size.height)];
+    UIView *menuView = [self.contentView viewWithTag:100];
+    menuView.frame =CGRectMake(WIDTH_FULL_SCREEN - kPlanCellHeight * 2, 0, kPlanCellHeight * 2, self.frame.size.height);
     
-    UIView *vBtnDone = [self.contentView viewWithTag:1001];
-    vBtnDone.frame = CGRectMake(kPlanCellHeight, 0, kPlanCellHeight, self.frame.size.height);
-    UIView *vMoreButton = [self.contentView viewWithTag:1002];
-    vMoreButton.frame = CGRectMake(0, 0, kPlanCellHeight, self.frame.size.height);
-    UIView *vBtnDoneNew = [self.contentView viewWithTag:1003];
-    vBtnDoneNew.frame = CGRectMake(0, 10, 40, 40);
+    UIView *btnDone = [self.contentView viewWithTag:1001];
+    btnDone.frame = CGRectMake(kPlanCellHeight, 0, kPlanCellHeight, self.frame.size.height);
+    UIView *btnDelete = [self.contentView viewWithTag:1002];
+    btnDelete.frame = CGRectMake(0, 0, kPlanCellHeight, self.frame.size.height);
+    UIView *vbtnDoneNew = [self.contentView viewWithTag:1003];
+    vbtnDoneNew.frame = CGRectMake(0, 10, 40, 40);
 }
 
 //此方法和下面的方法很重要,对ios 5SDK 设置不被Helighted
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
     UIView *vMenuView = [self.contentView viewWithTag:100];
-    if (vMenuView.hidden == YES) {
+    if (vMenuView.hidden == YES)
+    {
         [super setSelected:selected animated:animated];
     }
 }
 
 //此方法和上面的方法很重要，对ios 5SDK 设置不被Helighted
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated
+{
     UIView *vMenuView = [self.contentView viewWithTag:100];
-    if (vMenuView.hidden == YES) {
+    if (vMenuView.hidden == YES)
+    {
         [super setHighlighted:highlighted animated:animated];
     }
 }
 
-- (void)prepareForReuse {
+- (void)prepareForReuse
+{
     self.contentView.clipsToBounds = YES;
     [self hideMenuView:YES Animated:NO];
 }
 
-- (CGFloat)getMaxMenuWidth {
+- (CGFloat)getMaxMenuWidth
+{
     return kPlanCellHeight * 2;
 }
 
-- (void)enableSubviewUserInteraction:(BOOL)enable {
-    if (enable) {
-        for (UIView *aSubView in self.contentView.subviews) {
+- (void)enableSubviewUserInteraction:(BOOL)enable
+{
+    if (enable)
+    {
+        for (UIView *aSubView in self.contentView.subviews)
+        {
             aSubView.userInteractionEnabled = YES;
         }
-    } else {
-        for (UIView *aSubView in self.contentView.subviews) {
+    }
+    else
+    {
+        for (UIView *aSubView in self.contentView.subviews)
+        {
             UIView *vBtnDoneView = [self.contentView viewWithTag:100];
-            if (aSubView != vBtnDoneView) {
+            if (aSubView != vBtnDoneView)
+            {
                 aSubView.userInteractionEnabled = NO;
             }
         }
     }
 }
 
-- (void)hideMenuView:(BOOL)hidden Animated:(BOOL)animated {
-    if (self.selected) {
+- (void)hideMenuView:(BOOL)hidden Animated:(BOOL)animated
+{
+    if (self.selected)
+    {
         [self setSelected:NO animated:NO];
     }
     CGRect vDestinaRect = CGRectZero;
-    if (hidden) {
+    if (hidden)
+    {
         vDestinaRect = self.contentView.frame;
         [self enableSubviewUserInteraction:YES];
-    } else {
+    }
+    else
+    {
         vDestinaRect = CGRectMake(-[self getMaxMenuWidth], self.contentView.frame.origin.x, self.contentView.frame.size.width, self.contentView.frame.size.height);
         [self enableSubviewUserInteraction:NO];
     }
     
     CGFloat vDuration = animated ? 0.4 : 0.0;
     [UIView animateWithDuration:vDuration animations: ^{
-        _moveContentView.frame = vDestinaRect;
+        self.moveContentView.frame = vDestinaRect;
     } completion:^(BOOL finished) {
-        if (hidden) {
-            if ([_delegate respondsToSelector:@selector(didCellHided:)]) {
-                [_delegate didCellHided:self];
+        if (hidden)
+        {
+            if ([self.delegate respondsToSelector:@selector(didCellHided:)])
+            {
+                [self.delegate didCellHided:self];
             }
-        } else {
-            if ([_delegate respondsToSelector:@selector(didCellShowed:)]) {
-                [_delegate didCellShowed:self];
+        }
+        else
+        {
+            if ([self.delegate respondsToSelector:@selector(didCellShowed:)])
+            {
+                [self.delegate didCellShowed:self];
             }
         }
         UIView *vMenuView = [self.contentView viewWithTag:100];
@@ -188,94 +220,127 @@ NSUInteger const kBounceSpace = 20;
     }];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer {
-    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+- (BOOL)gestureRecognizerShouldBegin:(UIPanGestureRecognizer *)gestureRecognizer
+{
+    if ([gestureRecognizer isKindOfClass:[UIPanGestureRecognizer class]])
+    {
         CGPoint vTranslationPoint = [gestureRecognizer translationInView:self.contentView];
         return fabs(vTranslationPoint.x) > fabs(vTranslationPoint.y);
     }
     return YES;
 }
 
-- (void)handlePan:(UIPanGestureRecognizer *)sender {
-    if (sender.state == UIGestureRecognizerStateBegan) {
-        startLocation = [sender locationInView:self.contentView].x;
+- (void)handlePan:(UIPanGestureRecognizer *)sender
+{
+    if (sender.state == UIGestureRecognizerStateBegan)
+    {
+        self.startLocation = [sender locationInView:self.contentView].x;
         CGFloat direction = [sender velocityInView:self.contentView].x;
-        if (direction < 0) {
-            if ([_delegate respondsToSelector:@selector(didCellWillShow:)]) {
-                [_delegate didCellWillShow:self];
-            }
-        } else {
-            if ([_delegate respondsToSelector:@selector(didCellWillHide:)]) {
-                [_delegate didCellWillHide:self];
+        if (direction < 0)
+        {
+            if ([self.delegate respondsToSelector:@selector(didCellWillShow:)])
+            {
+                [self.delegate didCellWillShow:self];
             }
         }
-    } else if (sender.state == UIGestureRecognizerStateChanged) {
+        else
+        {
+            if ([self.delegate respondsToSelector:@selector(didCellWillHide:)])
+            {
+                [self.delegate didCellWillHide:self];
+            }
+        }
+    }
+    else if (sender.state == UIGestureRecognizerStateChanged)
+    {
         CGFloat vCurrentLocation = [sender locationInView:self.contentView].x;
-        CGFloat vDistance = vCurrentLocation - startLocation;
-        startLocation = vCurrentLocation;
+        CGFloat vDistance = vCurrentLocation - self.startLocation;
+        self.startLocation = vCurrentLocation;
         
-        CGRect vCurrentRect = _moveContentView.frame;
+        CGRect vCurrentRect = self.moveContentView.frame;
         CGFloat vOriginX = MAX(-[self getMaxMenuWidth] - kBounceSpace, vCurrentRect.origin.x + vDistance);
         vOriginX = MIN(0 + kBounceSpace, vOriginX);
-        _moveContentView.frame = CGRectMake(vOriginX, vCurrentRect.origin.y, vCurrentRect.size.width, vCurrentRect.size.height);
+        self.moveContentView.frame = CGRectMake(vOriginX, vCurrentRect.origin.y, vCurrentRect.size.width, vCurrentRect.size.height);
         
         CGFloat direction = [sender velocityInView:self.contentView].x;
 
-        if (direction < - 30.0 || vOriginX <  - (0.5 * [self getMaxMenuWidth])) {
-            hideMenuView = NO;
+        if (direction < - 30.0 || vOriginX <  - (0.5 * [self getMaxMenuWidth]))
+        {
+            self.hideMenuView = NO;
             UIView *vMenuView = [self.contentView viewWithTag:100];
-            vMenuView.hidden = hideMenuView;
-        } else if (direction > 20.0 || vOriginX >  - (0.5 * [self getMaxMenuWidth])) {
-            hideMenuView = YES;
+            vMenuView.hidden = self.hideMenuView;
         }
-    } else if (sender.state == UIGestureRecognizerStateEnded) {
-        [self hideMenuView:hideMenuView Animated:YES];
+        else if (direction > 20.0 || vOriginX >  - (0.5 * [self getMaxMenuWidth]))
+        {
+            self.hideMenuView = YES;
+        }
+    }
+    else if (sender.state == UIGestureRecognizerStateEnded)
+    {
+        [self hideMenuView:self.hideMenuView Animated:YES];
     }
 }
 
-- (void)setPlan:(Plan *)plan {
+- (void)setPlan:(Plan *)plan
+{
     _plan = plan;
-    labelContent.text = plan.content;
+    self.labelContent.text = plan.content;
     NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
     if ([plan.iscompleted isEqualToString:@"0"]
-        && [beginDate compare:[NSDate date]] == NSOrderedDescending) {
-        labelBeginDate.text = [CommonFunction getBeginDateStringForShow:plan.beginDate];
-        labelDateLeft.text = [NSString stringWithFormat:STRCommonTime10,[CommonFunction howManyDaysLeft:plan.beginDate]];
-        labelDateLeft.hidden = NO;
-    } else {
-        labelDateLeft.hidden = YES;
+        && [beginDate compare:[NSDate date]] == NSOrderedDescending)
+    {
+        self.labelBeginDate.text = [CommonFunction getBeginDateStringForShow:plan.beginDate];
+        self.labelDateLeft.text = [NSString stringWithFormat:STRCommonTime10,[CommonFunction howManyDaysLeft:plan.beginDate]];
+        self.labelDateLeft.hidden = NO;
     }
-    if ([plan.isnotify isEqualToString:@"1"]) {
-        imgViewAlarm.hidden = NO;
-    } else {
-        imgViewAlarm.hidden = YES;
+    else
+    {
+        self.labelDateLeft.hidden = YES;
     }
-}
-
-- (void)setIsDone:(NSString *)isDone {
-    if ([isDone isEqualToString:@"1"]) {
-        [btnDone setAllBackgroundImage:[UIImage imageNamed:png_Btn_Plan_Doing]];
-    } else {
-        [btnDone setAllBackgroundImage:[UIImage imageNamed:png_Btn_Plan_Done]];
+    if ([plan.isnotify isEqualToString:@"1"])
+    {
+        self.imgViewAlarm.hidden = NO;
+    }
+    else
+    {
+        self.imgViewAlarm.hidden = YES;
     }
 }
 
-- (void)didContentClicked:(id)sender {
-    if ([_delegate respondsToSelector:@selector(didCellClicked:)]) {
-        [_delegate didCellClicked:self];
+- (void)setIsDone:(NSString *)isDone
+{
+    if ([isDone isEqualToString:@"1"])
+    {
+        [self.btnDone setAllBackgroundImage:[UIImage imageNamed:png_Btn_Plan_Doing]];
+    }
+    else
+    {
+        [self.btnDone setAllBackgroundImage:[UIImage imageNamed:png_Btn_Plan_Done]];
     }
 }
 
-- (void)deleteButtonClicked:(id)sender {
-    if ([_delegate respondsToSelector:@selector(didCellClickedDeleteButton:)]) {
-        [_delegate didCellClickedDeleteButton:self];
+- (void)didContentClicked:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(didCellClicked:)])
+    {
+        [self.delegate didCellClicked:self];
     }
 }
 
-- (IBAction)btnDoneAction:(id)sender {
+- (void)btnDeleteAction:(id)sender
+{
+    if ([self.delegate respondsToSelector:@selector(didCellClickedDeleteButton:)])
+    {
+        [self.delegate didCellClickedDeleteButton:self];
+    }
+}
+
+- (IBAction)btnDoneAction:(id)sender
+{
     [self.superview sendSubviewToBack:self];
-    if ([_delegate respondsToSelector:@selector(didCellClickedDoneButton:)]) {
-        [_delegate didCellClickedDoneButton:self];
+    if ([self.delegate respondsToSelector:@selector(didCellClickedDoneButton:)])
+    {
+        [self.delegate didCellClickedDoneButton:self];
     }
 }
 

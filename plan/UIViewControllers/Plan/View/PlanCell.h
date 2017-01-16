@@ -23,10 +23,7 @@ extern NSUInteger const kPlanCellHeight;
 
 @end
 
-@interface PlanCell : UITableViewCell<UIGestureRecognizerDelegate> {
-    CGFloat startLocation;
-    BOOL hideMenuView;
-}
+@interface PlanCell : UITableViewCell<UIGestureRecognizerDelegate>
 
 @property (nonatomic, strong) IBOutlet UIView *moveContentView;
 @property (nonatomic, assign) id<PlanCellDelegate> delegate;
@@ -34,6 +31,5 @@ extern NSUInteger const kPlanCellHeight;
 @property (nonatomic, strong) Plan *plan;
 
 - (void)hideMenuView:(BOOL)hidden Animated:(BOOL)animated;
-- (void)addControl;
 
 @end
