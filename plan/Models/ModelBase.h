@@ -6,15 +6,13 @@
 //  Copyright (c) 2015年 Fengzy. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import "BaseItem.h"
 
-@interface ModelBase : NSObject
-
-
-@end
-
-
-@interface NSDictionary (ModelBase)
+/**
+ *  用于解析json数据,子类模型继承此类,包含coding跟copying
+ */
+@interface ModelBase : BaseItem <NSCoding, NSCopying, NSSecureCoding>
 
 
 @end
+
