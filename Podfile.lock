@@ -1,5 +1,5 @@
 PODS:
-  - BmobSDK (1.7.2)
+  - BmobSDK (2.0.0)
   - CRToast (0.0.9)
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
@@ -20,6 +20,7 @@ PODS:
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
   - WZLBadge (1.2.5)
+  - YYModel (1.0.4)
 
 DEPENDENCIES:
   - BmobSDK
@@ -32,9 +33,10 @@ DEPENDENCIES:
   - SDCycleScrollView
   - SDWebImage
   - WZLBadge
+  - YYModel
 
 SPEC CHECKSUMS:
-  BmobSDK: e188cb31d6a8417ab668aee821da227d7512b865
+  BmobSDK: 0dac00820d4fc08e549ea0e8f4adeaf52709c673
   CRToast: 5a78c22b921c5ed3487488af605bc403a9c92fed
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
@@ -44,7 +46,8 @@ SPEC CHECKSUMS:
   SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   WZLBadge: 16c08aa0a645e2591690f21cbcb410a3d878c7ac
+  YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: 5cb027c02ab185fb11b8e56c34a30ce103cbbdb3
+PODFILE CHECKSUM: fe1554e0e517ddfa8010a807d2ba12fe6607f5f8
 
 COCOAPODS: 1.0.0
