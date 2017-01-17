@@ -885,6 +885,61 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
++ (void)updateTaskOrder:(Task *)task
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
+                return;
+            }
+        }
+        
+        if (!task.taskId || !task.createTime)
+            return;
+        
+        if ([LogIn isLogin])
+        {
+            BmobUser *user = [BmobUser currentUser];
+            task.account = user.objectId;
+        }
+        else
+        {
+            task.account = @"";
+        }
+        if (!task.taskOrder)
+        {
+            task.taskOrder = @"";
+        }
+        if (!task.updateTime)
+        {
+            task.updateTime = @"";
+        }
+        
+        BOOL hasRec = NO;
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", STRTableName5];
+        
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[task.taskId, task.account]];
+        hasRec = [rs next];
+        [rs close];
+        BOOL b = NO;
+        if (hasRec)
+        {
+            sqlString = [NSString stringWithFormat:@"UPDATE %@ SET taskOrder=?, updateTime=? WHERE taskId=? AND account=?", STRTableName5];
+            
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.taskOrder, task.updateTime, task.taskId, task.account]];
+            
+            FMDBQuickCheck(b, sqlString, __db);
+        }
+        if (b)
+        {
+            [NotificationCenter postNotificationName:NTFTaskSave object:nil];
+        }
+    }
+}
+
 + (BOOL)storeTaskRecord:(TaskRecord *)taskRecord
 {
     @synchronized(__db)
@@ -1746,7 +1801,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
 
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND isDeleted=0 ORDER BY cast(taskOrder as integer) ASC, createTime DESC", STRTableName5];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND isDeleted=0 ORDER BY cast(taskOrder as integer) ASC", STRTableName5];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
         

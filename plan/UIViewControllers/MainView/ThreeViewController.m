@@ -57,8 +57,12 @@
 
 - (void)addAction
 {
+    Task *newTask = [[Task alloc] init];
+    newTask.taskOrder = [NSString stringWithFormat:@"%ld", self.taskArray.count];
+    
     AddTaskNewViewController *controller = [[AddTaskNewViewController alloc] init];
     controller.operationType = Add;
+    controller.task = newTask;
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
@@ -80,7 +84,7 @@
         {
             Task *task = self.taskArray[i];
             task.updateTime = timenow;
-            [PlanCache storeTask:task updateNotify:NO];
+            [PlanCache updateTaskOrder:task];
         }
         self.taskArray = [PlanCache getTask];
         self.isTableEditing = NO;

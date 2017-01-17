@@ -321,7 +321,7 @@ NSUInteger const kTaskDeleteTag = 20151201;
     taskRecord.recordId = self.task.taskId;
     taskRecord.createTime = time;
     
-    [PlanCache storeTask:self.task updateNotify:NO];
+    [PlanCache updateTaskCount:self.task];
     [PlanCache storeTaskRecord:taskRecord];
 }
 

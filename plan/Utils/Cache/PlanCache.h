@@ -38,6 +38,9 @@
 /** 更新任务完成次数 */
 + (BOOL)updateTaskCount:(Task *)task;
 
+/** 更新任务排序 */
++ (void)updateTaskOrder:(Task *)task;
+
 + (BOOL)storeTaskRecord:(TaskRecord *)taskRecord;
 
 + (BOOL)storeMessages:(Messages *)message;
