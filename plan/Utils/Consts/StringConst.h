@@ -449,6 +449,8 @@ UIKIT_EXTERN NSString *const STRViewTips120;
 UIKIT_EXTERN NSString *const STRViewTips121;
 /** 同步数据完成 */
 UIKIT_EXTERN NSString *const STRViewTips122;
+/** 完成 */
+UIKIT_EXTERN NSString *const STRViewTips123;
 
 /** 自动同步 */
 UIKIT_EXTERN NSString *const STRSettingsViewTips1;

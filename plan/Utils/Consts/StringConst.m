@@ -452,6 +452,8 @@ NSString *const STRViewTips120 = @"回复了你的评论";
 NSString *const STRViewTips121 = @"正在同步数据...";
 /** 同步数据完成 */
 NSString *const STRViewTips122 = @"同步数据完成";
+/** 完成 */
+NSString *const STRViewTips123 = @"完成";
 
 /** 自动同步 */
 NSString *const STRSettingsViewTips1 = @"自动同步";
