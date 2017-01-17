@@ -13,93 +13,108 @@
 #import "AddTaskNewViewController.h"
 #import "TaskDetailNewViewController.h"
 
-@interface ThreeViewController () <UIGestureRecognizerDelegate> {
-    
-    BOOL isTableEditing;
-    NSMutableArray *taskArray;
-    UILongPressGestureRecognizer *longPress;
-}
+@interface ThreeViewController () <UIGestureRecognizerDelegate>
+
+@property (assign, nonatomic) BOOL isTableEditing;
+@property (strong, nonatomic) NSMutableArray *taskArray;
+@property (strong, nonatomic) UILongPressGestureRecognizer *longPress;
 
 @end
 
 @implementation ThreeViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = STRViewTitle3;
     self.tabBarItem.title = STRViewTitle3;
-    [self createNavBarButton];
+
+    __weak typeof(self) weakSelf = self;
+    [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_Add] action:^(UIButton *sender)
+     {
+         [weakSelf addAction];
+     }];
     
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     self.tableView.tableFooterView = [[UIView alloc] init];
     
-    taskArray = [NSMutableArray array];
+    self.taskArray = [NSMutableArray array];
     [NotificationCenter addObserver:self selector:@selector(toTask:) name:NTFLocalPush object:nil];
     [NotificationCenter addObserver:self selector:@selector(reloadTaskData) name:NTFTaskSave object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [self reloadTaskData];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)dealloc {
-    [NotificationCenter removeObserver:self];
-}
-
-- (void)createNavBarButton {
-    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
-}
-
-- (void)addAction:(UIButton *)button {
+- (void)addAction
+{
     AddTaskNewViewController *controller = [[AddTaskNewViewController alloc] init];
     controller.operationType = Add;
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)orderAction {
-    if (taskArray.count == 0) {
+- (void)orderAction
+{
+    if (self.taskArray.count == 0)
+    {
         return;
     }
     //设置tableview编辑状态
     BOOL flag = !self.tableView.editing;
     [self.tableView setEditing:flag animated:YES];
-    if (!flag) {
-        isTableEditing = YES;
+    if (!flag)
+    {
+        self.isTableEditing = YES;
         NSString *timenow = [CommonFunction getTimeNowString];
-        for (NSInteger i = 0; i < taskArray.count; i++) {
-            Task *task = taskArray[i];
+        for (NSInteger i = 0; i < self.taskArray.count; i++)
+        {
+            Task *task = self.taskArray[i];
             task.updateTime = timenow;
             [PlanCache storeTask:task updateNotify:NO];
         }
-        taskArray = [PlanCache getTask];
-        isTableEditing = NO;
+        self.taskArray = [PlanCache getTask];
+        self.isTableEditing = NO;
     }
     //更换按钮icon
-    if (flag) {
-        self.rightBarButtonItem = [self createBarButtonItemWithTitle:@"完成" titleColor:[UIColor whiteColor] font:font_Normal_16 selector:@selector(orderAction)];
-    } else {
-        self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
+    if (flag)
+    {
+        __weak typeof(self) weakSelf = self;
+        [self customRightButtonWithTitle:STRViewTips123 action:^(UIButton *sender)
+        {
+            [weakSelf orderAction];
+        }];
+    }
+    else
+    {
+        __weak typeof(self) weakSelf = self;
+        [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_Add] action:^(UIButton *sender)
+         {
+             [weakSelf addAction];
+         }];
     }
 }
 
 - (void)reloadTaskData
 {
-    if (isTableEditing) return;
+    if (self.isTableEditing) return;
     
-    taskArray = [NSMutableArray arrayWithArray:[PlanCache getTask]];
-    if (taskArray.count > 0)
+    self.taskArray = [NSMutableArray arrayWithArray:[PlanCache getTask]];
+    if (self.taskArray.count > 0)
     {
-        longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
-        longPress.minimumPressDuration = 1.0;
-        longPress.delegate = self;
-        [self.tableView addGestureRecognizer:longPress];
+        self.longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPress:)];
+        self.longPress.minimumPressDuration = 1.0;
+        self.longPress.delegate = self;
+        [self.tableView addGestureRecognizer:self.longPress];
     }
     [self.tableView reloadData];
 }
@@ -118,7 +133,6 @@
     if ((user && [task.account isEqualToString:user.objectId])
         || (!user && [task.account isEqualToString:@""]))
     {
-        
         task.taskId = [dict objectForKey:@"tag"];
         task.content = [dict objectForKey:@"content"];
         task.totalCount = [dict objectForKey:@"totalCount"];
@@ -142,37 +156,50 @@
 }
 
 #pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (taskArray.count > 0) {
-        return taskArray.count;
-    } else {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (self.taskArray.count)
+    {
+        return self.taskArray.count;
+    }
+    else
+    {
         return 5;
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (taskArray.count > 0) {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.taskArray.count)
+    {
         return 60.f;
-    } else {
+    }
+    else
+    {
         return 44.f;
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
-    if (taskArray.count > 0) {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (self.taskArray.count > 0)
+    {
         return 44.f;
-    } else {
-        return 0.00001f;
+    }
+    else
+    {
+        return 0.01f;
     }
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (taskArray.count > 0)
+    if (self.taskArray.count)
     {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, 44.f)];
         view.backgroundColor = [UIColor whiteColor];
@@ -195,10 +222,10 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row < taskArray.count)
+    if (indexPath.row < self.taskArray.count)
     {
         tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        Task *task = taskArray[indexPath.row];
+        Task *task = self.taskArray[indexPath.row];
         TaskCell *cell = [TaskCell cellView:task];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
@@ -209,7 +236,8 @@
         static NSString *noTaskCellIdentifier = @"noTaskCellIdentifier";
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noTaskCellIdentifier];
-        if (!cell) {
+        if (!cell)
+        {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noTaskCellIdentifier];
             cell.backgroundColor = [UIColor clearColor];
             cell.contentView.backgroundColor = [UIColor clearColor];
@@ -220,7 +248,8 @@
             cell.textLabel.textColor = [UIColor lightGrayColor];
             cell.textLabel.font = font_Bold_16;
         }
-        if (indexPath.row == 4) {
+        if (indexPath.row == 4)
+        {
             cell.textLabel.text = STRViewTips38;
         }
         return cell;
@@ -229,10 +258,10 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row < taskArray.count)
+    if (indexPath.row < self.taskArray.count)
     {
         TaskDetailNewViewController *controller = [[TaskDetailNewViewController alloc]init];
-        controller.task = taskArray[indexPath.row];
+        controller.task = self.taskArray[indexPath.row];
         controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
     }
@@ -258,12 +287,12 @@
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath
 {
     //取出要拖动的模型数据
-    Task *task = taskArray[sourceIndexPath.row];
+    Task *task = self.taskArray[sourceIndexPath.row];
     //删除之前行的数据
-    [taskArray removeObject:task];
+    [self.taskArray removeObject:task];
     task.taskOrder = [NSString stringWithFormat:@"%ld", (long)destinationIndexPath.row];
     // 插入数据到新的位置
-    [taskArray insertObject:task atIndex:destinationIndexPath.row];
+    [self.taskArray insertObject:task atIndex:destinationIndexPath.row];
 }
 
 @end
