@@ -23,6 +23,7 @@
 
 #define color_333333 RGBColor(51, 51, 51, 1) //近似黑色
 #define color_666666 RGBColor(102, 102, 102, 1)//深灰色
+#define color_999999 RGBColor(153, 153, 153, 1)//深灰色
 #define color_dedede RGBColor(222, 222, 222, 1)//淡灰色
 #define color_eeeeee RGBColor(238, 238, 238, 1)//淡灰色
 #define color_8f8f8f RGBColor(143, 143, 143, 1)//中深灰色
