@@ -12,18 +12,25 @@
 
 NSUInteger const kTaskDeleteNewTag = 20151201;
 
-@interface TaskDetailNewViewController () <UITableViewDataSource, UITableViewDelegate> {
-    NSArray *finishRecordArray;
-}
+@interface TaskDetailNewViewController () <UITableViewDataSource, UITableViewDelegate>
+
+@property (strong, nonatomic) NSArray *finishRecordArray;
 
 @end
 
 @implementation TaskDetailNewViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = STRViewTitle20;
-    [self createRightBarButton];
+    self.view.backgroundColor = color_F2F3F5;
+    
+    __weak typeof(self) weakSelf = self;
+    [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_More] action:^(UIButton *sender)
+     {
+         [weakSelf showMenu:sender];
+    }];
     
     [NotificationCenter addObserver:self selector:@selector(reloadTaskData) name:NTFTaskSave object:nil];
     [NotificationCenter addObserver:self selector:@selector(reloadTaskRecordData) name:NTFTaskRecordSave object:nil];
@@ -31,57 +38,63 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
     [self setControls];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)createRightBarButton {
-    self.rightBarButtonItem =[self createBarButtonItemWithNormalImageName:png_Btn_More selectedImageName:png_Btn_More selector:@selector(showMenu:)];
-}
-
-- (void)reloadTaskData {
+- (void)reloadTaskData
+{
     self.task = [PlanCache getTaskById:self.task.taskId];
     [self setControls];
 }
 
-- (void)reloadTaskRecordData {
-    finishRecordArray = [PlanCache getTaskRecord:self.task.taskId];
+- (void)reloadTaskRecordData
+{
+    self.finishRecordArray = [PlanCache getTaskRecord:self.task.taskId];
     [self.tableRecord reloadData];
 }
 
-- (void)setControls {
-    self.txtViewContent.layer.borderWidth = 1;
+- (void)setControls
+{    
     self.txtViewContent.layer.cornerRadius = 5;
-    self.txtViewContent.layer.borderColor = [color_eeeeee CGColor];
+    self.txtViewContent.backgroundColor = [UIColor whiteColor];
     self.txtViewContent.text = self.task.content;
-    self.tableRecord.layer.borderWidth = 1;
+    
     self.tableRecord.layer.cornerRadius = 5;
-    self.tableRecord.layer.borderColor = [color_eeeeee CGColor];
+    self.tableRecord.backgroundColor = [UIColor whiteColor];
     self.tableRecord.tableFooterView = [[UIView alloc] init];
     self.btnStart.layer.cornerRadius = 5;
-    finishRecordArray = [NSArray array];
+    self.finishRecordArray = [NSArray array];
     
     [self.btnStart setAllTitle:STRViewTips45];
 
-    if ([self.task.isNotify isEqualToString:@"0"]) {
+    if ([self.task.isNotify isEqualToString:@"0"])
+    {
         self.imgViewAlarm.hidden = YES;
         self.labelAlram.hidden = YES;
         self.imgViewRepeat.hidden = YES;
         self.labelRepeat.hidden = YES;
         self.layoutConstraintTxtViewBottom.constant = 10.f;
-    } else {
+    }
+    else
+    {
         self.imgViewAlarm.hidden = NO;
         self.labelAlram.hidden = NO;
         self.labelAlram.text = [NSString stringWithFormat:@"%@%@", STRViewTips48, self.task.notifyTime];
         self.layoutConstraintTxtViewBottom.constant = 90.f;
     }
-    if ([self.task.isRepeat isEqualToString:@"0"]) {
+    if ([self.task.isRepeat isEqualToString:@"0"])
+    {
         self.imgViewRepeat.hidden = YES;
         self.labelRepeat.hidden = YES;
-    } else {
+    }
+    else
+    {
         self.imgViewRepeat.hidden = NO;
         self.labelRepeat.hidden = NO;
-        switch ([self.task.repeatType integerValue]) {
+        switch ([self.task.repeatType integerValue])
+        {
             case 0:
                 self.labelRepeat.text = STRCommonTip8;
                 break;
@@ -99,9 +112,12 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
         }
     }
     if (self.task.totalCount.length == 0
-        || [self.task.totalCount integerValue] == 0) {
+        || [self.task.totalCount integerValue] == 0)
+    {
         self.labelFinishedTimes.text = @"0";
-    } else {
+    }
+    else
+    {
         self.labelFinishedTimes.text = self.task.totalCount;
     }
     
@@ -109,22 +125,23 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
     self.tableRecord.delegate = self;
     
     NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
-    if (
-//        [self.task.isTomato isEqualToString:@"0"]
-//        &&
-        [self.task.completionDate isEqualToString:date]) {
+    if ([self.task.completionDate isEqualToString:date])
+    {
         self.btnStart.enabled = NO;
         [self.btnStart setBackgroundColor:color_8f8f8f];
-    } else {
+    }
+    else
+    {
         self.btnStart.enabled = YES;
         [self.btnStart setBackgroundColor:color_0BA32A];
     }
 
-    finishRecordArray = [PlanCache getTaskRecord:self.task.taskId];
+    self.finishRecordArray = [PlanCache getTaskRecord:self.task.taskId];
     [self.tableRecord reloadData];
 }
 
-- (void)showMenu:(UIButton *)sender {
+- (void)showMenu:(UIButton *)sender
+{
     NSArray *menuItems =
     @[
       [KxMenuItem menuItem:STRCommonTip33
@@ -137,25 +154,30 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
                     action:@selector(deleteAction:)],
       ];
     
-    if (![KxMenu isShowMenu]) {
+    if (![KxMenu isShowMenu])
+    {
         CGRect frame = sender.frame;
-        frame.origin.y -= 30;
+        frame.origin.y -= 40;
         [KxMenu showMenuInView:self.view
                       fromRect:frame
                      menuItems:menuItems];
-    } else {
+    }
+    else
+    {
         [KxMenu dismissMenu];
     }
 }
 
-- (void)editAction:(UIButton *)sender {
+- (void)editAction:(UIButton *)sender
+{
     AddTaskNewViewController *controller = [[AddTaskNewViewController alloc]init];
     controller.operationType = Edit;
     controller.task = self.task;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)deleteAction:(UIButton *)sender {
+- (void)deleteAction:(UIButton *)sender
+{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:STRViewTips40
                                                     message:nil
                                                    delegate:self
@@ -167,19 +189,20 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
     [alert show];
 }
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (alertView.tag == kTaskDeleteNewTag) {
-        
-        if (buttonIndex == 1) {
-            
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == kTaskDeleteNewTag)
+    {
+        if (buttonIndex == 1)
+        {
             BOOL result = [PlanCache deleteTask:self.task];
-            if (result) {
-                
+            if (result)
+            {
                 [self alertToastMessage:STRCommonTip16];
                 [self.navigationController popViewControllerAnimated:YES];
-                
-            } else {
-                
+            }
+            else
+            {
                 [self alertButtonMessage:STRCommonTip17];
             }
         }
@@ -187,29 +210,38 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
 }
 
 #pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (finishRecordArray.count > 0) {
-        return finishRecordArray.count;
-    } else {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (self.finishRecordArray.count)
+    {
+        return self.finishRecordArray.count;
+    }
+    else
+    {
         return 2;
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return 44.f;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row < finishRecordArray.count) {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row < self.finishRecordArray.count)
+    {
         tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
         static NSString *taskRecordCellIdentifier = @"taskRecordCellIdentifier";
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:taskRecordCellIdentifier];
-        if (!cell) {
+        if (!cell)
+        {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:taskRecordCellIdentifier];
             cell.backgroundColor = [UIColor clearColor];
             cell.contentView.backgroundColor = [UIColor clearColor];
@@ -220,17 +252,18 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
             cell.textLabel.textColor = [UIColor lightGrayColor];
             cell.textLabel.font = font_Normal_13;
         }
-        TaskRecord *taskRecord = finishRecordArray[indexPath.row];
+        TaskRecord *taskRecord = self.finishRecordArray[indexPath.row];
         cell.textLabel.text = [NSString stringWithFormat:@"%@%@", STRViewTips50, taskRecord.createTime];
         return cell;
-        
-    } else {
-        
+    }
+    else
+    {
         tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         static NSString *noTaskRecordCellIdentifier = @"noTaskRecordCellIdentifier";
         
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noTaskRecordCellIdentifier];
-        if (!cell) {
+        if (!cell)
+        {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noTaskRecordCellIdentifier];
             cell.backgroundColor = [UIColor clearColor];
             cell.contentView.backgroundColor = [UIColor clearColor];
@@ -241,36 +274,43 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
             cell.textLabel.textColor = [UIColor lightGrayColor];
             cell.textLabel.font = font_Bold_16;
         }
-        if (indexPath.row == 1) {
+        if (indexPath.row == 1)
+        {
             cell.textLabel.text = STRViewTips49;
         }
-        
         return cell;
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
-- (IBAction)startAction:(id)sender {
+- (IBAction)startAction:(id)sender
+{
     [self finishOnce];
 }
 
-- (void)finishOnce {
+- (void)finishOnce
+{
     self.btnStart.enabled = NO;
     [self.btnStart setBackgroundColor:color_8f8f8f];
     [self addRecord];
 }
 
-- (void)addRecord {
+- (void)addRecord
+{
     NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     self.task.completionDate = date;
     NSString *count = self.task.totalCount;
     NSInteger totalCount = 0;
-    if (count.length > 0) {
+    if (count.length)
+    {
         totalCount = [count integerValue] + 1;
-    } else {
+    }
+    else
+    {
         totalCount ++;
     }
     self.task.totalCount = [NSString stringWithFormat:@"%ld", (long)totalCount];
