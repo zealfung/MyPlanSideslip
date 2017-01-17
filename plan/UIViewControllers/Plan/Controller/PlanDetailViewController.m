@@ -51,13 +51,13 @@
     {
         CGFloat tipsWidth = 95;
         UILabel *labelBeginTimeTips = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset, self.yOffset, tipsWidth, iconSize)];
-        labelBeginTimeTips.textColor = color_Black;
+        labelBeginTimeTips.textColor = color_999999;
         labelBeginTimeTips.font = font_Normal_18;
         labelBeginTimeTips.text = STRViewTips21;
         [self.view addSubview:labelBeginTimeTips];
         
         UILabel *labelBeginTime = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset + tipsWidth, self.yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2 - tipsWidth, iconSize)];
-        labelBeginTime.textColor = color_Black;
+        labelBeginTime.textColor = color_999999;
         labelBeginTime.font = font_Normal_18;
         labelBeginTime.text = [CommonFunction getBeginDateStringForShow:self.plan.beginDate];
         [self.view addSubview:labelBeginTime];
@@ -71,7 +71,7 @@
         [self.view addSubview:alarm];
         
         UILabel *labelTime = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset + iconSize, self.yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 3 - iconSize - switchWidth, iconSize)];
-        labelTime.textColor = color_Black;
+        labelTime.textColor = color_999999;
         labelTime.font = font_Normal_18;
         labelTime.text = [CommonFunction getNotifyTimeStringForShow:self.plan.notifytime];
         [self.view addSubview:labelTime];
@@ -85,7 +85,7 @@
         [self.view addSubview:imgViewRepeat];
         
         UILabel *labelTips = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset + iconSize, self.yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 3 - iconSize - switchWidth, iconSize)];
-        labelTips.textColor = color_Black;
+        labelTips.textColor = color_999999;
         labelTips.font = font_Normal_18;
         labelTips.text = STRCommonTip50;
         [self.view addSubview:labelTips];
@@ -108,7 +108,7 @@
         self.yOffset += txtViewHeight + kEdgeInset;
         
         UILabel *labelTips = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset, self.yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2, iconSize)];
-        labelTips.textColor = color_Black;
+        labelTips.textColor = color_999999;
         labelTips.font = font_Normal_18;
         labelTips.text = STRCommonTip51;
         [self.view addSubview:labelTips];
@@ -127,16 +127,14 @@
     else
     {
         CGFloat txtViewHeight = HEIGHT_FULL_VIEW - kEdgeInset - self.yOffset;
-        UITextView *detailTextView = [[UITextView alloc] initWithFrame:CGRectMake(kEdgeInset, self.yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2, txtViewHeight)];
-        detailTextView.backgroundColor = [UIColor clearColor];
-        detailTextView.layer.borderWidth = 1;
-        detailTextView.layer.borderColor = [color_eeeeee CGColor];
-        detailTextView.layer.cornerRadius = 5;
-        detailTextView.font = font_Normal_18;
-        detailTextView.textColor = color_Black;
-        detailTextView.text = self.plan.content;
-        detailTextView.editable = NO;
-        [self.view addSubview:detailTextView];
+        UITextView *txtViewDetail = [[UITextView alloc] initWithFrame:CGRectMake(kEdgeInset, self.yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2, txtViewHeight)];
+        txtViewDetail.backgroundColor = [UIColor whiteColor];
+        txtViewDetail.layer.cornerRadius = 5;
+        txtViewDetail.font = font_Normal_18;
+        txtViewDetail.textColor = color_Black;
+        txtViewDetail.text = self.plan.content;
+        txtViewDetail.editable = NO;
+        [self.view addSubview:txtViewDetail];
     }
 }
 
