@@ -160,4 +160,29 @@
     return nil;
 }
 
+- (UIView *)getInputAccessoryView
+{
+    UIToolbar *toolBar = [[UIToolbar alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth([[UIScreen mainScreen] applicationFrame]), 44)];
+    toolBar.barStyle = UIBarStyleBlackTranslucent;
+    
+    NSMutableArray *items = [NSMutableArray array];
+    {
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+        [items addObject:barButtonItem];
+    }
+    {
+        UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(endInputAction:)];
+        [items addObject:barButtonItem];
+    }
+    
+    toolBar.items = items;
+    
+    return toolBar;
+}
+
+- (void)endInputAction:(UIBarButtonItem *)barButtonItem
+{
+    [self endEditing:YES];
+}
+
 @end

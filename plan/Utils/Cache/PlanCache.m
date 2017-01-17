@@ -1397,7 +1397,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         
         NSMutableArray *array = [NSMutableArray array];
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE %@ AND account=? AND isdeleted=0 ORDER BY iscompleted, beginDate %@ Limit ? Offset ?", STRTableName2, condition, order];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted, remark FROM %@ WHERE %@ AND account=? AND isdeleted=0 ORDER BY iscompleted, beginDate %@ Limit ? Offset ?", STRTableName2, condition, order];
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, @(kPlanLoadMax), @(startIndex)]];
         
@@ -1415,6 +1415,7 @@ static NSMutableDictionary *__contactsOnlineState;
             plan.notifytime = [rs stringForColumn:@"notifytime"];
             plan.beginDate = [rs stringForColumn:@"beginDate"];
             plan.isdeleted = [rs stringForColumn:@"isdeleted"];
+            plan.remark = [rs stringForColumn:@"remark"];
             
             if (!plan.beginDate
                 || plan.beginDate.length == 0)

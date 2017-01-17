@@ -15,6 +15,7 @@
 		130583D81E2B32EC0090A930 /* PlanCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 130583D01E2B32EC0090A930 /* PlanCell.xib */; };
 		130583D91E2B32EC0090A930 /* PlanSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 130583D21E2B32EC0090A930 /* PlanSectionView.m */; };
 		130583DD1E2B486C0090A930 /* PlanDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130583DB1E2B486C0090A930 /* PlanDetailViewController.m */; };
+		130583E81E2DA8800090A930 /* PopupPlanRemarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 130583E71E2DA8800090A930 /* PopupPlanRemarkView.m */; };
 		1310C3561C4542FC00A2A404 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1310C3391C4542FC00A2A404 /* TencentOpenAPI.framework */; };
 		1310C3571C4542FC00A2A404 /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1310C33A1C4542FC00A2A404 /* TencentOpenApi_IOS_Bundle.bundle */; };
 		1310C3581C4542FC00A2A404 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1310C33C1C4542FC00A2A404 /* libWeiboSDK.a */; };
@@ -300,6 +301,8 @@
 		130583D21E2B32EC0090A930 /* PlanSectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanSectionView.m; sourceTree = "<group>"; };
 		130583DA1E2B486C0090A930 /* PlanDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanDetailViewController.h; sourceTree = "<group>"; };
 		130583DB1E2B486C0090A930 /* PlanDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanDetailViewController.m; sourceTree = "<group>"; };
+		130583E61E2DA8800090A930 /* PopupPlanRemarkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupPlanRemarkView.h; sourceTree = "<group>"; };
+		130583E71E2DA8800090A930 /* PopupPlanRemarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupPlanRemarkView.m; sourceTree = "<group>"; };
 		1310C3391C4542FC00A2A404 /* TencentOpenAPI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = TencentOpenAPI.framework; sourceTree = "<group>"; };
 		1310C33A1C4542FC00A2A404 /* TencentOpenApi_IOS_Bundle.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TencentOpenApi_IOS_Bundle.bundle; sourceTree = "<group>"; };
 		1310C33C1C4542FC00A2A404 /* libWeiboSDK.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libWeiboSDK.a; sourceTree = "<group>"; };
@@ -775,6 +778,8 @@
 				130583D01E2B32EC0090A930 /* PlanCell.xib */,
 				130583D11E2B32EC0090A930 /* PlanSectionView.h */,
 				130583D21E2B32EC0090A930 /* PlanSectionView.m */,
+				130583E61E2DA8800090A930 /* PopupPlanRemarkView.h */,
+				130583E71E2DA8800090A930 /* PopupPlanRemarkView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2132,6 +2137,7 @@
 				137700E91B953521008C83FD /* AboutViewController.m in Sources */,
 				132263A21B9C7DC200D21637 /* LocalNotificationManager.m in Sources */,
 				13A6AC931BC344A2005A02F9 /* FatherTableViewController.m in Sources */,
+				130583E81E2DA8800090A930 /* PopupPlanRemarkView.m in Sources */,
 				13A6AC8D1BBFDDD6005A02F9 /* DataCenter.m in Sources */,
 				135B21891B900394005CE84A /* main.m in Sources */,
 				13A6ACC71BC69E61005A02F9 /* PhotoDetailViewController.m in Sources */,

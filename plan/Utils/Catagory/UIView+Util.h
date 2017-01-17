@@ -8,13 +8,15 @@
 
 #import <UIKit/UIKit.h>
 
-typedef NS_ENUM(NSInteger, UIViewVisibility) {
+typedef NS_ENUM(NSInteger, UIViewVisibility)
+{
     UIViewVisibilityVisible,
     UIViewVisibilityInvisible,
     UIViewVisibilityGone
 };
 
-typedef NS_OPTIONS(NSUInteger, UIViewMarginDirection) {
+typedef NS_OPTIONS(NSUInteger, UIViewMarginDirection)
+{
     UIViewMarginDirectionNone       = 0,
     UIViewMarginDirectionTop        = 1 << 0,
     UIViewMarginDirectionLeft       = 1 << 1,
@@ -37,5 +39,7 @@ typedef NS_OPTIONS(NSUInteger, UIViewMarginDirection) {
 
 -(void)setVisibility:(UIViewVisibility)visibility;
 -(void)setVisibility:(UIViewVisibility)visibility affectedMarginDirections:(UIViewMarginDirection)affectedMarginDirections;
+//键盘顶部按钮栏
+- (UIView *)getInputAccessoryView;
 
 @end

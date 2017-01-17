@@ -14,6 +14,7 @@
 #import "ThreeSubView.h"
 #import "PlanSectionView.h"
 #import <BmobSDK/BmobUser.h>
+#import "PopupPlanRemarkView.h"
 #import "SecondViewController.h"
 #import "PlanAddViewController.h"
 #import "PlanDetailViewController.h"
@@ -916,6 +917,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:STRDateFormatterType1];
     NSString *timeNow = [dateFormatter stringFromDate:[NSDate date]];
+    plan.updatetime = timeNow;
     //1完成 0未完成
     if ([plan.iscompleted isEqualToString:@"0"])
     {
@@ -928,16 +930,26 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         {
             plan.beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
         }
+        
+        __weak typeof(self) weakSelf = self;
+        PopupPlanRemarkView *remarkView = [[PopupPlanRemarkView alloc] initWithTitle:STRCommonTip51];
+        remarkView.callbackBlock = ^(NSString *remark) {
+            plan.remark = remark;
+            [weakSelf saveAndRefresh:plan];
+        };
+        [remarkView show];
     }
     else
     {
         plan.iscompleted = @"0";
         plan.completetime = @"";
+        [self saveAndRefresh:plan];
     }
-    plan.updatetime = timeNow;
-    
+}
+
+- (void)saveAndRefresh:(Plan *)plan
+{
     [PlanCache updatePlanState:plan];
-    
     [self.tableViewPlan reloadData];
 }
 
