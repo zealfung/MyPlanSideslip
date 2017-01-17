@@ -334,7 +334,7 @@ NSInteger const kIOS7SmartRightMarginWidth = -14;
 
 -(void )customRightButtonWithTitle:(NSString *)title action:(void(^)(UIButton *sender)) action
 {
-    UIBarButtonItem *item = [self createRightItemWithTitle:title font:nil textColor:nil action:action];
+    UIBarButtonItem *item = [self createRightItemWithTitle:title font:font_Normal_16 textColor:[UIColor whiteColor] action:action];
     [self customRightButtonsWithArray:@[item]];
 }
 
