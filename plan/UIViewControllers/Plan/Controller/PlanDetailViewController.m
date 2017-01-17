@@ -21,6 +21,7 @@
 {
     [super viewDidLoad];
     self.title = STRViewTitle26;
+    self.view.backgroundColor = color_F2F3F5;
     
     __weak typeof(self) weakSelf = self;
     [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_Edit] action:^(UIButton *sender)
@@ -58,9 +59,6 @@
         UILabel *labelBeginTime = [[UILabel alloc] initWithFrame:CGRectMake(kEdgeInset + tipsWidth, self.yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2 - tipsWidth, iconSize)];
         labelBeginTime.textColor = color_Black;
         labelBeginTime.font = font_Normal_18;
-        labelBeginTime.layer.borderWidth = 1;
-        labelBeginTime.layer.cornerRadius = 5;
-        labelBeginTime.layer.borderColor = [color_eeeeee CGColor];
         labelBeginTime.text = [CommonFunction getBeginDateStringForShow:self.plan.beginDate];
         [self.view addSubview:labelBeginTime];
 
@@ -97,11 +95,9 @@
     
     if (self.plan.remark.length)
     {
-        CGFloat txtViewHeight = (HEIGHT_FULL_VIEW - kEdgeInset * 2 - self.yOffset - iconSize) / 2;
+        CGFloat txtViewHeight = (HEIGHT_FULL_VIEW - kEdgeInset * 4 - self.yOffset - iconSize) / 2;
         UITextView *txtViewDetail = [[UITextView alloc] initWithFrame:CGRectMake(kEdgeInset, self.yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2, txtViewHeight)];
-        txtViewDetail.backgroundColor = [UIColor clearColor];
-        txtViewDetail.layer.borderWidth = 1;
-        txtViewDetail.layer.borderColor = [color_eeeeee CGColor];
+        txtViewDetail.backgroundColor = [UIColor whiteColor];
         txtViewDetail.layer.cornerRadius = 5;
         txtViewDetail.font = font_Normal_18;
         txtViewDetail.textColor = color_Black;
@@ -120,12 +116,10 @@
         self.yOffset += iconSize + kEdgeInset;
         
         UITextView *txtViewRemark = [[UITextView alloc] initWithFrame:CGRectMake(kEdgeInset, self.yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2, txtViewHeight)];
-        txtViewRemark.backgroundColor = [UIColor clearColor];
-        txtViewRemark.layer.borderWidth = 1;
-        txtViewRemark.layer.borderColor = [color_eeeeee CGColor];
+        txtViewRemark.backgroundColor = [UIColor whiteColor];
         txtViewRemark.layer.cornerRadius = 5;
         txtViewRemark.font = font_Normal_18;
-        txtViewRemark.textColor = color_Blue;
+        txtViewRemark.textColor = color_0BA32A;
         txtViewRemark.text = self.plan.remark;
         txtViewRemark.editable = NO;
         [self.view addSubview:txtViewRemark];
