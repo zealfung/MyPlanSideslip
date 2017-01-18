@@ -58,7 +58,7 @@
 - (void)addAction
 {
     Task *newTask = [[Task alloc] init];
-    newTask.taskOrder = [NSString stringWithFormat:@"%ld", self.taskArray.count];
+    newTask.taskOrder = [NSString stringWithFormat:@"%ld", self.taskArray.count + 1];
     
     AddTaskNewViewController *controller = [[AddTaskNewViewController alloc] init];
     controller.operationType = Add;
@@ -294,7 +294,7 @@
     Task *task = self.taskArray[sourceIndexPath.row];
     //删除之前行的数据
     [self.taskArray removeObject:task];
-    task.taskOrder = [NSString stringWithFormat:@"%ld", (long)destinationIndexPath.row];
+    task.taskOrder = [NSString stringWithFormat:@"%ld", (long)(destinationIndexPath.row + 1)];
     // 插入数据到新的位置
     [self.taskArray insertObject:task atIndex:destinationIndexPath.row];
 }
