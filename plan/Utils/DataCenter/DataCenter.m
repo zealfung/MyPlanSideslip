@@ -317,35 +317,46 @@ static BOOL finishTask;
     }];
 }
 
-+ (void)updateVersionToServerForSettings {
++ (void)updateVersionToServerForSettings
+{
     __weak typeof(self) weakSelf = self;
     BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-        if (array.count > 0) {
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+     {
+        if (array.count)
+        {
             BmobObject *obj = array[0];
             [weakSelf updateVersionForSettings:obj];
         }
     }];
 }
 
-+ (void)updateVersionForSettings:(BmobObject *)settingsObject {
-    
-    [settingsObject setObject:[CommonFunction getAppVersion] forKey:@"appVersion"];
-    [settingsObject setObject:[CommonFunction getDeviceType] forKey:@"deviceType"];
-    [settingsObject setObject:[CommonFunction getiOSVersion] forKey:@"iOSVersion"];
++ (void)updateVersionForSettings:(BmobObject *)settingsObject
+{
+    BmobObject *obj = [[BmobObject alloc] init];
+    obj.objectId = settingsObject.objectId;
+    [obj setObject:[CommonFunction getAppVersion] forKey:@"appVersion"];
+    [obj setObject:[CommonFunction getDeviceType] forKey:@"deviceType"];
+    [obj setObject:[CommonFunction getiOSVersion] forKey:@"iOSVersion"];
 
     BmobACL *acl = [BmobACL ACL];
     [acl setPublicReadAccess];//设置所有人可读
     [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
-    settingsObject.ACL = acl;
-    [settingsObject updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-        if (isSuccessful) {
+    obj.ACL = acl;
+    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
+    {
+        if (isSuccessful)
+        {
             NSLog(@"更新版本号信息到服务器成功");
-        } else if (error) {
+        }
+        else if (error)
+        {
             NSLog(@"更新版本号信息到服务器失败：%@",error);
-        } else {
+        }
+        else
+        {
             NSLog(@"更新版本号信息到服务器遇到未知错误");
         }
     }];
@@ -491,43 +502,60 @@ static BOOL finishTask;
     [self syncServerToLocalForPlan];
 }
 
-+ (void)syncLocalToServerForPlan {
++ (void)syncLocalToServerForPlan
+{
     NSArray *localNewArray = [NSArray array];
-    if ([Config shareInstance].settings.syntime) {
+    if ([Config shareInstance].settings.syntime)
+    {
         localNewArray = [PlanCache getPlanForSync:[Config shareInstance].settings.syntime];
-    } else {
+    }
+    else
+    {
         localNewArray = [PlanCache getPlanForSync:nil];
     }
     __weak typeof(self) weakSelf = self;
     BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
-    for (Plan *plan in localNewArray) {
+    for (Plan *plan in localNewArray)
+    {
         [bquery whereKey:@"userObjectId" equalTo:user.objectId];
         [bquery whereKey:@"planId" equalTo:plan.planid];
-        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-            
-            if (array.count > 0) {
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+        {
+            if (array.count)
+            {
                 BmobObject *obj = array[0];
                 NSString *serverUpdatedTime = [obj objectForKey:@"updatedTime"];
-                if (plan.updatetime.length == 0 && serverUpdatedTime.length == 0) {
+                if (plan.updatetime.length == 0 && serverUpdatedTime.length == 0)
+                {
 
-                } else if (plan.updatetime.length != 0 && serverUpdatedTime.length == 0) {
+                }
+                else if (plan.updatetime.length != 0 && serverUpdatedTime.length == 0)
+                {
                     [weakSelf updatePlanForServer:plan obj:obj];
-                } else if (plan.updatetime.length == 0 && serverUpdatedTime.length != 0) {
+                }
+                else if (plan.updatetime.length == 0 && serverUpdatedTime.length != 0)
+                {
                     
-                } else {
-                    
+                }
+                else
+                {
                     NSDate *localDate = [CommonFunction NSStringDateToNSDate:plan.updatetime formatter:STRDateFormatterType1];
                     NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:STRDateFormatterType1];
                     
-                    if ([localDate compare:serverDate] == NSOrderedAscending) {
+                    if ([localDate compare:serverDate] == NSOrderedAscending)
+                    {
                         
-                    } else if ([localDate compare:serverDate] == NSOrderedDescending) {
+                    }
+                    else if ([localDate compare:serverDate] == NSOrderedDescending)
+                    {
                         //本地的设置较新
                         [weakSelf updatePlanForServer:plan obj:obj];
                     }
                 }
-            } else if (!error) {//防止网络超时也会新增
+            }
+            else if (!error)
+            {//防止网络超时也会新增
                 BmobObject *newPlan = [BmobObject objectWithClassName:@"Plan"];
                 NSDictionary *dic = @{@"userObjectId":plan.account,
                                       @"planId":plan.planid,
@@ -539,6 +567,8 @@ static BOOL finishTask;
                                       @"isCompleted":plan.iscompleted,
                                       @"isNotify":plan.isnotify,
                                       @"isDeleted":plan.isdeleted,
+                                      @"isRepeat":plan.isRepeat,
+                                      @"remark":plan.remark,
                                       @"beginDate":plan.beginDate};
                 [newPlan saveAllWithDictionary:dic];
                 BmobACL *acl = [BmobACL ACL];
@@ -551,29 +581,46 @@ static BOOL finishTask;
     }
 }
 
-+ (void)updatePlanForServer:(Plan *)plan obj:(BmobObject *)obj {
-    if (plan.content) {
++ (void)updatePlanForServer:(Plan *)plan obj:(BmobObject *)obj
+{
+    if (plan.content)
+    {
         [obj setObject:plan.content forKey:@"content"];
     }
-    if (plan.completetime) {
+    if (plan.completetime)
+    {
         [obj setObject:plan.completetime forKey:@"completedTime"];
     }
-    if (plan.updatetime) {
+    if (plan.updatetime)
+    {
         [obj setObject:plan.updatetime forKey:@"updatedTime"];
     }
-    if (plan.notifytime) {
+    if (plan.notifytime)
+    {
         [obj setObject:plan.notifytime forKey:@"notifyTime"];
     }
-    if (plan.iscompleted) {
+    if (plan.iscompleted)
+    {
         [obj setObject:plan.iscompleted forKey:@"isCompleted"];
     }
-    if (plan.isnotify) {
+    if (plan.isnotify)
+    {
         [obj setObject:plan.isnotify forKey:@"isNotify"];
     }
-    if (plan.isdeleted) {
+    if (plan.isdeleted)
+    {
         [obj setObject:plan.isdeleted forKey:@"isDeleted"];
     }
-    if (plan.beginDate) {
+    if (plan.isRepeat)
+    {
+        [obj setObject:plan.isRepeat forKey:@"isRepeat"];
+    }
+    if (plan.remark)
+    {
+        [obj setObject:plan.remark forKey:@"remark"];
+    }
+    if (plan.beginDate)
+    {
         [obj setObject:plan.beginDate forKey:@"beginDate"];
     }
     BmobACL *acl = [BmobACL ACL];
@@ -583,7 +630,8 @@ static BOOL finishTask;
     [obj updateInBackground];
 }
 
-+ (void)syncServerToLocalForPlan {
++ (void)syncServerToLocalForPlan
+{
     BmobUser *user = [BmobUser currentUser];
     NSString *count = [PlanCache getPlanTotalCount:@"ALL"];
     __weak typeof(self) weakSelf = self;
@@ -591,41 +639,50 @@ static BOOL finishTask;
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
     [bquery orderByDescending:@"updatedTime"];
-    if ([count integerValue] > 0) {
+    if ([count integerValue])
+    {
         bquery.limit = 100;
-    } else {
+    }
+    else
+    {
         bquery.limit = 999;
     }
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-        if (!error && array.count > 0) {
-            
-            for (BmobObject *obj in array) {
-                
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+    {
+        if (!error && array.count)
+        {
+            for (BmobObject *obj in array)
+            {
                 Plan *plan = [PlanCache findPlan:user.objectId planid:[obj objectForKey:@"planId"]];
-                if (plan.content) {
-                    
+                if (plan.content)
+                {
                     NSDate *localDate = [CommonFunction NSStringDateToNSDate:plan.updatetime formatter:STRDateFormatterType1];
                     NSDate *serverDate = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"updatedTime"] formatter:STRDateFormatterType1];
                     
-                    if ([localDate compare:serverDate] == NSOrderedAscending) {
+                    if ([localDate compare:serverDate] == NSOrderedAscending)
+                    {
                         //服务器的较新
                         [weakSelf updatePlanForLocal:plan obj:obj];
                         
-                    } else if ([localDate compare:serverDate] == NSOrderedDescending) {
+                    }
+                    else if ([localDate compare:serverDate] == NSOrderedDescending)
+                    {
                         //本地的设置较新
                     }
-                } else {
+                }
+                else
+                {
                     [weakSelf updatePlanForLocal:plan obj:obj];
                 }
             }
         }
-        
         finishPlan = YES;
         [weakSelf IsAllUploadFinished];
     }];
 }
 
-+ (void)updatePlanForLocal:(Plan *)plan obj:(BmobObject *)obj {
++ (void)updatePlanForLocal:(Plan *)plan obj:(BmobObject *)obj
+{
     plan.account = [obj objectForKey:@"userObjectId"];
     plan.planid = [obj objectForKey:@"planId"];
     plan.content = [obj objectForKey:@"content"];
@@ -636,6 +693,8 @@ static BOOL finishTask;
     plan.iscompleted = [obj objectForKey:@"isCompleted"];
     plan.isnotify = [obj objectForKey:@"isNotify"];
     plan.isdeleted = [obj objectForKey:@"isDeleted"];
+    plan.isRepeat = [obj objectForKey:@"isRepeat"];
+    plan.remark = [obj objectForKey:@"remark"];
     plan.beginDate = [obj objectForKey:@"beginDate"];
     [PlanCache storePlan:plan];
 }

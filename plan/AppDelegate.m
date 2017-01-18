@@ -98,15 +98,19 @@
         }
     }
     
-    if ([LogIn isLogin]) {
+    if ([LogIn isLogin])
+    {
         //签到
         [StatisticsCenter checkIn];
         //更新版本号信息
         [DataCenter updateVersionToServerForSettings];
         //自动同步数据
-        if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"]) {
+        if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"])
+        {
             [DataCenter startSyncData];
-        } else {
+        }
+        else
+        {
             //同步个人设置
             [Config shareInstance].isSyncSettingsOnly = YES;
             [DataCenter startSyncSettings];
