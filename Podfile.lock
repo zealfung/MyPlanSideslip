@@ -1,19 +1,17 @@
 PODS:
-  - BmobSDK (2.0.2)
+  - BmobSDK (2.0.6)
   - CRToast (0.0.9)
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
   - FMDB/standard (2.6.2)
   - MBProgressHUD (1.0.0)
   - MJRefresh (3.1.12)
-  - ReactiveCocoa (2.5):
-    - ReactiveCocoa/UI (= 2.5)
-  - ReactiveCocoa/Core (2.5):
-    - ReactiveCocoa/no-arc
-  - ReactiveCocoa/no-arc (2.5)
-  - ReactiveCocoa/UI (2.5):
-    - ReactiveCocoa/Core
+  - ReactiveCocoa (5.0.0):
+    - ReactiveSwift (~> 1.0.0)
+  - ReactiveSwift (1.0.0):
+    - Result (~> 3.1)
   - RESideMenu (4.0.7)
+  - Result (3.1.0)
   - SDCycleScrollView (1.65):
     - SDWebImage (~> 3.7)
   - SDWebImage (3.8.2):
@@ -36,18 +34,20 @@ DEPENDENCIES:
   - YYModel
 
 SPEC CHECKSUMS:
-  BmobSDK: 5a80df9fa546f23fdfd92ff679304eebb7ca4ab3
+  BmobSDK: e5a8e288129169d851709c96ffc88cb68f74c4d7
   CRToast: 5a78c22b921c5ed3487488af605bc403a9c92fed
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
-  ReactiveCocoa: e2db045570aa97c695e7aa97c2bcab222ae51f4a
+  ReactiveCocoa: 60ef0da915b4f70c34ebecc3f4fb8f96af0e53d6
+  ReactiveSwift: f391724ee318a2cfd3e37dfb041cd49ecf4e7869
   RESideMenu: f24c508404b49c667344c54aba7e590883533958
+  Result: 4e3ed5995ed94d0cd6a09be9a431fce3f3624bbf
   SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
   WZLBadge: 16c08aa0a645e2591690f21cbcb410a3d878c7ac
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: fe1554e0e517ddfa8010a807d2ba12fe6607f5f8
+PODFILE CHECKSUM: 261775f9983a396db8d0d05ecf9216751d01fe2c
 
-COCOAPODS: 1.0.0
+COCOAPODS: 1.2.0.beta.1

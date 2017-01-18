@@ -29,12 +29,27 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Pods-planTests.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>RESideMenu.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
 		<key>ReactiveCocoa.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>ReactiveSwift.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>Result.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -62,57 +77,72 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>01EBB7A0B47E8EE9E2CE57525DB4B522</key>
+		<key>012B57411CA754ED6EAFEC3DBF653257</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1155DF31CFD86E8C2ACAD2BCBFB70836</key>
+		<key>100F0ABBDE2A261DF5B523F6F56ACE3C</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>4AFCB5A9DEDD803A5895614E81B6BB74</key>
+		<key>104AEEEFF7D233CA5A5368CC40140AF1</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>53B4F900392AA08241166BFC51653394</key>
+		<key>251BAD17812F7EBF6532EACF66F941C3</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>70BC44266C6FFE30D2C57129458E070B</key>
+		<key>41FA54D12162DAD51D02FC58A2CD5034</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>70FC6A422E95B8E94E9657FE89AD8B88</key>
+		<key>449E9F74215FFC1B64E31C7A054CB7BB</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7112751ACED56349A420B879DDAD76F8</key>
+		<key>59CBA859A1ABC3C9CAE75886969B9592</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>827CA0F84A12356FCB9A4A78F9F449A4</key>
+		<key>605C09A839FB2312A2D5691074E47CCC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>9F12FB4A63E20F601CFB2E64A65B57C1</key>
+		<key>7BE1CA2F3D70F7DE8107C1B64F4209D4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A98432BF45BAA9F115D6CDB39CBE497D</key>
+		<key>7CD102096E732BF02E3D1B0AA79DD760</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D058B89EB3B3DF45457A2DCD3971AFFE</key>
+		<key>A575C9B13093E156B57BE8A88A32D6D7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AD1851FF0EA00830213DE28E991E39C0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E14A62900910444707A5504D25EC98DC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>EBD59B42189456B1332FDAE597677F7A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
