@@ -1,5 +1,5 @@
 PODS:
-  - BmobSDK (2.0.0)
+  - BmobSDK (2.0.2)
   - CRToast (0.0.9)
   - FMDB (2.6.2):
     - FMDB/standard (= 2.6.2)
@@ -36,7 +36,7 @@ DEPENDENCIES:
   - YYModel
 
 SPEC CHECKSUMS:
-  BmobSDK: 0dac00820d4fc08e549ea0e8f4adeaf52709c673
+  BmobSDK: 5a80df9fa546f23fdfd92ff679304eebb7ca4ab3
   CRToast: 5a78c22b921c5ed3487488af605bc403a9c92fed
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a

@@ -92,5 +92,4 @@
  */
 -(void)setWriteAccessForRole:(BmobRole *)role;
 
-
 @end
