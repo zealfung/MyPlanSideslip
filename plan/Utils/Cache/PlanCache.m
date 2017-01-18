@@ -2454,11 +2454,11 @@ static NSMutableDictionary *__contactsOnlineState;
         if (syntime)
         {
             NSString *condition = [NSString stringWithFormat:@"datetime(updatetime)>=datetime('%@')", syntime];
-            sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=? AND %@", STRTableName2, condition];
+            sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted, remark, isRepeat FROM %@ WHERE account=? AND %@", STRTableName2, condition];
         }
         else
         {
-            sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=?", STRTableName2];
+            sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted, remark, isRepeat FROM %@ WHERE account=?", STRTableName2];
         }
         
         FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account]];
@@ -2472,10 +2472,12 @@ static NSMutableDictionary *__contactsOnlineState;
             plan.createtime = [rs stringForColumn:@"createtime"];
             plan.completetime = [rs stringForColumn:@"completetime"] ? [rs stringForColumn:@"completetime"] : @"";
             plan.updatetime = [rs stringForColumn:@"updatetime"] ? [rs stringForColumn:@"updatetime"] : [rs stringForColumn:@"createtime"];
-            plan.iscompleted = [rs stringForColumn:@"iscompleted"] ? [rs stringForColumn:@"iscompleted"] : @"0";
-            plan.isnotify = [rs stringForColumn:@"isnotify"] ? [rs stringForColumn:@"isnotify"] : @"0";
-            plan.notifytime = [rs stringForColumn:@"notifytime"] ? [rs stringForColumn:@"notifytime"] : @"";
+            plan.iscompleted = [rs stringForColumn:@"iscompleted"] ? : @"0";
+            plan.isnotify = [rs stringForColumn:@"isnotify"] ? : @"0";
+            plan.notifytime = [rs stringForColumn:@"notifytime"] ? : @"";
             plan.beginDate = [rs stringForColumn:@"beginDate"];
+            plan.isRepeat = [rs stringForColumn:@"isRepeat"] ? : @"";
+            plan.remark = [rs stringForColumn:@"remark"] ? : @"";
             plan.isdeleted = [rs stringForColumn:@"isdeleted"];
             
             if (!plan.beginDate
