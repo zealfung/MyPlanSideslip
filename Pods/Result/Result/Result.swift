@@ -1,63 +1,78 @@
 //  Copyright (c) 2015 Rob Rix. All rights reserved.
 
 /// An enum representing either a failure with an explanatory error, or a success with a result value.
-public enum Result<T, Error: Swift.Error>: ResultProtocol, CustomStringConvertible, CustomDebugStringConvertible {
-	case success(T)
-	case failure(Error)
+public enum Result<T, Error: ErrorType>: ResultType, CustomStringConvertible, CustomDebugStringConvertible {
+	case Success(T)
+	case Failure(Error)
 
 	// MARK: Constructors
 
 	/// Constructs a success wrapping a `value`.
 	public init(value: T) {
-		self = .success(value)
+		self = .Success(value)
 	}
 
 	/// Constructs a failure wrapping an `error`.
 	public init(error: Error) {
-		self = .failure(error)
+		self = .Failure(error)
 	}
 
-	/// Constructs a result from an `Optional`, failing with `Error` if `nil`.
-	public init(_ value: T?, failWith: @autoclosure () -> Error) {
-		self = value.map(Result.success) ?? .failure(failWith())
+	/// Constructs a result from an Optional, failing with `Error` if `nil`.
+	public init(_ value: T?, @autoclosure failWith: () -> Error) {
+		self = value.map(Result.Success) ?? .Failure(failWith())
 	}
 
 	/// Constructs a result from a function that uses `throw`, failing with `Error` if throws.
-	public init(_ f: @autoclosure () throws -> T) {
+	public init(@autoclosure _ f: () throws -> T) {
 		self.init(attempt: f)
 	}
 
 	/// Constructs a result from a function that uses `throw`, failing with `Error` if throws.
-	public init(attempt f: () throws -> T) {
+	public init(@noescape attempt f: () throws -> T) {
 		do {
-			self = .success(try f())
+			self = .Success(try f())
 		} catch {
-			self = .failure(error as! Error)
+			self = .Failure(error as! Error)
 		}
 	}
 
 	// MARK: Deconstruction
 
-	/// Returns the value from `success` Results or `throw`s the error.
+	/// Returns the value from `Success` Results or `throw`s the error.
 	public func dematerialize() throws -> T {
 		switch self {
-		case let .success(value):
+		case let .Success(value):
 			return value
-		case let .failure(error):
+		case let .Failure(error):
 			throw error
 		}
 	}
 
 	/// Case analysis for Result.
 	///
-	/// Returns the value produced by applying `ifFailure` to `failure` Results, or `ifSuccess` to `success` Results.
-	public func analysis<Result>(ifSuccess: (T) -> Result, ifFailure: (Error) -> Result) -> Result {
+	/// Returns the value produced by applying `ifFailure` to `Failure` Results, or `ifSuccess` to `Success` Results.
+	public func analysis<Result>(@noescape ifSuccess ifSuccess: T -> Result, @noescape ifFailure: Error -> Result) -> Result {
 		switch self {
-		case let .success(value):
+		case let .Success(value):
 			return ifSuccess(value)
-		case let .failure(value):
+		case let .Failure(value):
 			return ifFailure(value)
 		}
+	}
+
+
+	// MARK: Higher-order functions
+	
+	/// Returns `self.value` if this result is a .Success, or the given value otherwise. Equivalent with `??`
+	public func recover(@autoclosure value: () -> T) -> T {
+		return self.value ?? value()
+	}
+	
+	/// Returns this result if it is a .Success, or the given result otherwise. Equivalent with `??`
+	public func recoverWith(@autoclosure result: () -> Result<T,Error>) -> Result<T,Error> {
+		return analysis(
+			ifSuccess: { _ in self },
+			ifFailure: { _ in result() })
 	}
 
 	// MARK: Errors
@@ -75,8 +90,8 @@ public enum Result<T, Error: Swift.Error>: ResultProtocol, CustomStringConvertib
 	public static var lineKey: String { return "\(errorDomain).line" }
 
 	/// Constructs an error.
-	public static func error(_ message: String? = nil, function: String = #function, file: String = #file, line: Int = #line) -> NSError {
-		var userInfo: [String: Any] = [
+	public static func error(message: String? = nil, function: String = __FUNCTION__, file: String = __FILE__, line: Int = __LINE__) -> NSError {
+		var userInfo: [String: AnyObject] = [
 			functionKey: function,
 			fileKey: file,
 			lineKey: line,
@@ -94,8 +109,8 @@ public enum Result<T, Error: Swift.Error>: ResultProtocol, CustomStringConvertib
 
 	public var description: String {
 		return analysis(
-			ifSuccess: { ".success(\($0))" },
-			ifFailure: { ".failure(\($0))" })
+			ifSuccess: { ".Success(\($0))" },
+			ifFailure: { ".Failure(\($0))" })
 	}
 
 
@@ -106,132 +121,106 @@ public enum Result<T, Error: Swift.Error>: ResultProtocol, CustomStringConvertib
 	}
 }
 
+
+/// Returns `true` if `left` and `right` are both `Success`es and their values are equal, or if `left` and `right` are both `Failure`s and their errors are equal.
+public func == <T: Equatable, Error: Equatable> (left: Result<T, Error>, right: Result<T, Error>) -> Bool {
+	if let left = left.value, right = right.value {
+		return left == right
+	} else if let left = left.error, right = right.error {
+		return left == right
+	}
+	return false
+}
+
+/// Returns `true` if `left` and `right` represent different cases, or if they represent the same case but different values.
+public func != <T: Equatable, Error: Equatable> (left: Result<T, Error>, right: Result<T, Error>) -> Bool {
+	return !(left == right)
+}
+
+
+/// Returns the value of `left` if it is a `Success`, or `right` otherwise. Short-circuits.
+public func ?? <T, Error> (left: Result<T, Error>, @autoclosure right: () -> T) -> T {
+	return left.recover(right())
+}
+
+/// Returns `left` if it is a `Success`es, or `right` otherwise. Short-circuits.
+public func ?? <T, Error> (left: Result<T, Error>, @autoclosure right: () -> Result<T, Error>) -> Result<T, Error> {
+	return left.recoverWith(right())
+}
+
 // MARK: - Derive result from failable closure
 
-public func materialize<T>(_ f: () throws -> T) -> Result<T, AnyError> {
+public func materialize<T>(@noescape f: () throws -> T) -> Result<T, NSError> {
 	return materialize(try f())
 }
 
-public func materialize<T>(_ f: @autoclosure () throws -> T) -> Result<T, AnyError> {
+public func materialize<T>(@autoclosure f: () throws -> T) -> Result<T, NSError> {
 	do {
-		return .success(try f())
+		return .Success(try f())
 	} catch {
-		return .failure(AnyError(error))
-	}
-}
-
-@available(*, deprecated, message: "Use the overload which returns `Result<T, AnyError>` instead")
-public func materialize<T>(_ f: () throws -> T) -> Result<T, NSError> {
-	return materialize(try f())
-}
-
-@available(*, deprecated, message: "Use the overload which returns `Result<T, AnyError>` instead")
-public func materialize<T>(_ f: @autoclosure () throws -> T) -> Result<T, NSError> {
-	do {
-		return .success(try f())
-	} catch let error as NSError {
-		return .failure(error)
+		return .Failure(error as NSError)
 	}
 }
 
 // MARK: - Cocoa API conveniences
 
-#if !os(Linux)
-
-/// Constructs a `Result` with the result of calling `try` with an error pointer.
+/// Constructs a Result with the result of calling `try` with an error pointer.
 ///
 /// This is convenient for wrapping Cocoa API which returns an object or `nil` + an error, by reference. e.g.:
 ///
-///     Result.try { NSData(contentsOfURL: URL, options: .dataReadingMapped, error: $0) }
-public func `try`<T>(_ function: String = #function, file: String = #file, line: Int = #line, `try`: (NSErrorPointer) -> T?) -> Result<T, NSError> {
+///     Result.try { NSData(contentsOfURL: URL, options: .DataReadingMapped, error: $0) }
+public func `try`<T>(function: String = __FUNCTION__, file: String = __FILE__, line: Int = __LINE__, `try`: NSErrorPointer -> T?) -> Result<T, NSError> {
 	var error: NSError?
-	return `try`(&error).map(Result.success) ?? .failure(error ?? Result<T, NSError>.error(function: function, file: file, line: line))
+	return `try`(&error).map(Result.Success) ?? .Failure(error ?? Result<T, NSError>.error(function: function, file: file, line: line))
 }
 
-/// Constructs a `Result` with the result of calling `try` with an error pointer.
+/// Constructs a Result with the result of calling `try` with an error pointer.
 ///
 /// This is convenient for wrapping Cocoa API which returns a `Bool` + an error, by reference. e.g.:
 ///
 ///     Result.try { NSFileManager.defaultManager().removeItemAtURL(URL, error: $0) }
-public func `try`(_ function: String = #function, file: String = #file, line: Int = #line, `try`: (NSErrorPointer) -> Bool) -> Result<(), NSError> {
+public func `try`(function: String = __FUNCTION__, file: String = __FILE__, line: Int = __LINE__, `try`: NSErrorPointer -> Bool) -> Result<(), NSError> {
 	var error: NSError?
 	return `try`(&error) ?
-		.success(())
-	:	.failure(error ?? Result<(), NSError>.error(function: function, file: file, line: line))
+		.Success(())
+	:	.Failure(error ?? Result<(), NSError>.error(function: function, file: file, line: line))
 }
 
-#endif
 
-// MARK: - ErrorProtocolConvertible conformance
-	
-extension NSError: ErrorProtocolConvertible {
-	public static func error(from error: Swift.Error) -> Self {
-		func cast<T: NSError>(_ error: Swift.Error) -> T {
-			return error as! T
-		}
+// MARK: - Operators
 
-		return cast(error)
+infix operator >>- {
+	// Left-associativity so that chaining works like you’d expect, and for consistency with Haskell, Runes, swiftz, etc.
+	associativity left
+
+	// Higher precedence than function application, but lower than function composition.
+	precedence 100
+}
+
+/// Returns the result of applying `transform` to `Success`es’ values, or re-wrapping `Failure`’s errors.
+///
+/// This is a synonym for `flatMap`.
+public func >>- <T, U, Error> (result: Result<T, Error>, @noescape transform: T -> Result<U, Error>) -> Result<U, Error> {
+	return result.flatMap(transform)
+}
+
+
+// MARK: - ErrorTypeConvertible conformance
+
+/// Make NSError conform to ErrorTypeConvertible
+extension NSError: ErrorTypeConvertible {
+	public static func errorFromErrorType(error: ErrorType) -> NSError {
+		return error as NSError
 	}
 }
 
-// MARK: - Errors
+// MARK: -
 
 /// An “error” that is impossible to construct.
 ///
 /// This can be used to describe `Result`s where failures will never
 /// be generated. For example, `Result<Int, NoError>` describes a result that
-/// contains an `Int`eger and is guaranteed never to be a `failure`.
-public enum NoError: Swift.Error, Equatable {
-	public static func ==(lhs: NoError, rhs: NoError) -> Bool {
-		return true
-	}
-}
-
-/// A type-erased error which wraps an arbitrary error instance. This should be
-/// useful for generic contexts.
-public struct AnyError: Swift.Error {
-	/// The underlying error.
-	public let error: Swift.Error
-
-	public init(_ error: Swift.Error) {
-		if let anyError = error as? AnyError {
-			self = anyError
-		} else {
-			self.error = error
-		}
-	}
-}
-
-extension AnyError: ErrorProtocolConvertible {
-	public static func error(from error: Error) -> AnyError {
-		return AnyError(error)
-	}
-}
-
-extension AnyError: CustomStringConvertible {
-	public var description: String {
-		return String(describing: error)
-	}
-}
-
-// MARK: - migration support
-extension Result {
-	@available(*, unavailable, renamed: "success")
-	public static func Success(_: T) -> Result<T, Error> {
-		fatalError()
-	}
-
-	@available(*, unavailable, renamed: "failure")
-	public static func Failure(_: Error) -> Result<T, Error> {
-		fatalError()
-	}
-}
-
-extension NSError {
-	@available(*, unavailable, renamed: "error(from:)")
-	public static func errorFromErrorType(_ error: Swift.Error) -> Self {
-		fatalError()
-	}
-}
+/// contains an `Int`eger and is guaranteed never to be a `Failure`.
+public enum NoError: ErrorType { }
 
 import Foundation

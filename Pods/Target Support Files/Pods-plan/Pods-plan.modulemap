@@ -1,6 +1,0 @@
-framework module Pods_plan {
-  umbrella header "Pods-plan-umbrella.h"
-
-  export *
-  module * { export * }
-}

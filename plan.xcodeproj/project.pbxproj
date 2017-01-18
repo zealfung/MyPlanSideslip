@@ -274,8 +274,8 @@
 		13F670A41CC11A2E009D2BA9 /* PersonalCenterMyPostsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670A31CC11A2E009D2BA9 /* PersonalCenterMyPostsViewController.m */; };
 		13F670A71CC12271009D2BA9 /* SettingsPersonalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670A61CC12271009D2BA9 /* SettingsPersonalViewController.m */; };
 		13F670AA1CC24D56009D2BA9 /* NotificationConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670A91CC24D56009D2BA9 /* NotificationConst.m */; };
-		3DE86F5604C21AFA5B811949 /* Pods_plan.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C7762D8315C6F439A0807BA2 /* Pods_plan.framework */; };
-		48AFACB46B819B3767AB5A79 /* Pods_planTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BC319B20FB53C67E2B59898 /* Pods_planTests.framework */; };
+		808A35B79C499B46A4D422D1 /* libPods-plan.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41AE88A5CD01C237296C4207 /* libPods-plan.a */; };
+		B74968BD851D9719E251A027 /* libPods-planTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D1F7817F861383122BFD989 /* libPods-planTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -290,6 +290,7 @@
 
 /* Begin PBXFileReference section */
 		036615456F7BB6BF10089346 /* Pods-planTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-planTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-planTests/Pods-planTests.release.xcconfig"; sourceTree = "<group>"; };
+		0D1F7817F861383122BFD989 /* libPods-planTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-planTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		130099871D7D423800BEF9FC /* ThemeNewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeNewCell.h; sourceTree = "<group>"; };
 		130099881D7D423800BEF9FC /* ThemeNewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeNewCell.m; sourceTree = "<group>"; };
 		130099891D7D423800BEF9FC /* ThemeNewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThemeNewCell.xib; sourceTree = "<group>"; };
@@ -714,9 +715,8 @@
 		13F670A91CC24D56009D2BA9 /* NotificationConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NotificationConst.m; sourceTree = "<group>"; };
 		13FC0DF71D18E19200905D60 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		13FC0DF81D18E19200905D60 /* zh-Hans */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans"; path = "zh-Hans.lproj/Main.strings"; sourceTree = "<group>"; };
-		4BC319B20FB53C67E2B59898 /* Pods_planTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_planTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		41AE88A5CD01C237296C4207 /* libPods-plan.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-plan.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		73C46D05F2D2DC55238E76B5 /* Pods-planTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-planTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-planTests/Pods-planTests.debug.xcconfig"; sourceTree = "<group>"; };
-		C7762D8315C6F439A0807BA2 /* Pods_plan.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_plan.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E08A2F42F323D27270FECF1B /* Pods-plan.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-plan.debug.xcconfig"; path = "Pods/Target Support Files/Pods-plan/Pods-plan.debug.xcconfig"; sourceTree = "<group>"; };
 		E317BBA34A6F2C3A199A1394 /* Pods-plan.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-plan.release.xcconfig"; path = "Pods/Target Support Files/Pods-plan/Pods-plan.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -750,7 +750,7 @@
 				1368F9671BB6281D00CC7E63 /* QuartzCore.framework in Frameworks */,
 				1368F9651BB6255500CC7E63 /* libsqlite3.dylib in Frameworks */,
 				1368F9641BB6254000CC7E63 /* ImageIO.framework in Frameworks */,
-				3DE86F5604C21AFA5B811949 /* Pods_plan.framework in Frameworks */,
+				808A35B79C499B46A4D422D1 /* libPods-plan.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -758,7 +758,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				48AFACB46B819B3767AB5A79 /* Pods_planTests.framework in Frameworks */,
+				B74968BD851D9719E251A027 /* libPods-planTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1766,8 +1766,8 @@
 				133B07EF1BA133480015E752 /* libstdc++.dylib */,
 				133B07ED1BA133290015E752 /* libz.dylib */,
 				133B07EB1BA133100015E752 /* libicucore.dylib */,
-				C7762D8315C6F439A0807BA2 /* Pods_plan.framework */,
-				4BC319B20FB53C67E2B59898 /* Pods_planTests.framework */,
+				41AE88A5CD01C237296C4207 /* libPods-plan.a */,
+				0D1F7817F861383122BFD989 /* libPods-planTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

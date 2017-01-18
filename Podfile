@@ -11,11 +11,9 @@ target 'plan' do
   pod 'MJRefresh'
   pod 'SDWebImage'
   pod 'RESideMenu'
-  pod 'ReactiveCocoa'
+#  pod 'ReactiveCocoa'
   pod 'MBProgressHUD'
   pod 'SDCycleScrollView'
-  
-  use_frameworks!
   
   target 'planTests' do
     inherit! :search_paths
