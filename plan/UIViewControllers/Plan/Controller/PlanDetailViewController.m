@@ -30,6 +30,10 @@
          controller.plan = weakSelf.plan;
          [self.navigationController pushViewController:controller animated:YES];
      }];
+    
+    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFPlanSave object:nil];
+    
+    [self loadCustomView];
 }
 
 - (void)didReceiveMemoryWarning
@@ -40,11 +44,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self loadCustomView];
 }
 
 - (void)loadCustomView
 {
+    [[self.view subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
     self.yOffset = kEdgeInset;
     CGFloat iconSize = 30;
     CGFloat switchWidth = 20;
