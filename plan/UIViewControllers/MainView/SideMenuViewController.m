@@ -6,7 +6,7 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
-#import <RESideMenu.h>
+#import "RESideMenu.h"
 #import "DataCenter.h"
 #import "WZLBadgeImport.h"
 #import "HelpViewController.h"
@@ -18,16 +18,17 @@
 #import "PersonalCenterNewViewController.h"
 #import <MessageUI/MFMailComposeViewController.h>
 
-@interface SideMenuViewController () <MFMailComposeViewControllerDelegate> {
-    NSMutableArray *menuImgArray;
-    NSMutableArray *menuArray;
-}
+@interface SideMenuViewController () <MFMailComposeViewControllerDelegate>
+
+@property (strong, nonatomic) NSMutableArray *menuImgArray;
+@property (strong, nonatomic) NSMutableArray *menuArray;
 
 @end
 
 @implementation SideMenuViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.tableView.bounces = NO;
     self.tableView.backgroundColor = color_GrayDark;
@@ -40,26 +41,25 @@
     [self setMenuArray];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)dealloc {
-    [NotificationCenter removeObserver:self];
-}
-
-- (void)setMenuArray {
-    menuImgArray = [NSMutableArray arrayWithObjects:png_Icon_Menu_PersonalCenter, png_Icon_Menu_PhotoLine, png_Icon_Menu_Help, png_Icon_Menu_FiveStar, png_Icon_Menu_Messages, png_Icon_Menu_About, nil];
-    menuArray = [NSMutableArray arrayWithObjects:STRViewTitle4, STRViewTitle5, STRViewTitle6, STRViewTitle7, STRViewTitle12, STRViewTitle9, nil];
+- (void)setMenuArray
+{
+    self.menuImgArray = [NSMutableArray arrayWithObjects:png_Icon_Menu_PersonalCenter, png_Icon_Menu_PhotoLine, png_Icon_Menu_Help, png_Icon_Menu_FiveStar, png_Icon_Menu_Messages, png_Icon_Menu_About, nil];
+    self.menuArray = [NSMutableArray arrayWithObjects:STRViewTitle4, STRViewTitle5, STRViewTitle6, STRViewTitle7, STRViewTitle12, STRViewTitle9, nil];
 }
 
 #pragma mark - Table view data source
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section {
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
     return 160;
 }
 
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section {
-
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
     UIView *headerView = [UIView new];
     UIColor *bgColor = [UIColor colorWithPatternImage: [UIImage imageNamed:png_Bg_SideTop]];
     headerView.backgroundColor = bgColor;
@@ -71,14 +71,15 @@
     avatar.translatesAutoresizingMaskIntoConstraints = NO;
     [headerView addSubview:avatar];
     UIImage *image = [UIImage imageNamed:png_AvatarDefault1];
-    if ([Config shareInstance].settings.avatar) {
+    if ([Config shareInstance].settings.avatar)
+    {
         image = [UIImage imageWithData:[Config shareInstance].settings.avatar];
     }
     avatar.image = image;
 
     NSString *nickname = STRCommonTip12;
-    if ([Config shareInstance].settings.nickname) {
-        
+    if ([Config shareInstance].settings.nickname)
+    {
         nickname = [Config shareInstance].settings.nickname;
     }
     UILabel *nameLabel = [UILabel new];
@@ -101,56 +102,66 @@
     return headerView;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return menuArray.count;
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.menuArray.count;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return 50;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     UITableViewCell *cell = [UITableViewCell new];
     cell.backgroundColor = [UIColor clearColor];
-    if (menuArray.count == 0) {
+    if (self.menuArray.count == 0)
+    {
         return cell;
     }
     
     UIView *selectedBackground = [UIView new];
     selectedBackground.backgroundColor = [CommonFunction getGenderColor];
     [cell setSelectedBackgroundView:selectedBackground];
-    cell.imageView.image = [UIImage imageNamed:menuImgArray[indexPath.row]];
-    cell.textLabel.text = menuArray[indexPath.row];
+    cell.imageView.image = [UIImage imageNamed:self.menuImgArray[indexPath.row]];
+    cell.textLabel.text = self.menuArray[indexPath.row];
     cell.textLabel.font = font_Normal_16;
     cell.textLabel.textColor = [UIColor whiteColor];
-    if (indexPath.row == 4 && [PlanCache hasUnreadMessages]) {
+    if (indexPath.row == 4 && [PlanCache hasUnreadMessages])
+    {
         [cell.imageView showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
         cell.imageView.badgeCenterOffset = CGPointMake(20, 0);
     }
-    
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
-    switch (indexPath.row) {
-        case 0: {//个人中心
+    switch (indexPath.row)
+    {
+        case 0:
+        {//个人中心
             PersonalCenterNewViewController *controller = [[PersonalCenterNewViewController alloc] init];
             [self setContentViewController:controller];
             break;
         }
-        case 1: {//岁月影像
+        case 1:
+        {//岁月影像
             PhotoViewController *controller = [[PhotoViewController alloc] init];
             [self setContentViewController:controller];
             break;
         }
-        case 2: {//常见问题
+        case 2:
+        {//常见问题
             HelpViewController *controller = [[HelpViewController alloc] init];
             [self setContentViewController:controller];
             break;
         }
-        case 3: {//五星鼓励
+        case 3:
+        {//五星鼓励
             //到下载界面
 //            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:@"http://itunes.apple.com/app/id983206049?mt=8"]];
             //到评论界面
@@ -171,12 +182,14 @@
 //            [self displayMailPicker];
 //            break;
 //        }
-        case 4: {//系统消息
+        case 4:
+        {//系统消息
             MessagesViewController *controller = [[MessagesViewController alloc]init];
             [self setContentViewController:controller];
             break;
         }
-        case 5: {//关于我们
+        case 5:
+        {//关于我们
             AboutViewController *controller = [[AboutViewController alloc]init];
             [self setContentViewController:controller];
         }
@@ -184,7 +197,8 @@
     }
 }
 
-- (void)setContentViewController:(UIViewController *)viewController {
+- (void)setContentViewController:(UIViewController *)viewController
+{
     viewController.hidesBottomBarWhenPushed = YES;
     UINavigationController *navController = (UINavigationController *)((UITabBarController *)self.sideMenuViewController.contentViewController).selectedViewController;
     [navController pushViewController:viewController animated:NO];
@@ -192,7 +206,8 @@
     [self.sideMenuViewController hideMenuViewController];
 }
 
-- (void)pushLoginPage {
+- (void)pushLoginPage
+{
     UINavigationController *navController = (UINavigationController *)((UITabBarController *)self.sideMenuViewController.contentViewController).selectedViewController;
     SettingsPersonalViewController *controller = [[SettingsPersonalViewController alloc] init];
     controller.hidesBottomBarWhenPushed = YES;
@@ -201,15 +216,16 @@
     [self.sideMenuViewController hideMenuViewController];
 }
 
-- (void)reload {
+- (void)reload
+{
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
 }
 
 //调出邮件发送窗口
-- (void)displayMailPicker {
-    
+- (void)displayMailPicker
+{
     MFMailComposeViewController *mailPicker = [[MFMailComposeViewController alloc] init];
     mailPicker.mailComposeDelegate = self;
     
@@ -223,16 +239,16 @@
     
     [mailPicker setMessageBody:STRViewTips64 isHTML:YES];
     [self presentViewController:mailPicker animated:YES completion:nil];
-    
 }
 
 #pragma mark - 实现 MFMailComposeViewControllerDelegate
-- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
-    
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error
+{
     //关闭邮件发送窗口
     [controller dismissViewControllerAnimated:YES completion:nil];
     NSString *msg;
-    switch (result) {
+    switch (result)
+    {
         case MFMailComposeResultCancelled:
             msg = STRViewTips65;
             break;
