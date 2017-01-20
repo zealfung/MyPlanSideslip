@@ -536,7 +536,7 @@ NSString *const STRTableName7 = @"t_messages";
 /** kBeginDateFlag20160128 */
 NSString *const STRBeginDateFlag = @"kBeginDateFlag20160128";
 /** kTmpFlag20160229 */
-NSString *const STRCleanCacheFlag = @"kTmpFlag20160229";
+NSString *const STRCleanCacheFlag = @"kTmpFlag20170120";
 /** kPlanListLastLoadDataTime */
 NSString *const STRPlanListFlag = @"kPlanListLastLoadDataTime";
 /** kPostsListLastLoadDataTime */
