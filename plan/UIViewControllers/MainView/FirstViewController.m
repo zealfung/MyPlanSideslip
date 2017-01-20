@@ -22,42 +22,47 @@ NSUInteger const kSecondsPerDay = 86400;
 NSUInteger const kMinutesPerDay = 1440;
 NSUInteger const kHoursPerDay = 24;
 
-@interface FirstViewController () <UITextFieldDelegate> {
-    
-    ThreeSubView *nickNameView;
-    ThreeSubView *liftetimeView;
-    ThreeSubView *daysLeftView;
-    ThreeSubView *secondsLeftView;
-    ThreeSubView *minuteLeftView;
-    ThreeSubView *hourLeftView;
-    UIView *statisticsView;
-    ThreeSubView *everydayView;
-    ThreeSubView *longtermView;
-    UIView *shareLogoView;
-    
-    NSTimer *timer;
-    NSInteger daysLeft;
-    NSDate *deadDay;
-    
-    NSUInteger xMiddle;
-    NSUInteger yOffset;
-    NSUInteger ySpace;
-}
+@interface FirstViewController () <UITextFieldDelegate>
+
 @property (strong, nonatomic) UIScrollView *scrollView;
+@property (strong, nonatomic) ThreeSubView *nickNameView;
+@property (strong, nonatomic) ThreeSubView *liftetimeView;
+@property (strong, nonatomic) ThreeSubView *daysLeftView;
+@property (strong, nonatomic) ThreeSubView *secondsLeftView;
+@property (strong, nonatomic) ThreeSubView *minuteLeftView;
+@property (strong, nonatomic) ThreeSubView *hourLeftView;
+@property (strong, nonatomic) UIView *statisticsView;
+@property (strong, nonatomic) ThreeSubView *everydayView;
+@property (strong, nonatomic) ThreeSubView *longtermView;
+@property (strong, nonatomic) UIView *shareLogoView;
 
-@end
+@property (strong, nonatomic) NSTimer *timer;
+@property (assign, nonatomic) NSInteger daysLeft;
+@property (strong, nonatomic) NSDate *deadDay;
 
-@interface FirstViewController ()
+@property (assign, nonatomic) NSUInteger xMiddle;
+@property (assign, nonatomic) NSUInteger yOffset;
+@property (assign, nonatomic) NSUInteger ySpace;
 
 @end
 
 @implementation FirstViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = STRViewTitle1;
     self.tabBarItem.title = STRViewTitle1;
-    [self createNavBarButton];
+
+    __weak typeof(self) weakSelf = self;
+    [self customLeftButtonWithImage:[UIImage imageNamed:png_Btn_LeftMenu] action:^(UIButton *sender)
+    {
+        [weakSelf leftMenuAction];
+    }];
+    [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_Share] action:^(UIButton *sender)
+     {
+         [weakSelf shareAction];
+    }];
     
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFSettingsSave object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFPlanSave object:nil];
@@ -68,61 +73,61 @@ NSUInteger const kHoursPerDay = 24;
     [self loadCustomView];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     [self checkUnread:self.tabBarController.tabBar index:0];
     [self refreshRedDot];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)dealloc {
-    [NotificationCenter removeObserver:self];
-}
-
-- (void)createNavBarButton {
-    self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction:)];
-    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Share selectedImageName:png_Btn_Share selector:@selector(shareAction)];
-}
-
-- (void)leftMenuAction:(UIButton *)button {
+- (void)leftMenuAction
+{
     [self.sideMenuViewController presentLeftMenuViewController];
 }
 
-- (void)shareAction {
-    shareLogoView.hidden = NO;
+- (void)shareAction
+{
+    self.shareLogoView.hidden = NO;
     
     UIImage* image = [UIImage imageNamed:png_ImageDefault];
     UIGraphicsBeginImageContextWithOptions(self.view.bounds.size, NO , 0.0f);//高清，效率比较慢
     {
-
         [self.view.layer renderInContext: UIGraphicsGetCurrentContext()];
         image = UIGraphicsGetImageFromCurrentImageContext();
     }
     UIGraphicsEndImageContext();
     
-    shareLogoView.hidden = YES;
+    self.shareLogoView.hidden = YES;
     
     [ShareCenter showShareActionSheet:self.view image:image];
 }
 
-- (void)refreshView:(NSNotification*)notification {
+- (void)refreshView:(NSNotification*)notification
+{
     [self loadCustomView];
 }
 
-- (void)refreshRedDot {
+- (void)refreshRedDot
+{
     //小红点
-    if ([PlanCache hasUnreadMessages]) {
+    if ([PlanCache hasUnreadMessages])
+    {
         [self.leftBarButtonItem showBadgeWithStyle:WBadgeStyleRedDot value:0 animationType:WBadgeAnimTypeNone];
         self.leftBarButtonItem.badgeCenterOffset = CGPointMake(-8, 0);
-    } else {
+    }
+    else
+    {
         [self.leftBarButtonItem clearBadge];
     }
 }
 
-- (void)loadCustomView {
+- (void)loadCustomView
+{
     //加载个人设置
     [Config shareInstance].settings = [PlanCache getPersonalSettings];
     
@@ -135,10 +140,14 @@ NSUInteger const kHoursPerDay = 24;
     [self createShareLogo];
 }
 
-- (void)createAvatar {
-    if (self.scrollView) {
+- (void)createAvatar
+{
+    if (self.scrollView)
+    {
         [self.scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    } else {
+    }
+    else
+    {
         self.scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, HEIGHT_FULL_VIEW)];
         self.scrollView.backgroundColor = [UIColor whiteColor];
         self.scrollView.showsVerticalScrollIndicator = NO;
@@ -146,15 +155,16 @@ NSUInteger const kHoursPerDay = 24;
     }
     
     NSUInteger avatarSize = WIDTH_FULL_SCREEN / 3;
-    xMiddle = WIDTH_FULL_SCREEN / 2;
-    ySpace = HEIGHT_FULL_SCREEN / 25;
-    yOffset = iPhone4 ? HEIGHT_FULL_SCREEN / 28 : HEIGHT_FULL_SCREEN / 15 - ySpace;
+    self.xMiddle = WIDTH_FULL_SCREEN / 2;
+    self.ySpace = HEIGHT_FULL_SCREEN / 25;
+    self.yOffset = iPhone4 ? HEIGHT_FULL_SCREEN / 28 : HEIGHT_FULL_SCREEN / 15 - self.ySpace;
     
     UIImage *image = [UIImage imageNamed:png_AvatarDefault];
-    if ([Config shareInstance].settings.avatar) {
+    if ([Config shareInstance].settings.avatar)
+    {
         image = [UIImage imageWithData:[Config shareInstance].settings.avatar];
     }
-    UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(xMiddle - avatarSize / 2, yOffset, avatarSize, avatarSize)];
+    UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(self.xMiddle - avatarSize / 2, self.yOffset, avatarSize, avatarSize)];
     avatar.image = image;
     avatar.clipsToBounds = YES;
     avatar.layer.borderWidth = 1;
@@ -168,25 +178,28 @@ NSUInteger const kHoursPerDay = 24;
     
     [self.scrollView addSubview:avatar];
     
-    yOffset += avatarSize + ySpace;
+    self.yOffset += avatarSize + self.ySpace;
 }
 
-- (void)createLabelText {
+- (void)createLabelText
+{
     NSString *nickname = STRCommonTip12;
     NSInteger lifetime = 100;
     CGFloat labelHeight = HEIGHT_FULL_SCREEN / 62;
     CGFloat labelWidth = WIDTH_FULL_SCREEN / 3 > 125 ? WIDTH_FULL_SCREEN / 3 : 125;
 
-    if (![CommonFunction isEmptyString:[Config shareInstance].settings.nickname]) {
+    if (![CommonFunction isEmptyString:[Config shareInstance].settings.nickname])
+    {
         nickname = [Config shareInstance].settings.nickname;
     }
-    if (![CommonFunction isEmptyString:[Config shareInstance].settings.lifespan]) {
+    if (![CommonFunction isEmptyString:[Config shareInstance].settings.lifespan])
+    {
         NSString *life = [Config shareInstance].settings.lifespan;
         lifetime = [life integerValue];
     }
     
     __weak typeof(self) weakSelf = self;
-    ThreeSubView *nickNameSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(xMiddle, yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:^{
+    ThreeSubView *nickNameSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(self.xMiddle, self.yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock: ^ {
         
         [weakSelf toSettingsViewController];
         
@@ -199,18 +212,18 @@ NSUInteger const kHoursPerDay = 24;
     
     [self.scrollView addSubview:nickNameSubView];
     
-    nickNameView = nickNameSubView;
+    self.nickNameView = nickNameSubView;
     
     CGRect nickFrame = CGRectZero;
-    nickFrame.size.width = nickNameView.frame.size.width;
-    nickFrame.size.height = nickNameView.frame.size.height;
-    nickFrame.origin.x = xMiddle - nickNameView.frame.size.width/2;
-    nickFrame.origin.y = yOffset;
+    nickFrame.size.width = self.nickNameView.frame.size.width;
+    nickFrame.size.height = self.nickNameView.frame.size.height;
+    nickFrame.origin.x = self.xMiddle - self.nickNameView.frame.size.width/2;
+    nickFrame.origin.y = self.yOffset;
     
-    nickNameView.frame = nickFrame;
-    yOffset += nickNameView.frame.size.height + (iPhone4 ? ySpace : ySpace * 2);
+    self.nickNameView.frame = nickFrame;
+    self.yOffset += self.nickNameView.frame.size.height + (iPhone4 ? self.ySpace : self.ySpace * 2);
     
-    ThreeSubView *liftetimeSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(xMiddle, yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
+    ThreeSubView *liftetimeSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(self.xMiddle, self.yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
     
     [liftetimeSubView.leftButton.titleLabel setFont:font_Normal_16];
     [liftetimeSubView.leftButton setAllTitleColor:color_Black];
@@ -224,19 +237,20 @@ NSUInteger const kHoursPerDay = 24;
     [liftetimeSubView autoLayout];
     [self.scrollView addSubview:liftetimeSubView];
     
-    liftetimeView = liftetimeSubView;
+    self.liftetimeView = liftetimeSubView;
     
     CGRect lifeFrame = CGRectZero;
-    lifeFrame.size.width = liftetimeView.frame.size.width;
-    lifeFrame.size.height = liftetimeView.frame.size.height;
-    lifeFrame.origin.x = xMiddle - liftetimeView.frame.size.width/2;
-    lifeFrame.origin.y = yOffset;
+    lifeFrame.size.width = self.liftetimeView.frame.size.width;
+    lifeFrame.size.height = self.liftetimeView.frame.size.height;
+    lifeFrame.origin.x = self.xMiddle - self.liftetimeView.frame.size.width/2;
+    lifeFrame.origin.y = self.yOffset;
     
-    liftetimeView.frame = lifeFrame;
-    yOffset += liftetimeView.frame.size.height + ySpace;
+    self.liftetimeView.frame = lifeFrame;
+    self.yOffset += self.liftetimeView.frame.size.height + self.ySpace;
     
     NSString *birthdayFormat = @"1987-03-05 00:00:00";
-    if (![CommonFunction isEmptyString:[Config shareInstance].settings.birthday]) {
+    if (![CommonFunction isEmptyString:[Config shareInstance].settings.birthday])
+    {
         birthdayFormat = [NSString stringWithFormat:@"%@ 00:00:00", [Config shareInstance].settings.birthday];
     }
     
@@ -249,53 +263,64 @@ NSUInteger const kHoursPerDay = 24;
     year += lifetime;
     [comp setYear:year];
 
-    deadDay = [calendar dateFromComponents:comp];
+    self.deadDay = [calendar dateFromComponents:comp];
     
     NSDate *now = [NSDate date];
-    NSTimeInterval secondsBetweenDates= [deadDay timeIntervalSinceDate:now];
-    if(secondsBetweenDates < 0) {
-        daysLeft = 0;
-    } else {
-        daysLeft = secondsBetweenDates/kSecondsPerDay;
+    NSTimeInterval secondsBetweenDates= [self.deadDay timeIntervalSinceDate:now];
+    if(secondsBetweenDates < 0)
+    {
+        self.daysLeft = 0;
     }
-    if ([[Config shareInstance].settings.dayOrMonth isEqualToString:@"1"]) {
-        daysLeft = daysLeft / kDaysPerMonth;
+    else
+    {
+        self.daysLeft = secondsBetweenDates/kSecondsPerDay;
+    }
+    if ([[Config shareInstance].settings.dayOrMonth isEqualToString:@"1"])
+    {
+        self.daysLeft = self.daysLeft / kDaysPerMonth;
     }
     //剩余天数
-    ThreeSubView *daysLeftSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(xMiddle, yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
+    ThreeSubView *daysLeftSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(self.xMiddle, self.yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
     [daysLeftSubView.leftButton.titleLabel setFont:font_Normal_16];
     [daysLeftSubView.leftButton setAllTitleColor:color_Black];
     [daysLeftSubView.leftButton setAllTitle:STRViewTips3];
     [daysLeftSubView.centerButton.titleLabel setFont:font_Normal_24];
     [daysLeftSubView.centerButton setAllTitleColor:color_Red];
-    if (![CommonFunction isEmptyString:[Config shareInstance].settings.birthday]) {
-        [daysLeftSubView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:daysLeft]];
-    } else {
+    if (![CommonFunction isEmptyString:[Config shareInstance].settings.birthday])
+    {
+        [daysLeftSubView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:self.daysLeft]];
+    }
+    else
+    {
         [daysLeftSubView.centerButton setAllTitle:@"X"];
     }
     [daysLeftSubView.rightButton.titleLabel setFont:font_Normal_16];
     [daysLeftSubView.rightButton setAllTitleColor:color_Black];
-    if ([[Config shareInstance].settings.dayOrMonth isEqualToString:@"1"]) {
+    if ([[Config shareInstance].settings.dayOrMonth isEqualToString:@"1"])
+    {
         [daysLeftSubView.rightButton setAllTitle:STRCommonTime15];
-    } else {
+    }
+    else
+    {
         [daysLeftSubView.rightButton setAllTitle:STRCommonTime14];
     }
     [daysLeftSubView autoLayout];
     [self.scrollView addSubview:daysLeftSubView];
     
-    daysLeftView = daysLeftSubView;
+    self.daysLeftView = daysLeftSubView;
     
     CGRect daysFrame = CGRectZero;
-    daysFrame.size.width = daysLeftView.frame.size.width;
-    daysFrame.size.height = daysLeftView.frame.size.height;
-    daysFrame.origin.x = xMiddle - daysLeftView.frame.size.width/2;
-    daysFrame.origin.y = yOffset;
+    daysFrame.size.width = self.daysLeftView.frame.size.width;
+    daysFrame.size.height = self.daysLeftView.frame.size.height;
+    daysFrame.origin.x = self.xMiddle - self.daysLeftView.frame.size.width/2;
+    daysFrame.origin.y = self.yOffset;
     
-    daysLeftView.frame = daysFrame;
-    yOffset += daysLeftView.frame.size.height + ySpace;
+    self.daysLeftView.frame = daysFrame;
+    self.yOffset += self.daysLeftView.frame.size.height + self.ySpace;
     //剩余秒
-    if ([self showSeconds]) {
-        ThreeSubView *secondsLeftSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(xMiddle, yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
+    if ([self showSeconds])
+    {
+        ThreeSubView *secondsLeftSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(self.xMiddle, self.yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
         [secondsLeftSubView.leftButton.titleLabel setFont:font_Normal_16];
         [secondsLeftSubView.leftButton setAllTitleColor:color_Black];
         [secondsLeftSubView.leftButton setAllTitle:STRViewTips4];
@@ -308,20 +333,21 @@ NSUInteger const kHoursPerDay = 24;
         [secondsLeftSubView autoLayout];
         [self.scrollView addSubview:secondsLeftSubView];
         
-        secondsLeftView = secondsLeftSubView;
+        self.secondsLeftView = secondsLeftSubView;
         
         CGRect secondsFrame = CGRectZero;
-        secondsFrame.size.width = secondsLeftView.frame.size.width;
-        secondsFrame.size.height = secondsLeftView.frame.size.height;
-        secondsFrame.origin.x = xMiddle - secondsLeftView.frame.size.width/2;
-        secondsFrame.origin.y = yOffset;
+        secondsFrame.size.width = self.secondsLeftView.frame.size.width;
+        secondsFrame.size.height = self.secondsLeftView.frame.size.height;
+        secondsFrame.origin.x = self.xMiddle - self.secondsLeftView.frame.size.width/2;
+        secondsFrame.origin.y = self.yOffset;
         
-        secondsLeftView.frame = secondsFrame;
-        yOffset += secondsLeftView.frame.size.height + ySpace;
+        self.secondsLeftView.frame = secondsFrame;
+        self.yOffset += self.secondsLeftView.frame.size.height + self.ySpace;
     }
     //剩余分
-    if ([self showMinutes]) {
-        ThreeSubView *minuteLeftSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(xMiddle, yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
+    if ([self showMinutes])
+    {
+        ThreeSubView *minuteLeftSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(self.xMiddle, self.yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
         [minuteLeftSubView.leftButton.titleLabel setFont:font_Normal_16];
         [minuteLeftSubView.leftButton setAllTitleColor:color_Black];
         [minuteLeftSubView.leftButton setAllTitle:STRViewTips4];
@@ -334,20 +360,21 @@ NSUInteger const kHoursPerDay = 24;
         [minuteLeftSubView autoLayout];
         [self.scrollView addSubview:minuteLeftSubView];
         
-        minuteLeftView = minuteLeftSubView;
+        self.minuteLeftView = minuteLeftSubView;
         
         CGRect minuteFrame = CGRectZero;
-        minuteFrame.size.width = minuteLeftView.frame.size.width;
-        minuteFrame.size.height = minuteLeftView.frame.size.height;
-        minuteFrame.origin.x = xMiddle - minuteLeftView.frame.size.width/2;
-        minuteFrame.origin.y = yOffset;
+        minuteFrame.size.width = self.minuteLeftView.frame.size.width;
+        minuteFrame.size.height = self.minuteLeftView.frame.size.height;
+        minuteFrame.origin.x = self.xMiddle - self.minuteLeftView.frame.size.width/2;
+        minuteFrame.origin.y = self.yOffset;
         
-        minuteLeftView.frame = minuteFrame;
-        yOffset += minuteLeftView.frame.size.height + ySpace;
+        self.minuteLeftView.frame = minuteFrame;
+        self.yOffset += self.minuteLeftView.frame.size.height + self.ySpace;
     }
     //剩余时
-    if ([self showHours]) {
-        ThreeSubView *hourLeftSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(xMiddle, yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
+    if ([self showHours])
+    {
+        ThreeSubView *hourLeftSubView = [[ThreeSubView alloc] initWithFrame:CGRectMake(self.xMiddle, self.yOffset, labelWidth, labelHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
         [hourLeftSubView.leftButton.titleLabel setFont:font_Normal_16];
         [hourLeftSubView.leftButton setAllTitleColor:color_Black];
         [hourLeftSubView.leftButton setAllTitle:STRViewTips4];
@@ -360,22 +387,23 @@ NSUInteger const kHoursPerDay = 24;
         [hourLeftSubView autoLayout];
         [self.scrollView addSubview:hourLeftSubView];
         
-        hourLeftView = hourLeftSubView;
+        self.hourLeftView = hourLeftSubView;
         
         CGRect hourFrame = CGRectZero;
-        hourFrame.size.width = hourLeftView.frame.size.width;
-        hourFrame.size.height = hourLeftView.frame.size.height;
-        hourFrame.origin.x = xMiddle - hourLeftView.frame.size.width/2;
-        hourFrame.origin.y = yOffset;
+        hourFrame.size.width = self.hourLeftView.frame.size.width;
+        hourFrame.size.height = self.hourLeftView.frame.size.height;
+        hourFrame.origin.x = self.xMiddle - self.hourLeftView.frame.size.width/2;
+        hourFrame.origin.y = self.yOffset;
         
-        hourLeftView.frame = hourFrame;
-        yOffset += hourLeftView.frame.size.height + ySpace;
+        self.hourLeftView.frame = hourFrame;
+        self.yOffset += self.hourLeftView.frame.size.height + self.ySpace;
     }
     //倒计时
-    timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(secondsCountdown) userInfo:nil repeats:YES];
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0 target:self selector:@selector(secondsCountdown) userInfo:nil repeats:YES];
 }
 
-- (void)createStatisticsView {
+- (void)createStatisticsView
+{
     BOOL isiPhone4oriPhone5 = iPhone4 || iPhone5;
     
     CGFloat xOffset = isiPhone4oriPhone5 ? WIDTH_FULL_SCREEN / 15 : WIDTH_FULL_SCREEN / 7;
@@ -384,14 +412,14 @@ NSUInteger const kHoursPerDay = 24;
     CGFloat viewHeight = HEIGHT_FULL_SCREEN * 0.1875;
     CGFloat subviewHeight = viewHeight / 3;
 
-    UIView *statisticsBgView = [[UIView alloc] initWithFrame:CGRectMake(xOffset, yOffset, viewWidth, subviewHeight * 4)];
+    UIView *statisticsBgView = [[UIView alloc] initWithFrame:CGRectMake(xOffset, self.yOffset, viewWidth, subviewHeight * 4)];
     [self.scrollView addSubview:statisticsBgView];
     [self addSeparatorForLeft:statisticsBgView];
     [self addSeparatorForMiddleLeft:statisticsBgView];
     [self addSeparatorForMiddleRight:statisticsBgView];
     [self addSeparatorForTop:statisticsBgView];
     [self addSeparatorForRight:statisticsBgView];
-    statisticsView = statisticsBgView;
+    self.statisticsView = statisticsBgView;
     
     ThreeSubView *topTitleView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, 0, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
     [topTitleView.leftButton.titleLabel setFont:font_Normal_16];
@@ -408,7 +436,7 @@ NSUInteger const kHoursPerDay = 24;
     topTitleView.fixRightWidth = subviewWidth;
     [self addSeparatorForBottom:topTitleView];
     [topTitleView autoLayout];
-    [statisticsView addSubview:topTitleView];
+    [self.statisticsView addSubview:topTitleView];
 
     {
         ThreeSubView *everydayStatisticsView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
@@ -436,7 +464,7 @@ NSUInteger const kHoursPerDay = 24;
         
         [self addSeparatorForBottom:everydayStatisticsView];
         [everydayStatisticsView autoLayout];
-        [statisticsView addSubview:everydayStatisticsView];
+        [self.statisticsView addSubview:everydayStatisticsView];
     }
     
     ThreeSubView *titleView2 = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight * 2, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
@@ -454,7 +482,7 @@ NSUInteger const kHoursPerDay = 24;
     titleView2.fixRightWidth = subviewWidth;
     [self addSeparatorForBottom:titleView2];
     [titleView2 autoLayout];
-    [statisticsView addSubview:titleView2];
+    [self.statisticsView addSubview:titleView2];
     
     {
         ThreeSubView *todayStatisticsView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight * 3, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
@@ -464,22 +492,23 @@ NSUInteger const kHoursPerDay = 24;
         
         NSString *todayKey = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
         NSString *key = @"";
-        for (NSInteger i = 0; i < array.count; i++) {
+        for (NSInteger i = 0; i < array.count; i++)
+        {
             Plan *plan = array[i];
             
             if ([[Config shareInstance].settings.autoDelayUndonePlan isEqualToString:@"1"]
-                && [plan.iscompleted isEqualToString:@"0"]) {
-
+                && [plan.iscompleted isEqualToString:@"0"])
+            {
                 key = todayKey;
                 plan.beginDate = todayKey;
-                
-            } else {
-                
+            }
+            else
+            {
                 key = plan.beginDate;
-                
             }
             
-            if ([key isEqualToString:todayKey]) {
+            if ([key isEqualToString:todayKey])
+            {
                 [todayArray addObject:plan];
             }
         }
@@ -491,8 +520,10 @@ NSUInteger const kHoursPerDay = 24;
         todayStatisticsView.fixLeftWidth = subviewWidth;
         
         float done = 0;
-        for (Plan *plan in todayArray) {
-            if ([plan.iscompleted isEqualToString:@"1"]) {
+        for (Plan *plan in todayArray)
+        {
+            if ([plan.iscompleted isEqualToString:@"1"])
+            {
                 done ++;
             }
         }
@@ -502,7 +533,8 @@ NSUInteger const kHoursPerDay = 24;
         todayStatisticsView.fixCenterWidth = subviewWidth;
         
         float percent = 0;
-        if (total > 0) {
+        if (total)
+        {
             percent = (float)done*100 /(float)total;
         }
         [todayStatisticsView.rightButton.titleLabel setFont:font_Normal_16];
@@ -512,18 +544,19 @@ NSUInteger const kHoursPerDay = 24;
         
         [self addSeparatorForBottom:todayStatisticsView];
         [todayStatisticsView autoLayout];
-        [statisticsView addSubview:todayStatisticsView];
+        [self.statisticsView addSubview:todayStatisticsView];
     }
 
-    yOffset += subviewHeight * 5 + 20;
+    self.yOffset += subviewHeight * 5 + 20;
     
-    self.scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, yOffset);
+    self.scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, self.yOffset);
 }
 
-- (void)createShareLogo {
+- (void)createShareLogo
+{
     CGFloat viewWidth = 110;
     CGFloat viewHeight = 20;
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - viewWidth - 5, yOffset, viewWidth, viewHeight)];
+    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - viewWidth - 5, self.yOffset, viewWidth, viewHeight)];
     UIImageView *logo = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, viewHeight, viewHeight)];
     logo.image = [UIImage imageNamed:png_Icon_Logo_512];
     [view addSubview:logo];
@@ -533,47 +566,54 @@ NSUInteger const kHoursPerDay = 24;
     labelName.textColor = [CommonFunction getGenderColor];
     [view addSubview:labelName];
     view.hidden = YES;
-    shareLogoView = view;
+    self.shareLogoView = view;
     [self.scrollView addSubview:view];
 }
 
-- (void)addSeparatorForTop:(UIView *)view {
+- (void)addSeparatorForTop:(UIView *)view
+{
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(view.bounds) - 1, 1)];
     separator.backgroundColor = color_GrayLight;
     [view addSubview:separator];
 }
 
-- (void)addSeparatorForBottom:(UIView *)view {
+- (void)addSeparatorForBottom:(UIView *)view
+{
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(view.bounds) - 1, CGRectGetWidth(view.bounds) - 1, 1)];
     separator.backgroundColor = color_GrayLight;
     [view addSubview:separator];
 }
 
-- (void)addSeparatorForLeft:(UIView *)view {
+- (void)addSeparatorForLeft:(UIView *)view
+{
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 1, CGRectGetHeight(view.bounds))];
     separator.backgroundColor = color_GrayLight;
     [view addSubview:separator];
 }
 
-- (void)addSeparatorForMiddleLeft:(UIView *)view {
+- (void)addSeparatorForMiddleLeft:(UIView *)view
+{
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(view.bounds) / 3, 0, 1, CGRectGetHeight(view.bounds))];
     separator.backgroundColor = color_GrayLight;
     [view addSubview:separator];
 }
 
-- (void)addSeparatorForMiddleRight:(UIView *)view {
+- (void)addSeparatorForMiddleRight:(UIView *)view
+{
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(view.bounds) * 2 / 3 + 1, 0, 1, CGRectGetHeight(view.bounds))];
     separator.backgroundColor = color_GrayLight;
     [view addSubview:separator];
 }
 
-- (void)addSeparatorForRight:(UIView *)view {
+- (void)addSeparatorForRight:(UIView *)view
+{
     UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(view.bounds) - 1, 0, 1, CGRectGetHeight(view.bounds))];
     separator.backgroundColor = color_GrayLight;
     [view addSubview:separator];
 }
 
-- (void)secondsCountdown {
+- (void)secondsCountdown
+{
     NSDate *now = [NSDate date];
     NSCalendar *calendar = [NSCalendar currentCalendar];
     NSUInteger unitFlags = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay | NSCalendarUnitHour | NSCalendarUnitMinute | NSCalendarUnitSecond;
@@ -584,76 +624,91 @@ NSUInteger const kHoursPerDay = 24;
     
     //刷新秒
     NSInteger secondsLeft = kSecondsPerDay - hour*3600 - minute*60 - second;
-    if ([self showSeconds]) {
-        [secondsLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:secondsLeft]];
-        [secondsLeftView autoLayout];
-        CGRect frame = secondsLeftView.frame;
-        frame.origin.x = WIDTH_FULL_SCREEN / 2 - secondsLeftView.frame.size.width / 2;
-        secondsLeftView.frame = frame;
+    if ([self showSeconds])
+    {
+        [self.secondsLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:secondsLeft]];
+        [self.secondsLeftView autoLayout];
+        CGRect frame = self.secondsLeftView.frame;
+        frame.origin.x = WIDTH_FULL_SCREEN / 2 - self.secondsLeftView.frame.size.width / 2;
+        self.secondsLeftView.frame = frame;
     }
     //刷新分
-    if ([self showMinutes]) {
+    if ([self showMinutes])
+    {
         NSInteger minutesLeft = kMinutesPerDay - hour*60 - minute;
-        [minuteLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:minutesLeft]];
-        [minuteLeftView autoLayout];
-        CGRect frame = minuteLeftView.frame;
-        frame.origin.x = WIDTH_FULL_SCREEN / 2 - minuteLeftView.frame.size.width / 2;
-        minuteLeftView.frame = frame;
+        [self.minuteLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:minutesLeft]];
+        [self.minuteLeftView autoLayout];
+        CGRect frame = self.minuteLeftView.frame;
+        frame.origin.x = WIDTH_FULL_SCREEN / 2 - self.minuteLeftView.frame.size.width / 2;
+        self.minuteLeftView.frame = frame;
     }
     //刷新时
-    if ([self showHours]) {
+    if ([self showHours])
+    {
         NSInteger hoursLeft = kHoursPerDay - hour;
-        [hourLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:hoursLeft]];
-        [hourLeftView autoLayout];
-        CGRect frame = hourLeftView.frame;
-        frame.origin.x = WIDTH_FULL_SCREEN / 2 - hourLeftView.frame.size.width / 2;
-        hourLeftView.frame = frame;
+        [self.hourLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:hoursLeft]];
+        [self.hourLeftView autoLayout];
+        CGRect frame = self.hourLeftView.frame;
+        frame.origin.x = WIDTH_FULL_SCREEN / 2 - self.hourLeftView.frame.size.width / 2;
+        self.hourLeftView.frame = frame;
     }
     
-    if (secondsLeft == kSecondsPerDay) {
-        NSTimeInterval secondsBetweenDates= [deadDay timeIntervalSinceDate:now];
-        if(secondsBetweenDates < 0) {
-            daysLeft = 0;
-        } else {
-            daysLeft = secondsBetweenDates / kSecondsPerDay;
+    if (secondsLeft == kSecondsPerDay)
+    {
+        NSTimeInterval secondsBetweenDates= [self.deadDay timeIntervalSinceDate:now];
+        if(secondsBetweenDates < 0)
+        {
+            self.daysLeft = 0;
         }
-        if ([[Config shareInstance].settings.dayOrMonth isEqualToString:@"1"]) {
-            daysLeft = daysLeft / kDaysPerMonth;
+        else
+        {
+            self.daysLeft = secondsBetweenDates / kSecondsPerDay;
         }
-        [daysLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:daysLeft]];
-        [daysLeftView autoLayout];
-        CGRect frame = daysLeftView.frame;
-        frame.origin.x = WIDTH_FULL_SCREEN / 2 - daysLeftView.frame.size.width / 2;
-        daysLeftView.frame = frame;
+        if ([[Config shareInstance].settings.dayOrMonth isEqualToString:@"1"])
+        {
+            self.daysLeft = self.daysLeft / kDaysPerMonth;
+        }
+        [self.daysLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:self.daysLeft]];
+        [self.daysLeftView autoLayout];
+        CGRect frame = self.daysLeftView.frame;
+        frame.origin.x = WIDTH_FULL_SCREEN / 2 - self.daysLeftView.frame.size.width / 2;
+        self.daysLeftView.frame = frame;
     }
 }
 
-- (void)toSettingsViewController {
+- (void)toSettingsViewController
+{
     SettingsPersonalViewController *controller = [[SettingsPersonalViewController alloc]init];
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (BOOL)showSeconds {
+- (BOOL)showSeconds
+{
     if (![Config shareInstance].settings.countdownType
         || [[Config shareInstance].settings.countdownType isEqualToString:@"0"]
-        || [[Config shareInstance].settings.countdownType isEqualToString:@"3"]) {
+        || [[Config shareInstance].settings.countdownType isEqualToString:@"3"])
+    {
         return YES;
     }
     return NO;
 }
 
-- (BOOL)showMinutes {
+- (BOOL)showMinutes
+{
     if ([[Config shareInstance].settings.countdownType isEqualToString:@"1"]
-        || [[Config shareInstance].settings.countdownType isEqualToString:@"3"]) {
+        || [[Config shareInstance].settings.countdownType isEqualToString:@"3"])
+    {
         return YES;
     }
     return NO;
 }
 
-- (BOOL)showHours {
+- (BOOL)showHours
+{
     if ([[Config shareInstance].settings.countdownType isEqualToString:@"2"]
-        || [[Config shareInstance].settings.countdownType isEqualToString:@"3"]) {
+        || [[Config shareInstance].settings.countdownType isEqualToString:@"3"])
+    {
         return YES;
     }
     return NO;

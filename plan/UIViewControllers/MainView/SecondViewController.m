@@ -259,7 +259,8 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 - (void)getDayPlan
 {
     self.dayTotal = [[PlanCache getPlanTotalCount:@"DAY"] integerValue];
-    if (!self.isLoadMore) {//重头开始加载
+    if (!self.isLoadMore)
+    {//重头开始加载
         self.dayStart = 0;
         self.dayDateKeyArray = [NSMutableArray array];
         self.dayPlanDict = [NSMutableDictionary dictionary];
