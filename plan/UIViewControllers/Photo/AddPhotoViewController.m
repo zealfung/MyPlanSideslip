@@ -229,7 +229,7 @@ NSUInteger const pageWidth = 110;
     [self showHUD];
     
     NSString *timeNow = [CommonFunction getTimeNowString];
-    NSString* photoid = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType2];
+    NSString *photoid = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType5];
     
     if (self.operationType == Add) {
         

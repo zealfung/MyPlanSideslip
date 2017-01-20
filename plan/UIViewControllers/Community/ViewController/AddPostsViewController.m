@@ -181,7 +181,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 
 - (void)saveForPhoto {
     NSString *timeNow = [CommonFunction getTimeNowString];
-    NSString* photoid = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType2];
+    NSString *photoid = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType5];
     
     Photo *photo = [[Photo alloc] init];
     photo.photoid = photoid;

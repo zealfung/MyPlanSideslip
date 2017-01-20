@@ -140,7 +140,7 @@
     }
     
     NSString *timeNow = [CommonFunction getTimeNowString];
-    NSString *taskId = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType2];
+    NSString *taskId = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType5];
     if (self.operationType == Add)
     {
         self.task.taskId = taskId;

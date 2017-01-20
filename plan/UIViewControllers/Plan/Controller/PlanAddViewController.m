@@ -308,7 +308,7 @@
 {
     [self.view endEditing:YES];
     NSString *timeNow = [CommonFunction getTimeNowString];
-    NSString *planid = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType2];
+    NSString *planid = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType5];
     
     Plan *plan = [[Plan alloc]init];
     plan.planid = planid;
