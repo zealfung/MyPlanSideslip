@@ -70,18 +70,21 @@
 
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application {
+- (void)applicationDidBecomeActive:(UIApplication *)application
+{
     // 清除推送图标标记
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
     
     UIViewController *controller = self.window.rootViewController;
-    if ([controller isKindOfClass:[RESideMenu class]]) {
+    if ([controller isKindOfClass:[RESideMenu class]])
+    {
         //加载个人设置
         [Config shareInstance].settings = [PlanCache getPersonalSettings];
         BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"]
         && [Config shareInstance].settings.gesturePasswod
-        && [Config shareInstance].settings.gesturePasswod.length > 0;
-        if (hasPwd) {
+        && [Config shareInstance].settings.gesturePasswod.length;
+        if (hasPwd)
+        {
             //手势解锁
             __weak typeof(self) weakSelf = self;
             [CLLockVC showVerifyLockVCInVC:controller isLogIn:YES forgetPwdBlock:^{
@@ -116,6 +119,9 @@
             [DataCenter startSyncSettings];
         }
     }
+    
+    //自动生成每日重复计划
+    [DataCenter setRepeatPlan];
     
     //加载系统消息
     [DataCenter getMessagesFromServer];

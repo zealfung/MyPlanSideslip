@@ -513,6 +513,8 @@ UIKIT_EXTERN NSString *const STRDateFormatterType2;
 UIKIT_EXTERN NSString *const STRDateFormatterType3;
 /** yyyy-MM-dd */
 UIKIT_EXTERN NSString *const STRDateFormatterType4;
+/** yyyyMMddHHmmssSSS */
+UIKIT_EXTERN NSString *const STRDateFormatterType5;
 
 /** t_settings */
 UIKIT_EXTERN NSString *const STRTableName1;
@@ -531,6 +533,8 @@ UIKIT_EXTERN NSString *const STRTableName7;
 
 /** kBeginDateFlag20160128 */
 UIKIT_EXTERN NSString *const STRBeginDateFlag;
+/** kRepeatPlan */
+UIKIT_EXTERN NSString *const STRRepeatPlanFlag;
 /** kTmpFlag20160229 */
 UIKIT_EXTERN NSString *const STRCleanCacheFlag;
 /** kPlanListLastLoadDataTime */

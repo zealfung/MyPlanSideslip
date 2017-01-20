@@ -64,6 +64,9 @@
 /** 获取未完计划 */
 + (NSArray *)getUndonePlan;
 
+/** 自动生成每日重复计划 */
++ (void)setRepeatPlan;
+
 + (NSArray *)searchPlan:(NSString *)key;
 
 /** ALL全部 DAY每日计划 FUTURE未来计划 */

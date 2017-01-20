@@ -516,6 +516,8 @@ NSString *const STRDateFormatterType2 = @"yyyyMMddHHmmss";
 NSString *const STRDateFormatterType3 = @"yyyy-MM-dd HH:mm";
 /** yyyy-MM-dd */
 NSString *const STRDateFormatterType4 = @"yyyy-MM-dd";
+/** yyyyMMddHHmmssSSS */
+NSString *const STRDateFormatterType5 = @"yyyyMMddHHmmssSSS";
 
 /** t_settings */
 NSString *const STRTableName1 = @"t_settings";
@@ -535,6 +537,8 @@ NSString *const STRTableName7 = @"t_messages";
 
 /** kBeginDateFlag20160128 */
 NSString *const STRBeginDateFlag = @"kBeginDateFlag20160128";
+/** kRepeatPlan */
+NSString *const STRRepeatPlanFlag = @"kRepeatPlan";
 /** kTmpFlag20160229 */
 NSString *const STRCleanCacheFlag = @"kTmpFlag20170120";
 /** kPlanListLastLoadDataTime */

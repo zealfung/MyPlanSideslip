@@ -24,17 +24,29 @@ static BOOL finishTask;
 
 + (void)setPlanBeginDate
 {
-//    NSString *flag = [UserDefaults objectForKey:STRBeginDateFlag];
-//    if (!flag || ![flag isEqualToString:@"1"])
-//    {
-//        NSArray *array = [PlanCache getPlanForSync:nil];
-//        for (Plan *plan in array)
-//        {
-//            [PlanCache storePlan:plan];
-//        }
-//        [UserDefaults setObject:@"1" forKey:STRBeginDateFlag];
-//        [UserDefaults synchronize];
-//    }
+    NSString *flag = [UserDefaults objectForKey:STRBeginDateFlag];
+    if (!flag || ![flag isEqualToString:@"1"])
+    {
+        NSArray *array = [PlanCache getPlanForSync:nil];
+        for (Plan *plan in array)
+        {
+            [PlanCache storePlan:plan];
+        }
+        [UserDefaults setObject:@"1" forKey:STRBeginDateFlag];
+        [UserDefaults synchronize];
+    }
+}
+
++ (void)setRepeatPlan
+{
+    NSString *flag = [UserDefaults objectForKey:STRRepeatPlanFlag];
+    NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    if (!flag || ![flag isEqualToString:today])
+    {
+        [PlanCache setRepeatPlan];
+        [UserDefaults setObject:today forKey:STRRepeatPlanFlag];
+        [UserDefaults synchronize];
+    }
 }
 
 + (void)startSyncData

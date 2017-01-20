@@ -1545,6 +1545,132 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
++ (void)setRepeatPlan
+{
+    @synchronized(__db)
+    {
+        if (!__db.open)
+        {
+            if (![__db open])
+            {
+                return;
+            }
+        }
+        
+        NSString *account = @"";
+        if ([LogIn isLogin])
+        {
+            BmobUser *user = [BmobUser currentUser];
+            account = user.objectId;
+        }
+        
+        NSString *condition = @"";
+        NSString *order = @"";
+
+        condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
+        order = @"DESC";
+
+        NSMutableArray *array = [NSMutableArray array];
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted, isRepeat, remark FROM %@ WHERE %@ AND account=? AND isdeleted=0 ORDER BY beginDate %@ Limit ?", STRTableName2, condition, order];
+        
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[account, @(kPlanLoadMax)]];
+        
+        NSString *beginDate = @"";//记录最近一次有计划的日期
+        
+        while ([rs next])
+        {
+            Plan *plan = [[Plan alloc] init];
+            plan.account = account;
+            plan.planid = [rs stringForColumn:@"planid"];
+            plan.content = [rs stringForColumn:@"content"];
+            plan.createtime = [rs stringForColumn:@"createtime"];
+            plan.completetime = [rs stringForColumn:@"completetime"];
+            plan.updatetime = [rs stringForColumn:@"updatetime"];
+            plan.iscompleted = [rs stringForColumn:@"iscompleted"];
+            plan.isnotify = [rs stringForColumn:@"isnotify"];
+            plan.notifytime = [rs stringForColumn:@"notifytime"];
+            plan.beginDate = [rs stringForColumn:@"beginDate"];
+            plan.isdeleted = [rs stringForColumn:@"isdeleted"];
+            plan.isRepeat = [rs stringForColumn:@"isRepeat"];
+            plan.remark = [rs stringForColumn:@"remark"];
+            
+            if (!plan.beginDate || plan.beginDate.length == 0)
+            {
+                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
+                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
+            }
+            
+            if (beginDate.length == 0)
+            {
+                beginDate = plan.beginDate;
+            }
+            
+            if ([beginDate isEqualToString:plan.beginDate])
+            {
+                if ([plan.isRepeat isEqualToString:@"1"])
+                {
+                    [array addObject:plan];
+                }
+            }
+            else
+            {
+                break;
+            }
+        }
+        [rs close];
+        
+        if (array.count)//这就是所有需要每日重复的计划
+        {
+            for (Plan *item in array)
+            {
+                [PlanCache addRepeatPlan:item];
+            }
+        }
+    }
+}
+
++ (void)addRepeatPlan:(Plan *)plan
+{
+    NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:STRDateFormatterType4];
+    
+    if (![plan.beginDate isEqualToString:today])
+    {
+        NSDate *inputDate = [dateFormatter dateFromString:plan.beginDate];
+        NSDate *nextDate = [NSDate dateWithTimeInterval:24*60*60 sinceDate:inputDate];
+        
+        NSString *timeNow = [CommonFunction getTimeNowString];
+        NSString *planid = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType5];
+        
+        Plan *planRepeat = [[Plan alloc]init];
+        planRepeat.planid = planid;
+        planRepeat.beginDate = [CommonFunction NSDateToNSString:nextDate formatter:STRDateFormatterType4];
+        planRepeat.createtime = timeNow;
+        planRepeat.updatetime = timeNow;
+        planRepeat.iscompleted = @"0";
+        planRepeat.isdeleted = @"0";
+        planRepeat.isRepeat = @"1";
+        planRepeat.content = plan.content;
+        
+        if ([planRepeat.beginDate isEqualToString:today]
+            && [plan.isnotify isEqualToString:@"1"])
+        {
+            planRepeat.isnotify = @"1";
+            planRepeat.notifytime = plan.notifytime;
+        }
+        else
+        {
+            planRepeat.isnotify = @"0";
+            planRepeat.notifytime = @"";
+        }
+        
+        [PlanCache storePlan:planRepeat];
+        //递归直到今天
+        [PlanCache addRepeatPlan:planRepeat];
+    }
+}
+
 + (NSArray *)searchPlan:(NSString *)key
 {
     @synchronized(__db)
