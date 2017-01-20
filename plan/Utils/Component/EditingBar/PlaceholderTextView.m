@@ -6,7 +6,7 @@
 //  Copyright © 2016年 Fengzy. All rights reserved.
 //
 
-#import "ReactiveCocoa.h"
+//#import "ReactiveCocoa.h"
 #import "PlaceholderTextView.h"
 
 @interface PlaceholderTextView ()
@@ -29,10 +29,9 @@
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-8-[_placeholderLabel]-6-|" options:0 metrics:nil views:views]];
     [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-7-[_placeholderLabel]"   options:0 metrics:nil views:views]];
     
-    
-    RAC(_placeholderLabel, hidden) = [self.rac_textSignal map:^(NSString *text) {
-        return @(text.length > 0);
-    }];
+//    RAC(_placeholderLabel, hidden) = [self.rac_textSignal map:^(NSString *text) {
+//        return @(text.length > 0);
+//    }];
 }
 
 - (void)checkShouldHidePlaceholder {
