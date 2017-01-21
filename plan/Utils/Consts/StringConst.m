@@ -549,3 +549,5 @@ NSString *const STRPostsListFlag = @"kPostsListLastLoadDataTime";
 NSString *const STRFiveDayFlag1 = @"20150912083000";
 /** 2015-09-12 08:30:00 */
 NSString *const STRFiveDayFlag2 = @"2015-09-12 08:30:00";
+/** DecodeSignal */
+NSString *const STRDecodeSignal = @"DecodeSignal";

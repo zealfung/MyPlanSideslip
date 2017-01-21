@@ -345,7 +345,12 @@
     self.plan.content = self.txtViewContent.text;
     self.plan.beginDate = self.beginDate;
     
-    BOOL result = [PlanCache storePlan:self.plan];
+    BOOL result = NO;
+    @synchronized (STRDecodeSignal)
+    {
+        result = [PlanCache storePlan:self.plan];
+    }
+    
     if (result)
     {
         [self alertToastMessage:STRCommonTip13];

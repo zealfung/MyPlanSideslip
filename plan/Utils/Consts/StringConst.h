@@ -545,3 +545,5 @@ UIKIT_EXTERN NSString *const STRPostsListFlag;
 UIKIT_EXTERN NSString *const STRFiveDayFlag1;
 /** 2015-09-12 08:30:00 */
 UIKIT_EXTERN NSString *const STRFiveDayFlag2;
+/** DecodeSignal */
+UIKIT_EXTERN NSString *const STRDecodeSignal;

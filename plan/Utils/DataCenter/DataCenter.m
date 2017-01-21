@@ -30,7 +30,10 @@ static BOOL finishTask;
         NSArray *array = [PlanCache getPlanForSync:nil];
         for (Plan *plan in array)
         {
-            [PlanCache storePlan:plan];
+            @synchronized (STRDecodeSignal)
+            {
+                [PlanCache storePlan:plan];
+            }
         }
         [UserDefaults setObject:@"1" forKey:STRBeginDateFlag];
         [UserDefaults synchronize];
@@ -812,7 +815,10 @@ static BOOL finishTask;
     plan.isRepeat = [obj objectForKey:@"isRepeat"];
     plan.remark = [obj objectForKey:@"remark"];
     plan.beginDate = [obj objectForKey:@"beginDate"];
-    [PlanCache storePlan:plan];
+    @synchronized (STRDecodeSignal)
+    {
+        [PlanCache storePlan:plan];
+    }
 }
 
 + (void)startSyncPhoto

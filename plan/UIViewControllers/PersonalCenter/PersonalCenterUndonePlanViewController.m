@@ -255,7 +255,10 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
     }
     plan.updatetime = timeNow;
     
-    [PlanCache storePlan:plan];
+    @synchronized (STRDecodeSignal)
+    {
+        [PlanCache storePlan:plan];
+    }
     
     [tableViewPlan reloadData];
 }
