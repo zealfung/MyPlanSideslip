@@ -55,10 +55,7 @@ NSUInteger const kHoursPerDay = 24;
     self.tabBarItem.title = STRViewTitle1;
 
     __weak typeof(self) weakSelf = self;
-    [self customLeftButtonWithImage:[UIImage imageNamed:png_Btn_LeftMenu] action:^(UIButton *sender)
-    {
-        [weakSelf leftMenuAction];
-    }];
+    self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction)];
     [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_Share] action:^(UIButton *sender)
      {
          [weakSelf shareAction];
@@ -109,7 +106,9 @@ NSUInteger const kHoursPerDay = 24;
 
 - (void)refreshView:(NSNotification*)notification
 {
-    [self loadCustomView];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self loadCustomView];
+    });
 }
 
 - (void)refreshRedDot
