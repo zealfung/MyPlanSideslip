@@ -1074,11 +1074,11 @@ static BOOL finishTask;
     SDWebImageDownloader *imageDownloader = [SDWebImageDownloader sharedDownloader];
     [imageDownloader downloadImageWithURL:[NSURL URLWithString:url] options:SDWebImageDownloaderLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize)
      {
-         NSLog(@"下载影像图片进度： %ld/%ld",receivedSize , expectedSize);
+//         NSLog(@"下载影像图片进度： %ld/%ld",receivedSize , expectedSize);
      }
     completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished)
      {
-         
+         NSLog(@"下载影像图片完成");
          if (data)
          {
              if (index < photo.photoArray.count)
