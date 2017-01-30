@@ -92,4 +92,7 @@
 /** 更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效 */
 + (NSString *)updateNotifyTime:(NSString *)notifyTime;
 
+/** 获取随机数 */
++ (int)getRandomNumber:(int)from to:(int)to;
+
 @end

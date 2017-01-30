@@ -368,15 +368,15 @@ static NSString * const kKeyMinutes = @"minutes";
 
 /** toDay格式：2016-03-18 */
 + (NSInteger)howManyDaysLeft:(NSString*)toDay {
-    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
+    NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     [gregorian setFirstWeekday:2];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:@"yyyy-MM-dd"];
     NSDate *fromDate;
     NSDate *toDate;
-    [gregorian rangeOfUnit:NSDayCalendarUnit startDate:&fromDate interval:NULL forDate:[NSDate date]];
-    [gregorian rangeOfUnit:NSDayCalendarUnit startDate:&toDate interval:NULL forDate:[dateFormatter dateFromString:toDay]];
-    NSDateComponents *dayComponents = [gregorian components:NSDayCalendarUnit fromDate:fromDate toDate:toDate options:0];
+    [gregorian rangeOfUnit:NSCalendarUnitDay startDate:&fromDate interval:NULL forDate:[NSDate date]];
+    [gregorian rangeOfUnit:NSCalendarUnitDay startDate:&toDate interval:NULL forDate:[dateFormatter dateFromString:toDay]];
+    NSDateComponents *dayComponents = [gregorian components:NSCalendarUnitDay fromDate:fromDate toDate:toDate options:0];
     return dayComponents.day;
 }
 
@@ -388,12 +388,12 @@ static NSString * const kKeyMinutes = @"minutes";
 }
 
 /** 更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效 */
-+ (NSString *)updateNotifyTime:(NSString *)notifyTime {
-    
++ (NSString *)updateNotifyTime:(NSString *)notifyTime
+{
     NSDate *oldNotifyTime = [CommonFunction NSStringDateToNSDate:notifyTime formatter:STRDateFormatterType3];
     
-    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSGregorianCalendar];
-    unsigned units  = NSMonthCalendarUnit|NSDayCalendarUnit|NSYearCalendarUnit|NSHourCalendarUnit|NSMinuteCalendarUnit;
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    unsigned units  = NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitYear|NSCalendarUnitHour|NSCalendarUnitMinute;
     NSDateComponents *compOldNotifyTime = [calendar components:units fromDate:oldNotifyTime];
     NSDateComponents *compToday = [calendar components:units fromDate:[NSDate date]];
     compToday.hour = compOldNotifyTime.hour;
@@ -408,6 +408,12 @@ static NSString * const kKeyMinutes = @"minutes";
     }
     
     return [CommonFunction NSDateToNSString:newNotifyTime formatter:STRDateFormatterType3];
+}
+
+/** 获取随机数 */
++ (int)getRandomNumber:(int)from to:(int)to
+{
+    return (int)(from + (arc4random() % (to - from + 1)));
 }
 
 @end
