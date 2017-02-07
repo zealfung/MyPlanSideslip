@@ -7,7 +7,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "BmobConfig.h"
 
 /*
  错误码含义
@@ -21,32 +20,32 @@
  | 4005 | 应用未安装 |
  | 4006 | 取消付款 |
  | 4007 | 价格超出限额 |
- ----------------
+ | 4008 | 获取支付参数错误，请稍后重试 |
+ --------------------
  | 其他  | - 请查看返回信息 - |
  */
 
 @interface BmobPay : NSObject
 
 /**
- 支付类型选择，暂时只支持支付宝付款
+ 支付类型选择
  
+ - BmobWechat: 微信付款
  - BmobAlipay: 支付宝付款
  */
 typedef NS_ENUM(NSInteger, BmobPayType) {
+    BmobWechat = 0,
     BmobAlipay = 3
 };
-
-//支付查询结果 Block
-typedef void (^BmobPayResultBlock) (NSDictionary *resultDic, NSError *error);
 
 /**
  调用支付接口
  
- @param payType 支付类型选择，暂时只支持支付宝付款，接口类型预留
+ @param payType 支付类型选择
  @param price 订单价格，限额 0-5000
  @param orderName 订单名称
  @param describe 订单描述
- @param result 支付回调
+ @param result 支付结果回调
  */
 + (void)payWithPayType:(BmobPayType)payType
                  price:(NSNumber *)price
@@ -55,8 +54,17 @@ typedef void (^BmobPayResultBlock) (NSDictionary *resultDic, NSError *error);
                 result:(void(^)(BOOL isSuccessful, NSError *error))result;
 
 /**
+ 订单信息回调
+ 
+ @param orderInfoCallback 回调block
+  */
++ (void)orderInfoCallback:(void(^)(NSDictionary *orderInfo))orderInfoCallback;
+
+/**
  支付结果自助查询
+ 
+ @param result 回调block
  */
-+ (void)queryWithResult:(BmobPayResultBlock)result;
++ (void)queryWithResult:(void(^)(NSDictionary *resultDic, NSError *error))result;
 
 @end
