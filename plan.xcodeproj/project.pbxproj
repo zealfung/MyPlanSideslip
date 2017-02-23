@@ -60,6 +60,7 @@
 		132263A21B9C7DC200D21637 /* LocalNotificationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A11B9C7DC200D21637 /* LocalNotificationManager.m */; };
 		132263A81B9C809400D21637 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A51B9C809400D21637 /* FirstViewController.m */; };
 		132263A91B9C809400D21637 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A71B9C809400D21637 /* SecondViewController.m */; };
+		1322FC151E5EF00C00FB2B11 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1322FC141E5EF00C00FB2B11 /* Images.xcassets */; };
 		1326F1E71D6BEACD004CE840 /* Icon_Menu_Money@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1326F1E61D6BEACD004CE840 /* Icon_Menu_Money@2x.png */; };
 		132819421C61D1D000FB8628 /* NSLayoutConstraint+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 132819411C61D1D000FB8628 /* NSLayoutConstraint+Util.m */; };
 		133B07A21B9FBCA30015E752 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 133B07A11B9FBCA30015E752 /* HelpViewController.m */; };
@@ -67,7 +68,6 @@
 		133B083D1BA439560015E752 /* HitView.m in Sources */ = {isa = PBXBuildFile; fileRef = 133B083C1BA439560015E752 /* HitView.m */; };
 		135B21891B900394005CE84A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B21881B900394005CE84A /* main.m */; };
 		135B218C1B900394005CE84A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B218B1B900394005CE84A /* AppDelegate.m */; };
-		135B21971B900394005CE84A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 135B21961B900394005CE84A /* Images.xcassets */; };
 		135B21B31B900FFE005CE84A /* ThreeSubView.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B21B21B900FFE005CE84A /* ThreeSubView.m */; };
 		135B21D21B909955005CE84A /* Config.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B21D11B909955005CE84A /* Config.m */; };
 		135B21DC1B90A145005CE84A /* UIButton+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 135B21DB1B90A145005CE84A /* UIButton+Util.m */; };
@@ -372,6 +372,7 @@
 		132263A51B9C809400D21637 /* FirstViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
 		132263A61B9C809400D21637 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		132263A71B9C809400D21637 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		1322FC141E5EF00C00FB2B11 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		1326F1E61D6BEACD004CE840 /* Icon_Menu_Money@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Menu_Money@2x.png"; sourceTree = "<group>"; };
 		132819401C61D1D000FB8628 /* NSLayoutConstraint+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+Util.h"; sourceTree = "<group>"; };
 		132819411C61D1D000FB8628 /* NSLayoutConstraint+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+Util.m"; sourceTree = "<group>"; };
@@ -398,7 +399,6 @@
 		135B218A1B900394005CE84A /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		135B218B1B900394005CE84A /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		135B21941B900394005CE84A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		135B21961B900394005CE84A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		135B21991B900394005CE84A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
 		135B21B11B900FFE005CE84A /* ThreeSubView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThreeSubView.h; sourceTree = "<group>"; };
 		135B21B21B900FFE005CE84A /* ThreeSubView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThreeSubView.m; sourceTree = "<group>"; };
@@ -968,12 +968,7 @@
 		135B21851B900394005CE84A /* plan */ = {
 			isa = PBXGroup;
 			children = (
-				135B218A1B900394005CE84A /* AppDelegate.h */,
-				135B218B1B900394005CE84A /* AppDelegate.m */,
-				135B21961B900394005CE84A /* Images.xcassets */,
-				135B21981B900394005CE84A /* LaunchScreen.xib */,
 				137C60581BBB6EA100725662 /* Libs */,
-				135B21931B900394005CE84A /* Main.storyboard */,
 				135B21E11B913E1F005CE84A /* Models */,
 				135B21C91B90952A005CE84A /* Resource */,
 				135B21861B900394005CE84A /* Supporting Files */,
@@ -986,6 +981,8 @@
 		135B21861B900394005CE84A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				135B218A1B900394005CE84A /* AppDelegate.h */,
+				135B218B1B900394005CE84A /* AppDelegate.m */,
 				135B21871B900394005CE84A /* Info.plist */,
 				135B21881B900394005CE84A /* main.m */,
 				135B21B81B9012BD005CE84A /* PrefixHeader.pch */,
@@ -1053,6 +1050,9 @@
 		135B21C91B90952A005CE84A /* Resource */ = {
 			isa = PBXGroup;
 			children = (
+				1322FC141E5EF00C00FB2B11 /* Images.xcassets */,
+				135B21981B900394005CE84A /* LaunchScreen.xib */,
+				135B21931B900394005CE84A /* Main.storyboard */,
 				135B21CA1B909644005CE84A /* Images */,
 			);
 			path = Resource;
@@ -1835,6 +1835,7 @@
 				131D6A401BF6CFAA009FDD72 /* Icon_Menu_About@2x.png in Resources */,
 				1310C3741C47292200A2A404 /* ChangePasswordViewController.xib in Resources */,
 				137470501C03ED1200B7822A /* RegisterViewController.xib in Resources */,
+				1322FC151E5EF00C00FB2B11 /* Images.xcassets in Resources */,
 				135B22301B9301C9005CE84A /* Btn_Plan_Delete@2x.png in Resources */,
 				136DF2081D5C0E9300CFB8FF /* Bg_Avatar@2x.png in Resources */,
 				131D6A431BF6CFAA009FDD72 /* Icon_Menu_PersonalCenter@2x.png in Resources */,
@@ -1876,7 +1877,6 @@
 				1374705A1C04202700B7822A /* ForgotPasswordViewController.xib in Resources */,
 				131D6A411BF6CFAA009FDD72 /* Icon_Menu_FiveStar@2x.png in Resources */,
 				13D9165C1CDD7607001F34EA /* AddTaskNewViewController.xib in Resources */,
-				135B21971B900394005CE84A /* Images.xcassets in Resources */,
 				131D6A2A1BF5B0D4009FDD72 /* Icon_Menu_Feedback@2x.png in Resources */,
 				1361AFC91BCBA5E700DD5FFB /* DoPhotoCell.xib in Resources */,
 				138038EF1C53C67900E98C5F /* Icon_Tomato@2x.png in Resources */,
@@ -2115,6 +2115,7 @@
 				13FC0DF81D18E19200905D60 /* zh-Hans */,
 			);
 			name = Main.storyboard;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		135B21981B900394005CE84A /* LaunchScreen.xib */ = {
@@ -2124,6 +2125,7 @@
 				13FC0DF71D18E19200905D60 /* zh-Hans */,
 			);
 			name = LaunchScreen.xib;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
