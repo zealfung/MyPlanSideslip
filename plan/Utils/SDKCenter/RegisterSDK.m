@@ -7,8 +7,6 @@
 //
 
 #import "WXApi.h"
-#import "WeiboSDK.h"
-#import "WeiboUser.h"
 #import "RegisterSDK.h"
 #import <BmobSDK/Bmob.h>
 #import <ShareSDK/ShareSDK.h>
@@ -25,9 +23,6 @@
     [ShareSDK registerApp:IDSTRShareSDKAppKey activePlatforms:@[@(SSDKPlatformTypeSinaWeibo),@(SSDKPlatformTypeQQ),@(SSDKPlatformTypeWechat)] onImport:^(SSDKPlatformType platformType) {
         
         switch (platformType) {
-            case SSDKPlatformTypeSinaWeibo:
-                [ShareSDKConnector connectWeibo:[WeiboSDK class]];
-                break;
             case SSDKPlatformTypeQQ:
                 [ShareSDKConnector connectQQ:[QQApiInterface class] tencentOAuthClass:[TencentOAuth class]];
                 break;

@@ -6,12 +6,26 @@ PODS:
   - FMDB/standard (2.6.2)
   - MBProgressHUD (1.0.0)
   - MJRefresh (3.1.12)
+  - MOBFoundation (2.2.15)
   - RESideMenu (4.0.7)
   - SDCycleScrollView (1.65):
     - SDWebImage (~> 3.7)
   - SDWebImage (3.8.2):
     - SDWebImage/Core (= 3.8.2)
   - SDWebImage/Core (3.8.2)
+  - ShareSDK3 (3.6.1):
+    - MOBFoundation
+    - ShareSDK3/ShareSDK (= 3.6.1)
+  - ShareSDK3/ShareSDK (3.6.1):
+    - MOBFoundation
+  - ShareSDK3/ShareSDKExtension (3.6.1):
+    - MOBFoundation
+  - ShareSDK3/ShareSDKPlatforms/QQ (3.6.1):
+    - MOBFoundation
+  - ShareSDK3/ShareSDKPlatforms/WeChat (3.6.1):
+    - MOBFoundation
+  - ShareSDK3/ShareSDKUI (3.6.1):
+    - MOBFoundation
   - WZLBadge (1.2.5)
   - YYModel (1.0.4)
 
@@ -21,9 +35,15 @@ DEPENDENCIES:
   - FMDB
   - MBProgressHUD
   - MJRefresh
+  - MOBFoundation
   - RESideMenu
   - SDCycleScrollView
   - SDWebImage
+  - ShareSDK3
+  - ShareSDK3/ShareSDKExtension
+  - ShareSDK3/ShareSDKPlatforms/QQ
+  - ShareSDK3/ShareSDKPlatforms/WeChat
+  - ShareSDK3/ShareSDKUI
   - WZLBadge
   - YYModel
 
@@ -33,12 +53,14 @@ SPEC CHECKSUMS:
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
+  MOBFoundation: 4975874f74c991f562151f6a4549e9a6ad743fd8
   RESideMenu: f24c508404b49c667344c54aba7e590883533958
   SDCycleScrollView: f72904c77698a7f93a41bcbbc2d78b073bf7326c
   SDWebImage: 098e97e6176540799c27e804c96653ee0833d13c
+  ShareSDK3: dea6a14cc4385fa6493e10895ba11d07ef34d149
   WZLBadge: 16c08aa0a645e2591690f21cbcb410a3d878c7ac
   YYModel: 2a7fdd96aaa4b86a824e26d0c517de8928c04b30
 
-PODFILE CHECKSUM: eda0cdd51d155fa94f3a0311a26a5434ba685582
+PODFILE CHECKSUM: 3e9c83b136d7b2ed0c564081e9983e526673db6e
 
 COCOAPODS: 1.2.0.beta.1

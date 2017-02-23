@@ -29,11 +29,6 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-planTests.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
 		<key>RESideMenu.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -73,11 +68,6 @@
 			<true/>
 		</dict>
 		<key>1328B6487CA6C033CEFC93477FA641C8</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>2B8C713E2888871C961C465359008D86</key>
 		<dict>
 			<key>primary</key>
 			<true/>
