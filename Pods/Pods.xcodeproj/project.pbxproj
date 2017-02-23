@@ -266,6 +266,7 @@
 		19FF02CCA6E9CE61E7AD7174A2486BE3 /* SDCycleScrollView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = SDCycleScrollView.m; path = SDCycleScrollView/Lib/SDCycleScrollView/SDCycleScrollView.m; sourceTree = "<group>"; };
 		1C9C9B7A37F91B67230F405C200275E1 /* MJRefreshConst.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = MJRefreshConst.m; path = MJRefresh/MJRefreshConst.m; sourceTree = "<group>"; };
 		1CA89108F69270E1D7CC806FDC9537DD /* CRToastViewController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = CRToastViewController.m; path = CRToast/CRToastViewController.m; sourceTree = "<group>"; };
+		1D6645EE513FB13CD41D81DB31698B02 /* libWeChatSDK.a */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = archive.ar; path = libWeChatSDK.a; sourceTree = "<group>"; };
 		1E1DF1FAFBBB7CAD4570CD6CB2F07F98 /* MJRefresh.bundle */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "wrapper.plug-in"; name = MJRefresh.bundle; path = MJRefresh/MJRefresh.bundle; sourceTree = "<group>"; };
 		20786EF9C024A6F6A7F601BC8D8A9A12 /* libMJRefresh.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libMJRefresh.a; path = libMJRefresh.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		20B7E82815B1403F31D174F05B7D819F /* RESideMenu-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "RESideMenu-prefix.pch"; sourceTree = "<group>"; };
@@ -317,7 +318,6 @@
 		58B517BAC30E5354AC87A5E11DDE07FD /* CAAnimation+WAnimation.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "CAAnimation+WAnimation.h"; path = "WZLBadge/CategorySupport/CAAnimation+WAnimation.h"; sourceTree = "<group>"; };
 		59CADD47056082011326C189AA8763F4 /* UIScrollView+MJRefresh.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIScrollView+MJRefresh.m"; path = "MJRefresh/UIScrollView+MJRefresh.m"; sourceTree = "<group>"; };
 		5AA1629A74834C0D6451CE2C499896F9 /* SDImageCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = SDImageCache.h; path = SDWebImage/SDImageCache.h; sourceTree = "<group>"; };
-		5ACF0B49452FBD2C2A7743A909B67EB7 /* BmobSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BmobSDK.framework; sourceTree = "<group>"; };
 		5B1B08BE8C94E4707D22EDE6DF08E063 /* Pods-plan.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-plan.debug.xcconfig"; sourceTree = "<group>"; };
 		5BAF599975C219308D29341C3A97820B /* TAAnimatedDotView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TAAnimatedDotView.m; path = SDCycleScrollView/Lib/SDCycleScrollView/PageControl/TAAnimatedDotView.m; sourceTree = "<group>"; };
 		6229160A91B7752DB0A240ECC07B19E0 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = FMDatabaseAdditions.m; path = src/fmdb/FMDatabaseAdditions.m; sourceTree = "<group>"; };
@@ -350,6 +350,7 @@
 		8139F9FE8B0023AFAFF3DC41F6E9272D /* UIView+SDExtension.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = "UIView+SDExtension.m"; path = "SDCycleScrollView/Lib/SDCycleScrollView/UIView+SDExtension.m"; sourceTree = "<group>"; };
 		89B46CD3C179E1A2A2BC561465BC18BC /* MJRefreshNormalHeader.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = MJRefreshNormalHeader.h; path = MJRefresh/Custom/Header/MJRefreshNormalHeader.h; sourceTree = "<group>"; };
 		8C867046C257D010C4A4CC3229931714 /* libRESideMenu.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; name = libRESideMenu.a; path = libRESideMenu.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8E572EF71F29B505040CE5C944060F95 /* BmobSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = BmobSDK.framework; sourceTree = "<group>"; };
 		8FAB24D263FE00F561440C9D629A39F8 /* FMDB-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "FMDB-dummy.m"; sourceTree = "<group>"; };
 		921456098626FB3118BAE93F1C0BB72F /* TAAbstractDotView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; name = TAAbstractDotView.m; path = SDCycleScrollView/Lib/SDCycleScrollView/PageControl/TAAbstractDotView.m; sourceTree = "<group>"; };
 		92840B3FB7C2F7E7BB538E1CB7376264 /* UIImageView+WebCache.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; name = "UIImageView+WebCache.h"; path = "SDWebImage/UIImageView+WebCache.h"; sourceTree = "<group>"; };
@@ -544,14 +545,6 @@
 			);
 			name = SDWebImage;
 			path = SDWebImage;
-			sourceTree = "<group>";
-		};
-		155A217BFB03F3D456854C4755DADD0E /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				5ACF0B49452FBD2C2A7743A909B67EB7 /* BmobSDK.framework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		23BC9CCA6C6F7F5AE46B379F5D3DF337 /* Targets Support Files */ = {
@@ -764,6 +757,15 @@
 			);
 			sourceTree = "<group>";
 		};
+		877A445D560301B878EA93BB5C1C151D /* BmobSDK */ = {
+			isa = PBXGroup;
+			children = (
+				BC253217884002B6778EA5E01F0D5EC5 /* Frameworks */,
+			);
+			name = BmobSDK;
+			path = BmobSDK;
+			sourceTree = "<group>";
+		};
 		8D2242E56CF24BA2DF94F29BD603934E /* WZLBadge */ = {
 			isa = PBXGroup;
 			children = (
@@ -832,6 +834,15 @@
 			);
 			name = "Support Files";
 			path = "../Target Support Files/SDWebImage";
+			sourceTree = "<group>";
+		};
+		BC253217884002B6778EA5E01F0D5EC5 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				8E572EF71F29B505040CE5C944060F95 /* BmobSDK.framework */,
+				1D6645EE513FB13CD41D81DB31698B02 /* libWeChatSDK.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		C1751C2EBB19CE280B035408422D1B3E /* FMDB */ = {
@@ -925,7 +936,7 @@
 		F9B7C5C291A6AE4D293371C219C4DA65 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				FC2A94E3F780C16422F9DD88A4D722CA /* BmobSDK */,
+				877A445D560301B878EA93BB5C1C151D /* BmobSDK */,
 				E21608F550274753932F111F6B129C78 /* CRToast */,
 				C1751C2EBB19CE280B035408422D1B3E /* FMDB */,
 				9BE9FD4A71BFC749E0C88BE2745D08C0 /* MBProgressHUD */,
@@ -937,15 +948,6 @@
 				3993EDF5E12B122132C94539B7C283A8 /* YYModel */,
 			);
 			name = Pods;
-			sourceTree = "<group>";
-		};
-		FC2A94E3F780C16422F9DD88A4D722CA /* BmobSDK */ = {
-			isa = PBXGroup;
-			children = (
-				155A217BFB03F3D456854C4755DADD0E /* Frameworks */,
-			);
-			name = BmobSDK;
-			path = BmobSDK;
 			sourceTree = "<group>";
 		};
 		FFDF54B1C215BB395DC6230350297291 /* Core */ = {

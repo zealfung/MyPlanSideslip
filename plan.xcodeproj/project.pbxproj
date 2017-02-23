@@ -19,9 +19,7 @@
 		130583EB1E2DEEC00090A930 /* BaseItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 130583EA1E2DEEC00090A930 /* BaseItem.m */; };
 		1310C3561C4542FC00A2A404 /* TencentOpenAPI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1310C3391C4542FC00A2A404 /* TencentOpenAPI.framework */; };
 		1310C3571C4542FC00A2A404 /* TencentOpenApi_IOS_Bundle.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1310C33A1C4542FC00A2A404 /* TencentOpenApi_IOS_Bundle.bundle */; };
-		1310C3581C4542FC00A2A404 /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1310C33C1C4542FC00A2A404 /* libWeiboSDK.a */; };
 		1310C3591C4542FC00A2A404 /* WeiboSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3461C4542FC00A2A404 /* WeiboSDK.bundle */; };
-		1310C35A1C4542FC00A2A404 /* libWeChatSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1310C34A1C4542FC00A2A404 /* libWeChatSDK.a */; };
 		1310C35B1C4542FC00A2A404 /* read_me.txt in Resources */ = {isa = PBXBuildFile; fileRef = 1310C34B1C4542FC00A2A404 /* read_me.txt */; };
 		1310C35C1C4542FC00A2A404 /* MOBFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1310C34F1C4542FC00A2A404 /* MOBFoundation.framework */; };
 		1310C35D1C4542FC00A2A404 /* ShareSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3501C4542FC00A2A404 /* ShareSDK.bundle */; };
@@ -268,6 +266,7 @@
 		13D9165C1CDD7607001F34EA /* AddTaskNewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D9165A1CDD7607001F34EA /* AddTaskNewViewController.xib */; };
 		13D916601CDDC4D7001F34EA /* TaskDetailNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D9165E1CDDC4D7001F34EA /* TaskDetailNewViewController.m */; };
 		13D916611CDDC4D7001F34EA /* TaskDetailNewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D9165F1CDDC4D7001F34EA /* TaskDetailNewViewController.xib */; };
+		13EBB16F1E499C980012F2EB /* libWeiboSDK.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1310C33C1C4542FC00A2A404 /* libWeiboSDK.a */; };
 		13F670871CC07BD3009D2BA9 /* PersonalCenterNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670861CC07BD3009D2BA9 /* PersonalCenterNewViewController.m */; };
 		13F6708B1CC07E7B009D2BA9 /* PersonalCenterNewCell0.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670891CC07E7B009D2BA9 /* PersonalCenterNewCell0.m */; };
 		13F6708C1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13F6708A1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib */; };
@@ -733,18 +732,17 @@
 				1310C35E1C4542FC00A2A404 /* ShareSDK.framework in Frameworks */,
 				137C60841BBB6F0B00725662 /* libstdc++.dylib in Frameworks */,
 				1310C35C1C4542FC00A2A404 /* MOBFoundation.framework in Frameworks */,
+				13EBB16F1E499C980012F2EB /* libWeiboSDK.a in Frameworks */,
 				1368F9761BB6287D00CC7E63 /* libz.dylib in Frameworks */,
 				1310C35F1C4542FC00A2A404 /* ShareSDKConnector.framework in Frameworks */,
 				1310C3621C4542FC00A2A404 /* ShareSDKUI.framework in Frameworks */,
 				137C60831BBB6EEA00725662 /* libicucore.dylib in Frameworks */,
 				1368F9751BB6286E00CC7E63 /* CoreGraphics.framework in Frameworks */,
 				1368F9731BB6286500CC7E63 /* Foundation.framework in Frameworks */,
-				1310C3581C4542FC00A2A404 /* libWeiboSDK.a in Frameworks */,
 				1368F9711BB6285400CC7E63 /* UIKit.framework in Frameworks */,
 				1368F96F1BB6284A00CC7E63 /* CoreText.framework in Frameworks */,
 				1368F96D1BB6284100CC7E63 /* CoreTelephony.framework in Frameworks */,
 				1310C3601C4542FC00A2A404 /* ShareSDKExtension.framework in Frameworks */,
-				1310C35A1C4542FC00A2A404 /* libWeChatSDK.a in Frameworks */,
 				1368F96B1BB6283700CC7E63 /* Security.framework in Frameworks */,
 				1368F9691BB6282B00CC7E63 /* SystemConfiguration.framework in Frameworks */,
 				1368F9671BB6281D00CC7E63 /* QuartzCore.framework in Frameworks */,
