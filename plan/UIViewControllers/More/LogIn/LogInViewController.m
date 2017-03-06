@@ -6,8 +6,6 @@
 //  Copyright © 2015年 Fengzy. All rights reserved.
 //
 
-#import "LogIn.h"
-#import "DataCenter.h"
 #import "AppDelegate.h"
 #import <BmobSDK/BmobUser.h>
 #import "RootViewController.h"
@@ -21,18 +19,20 @@
 
 @implementation LogInViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = STRViewTitle25;
     [self setControls];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)setControls {
-
+- (void)setControls
+{
     self.txtEmail.placeholder = STRViewTips86;
     self.txtEmail.inputAccessoryView = [self getInputAccessoryView];
     [self.txtEmail becomeFirstResponder];
@@ -40,7 +40,8 @@
     self.txtPassword.placeholder = STRViewTips92;
     self.txtPassword.inputAccessoryView = [self getInputAccessoryView];
 
-    if ([LogIn isLogin]) {
+    if ([LogIn isLogin])
+    {
         BmobUser *user = [BmobUser currentUser];
         NSString *email = [user objectForKey:@"username"];
         self.txtEmail.text = email;
@@ -54,19 +55,23 @@
     [self.btnForgotPwd setAllTitle:STRCommonTip26];
 }
 
-- (IBAction)logInAction:(id)sender {
+- (IBAction)logInAction:(id)sender
+{
     //检查输入
-    if (self.txtEmail.text.length == 0) {
+    if (self.txtEmail.text.length == 0)
+    {
         [self alertToastMessage:STRViewTips87];
         [self.txtEmail becomeFirstResponder];
         return;
     }
-    if (![CommonFunction validateEmail:self.txtEmail.text]) {
+    if (![CommonFunction validateEmail:self.txtEmail.text])
+    {
         [self alertToastMessage:STRViewTips88];
         [self.txtEmail becomeFirstResponder];
         return;
     }
-    if (self.txtPassword.text.length == 0) {
+    if (self.txtPassword.text.length == 0)
+    {
         [self alertToastMessage:STRViewTips89];
         [self.txtPassword becomeFirstResponder];
         return;
@@ -79,40 +84,43 @@
     [BmobUser loginWithUsernameInBackground:acountEmail password:self.txtPassword.text block:^(BmobUser *user, NSError *error) {
         
         [weakSelf hideHUD];
-        if (error) {
-            
+        if (error)
+        {
             NSString *errorMsg = [error.userInfo objectForKey:@"NSLocalizedDescription"];
-            if (!errorMsg) {
+            if (!errorMsg)
+            {
                 errorMsg = [error.userInfo objectForKey:@"error"];
             }
-            if ([errorMsg containsString:@"incorrect"]) {
+            if ([errorMsg containsString:@"incorrect"])
+            {
                 [weakSelf alertButtonMessage:STRViewTips94];
-            } else if ([errorMsg containsString:@"connect failed"]) {
+            }
+            else if ([errorMsg containsString:@"connect failed"])
+            {
                 [weakSelf alertButtonMessage:@"登录超时，请稍后再试"];
             }
-            
-        } else if (user) {
+        }
+        else if (user)
+        {
             //检查账号邮箱是否已经通过验证
-            if ([[user objectForKey:@"emailVerified"] boolValue]) {
-                if (self.isForgotGesture) {
+            if ([[user objectForKey:@"emailVerified"] boolValue])
+            {
+                if (self.isForgotGesture)
+                {
                     UIStoryboard *story = [UIStoryboard storyboardWithName:@"Main" bundle:[NSBundle mainBundle]];
                     RootViewController *controller = [story instantiateViewControllerWithIdentifier:@"rootViewController"];
                     AppDelegate *delegate = (AppDelegate *)[[UIApplication sharedApplication] delegate];
                     delegate.window.rootViewController = controller;
                     [delegate.window reloadInputViews];
-                } else {
-                    //登录后自动同步一次数据
-                    [AlertCenter alertNavBarYellowMessage:STRViewTips121];
-                    [DataCenter startSyncData];
+                }
+                else
+                {
                     [NotificationCenter postNotificationName:NTFLogIn object:nil];
                     [weakSelf.navigationController popViewControllerAnimated:YES];
                 }
-                
-                [Config shareInstance].settings = [PlanCache getPersonalSettings];
-                [Config shareInstance].settings.isUseGestureLock = @"0";
-                [Config shareInstance].settings.gesturePasswod = @"";
-                [PlanCache storePersonalSettings:[Config shareInstance].settings];
-            } else {
+            }
+            else
+            {
                 //用户没验证过邮箱
                 [BmobUser logout];
                 [weakSelf alertButtonMessage:STRViewTips95];
@@ -122,12 +130,14 @@
     }];
 }
 
-- (IBAction)registerAction:(id)sender {
+- (IBAction)registerAction:(id)sender
+{
     RegisterViewController *controller = [[RegisterViewController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (IBAction)forgotPwdAction:(id)sender {
+- (IBAction)forgotPwdAction:(id)sender
+{
     ForgotPasswordViewController *controller = [[ForgotPasswordViewController alloc] init];
     controller.email = self.txtEmail.text;
     [self.navigationController pushViewController:controller animated:YES];
