@@ -50,6 +50,7 @@
 		132263A81B9C809400D21637 /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A51B9C809400D21637 /* FirstViewController.m */; };
 		132263A91B9C809400D21637 /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 132263A71B9C809400D21637 /* SecondViewController.m */; };
 		1322FC151E5EF00C00FB2B11 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1322FC141E5EF00C00FB2B11 /* Images.xcassets */; };
+		1322FC181E60075700FB2B11 /* PlanDataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 1322FC171E60075700FB2B11 /* PlanDataCenter.m */; };
 		1326F1E71D6BEACD004CE840 /* Icon_Menu_Money@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1326F1E61D6BEACD004CE840 /* Icon_Menu_Money@2x.png */; };
 		132819421C61D1D000FB8628 /* NSLayoutConstraint+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 132819411C61D1D000FB8628 /* NSLayoutConstraint+Util.m */; };
 		133B07A21B9FBCA30015E752 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 133B07A11B9FBCA30015E752 /* HelpViewController.m */; };
@@ -334,6 +335,8 @@
 		132263A61B9C809400D21637 /* SecondViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
 		132263A71B9C809400D21637 /* SecondViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
 		1322FC141E5EF00C00FB2B11 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		1322FC161E60075700FB2B11 /* PlanDataCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanDataCenter.h; sourceTree = "<group>"; };
+		1322FC171E60075700FB2B11 /* PlanDataCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanDataCenter.m; sourceTree = "<group>"; };
 		1326F1E61D6BEACD004CE840 /* Icon_Menu_Money@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Menu_Money@2x.png"; sourceTree = "<group>"; };
 		132819401C61D1D000FB8628 /* NSLayoutConstraint+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSLayoutConstraint+Util.h"; sourceTree = "<group>"; };
 		132819411C61D1D000FB8628 /* NSLayoutConstraint+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSLayoutConstraint+Util.m"; sourceTree = "<group>"; };
@@ -1484,6 +1487,8 @@
 			children = (
 				13A6AC8B1BBFDDD6005A02F9 /* DataCenter.h */,
 				13A6AC8C1BBFDDD6005A02F9 /* DataCenter.m */,
+				1322FC161E60075700FB2B11 /* PlanDataCenter.h */,
+				1322FC171E60075700FB2B11 /* PlanDataCenter.m */,
 			);
 			path = DataCenter;
 			sourceTree = "<group>";
@@ -1906,6 +1911,7 @@
 				131D6AC41C007BF3009FDD72 /* ImageScrollView.m in Sources */,
 				136E6FD81D489AED00E0E9B5 /* ThemeViewController.m in Sources */,
 				135B21ED1B9142BE005CE84A /* Plan.m in Sources */,
+				1322FC181E60075700FB2B11 /* PlanDataCenter.m in Sources */,
 				135B21E41B913E46005CE84A /* Settings.m in Sources */,
 				13A6ACA11BC3AAA3005A02F9 /* AddPhotoViewController.m in Sources */,
 				13A6ACA51BC3E282005A02F9 /* PageScrollView.m in Sources */,
