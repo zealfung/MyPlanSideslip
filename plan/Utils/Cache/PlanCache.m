@@ -98,7 +98,7 @@ static NSMutableDictionary *__contactsOnlineState;
     if (![__db open])
     {
         NSLog(@"Could not open db:%@", fileName);
-        
+        __db = nil;
         return;
     }
     
@@ -231,12 +231,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return ;
-            }
+            __db = nil;
+            return ;
         }
         
         if ([LogIn isLogin])
@@ -365,16 +363,16 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return NO;
-            }
+            __db = nil;
+            return NO;
         }
         
         if (!plan.planid || !plan.content || !plan.createtime)
+        {
             return NO;
+        }
         
         if ([LogIn isLogin])
         {
@@ -483,12 +481,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return NO;
-            }
+            __db = nil;
+            return NO;
         }
         
         if (!plan.planid)
@@ -551,12 +547,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return NO;
-            }
+            __db = nil;
+            return NO;
         }
         
         if (!photo.photoid || !photo.createtime)
@@ -635,12 +629,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return NO;
-            }
+            __db = nil;
+            return NO;
         }
         
         if ([LogIn isLogin])
@@ -714,6 +706,7 @@ static NSMutableDictionary *__contactsOnlineState;
     {
         if (![__db open])
         {
+            __db = nil;
             return NO;
         }
         
@@ -829,12 +822,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return NO;
-            }
+            __db = nil;
+            return NO;
         }
         
         if (!task.taskId || !task.createTime)
@@ -889,12 +880,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return;
-            }
+            __db = nil;
+            return;
         }
         
         if (!task.taskId || !task.createTime)
@@ -944,12 +933,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return NO;
-            }
+            __db = nil;
+            return NO;
         }
         
         if (!taskRecord.recordId || !taskRecord.createTime)
@@ -973,12 +960,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return NO;
-            }
+            __db = nil;
+            return NO;
         }
         
         if (!message.messageId)
@@ -1046,12 +1031,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return NO;
-            }
+            __db = nil;
+            return NO;
         }
         
         if (!message.messageId)
@@ -1089,12 +1072,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return NO;
-            }
+            __db = nil;
+            return NO;
         }
         
         if ([LogIn isLogin])
@@ -1141,12 +1122,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return NO;
-            }
+            __db = nil;
+            return NO;
         }
         
         if ([LogIn isLogin])
@@ -1187,12 +1166,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return NO;
-            }
+            __db = nil;
+            return NO;
         }
         
         if ([LogIn isLogin])
@@ -1239,12 +1216,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return NO;
-            }
+            __db = nil;
+            return NO;
         }
         
         NSString *account = @"";
@@ -1269,12 +1244,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return NO ;
-            }
+            __db = nil;
+            return NO;
         }
         
         NSString *account = @"";
@@ -1304,12 +1277,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil;
-            }
+            __db = nil;
+            return nil;
         }
 
         Settings *settings = [[Settings alloc] init];
@@ -1400,12 +1371,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *account = @"";
@@ -1492,12 +1461,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *account = @"";
@@ -1549,12 +1516,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return;
-            }
+            __db = nil;
+            return;
         }
         
         NSString *account = @"";
@@ -1675,12 +1640,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *account = @"";
@@ -1732,12 +1695,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *account = @"";
@@ -1799,12 +1760,10 @@ static NSMutableDictionary *__contactsOnlineState;
     {
         Photo *photo = [[Photo alloc] init];
         
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return photo ;
-            }
+            __db = nil;
+            return photo;
         }
         
         NSString *account = @"";
@@ -1862,12 +1821,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil;
-            }
+            __db = nil;
+            return nil;
         }
         
         Statistics *statistics = [[Statistics alloc] init];
@@ -1911,12 +1868,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *account = @"";
@@ -1978,12 +1933,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *account = @"";
@@ -2045,12 +1998,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSMutableArray *array = [NSMutableArray array];
@@ -2076,12 +2027,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *account = @"";
@@ -2122,12 +2071,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *account = @"";
@@ -2172,12 +2119,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *account = @"";
@@ -2206,12 +2151,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *account = @"";
@@ -2240,12 +2183,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *account = @"";
@@ -2274,12 +2215,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *account = @"";
@@ -2555,12 +2494,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSMutableArray *array = [NSMutableArray array];
@@ -2625,12 +2562,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *sqlString = [NSString stringWithFormat:@"SELECT planid, content, createtime, completetime, updatetime, iscompleted, isnotify, notifytime, beginDate, isdeleted FROM %@ WHERE account=? AND planid =?", STRTableName2];
@@ -2669,12 +2604,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSMutableArray *array = [NSMutableArray array];
@@ -2758,12 +2691,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *account = @"";
@@ -2806,12 +2737,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *account = @"";
@@ -2898,12 +2827,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSMutableArray *array = [NSMutableArray array];
@@ -2938,12 +2865,10 @@ static NSMutableDictionary *__contactsOnlineState;
 {
     @synchronized(__db)
     {
-        if (!__db.open)
+        if (![__db open])
         {
-            if (![__db open])
-            {
-                return nil ;
-            }
+            __db = nil;
+            return nil;
         }
         
         NSString *sqlString = [NSString stringWithFormat:@"SELECT taskId, content, totalCount, completionDate, createTime, updateTime, isNotify, notifyTime, isDeleted, isTomato, tomatoMinute, isRepeat, repeatType, taskOrder FROM %@ WHERE account=? AND taskId =?", STRTableName5];

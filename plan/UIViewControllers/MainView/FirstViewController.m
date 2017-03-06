@@ -12,6 +12,7 @@
 #import "ThreeSubView.h"
 #import "UIButton+Util.h"
 #import "WZLBadgeImport.h"
+#import "LogInViewController.h"
 #import "FirstViewController.h"
 #import "SideMenuViewController.h"
 #import <RESideMenu/RESideMenu.h>
@@ -61,11 +62,9 @@ NSUInteger const kHoursPerDay = 24;
          [weakSelf shareAction];
     }];
     
-    [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFSettingsSave object:nil];
+//    [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFSettingsSave object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFPlanSave object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:NTFMessagesSave object:nil];
-    
-    [DataCenter setPlanBeginDate];
     
     [self loadCustomView];
 }
@@ -127,15 +126,53 @@ NSUInteger const kHoursPerDay = 24;
 
 - (void)loadCustomView
 {
-    //加载个人设置
-    [Config shareInstance].settings = [PlanCache getPersonalSettings];
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+    BmobUser *user = [BmobUser currentUser];
+    __weak typeof(self) weakSelf = self;
+    [bquery getObjectInBackgroundWithId:user.objectId block:^(BmobObject *object,NSError *error) {
+        
+        if (error)
+        {
+            [Config shareInstance].settings = [PlanCache getPersonalSettings];
+        }
+        else
+        {
+            if (object)
+            {
+                [Config shareInstance].settings.objectId = object.objectId;
+                [Config shareInstance].settings.nickname = [object objectForKey:@"nickName"];
+                [Config shareInstance].settings.birthday = [object objectForKey:@"birthday"];
+                [Config shareInstance].settings.gender = [object objectForKey:@"gender"];
+                [Config shareInstance].settings.lifespan = [object objectForKey:@"lifespan"];
+                [Config shareInstance].settings.isAutoSync = [object objectForKey:@"isAutoSync"];
+                [Config shareInstance].settings.createtime = [object objectForKey:@"createdTime"];
+                [Config shareInstance].settings.updatetime = [object objectForKey:@"updatedTime"];
+                [Config shareInstance].settings.syntime = [object objectForKey:@"syncTime"];
+                [Config shareInstance].settings.countdownType = [object objectForKey:@"countdownType"];
+                [Config shareInstance].settings.dayOrMonth = [object objectForKey:@"dayOrMonth"];
+                [Config shareInstance].settings.autoDelayUndonePlan = [object objectForKey:@"autoDelayUndonePlan"];
+                [Config shareInstance].settings.signature = [object objectForKey:@"signature"];
+                [Config shareInstance].settings.avatarURL = [object objectForKey:@"avatarURL"];
+                [Config shareInstance].settings.centerTopURL = [object objectForKey:@"centerTopURL"];
+                
+                [PlanCache storePersonalSettings:[Config shareInstance].settings];
+            }
+            else
+            {
+                [Config shareInstance].settings = [PlanCache getPersonalSettings];
+            }
+        }
+        
+        [weakSelf createAvatar];
+        [weakSelf createLabelText];
+    }];
     
     //小红点
     [self refreshRedDot];
     
-    [self createAvatar];
-    [self createLabelText];
-    [self createStatisticsView];
+//    [self createAvatar];
+//    [self createLabelText];
+//    [self createStatisticsView];
     [self createShareLogo];
 }
 
@@ -164,7 +201,6 @@ NSUInteger const kHoursPerDay = 24;
         image = [UIImage imageWithData:[Config shareInstance].settings.avatar];
     }
     UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(self.xMiddle - avatarSize / 2, self.yOffset, avatarSize, avatarSize)];
-    avatar.image = image;
     avatar.clipsToBounds = YES;
     avatar.layer.borderWidth = 1;
     avatar.userInteractionEnabled = YES;
@@ -174,6 +210,19 @@ NSUInteger const kHoursPerDay = 24;
     avatar.contentMode = UIViewContentModeScaleAspectFit;
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toSettingsViewController)];
     [avatar addGestureRecognizer:singleTap];
+    
+    [avatar sd_setImageWithPreviousCachedImageWithURL:[NSURL URLWithString:[Config shareInstance].settings.avatarURL] andPlaceholderImage:image options:SDWebImageHighPriority progress:^(NSInteger receivedSize, NSInteger expectedSize)
+     {
+     }
+     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+     {
+         if (image)
+         {
+             NSData *imgData = UIImageJPEGRepresentation(image, 1);
+             [Config shareInstance].settings.avatar = imgData;
+             [PlanCache storePersonalSettings:[Config shareInstance].settings];
+         }
+     }];
     
     [self.scrollView addSubview:avatar];
     
@@ -677,9 +726,18 @@ NSUInteger const kHoursPerDay = 24;
 
 - (void)toSettingsViewController
 {
-    SettingsPersonalViewController *controller = [[SettingsPersonalViewController alloc]init];
-    controller.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:controller animated:YES];
+    if ([LogIn isLogin])
+    {
+        SettingsPersonalViewController *controller = [[SettingsPersonalViewController alloc]init];
+        controller.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:controller animated:YES];
+    }
+    else
+    {
+        LogInViewController *controller = [[LogInViewController alloc] init];
+        controller.hidesBottomBarWhenPushed = YES;
+        [self.navigationController pushViewController:controller animated:YES];
+    }
 }
 
 - (BOOL)showSeconds

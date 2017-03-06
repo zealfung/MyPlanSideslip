@@ -7,7 +7,7 @@
 //
 
 #import "Plan.h"
-#import "PlanCache.h"
+#import "PlanDataCenter.h"
 #import "PlanAddViewController.h"
 
 @interface PlanAddViewController () <UITextFieldDelegate, UITextViewDelegate>
@@ -39,6 +39,8 @@
     {
         [weakSelf savePlan];
     }];
+    
+    [NotificationCenter addObserver:self selector:@selector(backToLastView) name:NTFPlanSave object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -338,21 +340,12 @@
     plan.content = self.txtViewContent.text;
     plan.beginDate = self.beginDate;
     
-    BOOL result = NO;
-    @synchronized (STRDecodeSignal)
-    {
-        result = [PlanCache storePlan:plan];
-    }
-    
-    if (result)
-    {
-        [self alertToastMessage:STRCommonTip13];
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else
-    {
-        [self alertButtonMessage:STRCommonTip14];
-    }
+    [PlanDataCenter addPlan:plan];
+}
+
+- (void)backToLastView
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

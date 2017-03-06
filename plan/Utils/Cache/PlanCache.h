@@ -114,4 +114,8 @@
 
 + (NSArray *)getPhotoForSync:(NSString *)syntime;
 
++ (void)addPlanNotification:(Plan *)plan;
+
++ (void)setFiveDayNotification;
+
 @end
