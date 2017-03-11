@@ -9,7 +9,7 @@
 #import "UIDevice+Util.h"
 #import "CommonFunction.h"
 #import <CommonCrypto/CommonDigest.h>
-
+#import "LocalNotificationManager.h"
 
 static NSString * const kKeyYears = @"years";
 static NSString * const kKeyMonths = @"months";
@@ -414,6 +414,50 @@ static NSString * const kKeyMinutes = @"minutes";
 + (int)getRandomNumber:(int)from to:(int)to
 {
     return (int)(from + (arc4random() % (to - from + 1)));
+}
+
+/** 更新本地通知 */
++ (void)updatePlanNotification:(Plan *)plan
+{
+    //首先取消该计划的本地所有通知
+    [self cancelPlanNotification:plan.planid];
+    //重新添加新的通知
+    [self addPlanNotification:plan];
+}
+
+/** 取消本地通知 */
++ (void)cancelPlanNotification:(NSString*)planid
+{
+    //取消该计划的本地所有通知
+    NSArray *array = [LocalNotificationManager getNotificationWithTag:planid type:NotificationTypePlan];
+    for (UILocalNotification *item in array)
+    {
+        [LocalNotificationManager cancelNotification:item];
+    }
+}
+
+/** 新增本地通知 */
++ (void)addPlanNotification:(Plan *)plan
+{
+    //时间格式：yyyy-MM-dd HH:mm
+    NSDate *date = [CommonFunction NSStringDateToNSDate:plan.notifytime formatter:STRDateFormatterType3];
+    
+    if (!date) return;
+    
+    BmobUser *user = [BmobUser currentUser];
+    NSMutableDictionary *destDic = [NSMutableDictionary dictionary];
+    [destDic setObject:user.objectId forKey:@"account"];
+    [destDic setObject:plan.planid forKey:@"tag"];
+    [destDic setObject:@([date timeIntervalSince1970]) forKey:@"time"];
+    [destDic setObject:@(NotificationTypePlan) forKey:@"type"];
+    [destDic setObject:plan.createtime forKey:@"createtime"];
+    [destDic setObject:plan.beginDate forKey:@"beginDate"];
+    [destDic setObject:plan.iscompleted forKey:@"iscompleted"];
+    [destDic setObject:plan.completetime ?: @"" forKey:@"completetime"];
+    [destDic setObject:plan.content forKey:@"content"];
+    [destDic setObject:plan.notifytime forKey:@"notifytime"];
+    [destDic setObject:plan.remark ?:@"" forKey:@"remark"];
+    [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
 }
 
 @end

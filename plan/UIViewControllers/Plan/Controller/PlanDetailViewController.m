@@ -7,7 +7,6 @@
 //
 
 #import "PlanDetailViewController.h"
-#import "LocalNotificationManager.h"
 
 @interface PlanDetailViewController () <UITextFieldDelegate, UITextViewDelegate>
 
@@ -398,12 +397,12 @@
          {
              if (object)
              {
-                 [object setObject:self.plan.content forKey:@"content"];
-                 [object setObject:self.plan.updatetime forKey:@"updatedTime"];
-                 [object setObject:self.plan.notifytime forKey:@"notifyTime"];
-                 [object setObject:self.plan.isnotify forKey:@"isNotify"];
-                 [object setObject:self.plan.isRepeat forKey:@"isRepeat"];
-                 [object setObject:self.plan.beginDate forKey:@"beginDate"];
+                 [object setObject:weakSelf.plan.content forKey:@"content"];
+                 [object setObject:weakSelf.plan.updatetime forKey:@"updatedTime"];
+                 [object setObject:weakSelf.plan.notifytime forKey:@"notifyTime"];
+                 [object setObject:weakSelf.plan.isnotify forKey:@"isNotify"];
+                 [object setObject:weakSelf.plan.isRepeat forKey:@"isRepeat"];
+                 [object setObject:weakSelf.plan.beginDate forKey:@"beginDate"];
 
                  [object updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
                   {
@@ -411,17 +410,16 @@
                       if (isSuccessful)
                       {
                           //更新提醒
-                          if ([self.plan.isnotify isEqualToString:@"1"]
-                              && [self.plan.iscompleted isEqualToString:@"0"])
+                          if ([weakSelf.plan.isnotify isEqualToString:@"1"])
                           {
                               //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
-                              self.plan.notifytime = [CommonFunction updateNotifyTime:self.plan.notifytime];
+                              weakSelf.plan.notifytime = [CommonFunction updateNotifyTime:weakSelf.plan.notifytime];
                               
-                              [self updatePlanNotification:self.plan];
+                              [CommonFunction updatePlanNotification:weakSelf.plan];
                           }
                           else
                           {
-                              [self cancelPlanNotification:self.plan.planid];
+                              [CommonFunction cancelPlanNotification:weakSelf.plan.planid];
                           }
                           [NotificationCenter postNotificationName:NTFPlanSave object:nil];
                       }
@@ -437,47 +435,6 @@
              }
          }
      }];
-}
-
-- (void)updatePlanNotification:(Plan *)plan
-{
-    //首先取消该计划的本地所有通知
-    [self cancelPlanNotification:plan.planid];
-    //重新添加新的通知
-    [self addPlanNotification:plan];
-}
-
-- (void)cancelPlanNotification:(NSString*)planid
-{
-    //取消该计划的本地所有通知
-    NSArray *array = [LocalNotificationManager getNotificationWithTag:planid type:NotificationTypePlan];
-    for (UILocalNotification *item in array)
-    {
-        [LocalNotificationManager cancelNotification:item];
-    }
-}
-
-- (void)addPlanNotification:(Plan *)plan
-{
-    //时间格式：yyyy-MM-dd HH:mm
-    NSDate *date = [CommonFunction NSStringDateToNSDate:plan.notifytime formatter:STRDateFormatterType3];
-    
-    if (!date) return;
-    
-    BmobUser *user = [BmobUser currentUser];
-    NSMutableDictionary *destDic = [NSMutableDictionary dictionary];
-    [destDic setObject:user.objectId forKey:@"account"];
-    [destDic setObject:plan.planid forKey:@"tag"];
-    [destDic setObject:@([date timeIntervalSince1970]) forKey:@"time"];
-    [destDic setObject:@(NotificationTypePlan) forKey:@"type"];
-    [destDic setObject:plan.createtime forKey:@"createtime"];
-    [destDic setObject:plan.beginDate forKey:@"beginDate"];
-    [destDic setObject:plan.iscompleted forKey:@"iscompleted"];
-    [destDic setObject:plan.completetime ?: @"" forKey:@"completetime"];
-    [destDic setObject:plan.content forKey:@"content"];
-    [destDic setObject:plan.notifytime forKey:@"notifytime"];
-    [destDic setObject:plan.remark ?:@"" forKey:@"remark"];
-    [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
 }
 
 @end

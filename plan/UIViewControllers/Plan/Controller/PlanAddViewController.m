@@ -9,7 +9,6 @@
 #import "Plan.h"
 #import "PlanDataCenter.h"
 #import "PlanAddViewController.h"
-#import "LocalNotificationManager.h"
 
 @interface PlanAddViewController () <UITextFieldDelegate, UITextViewDelegate>
 
@@ -370,7 +369,7 @@
             if ([plan.isnotify isEqualToString:@"1"])
             {
                 plan.planid = newPlan.objectId;
-                [weakSelf addPlanNotification:plan];
+                [CommonFunction addPlanNotification:plan];
             }
             
             [weakSelf alertToastMessage:STRCommonTip13];
@@ -387,29 +386,6 @@
 - (void)backToLastView
 {
     [self.navigationController popViewControllerAnimated:YES];
-}
-
-- (void)addPlanNotification:(Plan *)plan
-{
-    //时间格式：yyyy-MM-dd HH:mm
-    NSDate *date = [CommonFunction NSStringDateToNSDate:plan.notifytime formatter:STRDateFormatterType3];
-    
-    if (!date) return;
-    
-    BmobUser *user = [BmobUser currentUser];
-    NSMutableDictionary *destDic = [NSMutableDictionary dictionary];
-    [destDic setObject:user.objectId forKey:@"account"];
-    [destDic setObject:plan.planid forKey:@"tag"];
-    [destDic setObject:@([date timeIntervalSince1970]) forKey:@"time"];
-    [destDic setObject:@(NotificationTypePlan) forKey:@"type"];
-    [destDic setObject:plan.createtime forKey:@"createtime"];
-    [destDic setObject:plan.beginDate forKey:@"beginDate"];
-    [destDic setObject:plan.iscompleted forKey:@"iscompleted"];
-    [destDic setObject:plan.completetime ?: @"" forKey:@"completetime"];
-    [destDic setObject:plan.content forKey:@"content"];
-    [destDic setObject:plan.notifytime forKey:@"notifytime"];
-    [destDic setObject:plan.remark ?:@"" forKey:@"remark"];
-    [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
 }
 
 @end

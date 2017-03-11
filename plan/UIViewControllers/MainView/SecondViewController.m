@@ -1116,6 +1116,10 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                     [weakSelf hideHUD];
                     if (isSuccessful)
                     {
+                        if ([plan.isnotify isEqualToString:@"1"])
+                        {
+                            [CommonFunction cancelPlanNotification:object.objectId];
+                        }
                         [NotificationCenter postNotificationName:NTFPlanSave object:nil];
                         [weakSelf alertToastMessage:STRCommonTip16];
                     }

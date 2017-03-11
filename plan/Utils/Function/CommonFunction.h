@@ -6,6 +6,7 @@
 //  Copyright (c) 2015年 Fengzy. All rights reserved.
 //
 
+#import "Plan.h"
 #import <Foundation/Foundation.h>
 
 @interface CommonFunction : NSObject
@@ -94,5 +95,14 @@
 
 /** 获取随机数 */
 + (int)getRandomNumber:(int)from to:(int)to;
+
+/** 更新本地通知 */
++ (void)updatePlanNotification:(Plan *)plan;
+
+/** 取消本地通知 */
++ (void)cancelPlanNotification:(NSString*)planid;
+
+/** 新增本地通知 */
++ (void)addPlanNotification:(Plan *)plan;
 
 @end
