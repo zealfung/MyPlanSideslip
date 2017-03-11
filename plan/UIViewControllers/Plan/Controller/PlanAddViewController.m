@@ -38,7 +38,7 @@
     __weak typeof(self) weakSelf = self;
     [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_Save] action:^(UIButton *sender)
     {
-        [weakSelf savePlan];
+        [weakSelf saveAction:sender];
     }];
     
     [NotificationCenter addObserver:self selector:@selector(backToLastView) name:NTFPlanSave object:nil];
@@ -309,6 +309,7 @@
 
 - (void)savePlan
 {
+    [self showHUD];
     [self.view endEditing:YES];
     NSString *timeNow = [CommonFunction getTimeNowString];
     NSString *planid = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType5];
@@ -343,18 +344,16 @@
     
     BmobUser *user = [BmobUser currentUser];
     BmobObject *newPlan = [BmobObject objectWithClassName:@"Plan"];
-    NSDictionary *dic = @{@"userObjectId":plan.account,
+    NSDictionary *dic = @{@"userObjectId":user.objectId,
                           @"planId":plan.planid,
                           @"content":plan.content,
                           @"createdTime":plan.createtime,
-                          @"completedTime":plan.completetime,
                           @"updatedTime":plan.updatetime,
                           @"notifyTime":plan.notifytime,
                           @"isCompleted":plan.iscompleted,
                           @"isNotify":plan.isnotify,
                           @"isDeleted":plan.isdeleted,
                           @"isRepeat":plan.isRepeat,
-                          @"remark":plan.remark,
                           @"beginDate":plan.beginDate};
     [newPlan saveAllWithDictionary:dic];
     BmobACL *acl = [BmobACL ACL];
@@ -364,11 +363,13 @@
     __weak typeof(self) weakSelf = self;
     [newPlan saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
     {
+        [weakSelf hideHUD];
         if (isSuccessful)
         {
             //添加提醒
             if ([plan.isnotify isEqualToString:@"1"])
             {
+                plan.planid = newPlan.objectId;
                 [weakSelf addPlanNotification:plan];
             }
             
@@ -395,17 +396,19 @@
     
     if (!date) return;
     
+    BmobUser *user = [BmobUser currentUser];
     NSMutableDictionary *destDic = [NSMutableDictionary dictionary];
-    [destDic setObject:plan.account forKey:@"account"];
+    [destDic setObject:user.objectId forKey:@"account"];
     [destDic setObject:plan.planid forKey:@"tag"];
     [destDic setObject:@([date timeIntervalSince1970]) forKey:@"time"];
     [destDic setObject:@(NotificationTypePlan) forKey:@"type"];
     [destDic setObject:plan.createtime forKey:@"createtime"];
     [destDic setObject:plan.beginDate forKey:@"beginDate"];
     [destDic setObject:plan.iscompleted forKey:@"iscompleted"];
-    [destDic setObject:plan.completetime forKey:@"completetime"];
+    [destDic setObject:plan.completetime ?: @"" forKey:@"completetime"];
     [destDic setObject:plan.content forKey:@"content"];
     [destDic setObject:plan.notifytime forKey:@"notifytime"];
+    [destDic setObject:plan.remark ?:@"" forKey:@"remark"];
     [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
 }
 

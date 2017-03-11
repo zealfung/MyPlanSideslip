@@ -36,6 +36,8 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 @property (nonatomic, assign) BOOL *futureSectionFlag;
 @property (nonatomic, assign) BOOL canCustomEditNow;
 @property (nonatomic, assign) BOOL isLoadMore;
+@property (nonatomic, assign) BOOL isLoadingPlanDay;
+@property (nonatomic, assign) BOOL isLoadingPlanFuture;
 @property (nonatomic, assign) PlanType planType;
 @property (nonatomic, strong) Plan *deletePlan;
 @property (nonatomic, strong) NSMutableArray *dayDateKeyArray;
@@ -248,24 +250,76 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 {
     if (self.planType == FuturePlan)
     {
-        [self getFuturePlan];
+        [self getPlanFuture];
     }
     else
     {
-        [self getDayPlan];
+        [self getPlanDay];
     }
 }
 
-- (void)getDayPlan
+- (void)getPlanDay
 {
-    self.dayTotal = [[PlanCache getPlanTotalCount:@"DAY"] integerValue];
+    if (self.isLoadingPlanDay)
+    {
+        return;
+    }
+    self.isLoadingPlanDay = YES;
+    
+    [self showHUD];
+    BmobUser *user = [BmobUser currentUser];
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+    [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
+    NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    //查询beginDate列中值早于今天的数据
+    NSArray *array =  @[@{@"beginDate":@{@"$lte":today}}];
+    [bquery addTheConstraintByOrOperationWithArray:array];
+
+    [bquery orderByDescending:@"updatedTime"];
+    bquery.limit = 100;
+
+    NSMutableArray *arrayPlanDay = [NSMutableArray array];
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+     {
+         [weakSelf hideHUD];
+         weakSelf.isLoadingPlanDay = NO;
+         
+         if (!error && array.count)
+         {
+             for (BmobObject *obj in array)
+             {
+                 Plan *plan = [[Plan alloc] init];
+                 plan.account = [obj objectForKey:@"userObjectId"];
+                 plan.planid = obj.objectId;
+                 plan.content = [obj objectForKey:@"content"];
+                 plan.createtime = [obj objectForKey:@"createdTime"];
+                 plan.completetime = [obj objectForKey:@"completedTime"];
+                 plan.updatetime = [obj objectForKey:@"updatedTime"];
+                 plan.notifytime = [obj objectForKey:@"notifyTime"];
+                 plan.iscompleted = [obj objectForKey:@"isCompleted"];
+                 plan.isnotify = [obj objectForKey:@"isNotify"];
+                 plan.isdeleted = [obj objectForKey:@"isDeleted"];
+                 plan.isRepeat = [obj objectForKey:@"isRepeat"];
+                 plan.remark = [obj objectForKey:@"remark"];
+                 plan.beginDate = [obj objectForKey:@"beginDate"];
+                 [arrayPlanDay addObject:plan];
+             }
+             [weakSelf groupPlanDay:arrayPlanDay];
+         }
+     }];
+}
+
+- (void)groupPlanDay:(NSArray *)array
+{
+    self.dayTotal = 0;//[[PlanCache getPlanTotalCount:@"DAY"] integerValue];
     if (!self.isLoadMore)
     {//重头开始加载
         self.dayStart = 0;
         self.dayDateKeyArray = [NSMutableArray array];
         self.dayPlanDict = [NSMutableDictionary dictionary];
     }
-    NSArray *array = [NSArray arrayWithArray:[PlanCache getPlan:YES startIndex:self.dayStart]];
     NSMutableArray *dayDateKeyArrayTmp = [NSMutableArray array];
     
     NSString *key = @"";
@@ -323,9 +377,62 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     [self.tableViewPlan reloadData];
 }
 
-- (void)getFuturePlan
+- (void)getPlanFuture
 {
-    self.futureTotal = [[PlanCache getPlanTotalCount:@"FUTURE"] integerValue];
+    if (self.isLoadingPlanFuture)
+    {
+        return;
+    }
+    self.isLoadingPlanFuture = YES;
+    
+    [self showHUD];
+    BmobUser *user = [BmobUser currentUser];
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+    [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
+    NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    //查询beginDate列中值晚于今天的数据
+    NSArray *array =  @[@{@"beginDate":@{@"$gt":today}}];
+    [bquery addTheConstraintByOrOperationWithArray:array];
+    
+    [bquery orderByDescending:@"updatedTime"];
+    bquery.limit = 100;
+    
+    NSMutableArray *arrayPlanDay = [NSMutableArray array];
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+     {
+         [weakSelf hideHUD];
+         weakSelf.isLoadingPlanFuture = NO;
+         
+         if (!error && array.count)
+         {
+             for (BmobObject *obj in array)
+             {
+                 Plan *plan = [[Plan alloc] init];
+                 plan.account = [obj objectForKey:@"userObjectId"];
+                 plan.planid = obj.objectId;
+                 plan.content = [obj objectForKey:@"content"];
+                 plan.createtime = [obj objectForKey:@"createdTime"];
+                 plan.completetime = [obj objectForKey:@"completedTime"];
+                 plan.updatetime = [obj objectForKey:@"updatedTime"];
+                 plan.notifytime = [obj objectForKey:@"notifyTime"];
+                 plan.iscompleted = [obj objectForKey:@"isCompleted"];
+                 plan.isnotify = [obj objectForKey:@"isNotify"];
+                 plan.isdeleted = [obj objectForKey:@"isDeleted"];
+                 plan.isRepeat = [obj objectForKey:@"isRepeat"];
+                 plan.remark = [obj objectForKey:@"remark"];
+                 plan.beginDate = [obj objectForKey:@"beginDate"];
+                 [arrayPlanDay addObject:plan];
+             }
+             [weakSelf groupPlanFuture:arrayPlanDay];
+         }
+     }];
+}
+
+- (void)groupPlanFuture:(NSArray *)array
+{
+    self.futureTotal = 0;//[[PlanCache getPlanTotalCount:@"FUTURE"] integerValue];
     if (!self.isLoadMore)
     {//重头开始加载
         self.futureStart = 0;
@@ -336,7 +443,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         [self.futureDateKeyArray addObject:STRViewTips20];
         self.futurePlanDict = [NSMutableDictionary dictionary];
     }
-    NSArray *array = [NSArray arrayWithArray:[PlanCache getPlan:NO startIndex:self.futureStart]];
+//    NSArray *array = [NSArray arrayWithArray:[PlanCache getPlan:NO startIndex:self.futureStart]];
 
     NSString *key = @"";
     for (NSInteger i = 0; i < array.count; i++)
@@ -950,22 +1057,80 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 - (void)saveAndRefresh:(Plan *)plan
 {
-    [PlanCache updatePlanState:plan];
-    [self.tableViewPlan reloadData];
+    [self showHUD];
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
+    [bquery getObjectInBackgroundWithId:plan.planid block:^(BmobObject *object,NSError *error)
+     {
+         if (error)
+         {
+             [weakSelf hideHUD];
+         }
+         else
+         {
+             if (object)
+             {
+                 [object setObject:plan.iscompleted forKey:@"isCompleted"];
+                 [object setObject:plan.completetime forKey:@"completedTime"];
+                 [object setObject:plan.remark forKey:@"remark"];
+                 [object updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
+                  {
+                      [weakSelf hideHUD];
+                      if (isSuccessful)
+                      {
+                          [NotificationCenter postNotificationName:NTFPlanSave object:nil];
+                      }
+                      else
+                      {
+                          [weakSelf alertButtonMessage:@"操作失败"];
+                      }
+                  }];
+             }
+             else
+             {
+                 [weakSelf hideHUD];
+             }
+         }
+     }];
 }
 
 //删除计划
 - (void)deletePlanWithPlan:(Plan *)plan
 {
-    BOOL result = [PlanCache deletePlan:plan];
-    if (result)
+    [self showHUD];
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
+    [bquery getObjectInBackgroundWithId:plan.planid block:^(BmobObject *object,NSError *error)
     {
-        [self alertToastMessage:STRCommonTip16];
-    }
-    else
-    {
-        [self alertButtonMessage:STRCommonTip17];
-    }
+        if (error)
+        {
+            [weakSelf hideHUD];
+        }
+        else
+        {
+            if (object)
+            {
+                [object setObject:@"1" forKey:@"isDeleted"];
+                [object updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
+                {
+                    [weakSelf hideHUD];
+                    if (isSuccessful)
+                    {
+                        [NotificationCenter postNotificationName:NTFPlanSave object:nil];
+                        [weakSelf alertToastMessage:STRCommonTip16];
+                    }
+                    else
+                    {
+                        [weakSelf alertButtonMessage:STRCommonTip17];
+                    }
+                }];
+            }
+            else
+            {
+                [weakSelf hideHUD];
+            }
+        }
+    }];
 }
 
 -(void)setCanCustomEdit:(BOOL)canCustomEdit

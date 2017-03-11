@@ -8,6 +8,7 @@
 
 #import "PlanEditViewController.h"
 #import "PlanDetailViewController.h"
+#import "LocalNotificationManager.h"
 
 @interface PlanDetailViewController () <UITextFieldDelegate, UITextViewDelegate>
 
@@ -32,12 +33,11 @@
 {
     [super viewDidLoad];
     self.title = STRViewTitle26;
-    self.view.backgroundColor = color_F2F3F5;
     
     __weak typeof(self) weakSelf = self;
     [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_Save] action:^(UIButton *sender)
      {
-         [weakSelf savePlan];
+         [weakSelf saveAction:sender];
      }];
     
     [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFPlanSave object:nil];
@@ -136,6 +136,8 @@
         self.txtViewDetail = [[UITextView alloc] initWithFrame:CGRectMake(kEdgeInset, self.yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2, txtViewHeight)];
         self.txtViewDetail.backgroundColor = [UIColor whiteColor];
         self.txtViewDetail.layer.cornerRadius = 5;
+        self.txtViewDetail.layer.borderWidth = 0.5;
+        self.txtViewDetail.layer.borderColor = color_eeeeee.CGColor;
         self.txtViewDetail.font = font_Normal_18;
         self.txtViewDetail.textColor = color_Black;
         self.txtViewDetail.text = self.plan.content;
@@ -156,6 +158,8 @@
         UITextView *txtViewRemark = [[UITextView alloc] initWithFrame:CGRectMake(kEdgeInset, self.yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2, txtViewHeight)];
         txtViewRemark.backgroundColor = [UIColor whiteColor];
         txtViewRemark.layer.cornerRadius = 5;
+        txtViewRemark.layer.borderWidth = 0.5;
+        txtViewRemark.layer.borderColor = color_eeeeee.CGColor;
         txtViewRemark.font = font_Normal_18;
         txtViewRemark.textColor = color_0BA32A;
         txtViewRemark.text = self.plan.remark;
@@ -168,6 +172,8 @@
         self.txtViewDetail = [[UITextView alloc] initWithFrame:CGRectMake(kEdgeInset, self.yOffset, WIDTH_FULL_SCREEN - kEdgeInset * 2, txtViewHeight)];
         self.txtViewDetail.backgroundColor = [UIColor whiteColor];
         self.txtViewDetail.layer.cornerRadius = 5;
+        self.txtViewDetail.layer.borderWidth = 0.5;
+        self.txtViewDetail.layer.borderColor = color_eeeeee.CGColor;
         self.txtViewDetail.font = font_Normal_18;
         self.txtViewDetail.textColor = color_Black;
         self.txtViewDetail.text = self.plan.content;
@@ -255,7 +261,7 @@
 }
 
 #pragma mark - action
-- (void)saveAction:(UIButton *)button
+- (void)saveAction:(UIButton *)sender
 {
     NSString *content = [self.txtViewDetail.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
     if (content.length == 0)
@@ -380,17 +386,99 @@
     self.plan.content = self.txtViewDetail.text;
     self.plan.beginDate = self.beginDate;
     
-    BOOL result = [PlanCache storePlan:self.plan];
+    [self showHUD];
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
+    [bquery getObjectInBackgroundWithId:self.plan.planid block:^(BmobObject *object,NSError *error)
+     {
+         if (error)
+         {
+             [weakSelf hideHUD];
+         }
+         else
+         {
+             if (object)
+             {
+                 [object setObject:self.plan.content forKey:@"content"];
+                 [object setObject:self.plan.updatetime forKey:@"updatedTime"];
+                 [object setObject:self.plan.notifytime forKey:@"notifyTime"];
+                 [object setObject:self.plan.isnotify forKey:@"isNotify"];
+                 [object setObject:self.plan.isRepeat forKey:@"isRepeat"];
+                 [object setObject:self.plan.beginDate forKey:@"beginDate"];
+
+                 [object updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
+                  {
+                      [weakSelf hideHUD];
+                      if (isSuccessful)
+                      {
+                          //更新提醒
+                          if ([self.plan.isnotify isEqualToString:@"1"]
+                              && [self.plan.iscompleted isEqualToString:@"0"])
+                          {
+                              //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
+                              self.plan.notifytime = [CommonFunction updateNotifyTime:self.plan.notifytime];
+                              
+                              [self updatePlanNotification:self.plan];
+                          }
+                          else
+                          {
+                              [self cancelPlanNotification:self.plan.planid];
+                          }
+                          [NotificationCenter postNotificationName:NTFPlanSave object:nil];
+                      }
+                      else
+                      {
+                          [weakSelf alertButtonMessage:@"操作失败"];
+                      }
+                  }];
+             }
+             else
+             {
+                 [weakSelf hideHUD];
+             }
+         }
+     }];
+}
+
+- (void)updatePlanNotification:(Plan *)plan
+{
+    //首先取消该计划的本地所有通知
+    [self cancelPlanNotification:plan.planid];
+    //重新添加新的通知
+    [self addPlanNotification:plan];
+}
+
+- (void)cancelPlanNotification:(NSString*)planid
+{
+    //取消该计划的本地所有通知
+    NSArray *array = [LocalNotificationManager getNotificationWithTag:planid type:NotificationTypePlan];
+    for (UILocalNotification *item in array)
+    {
+        [LocalNotificationManager cancelNotification:item];
+    }
+}
+
+- (void)addPlanNotification:(Plan *)plan
+{
+    //时间格式：yyyy-MM-dd HH:mm
+    NSDate *date = [CommonFunction NSStringDateToNSDate:plan.notifytime formatter:STRDateFormatterType3];
     
-    if (result)
-    {
-        [self alertToastMessage:STRCommonTip13];
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-    else
-    {
-        [self alertButtonMessage:STRCommonTip14];
-    }
+    if (!date) return;
+    
+    BmobUser *user = [BmobUser currentUser];
+    NSMutableDictionary *destDic = [NSMutableDictionary dictionary];
+    [destDic setObject:user.objectId forKey:@"account"];
+    [destDic setObject:plan.planid forKey:@"tag"];
+    [destDic setObject:@([date timeIntervalSince1970]) forKey:@"time"];
+    [destDic setObject:@(NotificationTypePlan) forKey:@"type"];
+    [destDic setObject:plan.createtime forKey:@"createtime"];
+    [destDic setObject:plan.beginDate forKey:@"beginDate"];
+    [destDic setObject:plan.iscompleted forKey:@"iscompleted"];
+    [destDic setObject:plan.completetime ?: @"" forKey:@"completetime"];
+    [destDic setObject:plan.content forKey:@"content"];
+    [destDic setObject:plan.notifytime forKey:@"notifytime"];
+    [destDic setObject:plan.remark ?:@"" forKey:@"remark"];
+    [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
 }
 
 @end
