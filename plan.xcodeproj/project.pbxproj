@@ -10,7 +10,6 @@
 		1300998A1D7D423800BEF9FC /* ThemeNewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 130099881D7D423800BEF9FC /* ThemeNewCell.m */; };
 		1300998B1D7D423800BEF9FC /* ThemeNewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 130099891D7D423800BEF9FC /* ThemeNewCell.xib */; };
 		130583D41E2B32EC0090A930 /* PlanAddViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130583C81E2B32EC0090A930 /* PlanAddViewController.m */; };
-		130583D61E2B32EC0090A930 /* PlanEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130583CC1E2B32EC0090A930 /* PlanEditViewController.m */; };
 		130583D71E2B32EC0090A930 /* PlanCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 130583CF1E2B32EC0090A930 /* PlanCell.m */; };
 		130583D81E2B32EC0090A930 /* PlanCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 130583D01E2B32EC0090A930 /* PlanCell.xib */; };
 		130583D91E2B32EC0090A930 /* PlanSectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 130583D21E2B32EC0090A930 /* PlanSectionView.m */; };
@@ -274,8 +273,6 @@
 		130099891D7D423800BEF9FC /* ThemeNewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ThemeNewCell.xib; sourceTree = "<group>"; };
 		130583C71E2B32EC0090A930 /* PlanAddViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanAddViewController.h; sourceTree = "<group>"; };
 		130583C81E2B32EC0090A930 /* PlanAddViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanAddViewController.m; sourceTree = "<group>"; };
-		130583CB1E2B32EC0090A930 /* PlanEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanEditViewController.h; sourceTree = "<group>"; };
-		130583CC1E2B32EC0090A930 /* PlanEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanEditViewController.m; sourceTree = "<group>"; };
 		130583CE1E2B32EC0090A930 /* PlanCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanCell.h; sourceTree = "<group>"; };
 		130583CF1E2B32EC0090A930 /* PlanCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanCell.m; sourceTree = "<group>"; };
 		130583D01E2B32EC0090A930 /* PlanCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlanCell.xib; sourceTree = "<group>"; };
@@ -710,8 +707,6 @@
 				130583C81E2B32EC0090A930 /* PlanAddViewController.m */,
 				130583DA1E2B486C0090A930 /* PlanDetailViewController.h */,
 				130583DB1E2B486C0090A930 /* PlanDetailViewController.m */,
-				130583CB1E2B32EC0090A930 /* PlanEditViewController.h */,
-				130583CC1E2B32EC0090A930 /* PlanEditViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1929,7 +1924,6 @@
 				131D6A8E1BFD9660009FDD72 /* ShareCenter.m in Sources */,
 				137470C41C0AE72A00B7822A /* TaskCell.m in Sources */,
 				137470931C07E66B00B7822A /* CLLockInfoView.m in Sources */,
-				130583D61E2B32EC0090A930 /* PlanEditViewController.m in Sources */,
 				137470591C04202700B7822A /* ForgotPasswordViewController.m in Sources */,
 				1310C37B1C47AD2C00A2A404 /* UserLevelViewController.m in Sources */,
 				136DF57E1BEC2F7D001D6496 /* ImageBrowser.m in Sources */,
