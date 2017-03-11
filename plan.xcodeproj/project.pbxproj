@@ -17,6 +17,8 @@
 		130583DD1E2B486C0090A930 /* PlanDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130583DB1E2B486C0090A930 /* PlanDetailViewController.m */; };
 		130583E81E2DA8800090A930 /* PopupPlanRemarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 130583E71E2DA8800090A930 /* PopupPlanRemarkView.m */; };
 		130583EB1E2DEEC00090A930 /* BaseItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 130583EA1E2DEEC00090A930 /* BaseItem.m */; };
+		130BA99A1E73A8DE009939A3 /* SingleSelectedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 130BA9991E73A8DE009939A3 /* SingleSelectedViewController.m */; };
+		130BA99D1E73AA48009939A3 /* SelectItem.m in Sources */ = {isa = PBXBuildFile; fileRef = 130BA99C1E73AA48009939A3 /* SelectItem.m */; };
 		1310C3641C46574100A2A404 /* Icon_UserLevel_9@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3631C46574100A2A404 /* Icon_UserLevel_9@2x.png */; };
 		1310C36A1C465BA100A2A404 /* Icon_UserLevel_4@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3651C465BA100A2A404 /* Icon_UserLevel_4@2x.png */; };
 		1310C36B1C465BA100A2A404 /* Icon_UserLevel_5@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3661C465BA100A2A404 /* Icon_UserLevel_5@2x.png */; };
@@ -285,6 +287,10 @@
 		130583E71E2DA8800090A930 /* PopupPlanRemarkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupPlanRemarkView.m; sourceTree = "<group>"; };
 		130583E91E2DEEC00090A930 /* BaseItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseItem.h; sourceTree = "<group>"; };
 		130583EA1E2DEEC00090A930 /* BaseItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BaseItem.m; sourceTree = "<group>"; };
+		130BA9981E73A8DE009939A3 /* SingleSelectedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleSelectedViewController.h; sourceTree = "<group>"; };
+		130BA9991E73A8DE009939A3 /* SingleSelectedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleSelectedViewController.m; sourceTree = "<group>"; };
+		130BA99B1E73AA48009939A3 /* SelectItem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SelectItem.h; sourceTree = "<group>"; };
+		130BA99C1E73AA48009939A3 /* SelectItem.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SelectItem.m; sourceTree = "<group>"; };
 		1310C3631C46574100A2A404 /* Icon_UserLevel_9@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_UserLevel_9@2x.png"; sourceTree = "<group>"; };
 		1310C3651C465BA100A2A404 /* Icon_UserLevel_4@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_UserLevel_4@2x.png"; sourceTree = "<group>"; };
 		1310C3661C465BA100A2A404 /* Icon_UserLevel_5@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_UserLevel_5@2x.png"; sourceTree = "<group>"; };
@@ -1050,6 +1056,8 @@
 				137470CA1C0AEB0300B7822A /* TaskRecord.m */,
 				136DF22C1D5EBF2D00CFB8FF /* TaskStatistics.h */,
 				136DF22D1D5EBF2D00CFB8FF /* TaskStatistics.m */,
+				130BA99B1E73AA48009939A3 /* SelectItem.h */,
+				130BA99C1E73AA48009939A3 /* SelectItem.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1518,6 +1526,8 @@
 				13A6ACCC1BC6A82C005A02F9 /* FullScreenImageViewController.m */,
 				13AF64BC1C22E64E008E8A9E /* WebViewController.h */,
 				13AF64BD1C22E64E008E8A9E /* WebViewController.m */,
+				130BA9981E73A8DE009939A3 /* SingleSelectedViewController.h */,
+				130BA9991E73A8DE009939A3 /* SingleSelectedViewController.m */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1951,6 +1961,7 @@
 				135B21E01B9136A4005CE84A /* PlanCache.m in Sources */,
 				130583EB1E2DEEC00090A930 /* BaseItem.m in Sources */,
 				137470901C07E66B00B7822A /* CALayer+Anim.m in Sources */,
+				130BA99D1E73AA48009939A3 /* SelectItem.m in Sources */,
 				13D135CE1C577D9200E97D5F /* KxMenu.m in Sources */,
 				137470CB1C0AEB0300B7822A /* TaskRecord.m in Sources */,
 				131D6AC71C00AEB0009FDD72 /* UINavigationController+Util.m in Sources */,
@@ -1970,6 +1981,7 @@
 				137470961C07E66B00B7822A /* CLLockMainView.m in Sources */,
 				136E6FC91D4894BB00E0E9B5 /* PostsOneImageCell.m in Sources */,
 				137700DB1B952EE5008C83FD /* MoreViewController.m in Sources */,
+				130BA99A1E73A8DE009939A3 /* SingleSelectedViewController.m in Sources */,
 				1374704F1C03ED1200B7822A /* RegisterViewController.m in Sources */,
 				13D1AD771C3F411F007734F6 /* GrowingTextView.m in Sources */,
 				13F6708B1CC07E7B009D2BA9 /* PersonalCenterNewCell0.m in Sources */,

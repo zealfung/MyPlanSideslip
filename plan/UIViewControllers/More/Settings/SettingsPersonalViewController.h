@@ -6,8 +6,8 @@
 //  Copyright © 2016年 Fengzy. All rights reserved.
 //
 
-#import "FatherViewController.h"
+#import "FatherTableViewController.h"
 
-@interface SettingsPersonalViewController : FatherViewController
+@interface SettingsPersonalViewController : FatherTableViewController
 
 @end

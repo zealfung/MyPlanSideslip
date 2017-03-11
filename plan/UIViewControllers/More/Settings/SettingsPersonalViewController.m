@@ -6,525 +6,350 @@
 //  Copyright © 2016年 Fengzy. All rights reserved.
 //
 
-#import "LogIn.h"
 #import "CLLockVC.h"
 #import "PlanCache.h"
-#import "DataCenter.h"
-#import "ThreeSubView.h"
+#import "SelectItem.h"
 #import <BmobSDK/BmobUser.h>
+#import <BmobSDK/BmobFile.h>
 #import <ShareSDK/ShareSDK.h>
-#import "LogInViewController.h"
+#import "SingleSelectedViewController.h"
 #import "ChangePasswordViewController.h"
 #import "SettingsSetTextViewController.h"
 #import "SettingsPersonalViewController.h"
 
 NSString *const kEdgeWhiteSpace = @"  ";
 
-@interface SettingsPersonalViewController () <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate> {
-    
-    UIScrollView *scrollView;
-    UIImageView *avatarView;
-    ThreeSubView *nickThreeSubView;
-    ThreeSubView *signatureThreeSubView;
-    ThreeSubView *genderThreeSubView;
-    ThreeSubView *birthThreeSubView;
-    ThreeSubView *lifeThreeSubView;
-    ThreeSubView *emailThreeSubView;
-    ThreeSubView *changePasswordThreeSubView;
-    UIDatePicker *datePicker;
-    
-    UITextField *txtEmail;
-    UITextField *txtPwd;
-}
+@interface SettingsPersonalViewController () <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+
+@property (nonatomic, strong) UIDatePicker *datePicker;
+@property (nonatomic, strong) BmobObject *userSettingsObj;
+@property (nonatomic, strong) NSArray *arrayGender;
 
 @end
 
 @implementation SettingsPersonalViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = STRViewTitle17;
+
+    [self initTableView];
     
-    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFLogIn object:nil];
-    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFSettingsSave object:nil];
+//    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFLogIn object:nil];
+//    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFSettingsSave object:nil];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
-    if (!scrollView) {
-        
-        scrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-        scrollView.showsHorizontalScrollIndicator = NO;
-        scrollView.showsVerticalScrollIndicator = NO;
-        [self.view addSubview:scrollView];
-        
-        [self loadCustomView];
-    }
 }
 
-- (void)createNavBarButton {
-    if ([LogIn isLogin]) {
-        self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Sync selectedImageName:png_Btn_Sync selector:@selector(syncDataAction)];
-    } else {
-        self.rightBarButtonItem = nil;
-    }
+- (void)initTableView
+{
+    self.tableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, HEIGHT_FULL_VIEW) style:UITableViewStyleGrouped];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.tableView.showsVerticalScrollIndicator = NO;
+    self.tableView.tableFooterView = [[UIView alloc] init];
+    
+    SelectItem *itemMale = [[SelectItem alloc] init];
+    itemMale.itemName = @"男";
+    itemMale.itemValue = @"1";
+    SelectItem *itemFemale = [[SelectItem alloc] init];
+    itemFemale.itemName = @"女";
+    itemFemale.itemValue = @"0";
+    self.arrayGender = [NSArray arrayWithObjects:itemMale, itemFemale, nil];
 }
 
-- (void)loadCustomView {
-    [self createNavBarButton];
-    [scrollView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
-    [self showHUD];
-    
-    CGFloat yOffset = kEdgeInset;
-    
-    if([LogIn isLogin]) {
-        ThreeSubView *view = [self getAccountView];
-        [scrollView addSubview:view];
-        [self configBorderForView:view];
-        
-        CGRect frame = view.frame;
-        frame.origin.x = kEdgeInset;
-        frame.origin.y = yOffset;
-        view.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame) + kEdgeInset;
-    }
-    
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 4;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 2 || section == 3)
     {
-        UIView *view = [self createSectionTwoView];
-        [scrollView addSubview:view];
-        
-        CGRect frame = view.frame;
-        frame.origin.y = yOffset;
-        view.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame) + kEdgeInset;
+        return 1;
     }
-    
+    else if (section == 0)
     {
-        UIView *view = [self createSectionThreeView];
-        [scrollView addSubview:view];
-        
-        CGRect frame = view.frame;
-        frame.origin.y = yOffset;
-        view.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame) + kEdgeInset;
+        return 2;
     }
-    
-    if([LogIn isLogin]) {
-        UIButton *button = [self createExitButton];
-        
-        CGRect frame = CGRectZero;
-        frame.origin.x = kEdgeInset;
-        frame.origin.y = yOffset;
-        frame.size.width = CGRectGetWidth(scrollView.frame) - kEdgeInset * 2;
-        frame.size.height = kTableViewCellHeight;
-        button.frame = frame;
-        [scrollView addSubview:button];
-        
-        yOffset = CGRectGetMaxY(frame) + kTableViewCellHeight;
-        
-    } else {
-        
-        UIButton *button = [self createLogInButton];
-        
-        CGRect frame = CGRectZero;
-        frame.origin.x = kEdgeInset;
-        frame.origin.y = yOffset;
-        frame.size.width = CGRectGetWidth(scrollView.frame) - kEdgeInset * 2;
-        frame.size.height = kTableViewCellHeight;
-        button.frame = frame;
-        [scrollView addSubview:button];
-        
-        yOffset = CGRectGetMaxY(frame) + kTableViewCellHeight;
+    else if (section == 1)
+    {
+        return 6;
     }
-    scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, yOffset);
-    
-    [self hideHUD];
+    else
+    {
+        return 0;
+    }
 }
 
-- (ThreeSubView *)getAccountView {
-    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock:nil rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRViewTips70]];
-    threeSubView.fixRightWidth = kEdgeInset;
-    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
-    BmobUser *user = [BmobUser currentUser];
-    NSString *email = [user objectForKey:@"username"];
-    NSRange range = [email rangeOfString:@"@"];
-    if (range.location != NSNotFound) {
-        NSString *replaceString = @"*";
-        for (NSInteger i = 1; i < range.location - 1; i++) {
-            replaceString = [replaceString stringByAppendingString:@"*"];
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 60.f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 15.f;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 0.01f;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIdentifier = @"UITableViewCell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
+    if (cell == nil)
+    {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
+        cell.accessoryType = UITableViewCellAccessoryNone;
+    }
+    
+    switch (indexPath.section)
+    {
+        case 0:
+        {
+            cell.accessoryType = UITableViewCellAccessoryNone;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            switch (indexPath.row)
+            {
+                case 0:
+                {
+                    cell.textLabel.text = @"账号";
+                    BmobUser *user = [BmobUser currentUser];
+                    NSString *email = [user objectForKey:@"username"];
+                    NSRange range = [email rangeOfString:@"@"];
+                    if (range.location != NSNotFound) {
+                        NSString *replaceString = @"*";
+                        for (NSInteger i = 1; i < range.location - 1; i++) {
+                            replaceString = [replaceString stringByAppendingString:@"*"];
+                        }
+                        email = [email stringByReplacingCharactersInRange:NSMakeRange(1, range.location - 1) withString:replaceString];
+                    }
+                    cell.detailTextLabel.text = email;
+                }
+                    break;
+                case 1:
+                {
+                    cell.textLabel.text = @"编号";
+                    BmobUser *user = [BmobUser currentUser];
+                    cell.detailTextLabel.text = user.objectId;
+                }
+                    break;
+                default:
+                    break;
+            }
         }
-        email = [email stringByReplacingCharactersInRange:NSMakeRange(1, range.location - 1) withString:replaceString];
-    }
-    [threeSubView.centerButton setAllTitle:email];
-    [threeSubView autoLayout];
-    return threeSubView;
-}
+            break;
+        case 1:
+        {
+            switch (indexPath.row)
+            {
+                case 0:
+                {
+                    cell.accessoryType = UITableViewCellAccessoryNone;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.textLabel.text = @"头像";
+                    
+                    UIImage *avatarImage = [UIImage imageNamed:png_AvatarDefault];
+                    if ([Config shareInstance].settings.avatar)
+                    {
+                        avatarImage = [UIImage imageWithData:[Config shareInstance].settings.avatar];
+                    }
+                    NSUInteger yDistance = 6;
+                    CGFloat avatarSize = 60 - yDistance;
+                    UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - kEdgeInset - avatarSize, yDistance/2, avatarSize, avatarSize)];
+                    avatar.image = avatarImage;
+                    avatar.clipsToBounds = YES;
+                    avatar.layer.borderWidth = 0.5;
+                    avatar.userInteractionEnabled = YES;
+                    avatar.layer.cornerRadius = avatarSize / 2;
+                    avatar.backgroundColor = [UIColor clearColor];
+                    avatar.layer.borderColor = [color_dedede CGColor];
+                    avatar.contentMode = UIViewContentModeScaleAspectFit;
 
-- (UIView *)createSectionTwoView {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(kEdgeInset, 0, [self contentWidth], 0)];
-    view.backgroundColor = [UIColor whiteColor];
-    
-    NSUInteger yOffset = 0;
-    {
-        ThreeSubView *threeSubView = [self createAvatarView];
-        [self addSeparatorForView:threeSubView];
-        [view addSubview:threeSubView];
-        
-        CGRect frame = threeSubView.frame;
-        frame.origin.y = yOffset;
-        threeSubView.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame);
-    }
-    {
-        ThreeSubView *threeSubView = [self createNickNameView];
-        [self addSeparatorForView:threeSubView];
-        [view addSubview:threeSubView];
-        
-        CGRect frame = threeSubView.frame;
-        frame.origin.y = yOffset;
-        threeSubView.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame);
-    }
-    {
-        ThreeSubView *threeSubView = [self createGenderView];
-        [self addSeparatorForView:threeSubView];
-        [view addSubview:threeSubView];
-        
-        CGRect frame = threeSubView.frame;
-        frame.origin.y = yOffset;
-        threeSubView.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame);
-    }
-    {
-        ThreeSubView *threeSubView = [self createBirthdayView];
-        [self addSeparatorForView:threeSubView];
-        [view addSubview:threeSubView];
-        
-        CGRect frame = threeSubView.frame;
-        frame.origin.y = yOffset;
-        threeSubView.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame);
-    }
-    {
-        ThreeSubView *threeSubView = [self createLifespanView];
-        [self addSeparatorForView:threeSubView];
-        [view addSubview:threeSubView];
-        
-        CGRect frame = threeSubView.frame;
-        frame.origin.y = yOffset;
-        threeSubView.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame);
-    }
-    {
-        ThreeSubView *threeSubView = [self createSignatureView];
-        [view addSubview:threeSubView];
-        
-        CGRect frame = threeSubView.frame;
-        frame.origin.y = yOffset;
-        threeSubView.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame);
-    }
-    
-    CGRect frame = view.frame;
-    frame.size.height = yOffset;
-    view.frame = frame;
-    
-    [self configBorderForView:view];
-    return view;
-}
-
-- (UIView *)createSectionThreeView {
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(kEdgeInset, 0, [self contentWidth], 0)];
-    view.backgroundColor = [UIColor whiteColor];
-    
-    NSUInteger yOffset = 0;
-    if ([LogIn isLogin]) {
-        ThreeSubView *threeSubView = [self createChangePassword];
-        [self addSeparatorForView:threeSubView];
-        [view addSubview:threeSubView];
-        
-        CGRect frame = threeSubView.frame;
-        frame.origin.y = yOffset;
-        threeSubView.frame = frame;
-        
-        yOffset = CGRectGetMaxY(frame);
-    }
-    
-    CGRect frame = view.frame;
-    frame.size.height = yOffset;
-    view.frame = frame;
-    
-    [self configBorderForView:view];
-    return view;
-}
-
-- (ThreeSubView *)createAvatarView {
-    __weak typeof(self) weakSelf = self;
-    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
-        [weakSelf setAvatar];
-    } rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRViewTips71]];
-    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth;
-    [threeSubView autoLayout];
-    
-    UIImage *avatarImage = [UIImage imageNamed:png_AvatarDefault];
-    if ([Config shareInstance].settings.avatar) {
-        avatarImage = [UIImage imageWithData:[Config shareInstance].settings.avatar];
-    }
-    NSUInteger yDistance = 2;
-    CGFloat avatarSize = kTableViewCellHeight - yDistance;
-    UIImageView *avatar = [[UIImageView alloc] initWithFrame:CGRectMake(CGRectGetWidth(threeSubView.centerButton.bounds) - kEdgeInset - avatarSize, yDistance, avatarSize, avatarSize)];
-    avatar.image = avatarImage;
-    avatar.clipsToBounds = YES;
-    avatar.layer.borderWidth = 1;
-    avatar.userInteractionEnabled = YES;
-    avatar.layer.cornerRadius = avatarSize / 2;
-    avatar.backgroundColor = [UIColor clearColor];
-    avatar.layer.borderColor = [color_dedede CGColor];
-    avatar.contentMode = UIViewContentModeScaleAspectFit;
-    UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(setAvatar)];
-    [avatar addGestureRecognizer:singleTap];
-
-    [threeSubView.centerButton addSubview:avatar];
-    
-    avatarView = avatar;
-    return threeSubView;
-}
-
-- (ThreeSubView *)createNickNameView {
-    __weak typeof(self) weakSelf = self;
-    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
-        [weakSelf toSetNickNameViewController];
-    } rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRCommonTip12]];
-    threeSubView.fixRightWidth = kEdgeInset;
-    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
-    
-    NSString *userNickName = [Config shareInstance].settings.nickname;
-    if (userNickName.length == 0) {
-        userNickName = STRViewTips72;
-    }
-    [threeSubView.centerButton setAllTitle:userNickName];
-    [threeSubView autoLayout];
-    
-    nickThreeSubView = threeSubView;
-    return threeSubView;
-}
-
-- (ThreeSubView *)createGenderView {
-    __weak typeof(self) weakSelf = self;
-    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
-        [weakSelf setMale];
-    } rightBlock: ^{
-        [weakSelf setFemale];
-    }];
-    
-    threeSubView.fixCenterWidth = 55;
-    [threeSubView.centerButton setImage:[UIImage imageNamed:png_Icon_Gender_M_Normal] forState:UIControlStateNormal];
-    [threeSubView.centerButton setImage:[UIImage imageNamed:png_Icon_Gender_M_Selected] forState:UIControlStateSelected];
-    [threeSubView.centerButton setAllTitle:STRViewTips76];
-    
-    threeSubView.fixRightWidth = 55;
-    [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Gender_F_Normal] forState:UIControlStateNormal];
-    [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Gender_F_Selected] forState:UIControlStateSelected];
-    [threeSubView.rightButton setAllTitle:STRViewTips77];
-    
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRViewTips75]];
-    threeSubView.fixLeftWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixCenterWidth;
-    
-    threeSubView.centerButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    
-    NSString *gender = [Config shareInstance].settings.gender;
-    if (gender) {
-        if ([gender intValue] == 0) {
-            
-            threeSubView.rightButton.selected = YES;
-            
-        } else if ([gender intValue] == 1) {
-            
-            threeSubView.centerButton.selected = YES;
+                    [cell addSubview:avatar];
+                }
+                    break;
+                case 1:
+                {
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.textLabel.text = @"昵称";
+                    NSString *nickName = [Config shareInstance].settings.nickname;
+                    if (nickName.length == 0) {
+                        nickName = STRViewTips72;
+                    }
+                    cell.detailTextLabel.text = nickName;
+                }
+                    break;
+                case 2:
+                {
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.textLabel.text = @"性别";
+                    NSString *genderType = [Config shareInstance].settings.gender;
+                    NSString *genderString = @"未设置";
+                    if (genderType)
+                    {
+                        for (SelectItem *item in self.arrayGender)
+                        {
+                            if ([genderType isEqualToString:item.itemValue])
+                            {
+                                genderString = item.itemName;
+                            }
+                        }
+                    }
+                    cell.detailTextLabel.text = genderString;
+                }
+                    break;
+                case 3:
+                {
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.textLabel.text = @"生日";
+                    NSString *birthday = [Config shareInstance].settings.birthday;
+                    if (birthday.length == 0)
+                    {
+                        birthday = STRViewTips79;
+                    }
+                    cell.detailTextLabel.text = birthday;
+                }
+                    break;
+                case 4:
+                {
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.textLabel.text = @"岁数";
+                    NSString *lifespan = [Config shareInstance].settings.lifespan;
+                    if (lifespan.length == 0)
+                    {
+                        lifespan = STRViewTips81;
+                    }
+                    cell.detailTextLabel.text = lifespan;
+                }
+                    break;
+                case 5:
+                {
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.textLabel.text = @"签名";
+                    NSString *signature = [Config shareInstance].settings.signature;
+                    if (signature.length == 0)
+                    {
+                        signature = STRViewTips74;
+                    }
+                    cell.detailTextLabel.text = signature;
+                }
+                    break;
+                default:
+                    break;
+            }
         }
+            break;
+        case 2:
+        {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.selectionStyle = UITableViewCellSelectionStyleBlue;
+            cell.textLabel.text = @"修改密码";
+        }
+            break;
+        case 3:
+        {
+            UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+            button.backgroundColor = [UIColor redColor];
+            button.titleLabel.font = font_Bold_18;
+            button.clipsToBounds = YES;
+            [button setAllTitle:STRViewTips84];
+            [button addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
+            
+            CGRect frame = CGRectZero;
+            frame.origin.x = 0;
+            frame.origin.y = 0;
+            frame.size.width = WIDTH_FULL_SCREEN;
+            frame.size.height = 60;
+            button.frame = frame;
+            
+            [cell.contentView addSubview:button];
+        }
+            break;
+        default:
+            break;
     }
-    [threeSubView autoLayout];
-    genderThreeSubView = threeSubView;
-    return threeSubView;
+    return cell;
+    
 }
 
-- (ThreeSubView *)createBirthdayView {
-    __weak typeof(self) weakSelf = self;
-    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
-        [weakSelf setBirthday];
-    } rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRViewTips78]];
-    threeSubView.fixRightWidth = kEdgeInset;
-    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
-    
-    NSString *birthday = [Config shareInstance].settings.birthday;
-    if (birthday.length == 0) {
-        birthday = STRViewTips79;
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
+    switch (indexPath.section)
+    {
+        case 1:
+        {
+            switch (indexPath.row)
+            {
+                case 0://头像
+                {
+                    [self setAvatar];
+                }
+                    break;
+                case 1://昵称
+                {
+                    [self toSetNickNameViewController];
+                }
+                    break;
+                case 2://性别
+                {
+                    [self toSetGenderViewController];
+                }
+                    break;
+                case 3://生日
+                {
+                    [self setBirthday];
+                }
+                    break;
+                case 4://岁数
+                {
+                    [self toSetLifeViewController];
+                }
+                    break;
+                case 5://签名
+                {
+                    [self toSetSignatureViewController];
+                }
+                    break;
+                default:
+                    break;
+            }
+        }
+            break;
+        case 2:
+        {
+            [self toChangePasswordViewController];
+        }
+            break;
+        default:
+            break;
     }
-    [threeSubView.centerButton setAllTitle:birthday];
-    [threeSubView autoLayout];
-    birthThreeSubView = threeSubView;
-    return threeSubView;
 }
 
-- (ThreeSubView *)createLifespanView {
-    __weak typeof(self) weakSelf = self;
-    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
-        [weakSelf toSetLifeViewController];
-    } rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRViewTips80]];
-    threeSubView.fixRightWidth = kEdgeInset;
-    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
-    
-    NSString *lifetime = [Config shareInstance].settings.lifespan;
-    if (lifetime.length == 0) {
-        lifetime = STRViewTips81;
-    }
-    [threeSubView.centerButton setAllTitle:lifetime];
-    [threeSubView autoLayout];
-    lifeThreeSubView = threeSubView;
-    return threeSubView;
-}
-
-- (ThreeSubView *)createSignatureView {
-    __weak typeof(self) weakSelf = self;
-    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
-        [weakSelf toSetSignatureViewController];
-    } rightBlock:nil];
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRViewTips73]];
-    threeSubView.fixRightWidth = kEdgeInset;
-    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixLeftWidth - threeSubView.fixRightWidth;
-    
-    NSString *signature = [Config shareInstance].settings.signature;
-    if (signature.length == 0) {
-        signature = STRViewTips74;
-    }
-    [threeSubView.centerButton setAllTitle:signature];
-    [threeSubView autoLayout];
-    
-    signatureThreeSubView = threeSubView;
-    return threeSubView;
-}
-
-- (ThreeSubView *)createChangePassword {
-    __weak typeof(self) weakSelf = self;
-    ThreeSubView *threeSubView = [self getThreeSubViewForCenterBlock: ^{
-        [weakSelf toChangePasswordViewController];
-    } rightBlock: ^{
-        [weakSelf toChangePasswordViewController];
-    }];
-    
-    threeSubView.fixRightWidth = 55;
-    [threeSubView.rightButton setImage:[UIImage imageNamed:png_Icon_Arrow_Right] forState:UIControlStateNormal];
-    
-    [threeSubView.leftButton setAllTitle:[self addLeftWhiteSpaceForString:STRViewTips85]];
-    threeSubView.fixCenterWidth = [self contentWidth] - threeSubView.fixRightWidth - threeSubView.fixLeftWidth;
-    threeSubView.rightButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentCenter;
-    
-    [threeSubView autoLayout];
-    changePasswordThreeSubView = threeSubView;
-    return threeSubView;
-}
-
-- (UIButton *)createLogInButton {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.backgroundColor = color_0BA32A;
-    button.titleLabel.font = font_Bold_18;
-    button.layer.cornerRadius = 5;
-    button.clipsToBounds = YES;
-    [button setAllTitle:STRViewTitle25];
-    [button addTarget:self action:@selector(logInAction) forControlEvents:UIControlEventTouchUpInside];
-    return button;
-}
-
-- (UIButton *)createExitButton {
-    UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-    button.backgroundColor = [UIColor redColor];
-    button.titleLabel.font = font_Bold_18;
-    button.layer.cornerRadius = 5;
-    button.clipsToBounds = YES;
-    [button setAllTitle:STRViewTips84];
-    [button addTarget:self action:@selector(exitAction) forControlEvents:UIControlEventTouchUpInside];
-    return button;
-}
-
-- (ThreeSubView *)getThreeSubViewForCenterBlock:(ButtonSelectBlock)centerBlock rightBlock:(ButtonSelectBlock)rightBlock {
-    CGRect frame = CGRectZero;
-    frame.size = [self cellSize];
-    
-    ThreeSubView *threeSubView = [[ThreeSubView alloc] initWithFrame:frame leftButtonSelectBlock:nil centerButtonSelectBlock:centerBlock rightButtonSelectBlock:rightBlock];
-    
-    threeSubView.backgroundColor = [UIColor clearColor];
-    
-    threeSubView.fixLeftWidth = 100;
-    threeSubView.leftButton.titleLabel.font = font_Normal_14;
-    threeSubView.centerButton.titleLabel.font = font_Normal_16;
-    threeSubView.rightButton.titleLabel.font = font_Normal_16;
-    
-    [threeSubView.leftButton setAllTitleColor:color_GrayDark];
-    [threeSubView.centerButton setAllTitleColor:color_GrayDark];
-    [threeSubView.rightButton setAllTitleColor:color_GrayDark];
-    
-    [threeSubView.leftButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
-    [threeSubView.centerButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
-    [threeSubView.rightButton setContentHorizontalAlignment:UIControlContentHorizontalAlignmentRight];
-    return threeSubView;
-}
-
-- (void)configBorderForView:(UIView *)view {
-    view.layer.borderWidth = 1;
-    view.layer.borderColor = [color_GrayLight CGColor];
-    view.layer.cornerRadius = 2;
-}
-
-- (void)addSeparatorForView:(UIView *)view {
-    UIView *separator = [[UIView alloc] initWithFrame:CGRectMake(0, CGRectGetHeight(view.bounds) - 1, CGRectGetWidth(view.bounds) - 1, 1)];
-    separator.backgroundColor = color_GrayLight;
-    [view addSubview:separator];
-}
-
-- (NSUInteger)contentWidth {
-    static NSUInteger contentWidth = 0;
-    if (contentWidth == 0) {
-        contentWidth = CGRectGetWidth(scrollView.bounds) - kEdgeInset * 2;
-    }
-    return contentWidth;
-}
-
-- (CGSize)cellSize {
-    static CGSize cellSize = {0, 0};
-    if (CGSizeEqualToSize(cellSize, CGSizeZero)) {
-        cellSize = CGSizeMake([self contentWidth], kTableViewCellHeight);
-    }
-    return cellSize;
-}
-
-- (NSString *)addLeftWhiteSpaceForString:(NSString *)string {
-    
-    return [NSString stringWithFormat:@"%@%@", kEdgeWhiteSpace, string];
-}
-
-- (void)setAvatar {
-    
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-        
+- (void)setAvatar
+{
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:STRViewTips82
                                                                  delegate:self
                                                         cancelButtonTitle:STRCommonTip28
@@ -532,8 +357,9 @@ NSString *const kEdgeWhiteSpace = @"  ";
                                                         otherButtonTitles:STRCommonTip46, STRCommonTip45, nil];
         [actionSheet showInView:self.view];
         
-    } else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        
+    }
+    else if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+    {
         UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:STRViewTips83
                                                                  delegate:self
                                                         cancelButtonTitle:STRCommonTip28
@@ -541,157 +367,217 @@ NSString *const kEdgeWhiteSpace = @"  ";
                                                         otherButtonTitles:STRCommonTip45, nil];
         [actionSheet showInView:self.view];
         
-    } else {
+    }
+    else
+    {
         //不支持相片选取
     }
 }
 
-- (void)toSetNickNameViewController {
+- (void)toSetNickNameViewController
+{
     __weak typeof(self) weakSelf = self;
     SettingsSetTextViewController *controller = [[SettingsSetTextViewController alloc] init];
     controller.title = STRSettingsViewTips18;
     controller.textFieldPlaceholder = STRSettingsViewTips19;
     controller.setType = SetNickName;
-    controller.finishedBlock = ^(NSString *text) {
-        
+    controller.finishedBlock = ^(NSString *text)
+    {
         text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
-        if (text.length > 10) {
+        if (text.length > 10)
+        {
             [weakSelf alertButtonMessage:STRSettingsViewTips20];
             return;
         }
-        
-        if (text.length == 0) {
+        if (text.length == 0)
+        {
             [weakSelf alertButtonMessage:STRSettingsViewTips19];
             return;
         }
-        
-        [Config shareInstance].settings.nickname = text;
-        [PlanCache storePersonalSettings:[Config shareInstance].settings];
-        
-        [nickThreeSubView.centerButton setAllTitle:text];
-        [self alertToastMessage:STRCommonTip13];
-        [weakSelf.navigationController popViewControllerAnimated:YES];
+
+        BmobUser *user = [BmobUser currentUser];
+        [weakSelf showHUD];
+        BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+        [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+         {
+             [weakSelf hideHUD];
+             if (!error)
+             {
+                 if (array.count)
+                 {
+                     BmobObject *obj1 = array[0];
+                     [obj1 setObject:text forKey:@"nickName"];
+                     [obj1 updateInBackground];
+                     
+                     [Config shareInstance].settings.nickname = text;
+                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                     [weakSelf alertToastMessage:STRCommonTip13];
+                     [weakSelf.navigationController popViewControllerAnimated:YES];
+                     [weakSelf.tableView reloadData];
+                 }
+             }
+             else
+             {
+                 [AlertCenter alertToastMessage:@"更新昵称失败"];
+             }
+         }];
     };
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)toSetSignatureViewController {
+- (void)toSetGenderViewController
+{
+    __weak typeof(self) weakSelf = self;
+    SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
+    controller.viewTitle = @"设置性别";
+    controller.arrayData = self.arrayGender;
+    controller.selectedValue = [Config shareInstance].settings.gender;
+    controller.SelectedDelegate = ^(NSString *selectedValue)
+    {
+        BmobUser *user = [BmobUser currentUser];
+        [weakSelf showHUD];
+        BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+        [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+         {
+             [weakSelf hideHUD];
+             if (!error)
+             {
+                 if (array.count)
+                 {
+                     BmobObject *obj1 = array[0];
+                     [obj1 setObject:selectedValue forKey:@"gender"];
+                     [obj1 updateInBackground];
+                     
+                     [Config shareInstance].settings.gender = selectedValue;
+                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                     [weakSelf alertToastMessage:STRCommonTip13];
+                     [weakSelf.navigationController popViewControllerAnimated:YES];
+                     [weakSelf.tableView reloadData];
+                 }
+             }
+             else
+             {
+                 [AlertCenter alertToastMessage:@"更新性别失败"];
+             }
+         }];
+    };
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)toSetSignatureViewController
+{
     __weak typeof(self) weakSelf = self;
     SettingsSetTextViewController *controller = [[SettingsSetTextViewController alloc] init];
     controller.title = STRSettingsViewTips21;
     controller.textFieldPlaceholder = STRSettingsViewTips22;
     controller.setType = SetNickName;
-    controller.finishedBlock = ^(NSString *text) {
-        
+    controller.finishedBlock = ^(NSString *text)
+    {
         text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
-        if (text.length == 0) {
+        if (text.length == 0)
+        {
             [weakSelf alertButtonMessage:STRSettingsViewTips22];
             return;
         }
-        
-        [Config shareInstance].settings.signature = text;
-        [PlanCache storePersonalSettings:[Config shareInstance].settings];
-        
-        [signatureThreeSubView.centerButton setAllTitle:text];
-        [self alertToastMessage:STRCommonTip13];
-        [weakSelf.navigationController popViewControllerAnimated:YES];
+ 
+        BmobUser *user = [BmobUser currentUser];
+
+        [weakSelf showHUD];
+        BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+        [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+         {
+             [weakSelf hideHUD];
+             if (!error)
+             {
+                 if (array.count)
+                 {
+                     BmobObject *obj1 = array[0];
+                     [obj1 setObject:text forKey:@"signature"];
+                     [obj1 updateInBackground];
+                     
+                     [Config shareInstance].settings.signature = text;
+                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                     [weakSelf alertToastMessage:STRCommonTip13];
+                     [weakSelf.navigationController popViewControllerAnimated:YES];
+                     [weakSelf.tableView reloadData];
+                 }
+             }
+             else
+             {
+                 [AlertCenter alertToastMessage:@"更新签名失败"];
+             }
+         }];
     };
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)toSetLifeViewController {
+- (void)toSetLifeViewController
+{
     __weak typeof(self) weakSelf = self;
     SettingsSetTextViewController *controller = [[SettingsSetTextViewController alloc] init];
     controller.title = STRSettingsViewTips23;
     controller.textFieldPlaceholder = STRSettingsViewTips24;
     controller.setType = SetLife;
-    controller.finishedBlock = ^(NSString *text) {
-        
+    controller.finishedBlock = ^(NSString *text)
+    {
         text = [text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         
-        if (text.length == 0) {
+        if (text.length == 0)
+        {
             [weakSelf alertButtonMessage:STRSettingsViewTips25];
             return;
         }
         
-        if ([text intValue]> 130) {
+        if ([text intValue]> 130)
+        {
             [weakSelf alertButtonMessage:STRSettingsViewTips26];
             return;
         }
-        
-        [Config shareInstance].settings.lifespan = text;
-        [PlanCache storePersonalSettings:[Config shareInstance].settings];
-        
-        [lifeThreeSubView.centerButton setAllTitle:text];
-        [self alertToastMessage:STRCommonTip13];
-        [weakSelf.navigationController popViewControllerAnimated:YES];
+
+        BmobUser *user = [BmobUser currentUser];
+        [weakSelf showHUD];
+        BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+        [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+         {
+             [weakSelf hideHUD];
+             if (!error)
+             {
+                 if (array.count)
+                 {
+                     BmobObject *obj1 = array[0];
+                     [obj1 setObject:text forKey:@"lifespan"];
+                     [obj1 updateInBackground];
+                     
+                     [Config shareInstance].settings.lifespan = text;
+                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                     [weakSelf alertToastMessage:STRCommonTip13];
+                     [weakSelf.navigationController popViewControllerAnimated:YES];
+                     [weakSelf.tableView reloadData];
+                 }
+             }
+             else
+             {
+                 [AlertCenter alertToastMessage:@"更新岁数失败"];
+             }
+         }];
     };
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)toGestureLockViewController {
-    __weak typeof(self) weakSelf = self;
-    BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
-    if (hasPwd) {
-        //关闭手势解锁
-        [CLLockVC showVerifyLockVCInVC:self isLogIn:NO forgetPwdBlock:^{
-            
-            LogInViewController *controller = [[LogInViewController alloc] init];
-            [self.navigationController pushViewController:controller animated:YES];
-            
-        } successBlock:^(CLLockVC *lockVC, NSString *pwd) {
-            
-            [Config shareInstance].settings.isUseGestureLock = @"0";
-            [Config shareInstance].settings.gesturePasswod = @"";
-            [PlanCache storePersonalSettings:[Config shareInstance].settings];
-            [lockVC dismiss:.5f];
-        }];
-        
-    } else {
-        
-        //打开手势解锁
-        [CLLockVC showSettingLockVCInVC:self successBlock:^(CLLockVC *lockVC, NSString *pwd) {
-            
-            [weakSelf alertToastMessage:STRSettingsViewTips11];
-            [lockVC dismiss:.5f];
-        }];
-    }
-}
-
-- (void)toChangePasswordViewController {
+- (void)toChangePasswordViewController
+{
     ChangePasswordViewController *controller = [[ChangePasswordViewController alloc] init];
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)toChangeGestureViewController {
-    __weak typeof(self) weakSelf = self;
-    BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
-    if (hasPwd) {
-        [CLLockVC showModifyLockVCInVC:self successBlock:^(CLLockVC *lockVC, NSString *pwd) {
-            
-            [weakSelf alertToastMessage:STRCommonTip15];
-            [lockVC dismiss:.5f];
-        }];
-    }
-}
-
-- (void)setMale {
-    genderThreeSubView.centerButton.selected = YES;
-    genderThreeSubView.rightButton.selected = NO;
-    [Config shareInstance].settings.gender = @"1";
-    [PlanCache storePersonalSettings:[Config shareInstance].settings];
-}
-
-- (void)setFemale {
-    genderThreeSubView.centerButton.selected = NO;
-    genderThreeSubView.rightButton.selected = YES;
-    [Config shareInstance].settings.gender = @"0";
-    [PlanCache storePersonalSettings:[Config shareInstance].settings];
-}
-
-- (void)setBirthday {
+- (void)setBirthday
+{
     UIView *pickerView = [[UIView alloc] initWithFrame:self.view.bounds];
     pickerView.backgroundColor = [UIColor clearColor];
     
@@ -727,22 +613,26 @@ NSString *const kEdgeWhiteSpace = @"  ";
         
         picker.minimumDate = minDate;
         [pickerView addSubview:picker];
-        datePicker = picker;
+        self.datePicker = picker;
         
         NSString *birthday = [Config shareInstance].settings.birthday;
         
-        if (birthday) {
+        if (birthday)
+        {
             NSDate *date = [CommonFunction NSStringDateToNSDate:birthday formatter:STRDateFormatterType4];
-            if (date) {
-                [datePicker setDate:date animated:YES];
+            if (date)
+            {
+                [self.datePicker setDate:date animated:YES];
             }
-        } else {
+        }
+        else
+        {
             NSDate *defaultDate = [CommonFunction NSStringDateToNSDate:[NSString stringWithFormat:@"%zd-%zd-%zd",
                                                                         defaultComponents.year - 20,
                                                                         defaultComponents.month,
                                                                         defaultComponents.day]
                                                              formatter:STRDateFormatterType4];
-            datePicker.date = defaultDate;
+            self.datePicker.date = defaultDate;
         }
     }
     
@@ -750,48 +640,106 @@ NSString *const kEdgeWhiteSpace = @"  ";
     [self.view addSubview:pickerView];
 }
 
-- (void)onPickerCertainBtn {
+- (void)onPickerCertainBtn
+{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:STRDateFormatterType4];
-    NSString *birthday = [dateFormatter stringFromDate:datePicker.date];
-    
-    [Config shareInstance].settings.birthday = birthday;
-    
-    if (birthday.length == 0) {
-        birthday = STRViewTips79;
-    }
-    [birthThreeSubView.centerButton setAllTitle:birthday];
+    NSString *birthday = [dateFormatter stringFromDate:self.datePicker.date];
     
     UIView *pickerView = [self.view viewWithTag:kDatePickerBgViewTag];
     [pickerView removeFromSuperview];
-    [Config shareInstance].settings.birthday = birthday;
-    [PlanCache storePersonalSettings:[Config shareInstance].settings];
+
+    BmobUser *user = [BmobUser currentUser];
+    __weak typeof(self) weakSelf = self;
+    
+    [self showHUD];
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+    {
+        [weakSelf hideHUD];
+        if (!error)
+        {
+            if (array.count)
+            {
+                BmobObject *obj1 = array[0];
+                [obj1 setObject:birthday forKey:@"birthday"];
+                [obj1 updateInBackground];
+                
+                [Config shareInstance].settings.birthday = birthday;
+                [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                [weakSelf.tableView reloadData];
+            }
+        }
+        else
+        {
+            [AlertCenter alertToastMessage:@"更新生日失败"];
+        }
+    }];
 }
 
-- (void)onPickerCancelBtn {
+- (void)onPickerCancelBtn
+{
     UIView *pickerView = [self.view viewWithTag:kDatePickerBgViewTag];
     [pickerView removeFromSuperview];
 }
 
-- (void)saveAvatar:(NSData *)icon {
-    if (icon == nil) {
+- (void)saveAvatar:(NSData *)icon
+{
+    if (icon == nil)
+    {
         return;
     }
+    BmobUser *user = [BmobUser currentUser];
+    __weak typeof(self) weakSelf = self;
     
-    avatarView.image = [UIImage imageWithData:icon];
-    avatarView.contentMode = UIViewContentModeScaleAspectFit;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     
-    [Config shareInstance].settings.avatar = icon;
-    [Config shareInstance].settings.avatarURL = @"";
-    [PlanCache storePersonalSettings:[Config shareInstance].settings];
+    [self showHUD];
+    BmobFile *file = [[BmobFile alloc] initWithFileName:@"avatar.png" withFileData:icon];
+    [file saveInBackground:^(BOOL isSuccessful, NSError *error)
+    {
+        [weakSelf hideHUD];
+         if (isSuccessful)
+         {
+             [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+             {
+                 if (!error)
+                 {
+                     if (array.count)
+                     {
+                         BmobObject *obj1 = array[0];
+                         [obj1 setObject:file.url forKey:@"avatarURL"];
+                         [obj1 updateInBackground];
+                         
+                         [Config shareInstance].settings.avatar = icon;
+                         [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                         [weakSelf.tableView reloadData];
+                     }
+                 }
+                 else
+                 {
+                     [AlertCenter alertToastMessage:@"更新头像失败"];
+                 }
+             }];
+         }
+         else
+         {
+             [AlertCenter alertButtonMessage:@"上传头像失败"];
+         }
+     }
+     withProgressBlock:^(CGFloat progress)
+     {
+#if DEBUG
+         //上传进度
+         NSLog(@"上传头像进度： %f",progress);
+#endif
+     }];
 }
 
-- (void)logInAction {
-    LogInViewController *controller = [[LogInViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
-- (void)exitAction {
+- (void)exitAction
+{
     [BmobUser logout];
     [NotificationCenter postNotificationName:NTFSettingsSave object:nil];
     [NotificationCenter postNotificationName:NTFPlanSave object:nil];
@@ -800,65 +748,49 @@ NSString *const kEdgeWhiteSpace = @"  ";
     [NotificationCenter postNotificationName:NTFPostsRefresh object:nil];
 }
 
-- (void)syncDataAction {
-    [AlertCenter alertNavBarYellowMessage:STRViewTips121];
-    [DataCenter startSyncData];
-}
-
-#pragma mark - UIActionSheetDelegate
-- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    if (buttonIndex==[actionSheet cancelButtonIndex]) {
-        
-    } else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:STRCommonTip46]) {
-        //拍照
-        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
-            
-            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-            picker.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor darkGrayColor]};
-            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
-            picker.allowsEditing = YES;
-            picker.delegate = self;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self presentViewController:picker animated:YES completion:nil];
-            });
-            
-        } else {
-            
-            [self alertButtonMessage:STRCommonTip2];
-        }
-        
-    } else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:STRCommonTip45]) {
-        //从相册选择
-        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-            
-            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
-            picker.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor darkGrayColor]};
-            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
-            picker.allowsEditing = YES;
-            picker.delegate = self;
-            
-            dispatch_async(dispatch_get_main_queue(), ^{//如果不这样写，在iPad上会访问不了相册
-                [self presentViewController:picker animated:YES completion:nil];
-            });
-            
-        } else {
-            
-            [self alertButtonMessage:STRCommonTip1];
-        }
-    }
-}
-
 #pragma mark - UIImagePickerControllerDelegate
-- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker {
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
     [picker dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo {
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo
+{
     [picker dismissViewControllerAnimated:YES completion:nil];
     
     [self saveAvatar:[CommonFunction compressImage:image]];
 }
+
+//- (void)getUserSettingsObj
+//{
+//    BmobUser *user = [BmobUser currentUser];
+//    __weak typeof(self) weakSelf = self;
+//    [self showHUD];
+//    BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+//    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+//    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+//    {
+//        [weakSelf hideHUD];
+//        if (!error)
+//        {
+//            if (array.count)
+//            {
+//                weakSelf.userSettingsObj = array[0];
+//            }
+//            else
+//            {
+//#if DEBUG
+//                NSLog(@"服务器不存在的用户设置表对象");
+//#endif
+//            }
+//        }
+//         else
+//         {
+//#if DEBUG
+//             NSLog(@"获取用户设置表对象出错：%@", [error description]);
+//#endif
+//         }
+//    }];
+//}
 
 @end
