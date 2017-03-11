@@ -9,6 +9,7 @@
 #import "Plan.h"
 #import "PlanDataCenter.h"
 #import "PlanAddViewController.h"
+#import "LocalNotificationManager.h"
 
 @interface PlanAddViewController () <UITextFieldDelegate, UITextViewDelegate>
 
@@ -340,12 +341,72 @@
     plan.content = self.txtViewContent.text;
     plan.beginDate = self.beginDate;
     
-    [PlanDataCenter addPlan:plan];
+    BmobUser *user = [BmobUser currentUser];
+    BmobObject *newPlan = [BmobObject objectWithClassName:@"Plan"];
+    NSDictionary *dic = @{@"userObjectId":plan.account,
+                          @"planId":plan.planid,
+                          @"content":plan.content,
+                          @"createdTime":plan.createtime,
+                          @"completedTime":plan.completetime,
+                          @"updatedTime":plan.updatetime,
+                          @"notifyTime":plan.notifytime,
+                          @"isCompleted":plan.iscompleted,
+                          @"isNotify":plan.isnotify,
+                          @"isDeleted":plan.isdeleted,
+                          @"isRepeat":plan.isRepeat,
+                          @"remark":plan.remark,
+                          @"beginDate":plan.beginDate};
+    [newPlan saveAllWithDictionary:dic];
+    BmobACL *acl = [BmobACL ACL];
+    [acl setReadAccessForUser:user];//设置只有当前用户可读
+    [acl setWriteAccessForUser:user];//设置只有当前用户可写
+    newPlan.ACL = acl;
+    __weak typeof(self) weakSelf = self;
+    [newPlan saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
+    {
+        if (isSuccessful)
+        {
+            //添加提醒
+            if ([plan.isnotify isEqualToString:@"1"])
+            {
+                [weakSelf addPlanNotification:plan];
+            }
+            
+            [weakSelf alertToastMessage:STRCommonTip13];
+            [NotificationCenter postNotificationName:NTFPlanSave object:nil];
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        }
+        else
+        {
+            [weakSelf alertButtonMessage:@"新建计划失败"];
+        }
+    }];
 }
 
 - (void)backToLastView
 {
     [self.navigationController popViewControllerAnimated:YES];
+}
+
+- (void)addPlanNotification:(Plan *)plan
+{
+    //时间格式：yyyy-MM-dd HH:mm
+    NSDate *date = [CommonFunction NSStringDateToNSDate:plan.notifytime formatter:STRDateFormatterType3];
+    
+    if (!date) return;
+    
+    NSMutableDictionary *destDic = [NSMutableDictionary dictionary];
+    [destDic setObject:plan.account forKey:@"account"];
+    [destDic setObject:plan.planid forKey:@"tag"];
+    [destDic setObject:@([date timeIntervalSince1970]) forKey:@"time"];
+    [destDic setObject:@(NotificationTypePlan) forKey:@"type"];
+    [destDic setObject:plan.createtime forKey:@"createtime"];
+    [destDic setObject:plan.beginDate forKey:@"beginDate"];
+    [destDic setObject:plan.iscompleted forKey:@"iscompleted"];
+    [destDic setObject:plan.completetime forKey:@"completetime"];
+    [destDic setObject:plan.content forKey:@"content"];
+    [destDic setObject:plan.notifytime forKey:@"notifytime"];
+    [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
 }
 
 @end
