@@ -14,6 +14,7 @@
 #import "ThreeSubView.h"
 #import "PlanSectionView.h"
 #import <BmobSDK/BmobUser.h>
+#import "LogInViewController.h"
 #import "PopupPlanRemarkView.h"
 #import "SecondViewController.h"
 #import "PlanAddViewController.h"
@@ -62,16 +63,26 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     self.tabBarItem.title = STRViewTitle2;
     self.planType = 1;
 
+    [NotificationCenter addObserver:self selector:@selector(getPlanData) name:NTFLogIn object:nil];
+    [NotificationCenter addObserver:self selector:@selector(getPlanData) name:NTFLogOut object:nil];
     [NotificationCenter addObserver:self selector:@selector(toPlan:) name:NTFLocalPush object:nil];
     [NotificationCenter addObserver:self selector:@selector(getPlanData) name:NTFPlanSave object:nil];
-    [NotificationCenter addObserver:self selector:@selector(getPlanData) name:NTFSettingsSave object:nil];
     
     __weak typeof(self) weakSelf = self;
     [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_Add] action:^(UIButton *sender)
      {
-        PlanAddViewController *controller = [[PlanAddViewController alloc] init];
-        controller.hidesBottomBarWhenPushed = YES;
-        [weakSelf.navigationController pushViewController:controller animated:YES];
+         if ([LogIn isLogin])
+         {
+             PlanAddViewController *controller = [[PlanAddViewController alloc] init];
+             controller.hidesBottomBarWhenPushed = YES;
+             [weakSelf.navigationController pushViewController:controller animated:YES];
+         }
+         else
+         {
+             LogInViewController *controller = [[LogInViewController alloc] init];
+             controller.hidesBottomBarWhenPushed = YES;
+             [weakSelf.navigationController pushViewController:controller animated:YES];
+         }
     }];
     
     [self loadCustomView];

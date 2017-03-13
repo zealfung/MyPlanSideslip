@@ -741,11 +741,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
 - (void)exitAction
 {
     [BmobUser logout];
-    [NotificationCenter postNotificationName:NTFSettingsSave object:nil];
-    [NotificationCenter postNotificationName:NTFPlanSave object:nil];
-    [NotificationCenter postNotificationName:NTFPhotoSave object:nil];
-    [NotificationCenter postNotificationName:NTFTaskSave object:nil];
-    [NotificationCenter postNotificationName:NTFPostsRefresh object:nil];
+    [NotificationCenter postNotificationName:NTFLogOut object:nil];
 }
 
 #pragma mark - UIImagePickerControllerDelegate
@@ -760,37 +756,5 @@ NSString *const kEdgeWhiteSpace = @"  ";
     
     [self saveAvatar:[CommonFunction compressImage:image]];
 }
-
-//- (void)getUserSettingsObj
-//{
-//    BmobUser *user = [BmobUser currentUser];
-//    __weak typeof(self) weakSelf = self;
-//    [self showHUD];
-//    BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
-//    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
-//    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
-//    {
-//        [weakSelf hideHUD];
-//        if (!error)
-//        {
-//            if (array.count)
-//            {
-//                weakSelf.userSettingsObj = array[0];
-//            }
-//            else
-//            {
-//#if DEBUG
-//                NSLog(@"服务器不存在的用户设置表对象");
-//#endif
-//            }
-//        }
-//         else
-//         {
-//#if DEBUG
-//             NSLog(@"获取用户设置表对象出错：%@", [error description]);
-//#endif
-//         }
-//    }];
-//}
 
 @end

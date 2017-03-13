@@ -10,6 +10,8 @@
 
 /** 登录通知 */
 NSString *const NTFLogIn = @"Notification_LogIn";
+/** 注销通知 */
+NSString *const NTFLogOut = @"Notification_LogOut";
 /** 设置保存通知 */
 NSString *const NTFSettingsSave = @"Notification_SettingsSave";
 /** 计划保存通知 */

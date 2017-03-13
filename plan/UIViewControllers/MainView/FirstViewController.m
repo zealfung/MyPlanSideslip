@@ -63,6 +63,8 @@ NSUInteger const kHoursPerDay = 24;
     }];
     
 //    [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFSettingsSave object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFLogIn object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFLogOut object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFPlanSave object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshRedDot) name:NTFMessagesSave object:nil];
     

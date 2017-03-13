@@ -10,6 +10,8 @@
 
 /** 登录通知 */
 UIKIT_EXTERN NSString *const NTFLogIn;
+/** 注销通知 */
+UIKIT_EXTERN NSString *const NTFLogOut;
 /** 设置保存通知 */
 UIKIT_EXTERN NSString *const NTFSettingsSave;
 /** 计划保存通知 */
