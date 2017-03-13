@@ -11,7 +11,6 @@ target 'plan' do
   pod 'MJRefresh'
   pod 'SDWebImage'
   pod 'RESideMenu'
-#  pod 'ReactiveCocoa'
   pod 'MBProgressHUD'
   pod 'SDCycleScrollView'
   
