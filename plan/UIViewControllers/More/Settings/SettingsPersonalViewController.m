@@ -12,6 +12,7 @@
 #import <BmobSDK/BmobUser.h>
 #import <BmobSDK/BmobFile.h>
 #import <ShareSDK/ShareSDK.h>
+#import "LogInViewController.h"
 #import "SingleSelectedViewController.h"
 #import "ChangePasswordViewController.h"
 #import "SettingsSetTextViewController.h"
@@ -23,7 +24,13 @@ NSString *const kEdgeWhiteSpace = @"  ";
 
 @property (nonatomic, strong) UIDatePicker *datePicker;
 @property (nonatomic, strong) BmobObject *userSettingsObj;
-@property (nonatomic, strong) NSArray *arrayGender;
+@property (nonatomic, strong) NSArray *arrayGender;//性别
+@property (nonatomic, strong) NSArray *arrayDayOrMonth;//日月模式
+@property (nonatomic, strong) NSArray *arrayCountdown;//倒计样式
+@property (nonatomic, strong) NSArray *arrayUndonePlan;//未完计划
+@property (nonatomic, strong) NSArray *arrayShowGesture;//未完计划
+@property (nonatomic, strong) UIActionSheet *actionSheet;
+@property (nonatomic, assign) NSInteger actionSheetType;//1.设置剩余天/月数 2.设置剩余时分秒 2.设置自动处理未完计划延期
 
 @end
 
@@ -35,9 +42,10 @@ NSString *const kEdgeWhiteSpace = @"  ";
     self.title = STRViewTitle17;
 
     [self initTableView];
+    [self initSelectItem];
     
 //    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFLogIn object:nil];
-//    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFSettingsSave object:nil];
+//    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFLogOut object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -57,7 +65,10 @@ NSString *const kEdgeWhiteSpace = @"  ";
     self.tableView.dataSource = self;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.tableFooterView = [[UIView alloc] init];
-    
+}
+
+- (void)initSelectItem
+{
     SelectItem *itemMale = [[SelectItem alloc] init];
     itemMale.itemName = @"男";
     itemMale.itemValue = @"1";
@@ -65,16 +76,54 @@ NSString *const kEdgeWhiteSpace = @"  ";
     itemFemale.itemName = @"女";
     itemFemale.itemValue = @"0";
     self.arrayGender = [NSArray arrayWithObjects:itemMale, itemFemale, nil];
+    
+    SelectItem *itemDay = [[SelectItem alloc] init];
+    itemDay.itemName = STRSettingsViewTips13;
+    itemDay.itemValue = @"0";
+    SelectItem *itemMonth = [[SelectItem alloc] init];
+    itemMonth.itemName = STRSettingsViewTips14;
+    itemMonth.itemValue = @"1";
+    self.arrayDayOrMonth = [NSArray arrayWithObjects:itemDay, itemMonth, nil];
+    
+    SelectItem *itemSecond = [[SelectItem alloc] init];
+    itemSecond.itemName = STRSettingsViewTips7;
+    itemSecond.itemValue = @"0";
+    SelectItem *itemMinute = [[SelectItem alloc] init];
+    itemMinute.itemName = STRSettingsViewTips8;
+    itemMinute.itemValue = @"1";
+    SelectItem *itemHour = [[SelectItem alloc] init];
+    itemHour.itemName = STRSettingsViewTips9;
+    itemHour.itemValue = @"2";
+    SelectItem *itemAll = [[SelectItem alloc] init];
+    itemAll.itemName = STRSettingsViewTips10;
+    itemAll.itemValue = @"3";
+    self.arrayCountdown = [NSArray arrayWithObjects:itemSecond, itemMinute, itemHour, itemAll, nil];
+
+    SelectItem *itemNotAuto = [[SelectItem alloc] init];
+    itemNotAuto.itemName = STRSettingsViewTips16;
+    itemNotAuto.itemValue = @"0";
+    SelectItem *itemAuto = [[SelectItem alloc] init];
+    itemAuto.itemName = STRSettingsViewTips17;
+    itemAuto.itemValue = @"1";
+    self.arrayUndonePlan = [NSArray arrayWithObjects:itemNotAuto, itemAuto, nil];
+
+    SelectItem *itemNotShow = [[SelectItem alloc] init];
+    itemNotShow.itemName = @"隐藏";
+    itemNotShow.itemValue = @"0";
+    SelectItem *itemShow = [[SelectItem alloc] init];
+    itemShow.itemName = @"显示";
+    itemShow.itemValue = @"1";
+    self.arrayShowGesture = [NSArray arrayWithObjects:itemNotShow, itemShow, nil];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 4;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (section == 2 || section == 3)
+    if (section == 3 || section == 4)
     {
         return 1;
     }
@@ -85,6 +134,18 @@ NSString *const kEdgeWhiteSpace = @"  ";
     else if (section == 1)
     {
         return 6;
+    }
+    else if (section == 2)
+    {
+        BOOL usePwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
+        if (usePwd)
+        {
+            return 6;
+        }
+        else
+        {
+            return 4;
+        }
     }
     else
     {
@@ -111,11 +172,11 @@ NSString *const kEdgeWhiteSpace = @"  ";
 {
     static NSString *cellIdentifier = @"UITableViewCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    if (cell == nil)
-    {
+//    if (cell == nil)
+//    {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:cellIdentifier];
-        cell.accessoryType = UITableViewCellAccessoryNone;
-    }
+//        cell.accessoryType = UITableViewCellAccessoryNone;
+//    }
     
     switch (indexPath.section)
     {
@@ -261,12 +322,140 @@ NSString *const kEdgeWhiteSpace = @"  ";
             break;
         case 2:
         {
+            switch (indexPath.row)
+            {
+                case 0:
+                {
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.textLabel.text = @"日月样式";
+                    
+                    NSString *dayOrMonth = [Config shareInstance].settings.dayOrMonth;
+                    NSString *showText = @"";
+                    switch ([dayOrMonth integerValue])
+                    {
+                        case 0:
+                            showText = STRSettingsViewTips13;
+                            break;
+                        case 1:
+                            showText = STRSettingsViewTips14;
+                            break;
+                        default:
+                            showText = STRSettingsViewTips13;
+                            break;
+                    }
+                    cell.detailTextLabel.text = showText;
+                }
+                    break;
+                case 1:
+                {
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.textLabel.text = @"倒计样式";
+                    
+                    NSString *countdownType = [Config shareInstance].settings.countdownType;
+                    NSString *showText = @"";
+                    switch ([countdownType integerValue])
+                    {
+                        case 0:
+                            showText = STRSettingsViewTips7;
+                            break;
+                        case 1:
+                            showText = STRSettingsViewTips8;
+                            break;
+                        case 2:
+                            showText = STRSettingsViewTips9;
+                            break;
+                        case 3:
+                            showText = STRSettingsViewTips10;
+                            break;
+                        default:
+                            showText = STRSettingsViewTips7;
+                            break;
+                    }
+                    cell.detailTextLabel.text = showText;
+                }
+                    break;
+                case 2:
+                {
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.textLabel.text = @"未完计划";
+                    
+                    NSString *autoDelayUndonePlan = [Config shareInstance].settings.autoDelayUndonePlan;
+                    NSString *showText = @"";
+                    switch ([autoDelayUndonePlan integerValue]) {
+                        case 0:
+                            showText = STRSettingsViewTips16;
+                            break;
+                        case 1:
+                            showText = STRSettingsViewTips17;
+                            break;
+                        default:
+                            showText = STRSettingsViewTips16;
+                            break;
+                    }
+                    cell.detailTextLabel.text = showText;
+                }
+                    break;
+                case 3:
+                {
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.textLabel.text = @"手势解锁";
+                    
+                    NSString *isUseGestureLock = [Config shareInstance].settings.isUseGestureLock;
+                    NSString *showText = @"";
+                    if ([isUseGestureLock intValue] == 1)
+                    {
+                        showText = @"启用";
+                    }
+                    else
+                    {
+                        showText = @"关闭";
+                    }
+                    cell.detailTextLabel.text = showText;
+                }
+                    break;
+                case 4:
+                {
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.textLabel.text = @"显示手势";
+                    
+                    NSString *isShowGestureTrack = [Config shareInstance].settings.isShowGestureTrack;
+                    NSString *showText = @"";
+                    if ([isShowGestureTrack intValue] == 1)
+                    {
+                        showText = @"显示";
+                    }
+                    else
+                    {
+                        showText = @"隐藏";
+                    }
+                    cell.detailTextLabel.text = showText;
+                }
+                    break;
+                case 5:
+                {
+                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
+                    cell.textLabel.text = @"修改手势";
+                }
+                    break;
+                default:
+                    break;
+            }
+        }
+            break;
+        case 3:
+        {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
             cell.textLabel.text = @"修改密码";
         }
             break;
-        case 3:
+        case 4:
         {
             UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
             button.backgroundColor = [UIColor redColor];
@@ -337,6 +526,45 @@ NSString *const kEdgeWhiteSpace = @"  ";
         }
             break;
         case 2:
+        {
+            switch (indexPath.row)
+            {
+                case 0://日月样式
+                {
+                    [self toSetDayOrMonthViewController];
+                }
+                    break;
+                case 1://倒计样式
+                {
+                    [self toSetCountdownViewController];
+                }
+                    break;
+                case 2://未完计划
+                {
+                    [self toSetUndonePlanViewController];
+                }
+                    break;
+                case 3://手势解锁
+                {
+                    [self toSetUseGestureLockViewController];
+                }
+                    break;
+                case 4://显示手势
+                {
+                    [self toSetShowGestureViewController];
+                }
+                    break;
+                case 5://修改手势
+                {
+                    [self toSetChangeGestureViewController];
+                }
+                    break;
+                default:
+                    break;
+            }
+        }
+            break;
+        case 3:
         {
             [self toChangePasswordViewController];
         }
@@ -570,6 +798,192 @@ NSString *const kEdgeWhiteSpace = @"  ";
     [self.navigationController pushViewController:controller animated:YES];
 }
 
+- (void)toSetDayOrMonthViewController
+{
+    __weak typeof(self) weakSelf = self;
+    SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
+    controller.viewTitle = @"日月样式";
+    controller.arrayData = self.arrayDayOrMonth;
+    controller.selectedValue = [Config shareInstance].settings.dayOrMonth;
+    controller.SelectedDelegate = ^(NSString *selectedValue)
+    {
+        BmobUser *user = [BmobUser currentUser];
+        [weakSelf showHUD];
+        BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+        [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+         {
+             [weakSelf hideHUD];
+             if (!error)
+             {
+                 if (array.count)
+                 {
+                     BmobObject *obj1 = array[0];
+                     [obj1 setObject:selectedValue forKey:@"dayOrMonth"];
+                     [obj1 updateInBackground];
+                     
+                     [Config shareInstance].settings.dayOrMonth = selectedValue;
+                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                     [weakSelf alertToastMessage:STRCommonTip13];
+                     [weakSelf.navigationController popViewControllerAnimated:YES];
+                     [weakSelf.tableView reloadData];
+                 }
+             }
+             else
+             {
+                 [AlertCenter alertToastMessage:@"更新日月样式失败"];
+             }
+         }];
+    };
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)toSetCountdownViewController
+{
+    __weak typeof(self) weakSelf = self;
+    SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
+    controller.viewTitle = @"倒计样式";
+    controller.arrayData = self.arrayCountdown;
+    controller.selectedValue = [Config shareInstance].settings.countdownType;
+    controller.SelectedDelegate = ^(NSString *selectedValue)
+    {
+        BmobUser *user = [BmobUser currentUser];
+        [weakSelf showHUD];
+        BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+        [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+         {
+             [weakSelf hideHUD];
+             if (!error)
+             {
+                 if (array.count)
+                 {
+                     BmobObject *obj1 = array[0];
+                     [obj1 setObject:selectedValue forKey:@"countdownType"];
+                     [obj1 updateInBackground];
+                     
+                     [Config shareInstance].settings.countdownType = selectedValue;
+                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                     [weakSelf alertToastMessage:STRCommonTip13];
+                     [weakSelf.navigationController popViewControllerAnimated:YES];
+                     [weakSelf.tableView reloadData];
+                 }
+             }
+             else
+             {
+                 [AlertCenter alertToastMessage:@"更新倒计样式失败"];
+             }
+         }];
+    };
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)toSetUndonePlanViewController
+{
+    __weak typeof(self) weakSelf = self;
+    SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
+    controller.viewTitle = @"未完计划";
+    controller.arrayData = self.arrayUndonePlan;
+    controller.selectedValue = [Config shareInstance].settings.autoDelayUndonePlan;
+    controller.SelectedDelegate = ^(NSString *selectedValue)
+    {
+        BmobUser *user = [BmobUser currentUser];
+        [weakSelf showHUD];
+        BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+        [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+         {
+             [weakSelf hideHUD];
+             if (!error)
+             {
+                 if (array.count)
+                 {
+                     BmobObject *obj1 = array[0];
+                     [obj1 setObject:selectedValue forKey:@"autoDelayUndonePlan"];
+                     [obj1 updateInBackground];
+                     
+                     [Config shareInstance].settings.autoDelayUndonePlan = selectedValue;
+                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                     [weakSelf alertToastMessage:STRCommonTip13];
+                     [weakSelf.navigationController popViewControllerAnimated:YES];
+                     [weakSelf.tableView reloadData];
+                 }
+             }
+             else
+             {
+                 [AlertCenter alertToastMessage:@"更新未完计划失败"];
+             }
+         }];
+    };
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)toSetUseGestureLockViewController
+{
+    __weak typeof(self) weakSelf = self;
+    BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
+    if (hasPwd)
+    {
+        //关闭手势解锁
+        [CLLockVC showVerifyLockVCInVC:self isLogIn:NO forgetPwdBlock:^{
+            
+            LogInViewController *controller = [[LogInViewController alloc] init];
+            [self.navigationController pushViewController:controller animated:YES];
+            
+        }
+        successBlock:^(CLLockVC *lockVC, NSString *pwd)
+        {
+            [Config shareInstance].settings.isUseGestureLock = @"0";
+            [Config shareInstance].settings.gesturePasswod = @"";
+            [PlanCache storePersonalSettings:[Config shareInstance].settings];
+            [lockVC dismiss:.5f];
+            [weakSelf.tableView reloadData];
+        }];
+    }
+    else
+    {
+        //打开手势解锁
+        [CLLockVC showSettingLockVCInVC:self successBlock:^(CLLockVC *lockVC, NSString *pwd)
+        {
+             [weakSelf alertToastMessage:STRSettingsViewTips11];
+             [lockVC dismiss:.5f];
+             [weakSelf.tableView reloadData];
+        }];
+    }
+}
+
+- (void)toSetShowGestureViewController
+{
+    __weak typeof(self) weakSelf = self;
+    SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
+    controller.viewTitle = @"显示手势";
+    controller.arrayData = self.arrayShowGesture;
+    controller.selectedValue = [Config shareInstance].settings.isShowGestureTrack;
+    controller.SelectedDelegate = ^(NSString *selectedValue)
+    {
+        [Config shareInstance].settings.isShowGestureTrack = selectedValue;
+        [PlanCache storePersonalSettings:[Config shareInstance].settings];
+        [weakSelf alertToastMessage:STRCommonTip13];
+        [weakSelf.navigationController popViewControllerAnimated:YES];
+        [weakSelf.tableView reloadData];
+    };
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)toSetChangeGestureViewController
+{
+    __weak typeof(self) weakSelf = self;
+    BOOL hasPwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
+    if (hasPwd)
+    {
+        [CLLockVC showModifyLockVCInVC:self successBlock:^(CLLockVC *lockVC, NSString *pwd)
+        {
+            [weakSelf alertToastMessage:STRCommonTip15];
+            [lockVC dismiss:.5f];
+        }];
+    }
+}
+
 - (void)toChangePasswordViewController
 {
     ChangePasswordViewController *controller = [[ChangePasswordViewController alloc] init];
@@ -742,6 +1156,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
 {
     [BmobUser logout];
     [NotificationCenter postNotificationName:NTFLogOut object:nil];
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - UIImagePickerControllerDelegate
