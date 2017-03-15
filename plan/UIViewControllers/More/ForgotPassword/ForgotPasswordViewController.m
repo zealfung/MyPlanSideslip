@@ -7,7 +7,6 @@
 //
 
 #import <BmobSDK/BmobUser.h>
-#import "SettingsViewController.h"
 #import "ForgotPasswordViewController.h"
 
 @interface ForgotPasswordViewController ()
@@ -16,17 +15,20 @@
 
 @implementation ForgotPasswordViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = STRViewTitle11;
     [self setControls];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)setControls {
+- (void)setControls
+{
     self.txtEmail.text = self.email;
     self.txtEmail.placeholder = STRViewTips86;
     self.txtEmail.inputAccessoryView = [self getInputAccessoryView];
@@ -35,18 +37,21 @@
     [self.btnSubmit setAllTitle:STRViewTips96];
 }
 
-- (IBAction)submitAction:(id)sender {
+- (IBAction)submitAction:(id)sender
+{
     if (![self checkInput]) return;
     [self submit];
 }
 
 - (BOOL)checkInput {
-    if (self.txtEmail.text.length == 0) {
+    if (self.txtEmail.text.length == 0)
+    {
         [self alertToastMessage:STRViewTips87];
         [self.txtEmail becomeFirstResponder];
         return NO;
     }
-    if (![CommonFunction validateEmail:self.txtEmail.text]) {
+    if (![CommonFunction validateEmail:self.txtEmail.text])
+    {
         [self alertToastMessage:STRViewTips88];
         [self.txtEmail becomeFirstResponder];
         return NO;
@@ -54,15 +59,23 @@
     return YES;
 }
 
-- (void)submit {
-    [BmobUser requestPasswordResetInBackgroundWithEmail:self.txtEmail.text];
-    [self alertButtonMessage:STRViewTips97];
-    NSArray *array = self.navigationController.viewControllers;
-    for (UIViewController *controller in array) {
-        if ([controller isKindOfClass:[SettingsViewController class]]) {
-            [self.navigationController popToViewController:controller animated:YES];
+- (void)submit
+{
+    __weak typeof(self) weakSelf = self;
+    [self showHUD];
+    [BmobUser requestPasswordResetInBackgroundWithEmail:self.txtEmail.text block:^(BOOL isSuccessful, NSError *error)
+    {
+        [weakSelf hideHUD];
+        if (isSuccessful)
+        {
+            [weakSelf alertButtonMessage:STRViewTips97];
+            [weakSelf.navigationController popViewControllerAnimated:YES];
         }
-    }
+        else
+        {
+            [weakSelf alertButtonMessage:@"请求失败"];
+        }
+    }];
 }
 
 @end

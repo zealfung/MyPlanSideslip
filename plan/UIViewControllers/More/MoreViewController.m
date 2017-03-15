@@ -9,7 +9,6 @@
 #import "HelpViewController.h"
 #import "MoreViewController.h"
 #import "AboutViewController.h"
-#import "SettingsViewController.h"
 
 @implementation MoreViewController {
 
@@ -87,8 +86,6 @@
 
 - (void)toPersonSettingViewController {
     
-    SettingsViewController *controller = [[SettingsViewController alloc] init];
-    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)toHelpViewController {
