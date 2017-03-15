@@ -337,7 +337,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
         } else {
             [Config shareInstance].settings.isShowGestureTrack = @"0";
         }
-        [PlanCache storePersonalSettings:[Config shareInstance].settings];
+//        [PlanCache storePersonalSettings:[Config shareInstance].settings];
     }];
     
     threeSubView.fixRightWidth = 55;
@@ -516,7 +516,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
                 break;
         }
     }
-    [PlanCache storePersonalSettings:[Config shareInstance].settings];
+//    [PlanCache storePersonalSettings:[Config shareInstance].settings];
     [self performSelector:@selector(dismissAlertView:) withObject:alertView afterDelay:2.0];
 }
 
@@ -542,7 +542,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
             
             [Config shareInstance].settings.isUseGestureLock = @"0";
             [Config shareInstance].settings.gesturePasswod = @"";
-            [PlanCache storePersonalSettings:[Config shareInstance].settings];
+//            [PlanCache storePersonalSettings:[Config shareInstance].settings];
             [lockVC dismiss:.5f];
         }];
         
@@ -576,7 +576,7 @@ NSString *const kSettingsViewEdgeWhiteSpace = @"  ";
     } else {
         [Config shareInstance].settings.isAutoSync = @"0";
     }
-    [PlanCache storePersonalSettings:[Config shareInstance].settings];
+//    [PlanCache storePersonalSettings:[Config shareInstance].settings];
 }
 
 @end

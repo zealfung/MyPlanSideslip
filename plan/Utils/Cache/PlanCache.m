@@ -227,7 +227,7 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (void)storePersonalSettings:(Settings *)settings
++ (void)storePersonalSettings:(Settings *)settings isNotify:(BOOL)isNotify
 {
     @synchronized(__db)
     {
@@ -354,8 +354,11 @@ static NSMutableDictionary *__contactsOnlineState;
             FMDBQuickCheck(b, sqlString, __db);
         }
         
-        [NotificationCenter postNotificationName:NTFSettingsSave object:nil];
-        [NotificationCenter postNotificationName:NTFPhotoRefreshOnly object:nil];
+        if (isNotify)
+        {
+            [NotificationCenter postNotificationName:NTFSettingsSave object:nil];
+            [NotificationCenter postNotificationName:NTFPhotoRefreshOnly object:nil];
+        }
     }
 }
 

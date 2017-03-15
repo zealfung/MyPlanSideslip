@@ -238,7 +238,7 @@ static BOOL finishTask;
                 if (data)
                 {
                     [Config shareInstance].settings.avatar = data;
-                    [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                    [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
                 }
             }];
         }
@@ -265,12 +265,12 @@ static BOOL finishTask;
                 if (data)
                 {
                     [Config shareInstance].settings.centerTop = data;
-                    [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                    [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
                 }
             }];
         }
     }
-    [PlanCache storePersonalSettings:[Config shareInstance].settings];
+    [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
     finishSettings = YES;
     [self IsAllUploadFinished];
 }
@@ -384,7 +384,7 @@ static BOOL finishTask;
             if (finishUploadAvatar && finishUploadCenterTop)
             {
                 [Config shareInstance].settings.syntime = timeNow;
-                [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
             }
         }
         else if (error)
@@ -528,7 +528,7 @@ static BOOL finishTask;
         if (isSuccessful)
         {
             [Config shareInstance].settings.objectId = userSettings.objectId;
-            [PlanCache storePersonalSettings:[Config shareInstance].settings];
+            [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
         }
         else if (error)
         {
@@ -568,7 +568,7 @@ static BOOL finishTask;
             //把上传完的文件保存到“头像”字段
             [obj setObject:file.url forKey:@"avatarURL"];
             [obj updateInBackground];
-            [PlanCache storePersonalSettings:[Config shareInstance].settings];
+            [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
         }
         [weakSelf IsAllUploadFinished];
     }
@@ -604,7 +604,7 @@ static BOOL finishTask;
             
             [obj setObject:file.url forKey:@"centerTopURL"];
             [obj updateInBackground];
-            [PlanCache storePersonalSettings:[Config shareInstance].settings];
+            [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
         }
         [weakSelf IsAllUploadFinished];
     }

@@ -62,7 +62,7 @@ NSUInteger const kHoursPerDay = 24;
          [weakSelf shareAction];
     }];
     
-//    [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFSettingsSave object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFSettingsSave object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFLogIn object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFLogOut object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFPlanSave object:nil];
@@ -157,7 +157,7 @@ NSUInteger const kHoursPerDay = 24;
                 [Config shareInstance].settings.avatarURL = [object objectForKey:@"avatarURL"];
                 [Config shareInstance].settings.centerTopURL = [object objectForKey:@"centerTopURL"];
                 
-                [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:NO];
             }
             else
             {
@@ -222,7 +222,7 @@ NSUInteger const kHoursPerDay = 24;
          {
              NSData *imgData = UIImageJPEGRepresentation(image, 1);
              [Config shareInstance].settings.avatar = imgData;
-             [PlanCache storePersonalSettings:[Config shareInstance].settings];
+             [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:NO];
          }
      }];
     

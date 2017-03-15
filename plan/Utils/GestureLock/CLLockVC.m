@@ -105,7 +105,7 @@
 //        [CoreArchive setStr:pwd key:CoreLockPWDKey];
         [Config shareInstance].settings.isUseGestureLock = @"1";
         [Config shareInstance].settings.gesturePasswod = pwd;
-        [PlanCache storePersonalSettings:[Config shareInstance].settings];
+        [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:NO];
         
         //禁用交互
         self.view.userInteractionEnabled = NO;

@@ -18,17 +18,20 @@
 
 @implementation RegisterViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = STRViewTitle10;
     [self setControls];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)setControls {
+- (void)setControls
+{
     self.txtEmail.placeholder = STRViewTips86;
     self.txtEmail.inputAccessoryView = [self getInputAccessoryView];
     [self.txtEmail becomeFirstResponder];
@@ -40,29 +43,35 @@
     self.labelTips.text = STRViewTips93;
 }
 
-- (IBAction)registerAction:(id)sender {
+- (IBAction)registerAction:(id)sender
+{
     if (![self checkInput]) return;
     [self checkIfEmailHadRegisted];
 }
 
-- (IBAction)forgotPwdAction:(id)sender {
+- (IBAction)forgotPwdAction:(id)sender
+{
     ForgotPasswordViewController *controller = [[ForgotPasswordViewController alloc] init];
     controller.email = self.txtEmail.text;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (BOOL)checkInput {
-    if (self.txtEmail.text.length == 0) {
+- (BOOL)checkInput
+{
+    if (self.txtEmail.text.length == 0)
+    {
         [self alertToastMessage:STRViewTips87];
         [self.txtEmail becomeFirstResponder];
         return NO;
     }
-    if (![CommonFunction validateEmail:self.txtEmail.text]) {
+    if (![CommonFunction validateEmail:self.txtEmail.text])
+    {
         [self alertToastMessage:STRViewTips88];
         [self.txtEmail becomeFirstResponder];
         return NO;
     }
-    if (self.txtPassword.text.length == 0) {
+    if (self.txtPassword.text.length == 0)
+    {
         [self alertToastMessage:STRViewTips89];
         [self.txtPassword becomeFirstResponder];
         return NO;
@@ -70,49 +79,61 @@
     return YES;
 }
 
-- (void)checkIfEmailHadRegisted {
+- (void)checkIfEmailHadRegisted
+{
     [self showHUD];
     __weak typeof(self) weakSelf = self;
     BmobQuery   *bquery = [BmobQuery queryWithClassName:@"_User"];
     [bquery whereKey:@"username" equalTo:self.txtEmail.text];
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-        
-        if (error){
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+    {
+        if (error)
+        {
             //进行错误处理
             [weakSelf hideHUD];
-        } else {
-            if (array && array.count > 0) {//已存在
+        }
+        else
+        {
+            if (array.count)
+            {//已存在
                 [weakSelf hideHUD];
                 [weakSelf alertButtonMessage:STRViewTips90];
-            } else {//可注册
+            }
+            else
+            {//可注册
                 [weakSelf registerUser];
             }
         }
     }];
 }
 
-- (void)registerUser {
+- (void)registerUser
+{
     __weak typeof(self) weakSelf = self;
     NSString *acountEmail = [self.txtEmail.text lowercaseString];
     BmobUser *bUser = [[BmobUser alloc] init];
     bUser.username = acountEmail;
-    bUser.password = self.txtPassword.text;// [CommonFunction md5HexDigest:self.txtPassword.text];
+    bUser.password = self.txtPassword.text;
     bUser.email = acountEmail;
     [bUser signUpInBackgroundWithBlock:^ (BOOL isSuccessful, NSError *error){
         
         [weakSelf hideHUD];
-        if (isSuccessful){
+        if (isSuccessful)
+        {
             [weakSelf addSettingsToServer];
             [weakSelf alertButtonMessage:STRViewTips91];
             [weakSelf.navigationController popViewControllerAnimated:YES];
-        } else {
+        }
+        else
+        {
             [BmobUser logout];
             [weakSelf alertButtonMessage:STRCommonTip25];
         }
     }];
 }
 
-- (void)addSettingsToServer {
+- (void)addSettingsToServer
+{
     BmobUser *user = [BmobUser currentUser];
     BmobObject *userSettings = [BmobObject objectWithClassName:@"UserSettings"];
     [userSettings setObject:user.objectId forKey:@"userObjectId"];
@@ -121,10 +142,12 @@
     [acl setPublicReadAccess];//设置所有人可读
     [acl setWriteAccessForUser:user];//设置只有当前用户可写
     userSettings.ACL = acl;
-    [userSettings saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-        if (isSuccessful) {
+    [userSettings saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
+    {
+        if (isSuccessful)
+        {
             [Config shareInstance].settings.objectId = userSettings.objectId;
-            [PlanCache storePersonalSettings:[Config shareInstance].settings];
+            [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:NO];
         }
         //先注销登录，让用户验证邮箱然后再登录
         [BmobUser logout];

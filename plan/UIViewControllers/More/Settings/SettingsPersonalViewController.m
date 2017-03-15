@@ -29,8 +29,6 @@ NSString *const kEdgeWhiteSpace = @"  ";
 @property (nonatomic, strong) NSArray *arrayCountdown;//倒计样式
 @property (nonatomic, strong) NSArray *arrayUndonePlan;//未完计划
 @property (nonatomic, strong) NSArray *arrayShowGesture;//未完计划
-@property (nonatomic, strong) UIActionSheet *actionSheet;
-@property (nonatomic, assign) NSInteger actionSheetType;//1.设置剩余天/月数 2.设置剩余时分秒 2.设置自动处理未完计划延期
 
 @end
 
@@ -640,7 +638,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                      [obj1 updateInBackground];
                      
                      [Config shareInstance].settings.nickname = text;
-                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                     [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
                      [weakSelf alertToastMessage:STRCommonTip13];
                      [weakSelf.navigationController popViewControllerAnimated:YES];
                      [weakSelf.tableView reloadData];
@@ -680,7 +678,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                      [obj1 updateInBackground];
                      
                      [Config shareInstance].settings.gender = selectedValue;
-                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                     [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
                      [weakSelf alertToastMessage:STRCommonTip13];
                      [weakSelf.navigationController popViewControllerAnimated:YES];
                      [weakSelf.tableView reloadData];
@@ -729,7 +727,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                      [obj1 updateInBackground];
                      
                      [Config shareInstance].settings.signature = text;
-                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                     [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
                      [weakSelf alertToastMessage:STRCommonTip13];
                      [weakSelf.navigationController popViewControllerAnimated:YES];
                      [weakSelf.tableView reloadData];
@@ -783,7 +781,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                      [obj1 updateInBackground];
                      
                      [Config shareInstance].settings.lifespan = text;
-                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                     [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
                      [weakSelf alertToastMessage:STRCommonTip13];
                      [weakSelf.navigationController popViewControllerAnimated:YES];
                      [weakSelf.tableView reloadData];
@@ -823,7 +821,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                      [obj1 updateInBackground];
                      
                      [Config shareInstance].settings.dayOrMonth = selectedValue;
-                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                     [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
                      [weakSelf alertToastMessage:STRCommonTip13];
                      [weakSelf.navigationController popViewControllerAnimated:YES];
                      [weakSelf.tableView reloadData];
@@ -863,7 +861,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                      [obj1 updateInBackground];
                      
                      [Config shareInstance].settings.countdownType = selectedValue;
-                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                     [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
                      [weakSelf alertToastMessage:STRCommonTip13];
                      [weakSelf.navigationController popViewControllerAnimated:YES];
                      [weakSelf.tableView reloadData];
@@ -903,7 +901,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                      [obj1 updateInBackground];
                      
                      [Config shareInstance].settings.autoDelayUndonePlan = selectedValue;
-                     [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                     [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
                      [weakSelf alertToastMessage:STRCommonTip13];
                      [weakSelf.navigationController popViewControllerAnimated:YES];
                      [weakSelf.tableView reloadData];
@@ -935,7 +933,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
         {
             [Config shareInstance].settings.isUseGestureLock = @"0";
             [Config shareInstance].settings.gesturePasswod = @"";
-            [PlanCache storePersonalSettings:[Config shareInstance].settings];
+            [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
             [lockVC dismiss:.5f];
             [weakSelf.tableView reloadData];
         }];
@@ -962,7 +960,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
     controller.SelectedDelegate = ^(NSString *selectedValue)
     {
         [Config shareInstance].settings.isShowGestureTrack = selectedValue;
-        [PlanCache storePersonalSettings:[Config shareInstance].settings];
+        [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
         [weakSelf alertToastMessage:STRCommonTip13];
         [weakSelf.navigationController popViewControllerAnimated:YES];
         [weakSelf.tableView reloadData];
@@ -1081,7 +1079,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                 [obj1 updateInBackground];
                 
                 [Config shareInstance].settings.birthday = birthday;
-                [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
                 [weakSelf.tableView reloadData];
             }
         }
@@ -1128,7 +1126,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                          [obj1 updateInBackground];
                          
                          [Config shareInstance].settings.avatar = icon;
-                         [PlanCache storePersonalSettings:[Config shareInstance].settings];
+                         [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
                          [weakSelf.tableView reloadData];
                      }
                  }
@@ -1170,6 +1168,56 @@ NSString *const kEdgeWhiteSpace = @"  ";
     [picker dismissViewControllerAnimated:YES completion:nil];
     
     [self saveAvatar:[CommonFunction compressImage:image]];
+}
+
+#pragma mark - UIActionSheetDelegate
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex==[actionSheet cancelButtonIndex])
+    {
+        
+    }
+    else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:STRCommonTip46])
+    {
+        //拍照
+        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+        {
+            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            picker.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor darkGrayColor]};
+            picker.sourceType = UIImagePickerControllerSourceTypeCamera;
+            picker.allowsEditing = YES;
+            picker.delegate = self;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self presentViewController:picker animated:YES completion:nil];
+            });
+            
+        }
+        else
+        {
+            [self alertButtonMessage:STRCommonTip2];
+        }
+    }
+    else if ([[actionSheet buttonTitleAtIndex:buttonIndex] isEqualToString:STRCommonTip45])
+    {
+        //从相册选择
+        if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+        {
+            UIImagePickerController *picker = [[UIImagePickerController alloc] init];
+            picker.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName: [UIColor darkGrayColor]};
+            picker.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+            picker.allowsEditing = YES;
+            picker.delegate = self;
+            
+            dispatch_async(dispatch_get_main_queue(), ^{//如果不这样写，在iPad上会访问不了相册
+                [self presentViewController:picker animated:YES completion:nil];
+            });
+        }
+        else
+        {
+            [self alertButtonMessage:STRCommonTip1];
+        }
+    }
 }
 
 @end

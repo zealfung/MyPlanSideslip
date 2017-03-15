@@ -18,7 +18,7 @@
 
 + (void)openDBWithAccount:(NSString *)account;
 
-+ (void)storePersonalSettings:(Settings *)settings;
++ (void)storePersonalSettings:(Settings *)settings isNotify:(BOOL)isNotify;
 
 + (BOOL)storePlan:(Plan *)plan;
 
