@@ -22,22 +22,25 @@
 
 @interface AppDelegate ()
 
+@property (nonatomic, strong) UILocalNotification *lastNotification;
+
 @end
 
 @implementation AppDelegate
 
 
-- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    
+- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
     //本地通知注册
-    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)]) {
-        
+    if ([UIApplication instancesRespondToSelector:@selector(registerUserNotificationSettings:)])
+    {
         [[UIApplication sharedApplication] registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound categories:nil]];
         
     }
     
     UILocalNotification *localNotify = [launchOptions objectForKey:UIApplicationLaunchOptionsLocalNotificationKey];
-    if (localNotify) {
+    if (localNotify)
+    {
         //程序在后台或者已关闭
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [NotificationCenter postNotificationName:NTFLocalPush object:nil userInfo:localNotify.userInfo];
@@ -51,22 +54,24 @@
 }
 
 //禁止横向旋转屏幕
-- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window {
-    
+- (UIInterfaceOrientationMask)application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{
     return UIInterfaceOrientationMaskPortrait;
-    
 }
 
-- (void)applicationWillResignActive:(UIApplication *)application {
+- (void)applicationWillResignActive:(UIApplication *)application
+{
     // 清除推送图标标记
     [[UIApplication sharedApplication] setApplicationIconBadgeNumber:0];
 }
 
-- (void)applicationDidEnterBackground:(UIApplication *)application {
+- (void)applicationDidEnterBackground:(UIApplication *)application
+{
 
 }
 
-- (void)applicationWillEnterForeground:(UIApplication *)application {
+- (void)applicationWillEnterForeground:(UIApplication *)application
+{
 
 }
 
@@ -112,12 +117,6 @@
         {
             [DataCenter startSyncData];
         }
-        else
-        {
-            //同步个人设置
-            [Config shareInstance].isSyncSettingsOnly = YES;
-            [DataCenter startSyncSettings];
-        }
     }
     
     //自动生成每日重复计划
@@ -130,58 +129,65 @@
 /**
  *  接收本地推送
  */
-- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification*)notification {
-    
-    lastNotification = notification;
+- (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification*)notification
+{
+    self.lastNotification = notification;
     //重置5天未新建计划提醒时间
     [self checkFiveDayNotification];
 }
 
 #pragma mark - UIAlertViewDelegate
-- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {
-    
-    if (buttonIndex == 0) {
-        
-    } else if(buttonIndex == 1) {
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex == 1)
+    {
         //显示
-        [NotificationCenter postNotificationName:NTFLocalPush object:nil userInfo:lastNotification.userInfo];
+        [NotificationCenter postNotificationName:NTFLocalPush object:nil userInfo:self.lastNotification.userInfo];
         
-        NSDictionary *dict = lastNotification.userInfo;
+        NSDictionary *dict = self.lastNotification.userInfo;
         NSInteger type = [[dict objectForKey:@"type"] integerValue];
-        if (type == 0) {//计划提醒
+        if (type == 0)
+        {//计划提醒
             Plan *plan = [[Plan alloc] init];
             plan.account = [dict objectForKey:@"account"];
             plan.planid = [dict objectForKey:@"tag"];
-            if ([plan.planid isEqualToString:STRFiveDayFlag1]) {
+            if ([plan.planid isEqualToString:STRFiveDayFlag1])
+            {
                 //5天未新建计划提醒，不需要跳转到计划详情
                 return;
             }
             //切换到计划栏
             [self changeTabbarSelectedItem:1];
             
-        } else if (type == 1) {//任务提醒
+        }
+        else if (type == 1)
+        {//任务提醒
             //切换到任务栏
             [self changeTabbarSelectedItem:2];
         }
-        
-    } else if(buttonIndex == 2) {
+    }
+    else if(buttonIndex == 2)
+    {
         //5分钟后提醒
         NSDate *date = [[NSDate date] dateByAddingTimeInterval:5 * 60];
-        [LocalNotificationManager updateNotificationWithTag:lastNotification fireDate:date userInfo:lastNotification.userInfo alertBody:lastNotification.alertBody];
+        [LocalNotificationManager updateNotificationWithTag:self.lastNotification fireDate:date userInfo:self.lastNotification.userInfo alertBody:self.lastNotification.alertBody];
     }
 }
 
-- (void)changeTabbarSelectedItem:(NSInteger)index {
+- (void)changeTabbarSelectedItem:(NSInteger)index
+{
     RESideMenu *rootView = (RESideMenu *)self.window.rootViewController;
     UITabBarController *tabController = (UITabBarController *)rootView.contentViewController;
     NSArray *array = tabController.viewControllers;
-    if (array) {
+    if (array.count)
+    {
         tabController.selectedViewController = array[index];
     }
 }
 
-- (void)checkFiveDayNotification {
-    NSDictionary *dict = lastNotification.userInfo;
+- (void)checkFiveDayNotification
+{
+    NSDictionary *dict = self.lastNotification.userInfo;
     Plan *plan = [[Plan alloc] init];
     plan.account = [dict objectForKey:@"account"];
     plan.planid = [dict objectForKey:@"tag"];
@@ -193,7 +199,8 @@
     plan.isnotify = @"1";
     plan.notifytime = [dict objectForKey:@"notifytime"];
     
-    if ([plan.planid isEqualToString:STRFiveDayFlag1]) {
+    if ([plan.planid isEqualToString:STRFiveDayFlag1])
+    {
         //如果还是没有新建计划，每天提醒一次
         NSDate *tomorrow = [[NSDate date] dateByAddingTimeInterval:24 * 3600];
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -201,41 +208,49 @@
         NSString *fiveDayTomorrow = [dateFormatter stringFromDate:tomorrow];
         plan.notifytime = fiveDayTomorrow;
         [PlanCache updatePlanNotification:plan];
-    } else {
+    }
+    else
+    {
         BmobUser *user = [BmobUser currentUser];
         NSString *account = @"";
-        if (user) {
+        if (user)
+        {
             account = user.objectId;
         }
-        if (![plan.account isEqualToString:account]) {//非该账号的提醒，不显示
+        if (![plan.account isEqualToString:account])
+        {//非该账号的提醒，不显示
             return;
         }
         UIApplicationState state = [UIApplication sharedApplication].applicationState;
-        if (state == UIApplicationStateInactive) {
+        if (state == UIApplicationStateInactive)
+        {
             //程序在后台或者已关闭
-            [NotificationCenter postNotificationName:NTFLocalPush object:nil userInfo:lastNotification.userInfo];
+            [NotificationCenter postNotificationName:NTFLocalPush object:nil userInfo:self.lastNotification.userInfo];
             
-            NSDictionary *dict = lastNotification.userInfo;
+            NSDictionary *dict = self.lastNotification.userInfo;
             NSInteger type = [[dict objectForKey:@"type"] integerValue];
             if (type == 0) {//计划提醒
                 Plan *plan = [[Plan alloc] init];
                 plan.account = [dict objectForKey:@"account"];
                 plan.planid = [dict objectForKey:@"tag"];
-                if ([plan.planid isEqualToString:STRFiveDayFlag1]) {
+                if ([plan.planid isEqualToString:STRFiveDayFlag1])
+                {
                     //5天未新建计划提醒，不需要跳转到计划详情
                     return;
                 }
                 //切换到计划栏
                 [self changeTabbarSelectedItem:1];
-                
-            } else if (type == 1) {//任务提醒
+            }
+            else if (type == 1)
+            {//任务提醒
                 //切换到任务栏
                 [self changeTabbarSelectedItem:2];
             }
-            
-        } else {
+        }
+        else
+        {
             //程序正在运行
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:lastNotification.alertTitle message:lastNotification.alertBody delegate:self cancelButtonTitle:STRCommonTip28 otherButtonTitles:STRCommonTip29, STRCommonTip42, nil];
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.lastNotification.alertTitle message:self.lastNotification.alertBody delegate:self cancelButtonTitle:STRCommonTip28 otherButtonTitles:STRCommonTip29, STRCommonTip42, nil];
             [alert show];
         }
     }
