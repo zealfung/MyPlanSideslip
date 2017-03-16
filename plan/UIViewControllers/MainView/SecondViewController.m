@@ -236,13 +236,27 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 - (void)moveUnderLineViewToLeft
 {
     [self moveUnderLineViewToButton:self.menuTabView.leftButton];
-    [self getPlanData];
+    if (self.arrayPlanDay.count)
+    {
+        [self.tableViewPlan reloadData];
+    }
+    else
+    {
+        [self getPlanData];
+    }
 }
 
 - (void)moveUnderLineViewToRight
 {
     [self moveUnderLineViewToButton:self.menuTabView.centerButton];
-    [self getPlanData];
+    if (self.arrayPlanFuture.count)
+    {
+        [self.tableViewPlan reloadData];
+    }
+    else
+    {
+        [self getPlanData];
+    }
 }
 
 - (void)moveUnderLineViewToButton:(UIButton *)button
