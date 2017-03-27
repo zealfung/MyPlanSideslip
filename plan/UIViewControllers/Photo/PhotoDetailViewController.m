@@ -16,50 +16,49 @@
 
 NSUInteger const kPhotoDeleteTag = 20151011;
 
-@interface PhotoDetailViewController () <PagedFlowViewDataSource, PagedFlowViewDelegate> {
-    
-    CGFloat xMargins;
-    CGFloat yMargins;
-    CGFloat yOffset;
-    UILabel *labelCurrentPage;
-    PagedFlowView *pageFlowView;
-}
+@interface PhotoDetailViewController () <PagedFlowViewDataSource, PagedFlowViewDelegate>
+
+@property(nonatomic, assign) CGFloat xMargins;
+@property(nonatomic, assign) CGFloat yMargins;
+@property(nonatomic, assign) CGFloat yOffset;
+@property(nonatomic, strong) UILabel *labelCurrentPage;
+@property(nonatomic, strong) PagedFlowView *pageFlowView;
 
 @end
 
 @implementation PhotoDetailViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = STRViewTips32;
     self.view.backgroundColor = color_eeeeee;
     
+    __weak typeof(self) weakSelf = self;
+    [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_More] action:^(UIButton *sender) {
+        [weakSelf showMenu:sender];
+    }];
+    
     [NotificationCenter addObserver:self selector:@selector(refreshData) name:NTFPhotoSave object:nil];
     
-    [self createRightBarButton];
     [self initVariables];
     [self loadCustomView];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)dealloc {
-    [NotificationCenter removeObserver:self];
+- (void)initVariables
+{
+    self.xMargins = 12;
+    self.yMargins = 30;
+    self.yOffset = HEIGHT_FULL_SCREEN - self.yMargins - 64;
 }
 
-- (void)createRightBarButton {
-    self.rightBarButtonItem =[self createBarButtonItemWithNormalImageName:png_Btn_More selectedImageName:png_Btn_More selector:@selector(showMenu:)];
-}
-
-- (void)initVariables {
-    xMargins = 12;
-    yMargins = 30;
-    yOffset = HEIGHT_FULL_SCREEN - yMargins - 64;
-}
-
-- (void)loadCustomView {
+- (void)loadCustomView
+{
     [self.view.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     [self createTextViewContent];
     [self createLabelTimeAndLocation];
@@ -67,15 +66,16 @@ NSUInteger const kPhotoDeleteTag = 20151011;
     [self createPagedFlowView];
 }
 
-- (void)createTextViewContent {
-    if (self.photo.content && self.photo.content.length > 0) {
-        
+- (void)createTextViewContent
+{
+    if (self.photo.content && self.photo.content.length)
+    {
         CGSize size = [self.photo.content sizeWithFont:font_Normal_16 constrainedToSize:CGSizeMake(240, 2000) lineBreakMode:NSLineBreakByCharWrapping];
         CGFloat contentHeight = size.height + 10;//获取自适应文本内容高度
         contentHeight = contentHeight > 108 ? 108 : contentHeight;//content高度不能超过108
         
-        yOffset -= contentHeight;
-        UITextView *contentView = [[UITextView alloc] initWithFrame:CGRectMake(xMargins, yOffset, WIDTH_FULL_SCREEN - xMargins * 2, contentHeight)];
+        self.yOffset -= contentHeight;
+        UITextView *contentView = [[UITextView alloc] initWithFrame:CGRectMake(self.xMargins, self.yOffset, WIDTH_FULL_SCREEN - self.xMargins * 2, contentHeight)];
         contentView.backgroundColor = [UIColor clearColor];
         contentView.font = font_Normal_16;
         contentView.showsHorizontalScrollIndicator = NO;
@@ -83,12 +83,12 @@ NSUInteger const kPhotoDeleteTag = 20151011;
         contentView.textColor = [CommonFunction getGenderColor];
         contentView.text = self.photo.content;
         contentView.editable = NO;
-        if (contentHeight < 30) {
-            
+        if (contentHeight < 30)
+        {
             contentView.textAlignment = NSTextAlignmentCenter;
-            
-        } else {
-            
+        }
+        else
+        {
             contentView.textAlignment = NSTextAlignmentLeft;
         }
         
@@ -96,14 +96,15 @@ NSUInteger const kPhotoDeleteTag = 20151011;
     }
 }
 
-- (void)createLabelTimeAndLocation {
+- (void)createLabelTimeAndLocation
+{
     NSString *timeAndLocation = [NSString stringWithFormat:STRViewTips35, self.photo.phototime];
-    if (self.photo.location && self.photo.location.length > 0) {
-        
+    if (self.photo.location && self.photo.location.length > 0)
+    {
         timeAndLocation = [NSString stringWithFormat:STRViewTips36, timeAndLocation, self.photo.location];
     }
-    yOffset -= 30;
-    UILabel *labelTimeAndLocation = [[UILabel alloc] initWithFrame:CGRectMake(xMargins, yOffset, WIDTH_FULL_SCREEN - xMargins * 2, 30)];
+    self.yOffset -= 30;
+    UILabel *labelTimeAndLocation = [[UILabel alloc] initWithFrame:CGRectMake(self.xMargins, self.yOffset, WIDTH_FULL_SCREEN - self.xMargins * 2, 30)];
     labelTimeAndLocation.font = font_Normal_18;
     labelTimeAndLocation.textColor = color_333333;
     labelTimeAndLocation.textAlignment = NSTextAlignmentCenter;
@@ -111,35 +112,39 @@ NSUInteger const kPhotoDeleteTag = 20151011;
     [self.view addSubview:labelTimeAndLocation];
 }
 
-- (void)createLabelCurrentPage {
-    yOffset -= 30;
-    UILabel *labelPage = [[UILabel alloc] initWithFrame:CGRectMake(xMargins, yOffset, WIDTH_FULL_SCREEN - xMargins * 2, 30)];
+- (void)createLabelCurrentPage
+{
+    self.yOffset -= 30;
+    UILabel *labelPage = [[UILabel alloc] initWithFrame:CGRectMake(self.xMargins, self.yOffset, WIDTH_FULL_SCREEN - self.xMargins * 2, 30)];
     labelPage.font = font_Bold_18;
     labelPage.textColor = [CommonFunction getGenderColor];
     labelPage.textAlignment = NSTextAlignmentCenter;
-    labelPage.text = [NSString stringWithFormat:@"1 / %ld", (long)self.photo.photoArray.count];
-    labelCurrentPage = labelPage;
+    labelPage.text = [NSString stringWithFormat:@"1 / %ld", (long)self.photo.photoURLArray.count];
+    self.labelCurrentPage = labelPage;
     [self.view addSubview:labelPage];
 }
 
-- (void)createPagedFlowView {
-    pageFlowView = [[PagedFlowView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, yOffset)];
-    pageFlowView.backgroundColor = color_e9eff1;
-    pageFlowView.minimumPageAlpha = 0.7;
-    pageFlowView.minimumPageScale = 0.9;
-    pageFlowView.delegate = self;
-    pageFlowView.dataSource = self;
-    [self.view addSubview:pageFlowView];
+- (void)createPagedFlowView
+{
+    self.pageFlowView = [[PagedFlowView alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, self.yOffset)];
+    self.pageFlowView.backgroundColor = color_e9eff1;
+    self.pageFlowView.minimumPageAlpha = 0.7;
+    self.pageFlowView.minimumPageScale = 0.9;
+    self.pageFlowView.delegate = self;
+    self.pageFlowView.dataSource = self;
+    [self.view addSubview:self.pageFlowView];
 }
 
-- (void)refreshData {
+- (void)refreshData
+{
     self.photo = [PlanCache getPhotoById:self.photo.photoid];
     [self initVariables];
     [self loadCustomView];
 }
 
 #pragma mark - action
-- (void)showMenu:(UIButton *)sender {
+- (void)showMenu:(UIButton *)sender
+{
     NSArray *menuItems =
     @[
       [KxMenuItem menuItem:STRCommonTip33
@@ -152,25 +157,30 @@ NSUInteger const kPhotoDeleteTag = 20151011;
                     action:@selector(deleteAction:)],
       ];
     
-    if (![KxMenu isShowMenu]) {
+    if (![KxMenu isShowMenu])
+    {
         CGRect frame = sender.frame;
         frame.origin.y -= 30;
         [KxMenu showMenuInView:self.view
                       fromRect:frame
                      menuItems:menuItems];
-    } else {
+    }
+    else
+    {
         [KxMenu dismissMenu];
     }
 }
 
-- (void)editAction:(UIButton *)sender {
+- (void)editAction:(UIButton *)sender
+{
     AddPhotoViewController *controller = [[AddPhotoViewController alloc] init];
     controller.operationType = Edit;
     controller.photo = self.photo;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)deleteAction:(UIButton *)sender {
+- (void)deleteAction:(UIButton *)sender
+{
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:STRViewTips37
                                                     message:nil
                                                    delegate:self
@@ -182,19 +192,20 @@ NSUInteger const kPhotoDeleteTag = 20151011;
     [alert show];
 }
 
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (alertView.tag == kPhotoDeleteTag) {
-        
-        if (buttonIndex == 1) {
-            
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == kPhotoDeleteTag)
+    {
+        if (buttonIndex == 1)
+        {
             BOOL result = [PlanCache deletePhoto:self.photo];
-            if (result) {
-                
+            if (result)
+            {
                 [self alertToastMessage:STRCommonTip16];
                 [self.navigationController popViewControllerAnimated:YES];
-                
-            } else {
-                
+            }
+            else
+            {
                 [self alertButtonMessage:STRCommonTip17];
             }
         }
@@ -202,33 +213,45 @@ NSUInteger const kPhotoDeleteTag = 20151011;
 }
 
 #pragma mark - PagedFlowView Datasource
-- (NSInteger)numberOfPagesInFlowView:(PagedFlowView *)flowView {
-    return self.photo.photoArray.count;
+- (NSInteger)numberOfPagesInFlowView:(PagedFlowView *)flowView
+{
+    return self.photo.photoURLArray.count;
 }
 
-- (UIView *)flowView:(PagedFlowView *)flowView cellForPageAtIndex:(NSInteger)index {
+- (UIView *)flowView:(PagedFlowView *)flowView cellForPageAtIndex:(NSInteger)index
+{
     [flowView dequeueReusableCell]; //必须要调用否则会内存泄漏
     UIImageView *imageView = [[UIImageView alloc] init];
     imageView.contentMode = UIViewContentModeScaleAspectFit;
-    imageView.image = [UIImage imageWithData:self.photo.photoArray[index]];
+
+    NSURL *photoURL = [NSURL URLWithString:self.photo.photoURLArray[index]];
+    [imageView sd_setImageWithPreviousCachedImageWithURL:photoURL andPlaceholderImage:[UIImage imageNamed:@"ImgDefault_Rectangle"] options:SDWebImageHighPriority progress:^(NSInteger receivedSize, NSInteger expectedSize)
+     {
+     }
+                                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+     {
+     }];
     return imageView;
 }
 
 #pragma mark - PagedFlowView Delegate
-- (CGSize)sizeForPageInFlowView:(PagedFlowView *)flowView {
-    CGFloat width = yOffset * 185.4 / 300;
-    return CGSizeMake(width, yOffset);
+- (CGSize)sizeForPageInFlowView:(PagedFlowView *)flowView
+{
+    CGFloat width = self.yOffset * 185.4 / 300;
+    return CGSizeMake(width, self.yOffset);
 }
 
-- (void)flowView:(PagedFlowView *)flowView didScrollToPageAtIndex:(NSInteger)index {
+- (void)flowView:(PagedFlowView *)flowView didScrollToPageAtIndex:(NSInteger)index
+{
     long current = index + 1;
-    long total = self.photo.photoArray.count;
-    labelCurrentPage.text = [NSString stringWithFormat:@"%ld / %ld", current, total];
+    long total = self.photo.photoURLArray.count;
+    self.labelCurrentPage.text = [NSString stringWithFormat:@"%ld / %ld", current, total];
 }
 
-- (void)flowView:(PagedFlowView *)flowView didTapPageAtIndex:(NSInteger)index {
+- (void)flowView:(PagedFlowView *)flowView didTapPageAtIndex:(NSInteger)index
+{
     FullScreenImageArrayViewController *controller = [[FullScreenImageArrayViewController alloc] init];
-    controller.imgArray = self.photo.photoArray;
+    controller.imgArray = self.photo.photoURLArray;
     controller.defaultIndex = index;
     [self.navigationController pushViewController:controller animated:YES];
 }

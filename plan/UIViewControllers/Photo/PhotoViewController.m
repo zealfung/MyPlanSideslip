@@ -12,35 +12,37 @@
 #import "AddPhotoViewController.h"
 #import "PhotoDetailViewController.h"
 
-@interface PhotoViewController () {
-    
-    NSMutableArray *photoArray;
-    NSInteger photoTotal;
-    NSInteger loadStart;
-    BOOL isLoadMore;
-}
+@interface PhotoViewController ()
+
+@property(nonatomic, strong) NSMutableArray *photoArray;
+@property(nonatomic, assign) BOOL isLoadingPhoto;
 
 @end
 
 @implementation PhotoViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = STRViewTitle5;
-    [self createNavBarButton];
+
+    __weak typeof(self) weakSelf = self;
+    [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_Add] action:^(UIButton *sender) {
+        [weakSelf addAction:sender];
+    }];
     
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.tableFooterView = [[UIView alloc] init];
-    __weak typeof(self) weakSelf = self;
+    
+    self.photoArray = [NSMutableArray array];
     MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        isLoadMore = NO;
+        weakSelf.photoArray = [NSMutableArray array];
         [weakSelf reloadPhotoData];
     }];
     header.lastUpdatedTimeLabel.hidden = YES;
     self.tableView.mj_header = header;
     self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-        isLoadMore = YES;
         [weakSelf reloadPhotoData];
     }];
     
@@ -50,82 +52,124 @@
     [self reloadPhotoData];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)dealloc {
-    [NotificationCenter removeObserver:self];
-}
-
-- (void)createNavBarButton {
-    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Add selectedImageName:png_Btn_Add selector:@selector(addAction:)];
-}
-
-- (void)addAction:(UIButton *)button {
+- (void)addAction:(UIButton *)button
+{
     AddPhotoViewController *controller = [[AddPhotoViewController alloc] init];
     controller.operationType = Add;
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)reloadPhotoData {
-    [self showHUD];
-    photoTotal = [[PlanCache getPhotoTotalCount] integerValue];
-    if (!isLoadMore) {
-        loadStart = 0;
-        photoArray = [NSMutableArray array];
+- (void)reloadPhotoData
+{
+    if (self.isLoadingPhoto)
+    {
+        return;
     }
-    [photoArray addObjectsFromArray:[PlanCache getPhoto:loadStart]];
-    isLoadMore = NO;
-    if (loadStart < photoTotal) {
-        loadStart += kPhotoLoadMax;
-    } else {
-        [self.tableView.mj_footer endRefreshingWithNoMoreData];
-    }
-    [self.tableView.mj_header endRefreshing];
-    [self.tableView.mj_footer endRefreshing];
+    self.isLoadingPhoto = YES;
     
-    [self.tableView reloadData];
-    [self hideHUD];
+    [self showHUD];
+    BmobUser *user = [BmobUser currentUser];
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Photo"];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+    [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
+    [bquery orderByDescending:@"updatedTime"];
+    bquery.limit = 100;
+    bquery.skip = self.photoArray.count;
+    
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+    {
+         [weakSelf hideHUD];
+         weakSelf.isLoadingPhoto = NO;
+         [weakSelf.tableView.mj_header endRefreshing];
+         [weakSelf.tableView.mj_footer endRefreshing];
+         
+         if (!error && array.count)
+         {
+             for (BmobObject *obj in array)
+             {
+                 Photo *photo = [[Photo alloc] init];
+                 photo.account = [obj objectForKey:@"userObjectId"];
+                 photo.photoid = obj.objectId;
+                 photo.content = [obj objectForKey:@"content"];
+                 photo.createtime = [obj objectForKey:@"createdTime"];
+                 photo.phototime = [obj objectForKey:@"photoTime"];
+                 photo.updatetime = [obj objectForKey:@"updatedTime"];
+                 photo.location = [obj objectForKey:@"location"];
+                 photo.photoURLArray = [NSMutableArray array];
+                 for (NSInteger n = 0; n < 9; n++)
+                 {
+                     NSString *key = [NSString stringWithFormat:@"photo%ldURL", (long)(n + 1)];
+                     if ([obj objectForKey:key])
+                     {
+                         [photo.photoURLArray addObject:[obj objectForKey:key]];
+                     }
+                 }
+
+                 [weakSelf.photoArray addObject:photo];
+             }
+         }
+         [weakSelf refreshTable];
+     }];
 }
 
-- (void)refreshTable {
+- (void)refreshTable
+{
     [self.tableView reloadData];
 }
 
 #pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (photoArray.count > 0) {
-        return photoArray.count;
-    } else {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (self.photoArray.count)
+    {
+        return self.photoArray.count;
+    }
+    else
+    {
         return 5;
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (photoArray.count > 0) {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.photoArray.count)
+    {
         return kPhotoCellHeight;
-    } else {
+    }
+    else
+    {
         return 44.f;
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    if (indexPath.row < photoArray.count) {
-        Photo *photo = photoArray[indexPath.row];
+    if (indexPath.row < self.photoArray.count)
+    {
+        Photo *photo = self.photoArray[indexPath.row];
         PhotoCell *cell = [PhotoCell cellView:photo];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
-    } else {
+    }
+    else
+    {
         static NSString *noticeCellIdentifier = @"noPhotoCellIdentifier";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noticeCellIdentifier];
-        if (!cell) {
+        if (!cell)
+        {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noticeCellIdentifier];
             cell.backgroundColor = [UIColor clearColor];
             cell.contentView.backgroundColor = [UIColor clearColor];
@@ -137,17 +181,20 @@
             cell.textLabel.font = font_Bold_16;
         }
         
-        if (indexPath.row == 4) {
+        if (indexPath.row == 4)
+        {
             cell.textLabel.text = STRViewTips31;
         }
         return cell;
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row < photoArray.count) {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row < self.photoArray.count)
+    {
         PhotoDetailViewController *controller = [[PhotoDetailViewController alloc] init];
-        controller.photo = photoArray[indexPath.row];
+        controller.photo = self.photoArray[indexPath.row];
         controller.hidesBottomBarWhenPushed = YES;
         [self.navigationController pushViewController:controller animated:YES];
     }
