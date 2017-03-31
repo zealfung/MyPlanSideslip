@@ -11,19 +11,25 @@
 
 NSInteger const kFullScreenImageArrayViewBaseTag = 20151121;
 
-@interface FullScreenImageArrayViewController () <UIScrollViewDelegate> {
-    
-    UIScrollView *myScrollView;
-    NSInteger currentPage;
-    NSInteger tmpPage;
-    BOOL fullScreen;
-}
+@interface FullScreenImageArrayViewController () <UIScrollViewDelegate>
+//{
+//    
+//    UIScrollView *myScrollView;
+//    NSInteger currentPage;
+//    NSInteger tmpPage;
+//    BOOL fullScreen;
+//}
+@property(nonatomic, strong) UIScrollView *myScrollView;
+@property(nonatomic, assign) NSInteger currentPage;
+@property(nonatomic, assign) NSInteger tmpPage;
+@property(nonatomic, assign) BOOL fullScreen;
 
 @end
 
 @implementation FullScreenImageArrayViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     {
@@ -37,93 +43,100 @@ NSInteger const kFullScreenImageArrayViewBaseTag = 20151121;
         [oneTapGestureRecognizer requireGestureRecognizerToFail:twoTapGestureRecognizer];
     }
     
-    if (!(iOS7_LATER)) {
+    if (!(iOS7_LATER))
+    {
         self.navigationController.navigationBar.barStyle = UIBarStyleBlackTranslucent;
-//        self.wantsFullScreenLayout = YES;
-    } else {
+    }
+    else
+    {
         self.edgesForExtendedLayout = UIRectEdgeAll;
         self.extendedLayoutIncludesOpaqueBars = YES;
         self.automaticallyAdjustsScrollViewInsets = NO;
     }
     
-    fullScreen = YES;
-    currentPage = -1;
-    [[UIApplication sharedApplication] setStatusBarHidden:fullScreen withAnimation:UIStatusBarAnimationNone];
-    [self.navigationController setNavigationBarHidden:fullScreen animated:NO];
+    self.fullScreen = YES;
+    self.currentPage = -1;
+    [[UIApplication sharedApplication] setStatusBarHidden:self.fullScreen withAnimation:UIStatusBarAnimationNone];
+    [self.navigationController setNavigationBarHidden:self.fullScreen animated:NO];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     
-    if (!myScrollView) {
+    if (!self.myScrollView)
+    {
+        self.myScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
+        self.myScrollView.backgroundColor = [UIColor clearColor];
+        self.myScrollView.pagingEnabled = YES;
+        self.myScrollView.delegate = self;
+        self.myScrollView.showsVerticalScrollIndicator = NO;
+        self.myScrollView.showsHorizontalScrollIndicator = NO;
+        [self.view addSubview:self.myScrollView];
         
-        myScrollView = [[UIScrollView alloc] initWithFrame:self.view.bounds];
-        myScrollView.backgroundColor = [UIColor clearColor];
-        myScrollView.pagingEnabled = YES;
-        myScrollView.delegate = self;
-        myScrollView.showsVerticalScrollIndicator = NO;
-        myScrollView.showsHorizontalScrollIndicator = NO;
-        [self.view addSubview:myScrollView];
-        
-        myScrollView.contentSize = CGSizeMake(CGRectGetWidth(myScrollView.frame) * self.imgArray.count, CGRectGetHeight(myScrollView.frame));
-        [myScrollView setContentOffset:CGPointMake(self.defaultIndex * myScrollView.frame.size.width, 0) animated:NO];
-        [self scrollViewDidScroll:myScrollView];
+        self.myScrollView.contentSize = CGSizeMake(CGRectGetWidth(self.myScrollView.frame) * self.imgURLArray.count, CGRectGetHeight(self.myScrollView.frame));
+        [self.myScrollView setContentOffset:CGPointMake(self.defaultIndex * self.myScrollView.frame.size.width, 0) animated:NO];
+        [self scrollViewDidScroll:self.myScrollView];
     }
 }
 
-- (void)viewWillDisappear:(BOOL)animated {
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
     
     [NSTimer cancelPreviousPerformRequestsWithTarget:self selector:@selector(oneTapAction:) object:nil];
     [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:UIStatusBarAnimationNone];
 }
 
-- (void)backAction:(UIButton *)button {
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
     if ((toInterfaceOrientation == UIInterfaceOrientationPortrait) ||
         (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft) ||
-        (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)) {
-        
+        (toInterfaceOrientation == UIInterfaceOrientationLandscapeRight))
+    {
         return YES;
     }
     return NO;
 }
 
-- (BOOL)shouldAutorotate {
+- (BOOL)shouldAutorotate
+{
     return YES;
 }
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations {
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
     return UIInterfaceOrientationMaskAllButUpsideDown;
 }
 
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
     return UIInterfaceOrientationPortrait;
 }
 
-- (void)viewDidLayoutSubviews {
-    tmpPage = currentPage;
+- (void)viewDidLayoutSubviews
+{
+    self.tmpPage = self.currentPage;
     
     CGRect bounds = self.view.bounds;
-    myScrollView.frame = bounds;
+    self.myScrollView.frame = bounds;
     
-    bounds = myScrollView.bounds;
+    bounds = self.myScrollView.bounds;
     
-    CGSize contentSize = CGSizeMake(CGRectGetWidth(bounds) * self.imgArray.count, CGRectGetHeight(bounds));
-    myScrollView.contentSize = contentSize;
+    CGSize contentSize = CGSizeMake(CGRectGetWidth(bounds) * self.imgURLArray.count, CGRectGetHeight(bounds));
+    self.myScrollView.contentSize = contentSize;
     
-    CGPoint contentPoint = CGPointMake(tmpPage * CGRectGetWidth(bounds), 0);
-    [myScrollView setContentOffset:contentPoint animated:NO];
+    CGPoint contentPoint = CGPointMake(self.tmpPage * CGRectGetWidth(bounds), 0);
+    [self.myScrollView setContentOffset:contentPoint animated:NO];
     
-    for (int index = 0; index < self.imgArray.count; index++) {
-        
-        ImageScrollView *view = (ImageScrollView *)[myScrollView viewWithTag:kFullScreenImageArrayViewBaseTag + index];
+    for (int index = 0; index < self.imgURLArray.count; index++)
+    {
+        ImageScrollView *view = (ImageScrollView *)[self.myScrollView viewWithTag:kFullScreenImageArrayViewBaseTag + index];
         [view setZoomScale:1 animated:NO];
         view.frame = [self getPhotoViewFrameForIndex:index];
         view.contentSize = view.bounds.size;
@@ -131,70 +144,76 @@ NSInteger const kFullScreenImageArrayViewBaseTag = 20151121;
     }
 }
 
-- (CGRect)getPhotoViewFrameForIndex:(NSInteger)index {
-    CGRect rect = myScrollView.bounds;
-    rect.origin.x = myScrollView.frame.size.width * index;
-    
+- (CGRect)getPhotoViewFrameForIndex:(NSInteger)index
+{
+    CGRect rect = self.myScrollView.bounds;
+    rect.origin.x = self.myScrollView.frame.size.width * index;
     return rect;
 }
 
-- (void)oneTapAction:(UITapGestureRecognizer *)tapGesture {
-    fullScreen = !fullScreen;
+- (void)oneTapAction:(UITapGestureRecognizer *)tapGesture
+{
+    self.fullScreen = !self.fullScreen;
     
-    [[UIApplication sharedApplication] setStatusBarHidden:fullScreen withAnimation:UIStatusBarAnimationNone];
-    [self.navigationController setNavigationBarHidden:fullScreen animated:NO];
+    [[UIApplication sharedApplication] setStatusBarHidden:self.fullScreen withAnimation:UIStatusBarAnimationNone];
+    [self.navigationController setNavigationBarHidden:self.fullScreen animated:NO];
     
     [NSTimer cancelPreviousPerformRequestsWithTarget:self selector:@selector(oneTapAction:) object:nil];
     
-    if (!fullScreen) {
-        
+    if (!self.fullScreen)
+    {
         [self performSelector:@selector(oneTapAction:) withObject:nil afterDelay:5];
-        
     }
 }
 
-- (void)twoTapAction:(UITapGestureRecognizer *)tapGesture {
-    ImageScrollView *imgView = (ImageScrollView *)[myScrollView viewWithTag:currentPage + kFullScreenImageArrayViewBaseTag];
+- (void)twoTapAction:(UITapGestureRecognizer *)tapGesture
+{
+    ImageScrollView *imgView = (ImageScrollView *)[self.myScrollView viewWithTag:self.currentPage + kFullScreenImageArrayViewBaseTag];
     [imgView autoZoomScale];
 }
 
-- (void)loadScrollViewWithPageIndex:(NSInteger)index {
-    if (index < 0 || index >= self.imgArray.count) {
+- (void)loadScrollViewWithPageIndex:(NSInteger)index
+{
+    if (index < 0 || index >= self.imgURLArray.count)
+    {
         return;
     }
     
     ImageScrollView *imgView = [[ImageScrollView alloc] initWithFrame:[self getPhotoViewFrameForIndex:index]];
     imgView.tag = kFullScreenImageArrayViewBaseTag + index;
-    imgView.imageView.contentMode = UIViewContentModeScaleAspectFit;//UIViewContentModeCenter;
-    imgView.imageView.image = [UIImage imageWithData:self.imgArray[index]];
-    [myScrollView addSubview:imgView];
+    imgView.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [imgView.imageView sd_setImageWithPreviousCachedImageWithURL:[NSURL URLWithString:self.imgURLArray[index]] andPlaceholderImage:[UIImage imageNamed:png_ImageDefault] options:SDWebImageHighPriority progress:^(NSInteger receivedSize, NSInteger expectedSize)
+     {
+     }
+     completed:nil];
+    [self.myScrollView addSubview:imgView];
 }
 
 #pragma mark - UIScrollViewDelegate
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
     CGFloat pageWidth = scrollView.frame.size.width;
     NSInteger page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
     
-    if (page != currentPage) {
+    if (page != self.currentPage)
+    {
+        self.currentPage = page;
         
-        currentPage = page;
-        
-        for (NSInteger i = 0; i < self.imgArray.count; i++) {
-            
-            ImageScrollView *imgView = (ImageScrollView *)[myScrollView viewWithTag:kFullScreenImageArrayViewBaseTag + i];
-            if (i != page && i != page - 1 && i != page + 1) {
-                
+        for (NSInteger i = 0; i < self.imgURLArray.count; i++)
+        {
+            ImageScrollView *imgView = (ImageScrollView *)[self.myScrollView viewWithTag:kFullScreenImageArrayViewBaseTag + i];
+            if (i != page && i != page - 1 && i != page + 1)
+            {
                 if (imgView.superview != nil)
                 {
                     [imgView removeFromSuperview];
                 }
-                
-            } else {
-
-                if (!imgView) {
-                    
+            }
+            else
+            {
+                if (!imgView)
+                {
                     [self loadScrollViewWithPageIndex:i];
-                    
                 }
             }
         }

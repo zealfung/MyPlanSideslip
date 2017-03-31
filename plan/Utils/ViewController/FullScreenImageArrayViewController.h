@@ -10,7 +10,7 @@
 
 @interface FullScreenImageArrayViewController : FatherViewController
 
-@property (nonatomic, strong) NSArray *imgArray;
+@property (nonatomic, strong) NSArray *imgURLArray;
 @property (nonatomic, assign) NSUInteger defaultIndex;
 
 @end

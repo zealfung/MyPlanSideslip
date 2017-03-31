@@ -228,7 +228,7 @@ NSUInteger const kPhotoDeleteTag = 20151011;
     [imageView sd_setImageWithPreviousCachedImageWithURL:photoURL andPlaceholderImage:[UIImage imageNamed:@"ImgDefault_Rectangle"] options:SDWebImageHighPriority progress:^(NSInteger receivedSize, NSInteger expectedSize)
      {
      }
-                                               completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
      {
      }];
     return imageView;
@@ -251,7 +251,7 @@ NSUInteger const kPhotoDeleteTag = 20151011;
 - (void)flowView:(PagedFlowView *)flowView didTapPageAtIndex:(NSInteger)index
 {
     FullScreenImageArrayViewController *controller = [[FullScreenImageArrayViewController alloc] init];
-    controller.imgArray = self.photo.photoURLArray;
+    controller.imgURLArray = self.photo.photoURLArray;
     controller.defaultIndex = index;
     [self.navigationController pushViewController:controller animated:YES];
 }
