@@ -9,6 +9,7 @@
 #import "PhotoCell.h"
 #import "MJRefresh.h"
 #import "PhotoViewController.h"
+#import "LogInViewController.h"
 #import "AddPhotoViewController.h"
 #import "PhotoDetailViewController.h"
 
@@ -28,7 +29,19 @@
 
     __weak typeof(self) weakSelf = self;
     [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_Add] action:^(UIButton *sender) {
-        [weakSelf addAction:sender];
+        if ([LogIn isLogin])
+        {
+            AddPhotoViewController *controller = [[AddPhotoViewController alloc] init];
+            controller.operationType = Add;
+            controller.hidesBottomBarWhenPushed = YES;
+            [weakSelf.navigationController pushViewController:controller animated:YES];
+        }
+        else
+        {
+            LogInViewController *controller = [[LogInViewController alloc] init];
+            controller.hidesBottomBarWhenPushed = YES;
+            [weakSelf.navigationController pushViewController:controller animated:YES];
+        }
     }];
     
     self.tableView.showsHorizontalScrollIndicator = NO;
@@ -55,14 +68,6 @@
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-}
-
-- (void)addAction:(UIButton *)button
-{
-    AddPhotoViewController *controller = [[AddPhotoViewController alloc] init];
-    controller.operationType = Add;
-    controller.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)reloadPhotoData
