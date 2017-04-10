@@ -6,9 +6,11 @@
 //  Copyright (c) 2015年 Fengzy. All rights reserved.
 //
 
-#import "PlanCache.h"
 #import "AssetHelper.h"
 #import "PageScrollView.h"
+#import <BmobSDK/BmobACL.h>
+#import <BmobSDK/BmobFile.h>
+#import <BmobSDK/BmobObjectsBatch.h>
 #import "AddPhotoViewController.h"
 #import "DoImagePickerController.h"
 
@@ -16,62 +18,67 @@ NSUInteger const photoMax = 9;
 NSUInteger const pageHeight = 148;
 NSUInteger const pageWidth = 110;
 
-@interface AddPhotoViewController () <UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PageScrollViewDataSource, PageScrollViewDelegate, DoImagePickerControllerDelegate> {
-    
-    BOOL canAddPhoto;
-    CGRect originalFrame;
-}
+@interface AddPhotoViewController () <UITextViewDelegate, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, PageScrollViewDataSource, PageScrollViewDelegate, DoImagePickerControllerDelegate>
 
 @property (nonatomic, strong) UIDatePicker *datePicker;
 @property (nonatomic, strong) NSMutableArray *photoArray;
-@property (nonatomic, weak) PageScrollView *pageScrollView;
-@property (nonatomic, weak) UILabel *tipsLabel;
+@property (nonatomic, assign) PageScrollView *pageScrollView;
+@property (nonatomic, assign) UILabel *tipsLabel;
+@property (nonatomic, assign) BOOL canAddPhoto;
+@property (nonatomic, assign) NSInteger photoUploadCount;
 
 @end
 
 @implementation AddPhotoViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
-    if (self.operationType == Add) {
+    if (self.operationType == Add)
+    {
         self.title = STRViewTips22;
-    } else {
+    }
+    else
+    {
         self.title = STRViewTips23;
     }
     
-    canAddPhoto = YES;
+    self.canAddPhoto = YES;
     self.photoArray = [NSMutableArray array];
     
-    [self createRightBarButton];
+    __weak typeof(self) weakSelf = self;
+    [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_Save] action:^(UIButton *sender) {
+        [weakSelf saveAction:sender];
+    }];
+
     [self loadCustomView];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [self relocationPage];
 }
 
-- (void)createRightBarButton {
-    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Save selectedImageName:png_Btn_Save selector:@selector(saveAction:)];
-}
-
-- (void)loadCustomView {
+- (void)loadCustomView
+{
     self.labelTime.text = STRViewTips34;
     self.labelLocation.text = STRViewTips33;
     //描述
     if (self.operationType == Edit
         && self.photo.content
-        && self.photo.content.length > 0) {
-        
+        && self.photo.content.length)
+    {
         self.textViewContent.textColor = color_333333;
         self.textViewContent.text = self.photo.content;
-        
-    } else {
-        
+    }
+    else
+    {
         self.textViewContent.textColor = color_8f8f8f;
         self.textViewContent.text = STRViewTips24;
     }
@@ -79,12 +86,12 @@ NSUInteger const pageWidth = 110;
     self.textViewContent.delegate = self;
     //时间
     if (self.photo.phototime
-        && self.photo.phototime.length > 0) {
-        
+        && self.photo.phototime.length > 0)
+    {
         self.textFieldTime.text = self.photo.phototime;
-        
-    } else {
-        
+    }
+    else
+    {
         self.textFieldTime.text = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     }
     [self.textFieldTime addTarget:self action:@selector(setPhotoTime) forControlEvents:UIControlEventTouchDown];
@@ -94,8 +101,8 @@ NSUInteger const pageWidth = 110;
     //地点
     if (self.operationType == Edit
         && self.photo.location
-        && self.photo.location.length > 0) {
-        
+        && self.photo.location.length > 0)
+    {
         self.textFieldLocation.text = self.photo.location;
     }
     self.textFieldLocation.inputAccessoryView = [self getInputAccessoryView];
@@ -104,16 +111,17 @@ NSUInteger const pageWidth = 110;
     self.textFieldLocation.tag = 1;
     //照片
     NSData *addImage = UIImageJPEGRepresentation([UIImage imageNamed:png_Btn_AddPhoto], 1);
-    if (self.operationType == Edit) {
-        
+    if (self.operationType == Edit)
+    {
         self.photoArray = [NSMutableArray arrayWithArray:self.photo.photoArray];
         
-        if (self.photoArray.count < photoMax) {
-            
+        if (self.photoArray.count < photoMax)
+        {
             [self.photoArray addObject:addImage];
         }
-    } else {
-        
+    }
+    else
+    {
         [self.photoArray addObject:addImage];
     }
     
@@ -137,11 +145,10 @@ NSUInteger const pageWidth = 110;
     label.text = STRViewTips27;
     [self.viewPhoto addSubview:label];
     self.tipsLabel = label;
-    
-    originalFrame = self.view.frame;
 }
 
-- (void)setPhotoTime {
+- (void)setPhotoTime
+{
     [self.textFieldTime resignFirstResponder];
     
     UIView *pickerView = [[UIView alloc] initWithFrame:self.view.bounds];
@@ -183,16 +190,16 @@ NSUInteger const pageWidth = 110;
         
         NSString *photoDate = self.textFieldTime.text;
         
-        if (photoDate) {
-            
+        if (photoDate)
+        {
             NSDate *date = [CommonFunction NSStringDateToNSDate:photoDate formatter:STRDateFormatterType4];
-            if (date) {
-                
+            if (date)
+            {
                 [self.datePicker setDate:date animated:YES];
             }
-            
-        } else {
-            
+        }
+        else
+        {
             NSDate *defaultDate = [CommonFunction NSStringDateToNSDate:[NSString stringWithFormat:@"%zd-%zd-%zd",
                                                                         defaultComponents.year,
                                                                         defaultComponents.month,
@@ -205,7 +212,8 @@ NSUInteger const pageWidth = 110;
     [self.view addSubview:pickerView];
 }
 
-- (void)onPickerCertainBtn {
+- (void)onPickerCertainBtn
+{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:STRDateFormatterType4];
     NSString *photoTime = [dateFormatter stringFromDate:self.datePicker.date];
@@ -214,14 +222,17 @@ NSUInteger const pageWidth = 110;
     [pickerView removeFromSuperview];
 }
 
-- (void)onPickerCancelBtn {
+- (void)onPickerCancelBtn
+{
     UIView *pickerView = [self.view viewWithTag:kDatePickerBgViewTag];
     [pickerView removeFromSuperview];
 }
 
 #pragma mark - action
-- (void)saveAction:(UIButton *)button {
-    if (self.photoArray.count < 2) {
+- (void)saveAction:(UIButton *)button
+{
+    if (self.photoArray.count < 2)
+    {
         [self alertButtonMessage:STRViewTips28];
         return;
     }
@@ -231,118 +242,120 @@ NSUInteger const pageWidth = 110;
     NSString *timeNow = [CommonFunction getTimeNowString];
     NSString *photoid = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType5];
     
-    if (self.operationType == Add) {
-        
+    if (self.operationType == Add)
+    {
         self.photo = [[Photo alloc] init];
         self.photo.photoid = photoid;
         self.photo.createtime = timeNow;
         self.photo.updatetime = timeNow;
         self.photo.photoURLArray = [NSMutableArray arrayWithCapacity:9];
-        for (NSInteger i = 0; i < 9; i++) {
+        for (NSInteger i = 0; i < 9; i++)
+        {
             self.photo.photoURLArray[i] = @"";
         }
-    } else {
-        
+    }
+    else
+    {
         self.photo.updatetime = timeNow;
     }
-    if (![self.textViewContent.text isEqualToString:STRViewTips24]) {
-        
+    if (![self.textViewContent.text isEqualToString:STRViewTips24])
+    {
         self.photo.content = self.textViewContent.text;
     }
     self.photo.phototime = self.textFieldTime.text;
-    if (self.textFieldLocation.text.length > 0) {
-        
+    if (self.textFieldLocation.text.length > 0)
+    {
         self.photo.location = self.textFieldLocation.text;
     }
     //去掉那张新增按钮图
-    if (canAddPhoto) {
-        
+    if (self.canAddPhoto)
+    {
         [self.photoArray removeObjectAtIndex:self.photoArray.count - 1];
     }
     self.photo.photoArray = self.photoArray;
     
-    BOOL result = [PlanCache storePhoto:self.photo];
-    [self hideHUD];
-    if (result) {
-        
-        [self alertToastMessage:STRCommonTip13];
-        [self.navigationController popViewControllerAnimated:YES];
-        
-    } else {
-        
-        [self alertButtonMessage:STRCommonTip14];
-    }
+    [self submit:self.photo];
 }
 
-- (void)relocationPage {
+- (void)relocationPage
+{
     NSUInteger addIndex = self.photoArray.count > 1 ? self.photoArray.count - 2 : self.photoArray.count - 1;
     [self.pageScrollView scrollToPage:addIndex animated:YES];
 }
 
 #pragma mark - UITextViewDelegate
-- (void)textViewDidBeginEditing:(UITextView *)textView {
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
     NSString *text = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if ([text isEqualToString:STRViewTips24]) {
+    if ([text isEqualToString:STRViewTips24])
+    {
         textView.text = @"";
         textView.textColor = color_333333;
     }
 }
 
-- (void)textViewDidEndEditing:(UITextView *)textView {
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
     NSString *text = [textView.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-    if (text.length == 0) {
+    if (text.length == 0)
+    {
         textView.text = STRViewTips24;
         textView.textColor = color_8f8f8f;
     }
 }
 
 #pragma mark - UITextFieldDelegate
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    if (textField.tag == 0) {
-        
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if (textField.tag == 0)
+    {
         [self.textViewContent resignFirstResponder];
         [self.textFieldLocation resignFirstResponder];
         return NO;
-        
-    } else if (textField.tag == 1) {
-        
-        if (iPhone4 || iPhone5) {
-            
+    }
+    else if (textField.tag == 1)
+    {
+        if (iPhone4 || iPhone5)
+        {
             self.viewTimeAndLocationBottom.constant = 50;
         }
         return YES;
-        
-    } else {
-        
+    }
+    else
+    {
         return YES;
     }
 }
 
-- (BOOL)textFieldShouldEndEditing:(UITextField *)textField {
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
     self.viewTimeAndLocationBottom.constant = 0;
     return YES;
 }
 
-- (void)tapAction:(UITapGestureRecognizer *)tapGestureRecognizer {
+- (void)tapAction:(UITapGestureRecognizer *)tapGestureRecognizer
+{
     NSInteger index = tapGestureRecognizer.view.tag - (kDatePickerBgViewTag + 1);
     
-    if (index != self.pageScrollView.currentPage) {
-        
+    if (index != self.pageScrollView.currentPage)
+    {
         [self.pageScrollView scrollToPage:index animated:YES];
     }
     
     if (index == self.photoArray.count - 1
-        && index < photoMax) {
-        
+        && index < photoMax)
+    {
         [self addPhoto];
     }
 }
 
-- (NSUInteger)numberOfPagesInPageScrollView:(PageScrollView *)pageScrollView {
+- (NSUInteger)numberOfPagesInPageScrollView:(PageScrollView *)pageScrollView
+{
     return self.photoArray.count;
 }
 
-- (UIView *)pageScrollView:(PageScrollView *)pageScrollView cellForPageIndex:(NSUInteger)index {
+- (UIView *)pageScrollView:(PageScrollView *)pageScrollView cellForPageIndex:(NSUInteger)index
+{
     if (index >= self.photoArray.count)
         return nil;
     
@@ -353,21 +366,20 @@ NSUInteger const pageWidth = 110;
     imageView.tag = (kDatePickerBgViewTag + 1) + index;
     imageView.image = photo;
     imageView.backgroundColor = [UIColor clearColor];
-    if (canAddPhoto && (index == self.photoArray.count - 1)) {
-        
+    if (self.canAddPhoto && (index == self.photoArray.count - 1))
+    {
         imageView.contentMode = UIViewContentModeScaleToFill;
-        
-    } else {
-        
+    }
+    else
+    {
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.clipsToBounds = YES;
-        
     }
     UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapAction:)];
     [imageView addGestureRecognizer:tapGestureRecognizer];
     
-    if (canAddPhoto && index != (self.photoArray.count - 1)) {
-        
+    if (self.canAddPhoto && index != (self.photoArray.count - 1))
+    {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         btn.backgroundColor = color_ff0000_06;
         btn.frame = CGRectMake((pageWidth - 30) / 2, pageHeight - 30 - 5, 30, 30);
@@ -376,9 +388,9 @@ NSUInteger const pageWidth = 110;
         [btn setBackgroundImage:[UIImage imageNamed:png_Btn_Photo_Delete] forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(deletePhoto:) forControlEvents:UIControlEventTouchUpInside];
         [imageView addSubview:btn];
-
-    } else if (!canAddPhoto) {
-        
+    }
+    else if (!self.canAddPhoto)
+    {
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         btn.backgroundColor = color_ff0000_06;
         btn.frame = CGRectMake((pageWidth - 30) / 2, pageHeight - 30 - 5, 30, 30);
@@ -387,31 +399,37 @@ NSUInteger const pageWidth = 110;
         [btn setBackgroundImage:[UIImage imageNamed:png_Btn_Photo_Delete] forState:UIControlStateNormal];
         [btn addTarget:self action:@selector(deletePhoto:) forControlEvents:UIControlEventTouchUpInside];
         [imageView addSubview:btn];
-        
     }
     return imageView;
 }
 
-- (void)pageScrollView:(PageScrollView *)pageScrollView didScrollToPage:(NSInteger)pageNumber {
-    if (self.photoArray.count == 1) {
+- (void)pageScrollView:(PageScrollView *)pageScrollView didScrollToPage:(NSInteger)pageNumber
+{
+    if (self.photoArray.count == 1)
+    {
         self.tipsLabel.text = STRViewTips27;
-    } else if (self.photoArray.count > 1) {
-        long selectedCount = canAddPhoto ? self.photoArray.count - 1 : self.photoArray.count;
+    }
+    else if (self.photoArray.count)
+    {
+        long selectedCount = self.canAddPhoto ? self.photoArray.count - 1 : self.photoArray.count;
         long canSelectCount = photoMax - selectedCount;
         self.tipsLabel.text = [NSString stringWithFormat:STRViewTips29, selectedCount, canSelectCount];
     }
 }
 
-- (void)addPhoto {
-    if (self.operationType == Edit) {
+- (void)addPhoto
+{
+    if (self.operationType == Edit)
+    {
         self.photo.photoURLArray = [NSMutableArray arrayWithCapacity:9];
-        for (NSInteger i = 0; i < 9; i++) {
+        for (NSInteger i = 0; i < 9; i++)
+        {
             self.photo.photoURLArray[i] = @"";
         }
     }
     //从相册选择
-    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary]) {
-        
+    if([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypePhotoLibrary])
+    {
         DoImagePickerController *picker = [[DoImagePickerController alloc] initWithNibName:@"DoImagePickerController" bundle:nil];
         picker.delegate = self;
         picker.nResultType = DO_PICKER_RESULT_UIIMAGE;
@@ -425,17 +443,20 @@ NSUInteger const pageWidth = 110;
         dispatch_async(dispatch_get_main_queue(), ^{//如果不这样写，在iPad上会访问不了相册
             [self presentViewController:picker animated:YES completion:nil];
         });
-
-    } else {
-        
+    }
+    else
+    {
         [self alertButtonMessage:STRCommonTip1];
     }
 }
 
-- (void)deletePhoto:(id)sender {
-    if (self.operationType == Edit) {
+- (void)deletePhoto:(id)sender
+{
+    if (self.operationType == Edit)
+    {
         self.photo.photoURLArray = [NSMutableArray arrayWithCapacity:9];
-        for (NSInteger i = 0; i < 9; i++) {
+        for (NSInteger i = 0; i < 9; i++)
+        {
             self.photo.photoURLArray[i] = @"";
         }
     }
@@ -444,10 +465,13 @@ NSUInteger const pageWidth = 110;
     [self.photoArray removeObjectAtIndex:index];
     
     NSData *addImage = UIImageJPEGRepresentation([UIImage imageNamed:png_Btn_AddPhoto], 1);
-    if (!canAddPhoto) {
+    if (!self.canAddPhoto)
+    {
         self.photoArray[photoMax - 1] = addImage;
-        canAddPhoto = YES;
-    } else {
+        self.canAddPhoto = YES;
+    }
+    else
+    {
         NSInteger count = self.photoArray.count;
         self.photoArray[count - 1] = addImage;
     }
@@ -457,23 +481,26 @@ NSUInteger const pageWidth = 110;
 }
 
 #pragma mark - DoImagePickerControllerDelegate
-- (void)didCancelDoImagePickerController {
+- (void)didCancelDoImagePickerController
+{
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)didSelectPhotosFromDoImagePickerController:(DoImagePickerController *)picker result:(NSArray *)aSelected {
+- (void)didSelectPhotosFromDoImagePickerController:(DoImagePickerController *)picker result:(NSArray *)aSelected
+{
     [self dismissViewControllerAnimated:YES completion:nil];
     
     if (picker.nResultType == DO_PICKER_RESULT_UIIMAGE)
     {
-        for (int i = 0; i < MIN(photoMax, aSelected.count); i++) {
-
+        for (int i = 0; i < MIN(photoMax, aSelected.count); i++)
+        {
             [self addImageToPhotoArray:aSelected[i]];
         }
-    } else if (picker.nResultType == DO_PICKER_RESULT_ASSET) {
-        
-        for (int i = 0; i < MIN(photoMax, aSelected.count); i++) {
-            
+    }
+    else if (picker.nResultType == DO_PICKER_RESULT_ASSET)
+    {
+        for (int i = 0; i < MIN(photoMax, aSelected.count); i++)
+        {
             UIImage *image = [ASSETHELPER getImageFromAsset:aSelected[i] type:ASSET_PHOTO_SCREEN_SIZE];
             [self addImageToPhotoArray:image];
         }
@@ -482,18 +509,97 @@ NSUInteger const pageWidth = 110;
     [self.pageScrollView reloadData];
 }
 
-- (void)addImageToPhotoArray:(UIImage *)image {
+- (void)addImageToPhotoArray:(UIImage *)image
+{
     NSData *imgData = [CommonFunction compressImage:image];
 
     if (!imgData) return;
     
-    if (self.photoArray.count < photoMax) {
+    if (self.photoArray.count < photoMax)
+    {
         [self.photoArray insertObject:imgData atIndex:self.photoArray.count - 1];
-    } else {
+    }
+    else
+    {
         self.photoArray[photoMax - 1] = imgData;
-        canAddPhoto = NO;
+        self.canAddPhoto = NO;
     }
 }
 
+- (void)submit:(Photo *)photo
+{
+    BmobUser *user = [BmobUser currentUser];
+    if (!user)
+    {
+        [self alertToastMessage:@"未登录"];
+        return;
+    }
+    [self showHUD];
+    BmobObject *newPhoto = [BmobObject objectWithClassName:@"Photo"];
+    NSDictionary *dic = @{@"userObjectId":user.objectId,
+                          @"photoId":photo.photoid,
+                          @"content":photo.content,
+                          @"location":photo.location,
+                          @"createdTime":photo.createtime,
+                          @"photoTime":photo.phototime,
+                          @"updatedTime":@"2015-09-09 09:09:09",
+                          @"isDeleted":@"0"};
+    [newPhoto saveAllWithDictionary:dic];
+    __weak typeof(self) weakSelf = self;
+    BmobACL *acl = [BmobACL ACL];
+    [acl setReadAccessForUser:user];//设置只有当前用户可读
+    [acl setWriteAccessForUser:user];//设置只有当前用户可写
+    newPhoto.ACL = acl;
+    [newPhoto saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
+     {
+         if (isSuccessful)
+         {
+             weakSelf.photoUploadCount = 0;
+             for (NSInteger i = 0; i < photo.photoArray.count; i++)
+             {
+                 [weakSelf uploadPhoto:photo index:i obj:newPhoto];
+             }
+         }
+         else
+         {
+             NSLog(@"新增岁月影像：%@",error);
+             [weakSelf hideHUD];
+             [weakSelf alertButtonMessage:STRCommonTip14];
+         }
+     }];
+}
+
+- (void)uploadPhoto:(Photo *)photo index:(NSInteger)index obj:(BmobObject *)obj
+{
+    NSData *imgData = photo.photoArray[index];
+    NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", (long)(index+1)];
+    if (imgData)
+    {
+        __weak typeof(self) weakSelf = self;
+        BmobFile *file = [[BmobFile alloc] initWithFileName:@"imgPhoto.png" withFileData:imgData];
+        [file saveInBackground:^(BOOL isSuccessful, NSError *error)
+         {
+             weakSelf.photoUploadCount ++;
+             if (isSuccessful)
+             {
+                 [obj setObject:file.url forKey:urlName];
+                 [obj setObject:photo.updatetime forKey:@"updatedTime"];
+                 [obj updateInBackground];
+             }
+             if (weakSelf.photoUploadCount >= photo.photoArray.count)
+             {
+                 [weakSelf hideHUD];
+                 [NotificationCenter postNotificationName:NTFPhotoSave object:nil];
+                 [weakSelf alertToastMessage:STRCommonTip13];
+                 [weakSelf.navigationController popViewControllerAnimated:YES];
+             }
+         }
+         withProgressBlock:^(CGFloat progress)
+         {
+             //上传进度
+             NSLog(@"上传影像图片进度： %f",progress);
+         }];
+    }
+}
 
 @end
