@@ -18,6 +18,8 @@
 @interface PersonalCenterNewViewController ()
 
 @property (nonatomic, strong) NSMutableArray *titleArray;
+@property (nonatomic, assign) NSInteger planCount;
+@property (nonatomic, assign) NSInteger photoCount;
 
 @end
 
@@ -32,7 +34,7 @@
     self.tableView.backgroundColor = color_eeeeee;
     [NotificationCenter addObserver:self selector:@selector(reloadTableView) name:NTFSettingsSave object:nil];
     
-    self.titleArray = [NSMutableArray arrayWithObjects:@"我的帖子", @"未完计划", @"任务统计", nil];
+    self.titleArray = [NSMutableArray arrayWithObjects:@"我的帖子", @"未完计划", nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -40,9 +42,48 @@
     [super didReceiveMemoryWarning];
 }
 
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:animated];
+    
+    [self getCount];
+}
+
 - (void)reloadTableView
 {
     [self.tableView reloadData];
+}
+
+- (void)getCount
+{
+    [self showHUD];
+    BmobUser *user = [BmobUser currentUser];
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *queryPlan = [BmobQuery queryWithClassName:@"Plan"];
+    [queryPlan whereKey:@"userObjectId" equalTo:user.objectId];
+    [queryPlan whereKey:@"isDeleted" notEqualTo:@"1"];
+    [queryPlan countObjectsInBackgroundWithBlock:^(int number,NSError  *error)
+     {
+         [weakSelf hideHUD];
+         if (!error)
+         {
+             weakSelf.planCount = number;
+             [weakSelf.tableView reloadData];
+         }
+    }];
+
+    BmobQuery *queryPhoto = [BmobQuery queryWithClassName:@"Photo"];
+    [queryPhoto whereKey:@"userObjectId" equalTo:user.objectId];
+    [queryPhoto whereKey:@"isDeleted" notEqualTo:@"1"];
+    [queryPhoto countObjectsInBackgroundWithBlock:^(int number,NSError  *error)
+     {
+         [weakSelf hideHUD];
+         if (!error)
+         {
+             weakSelf.photoCount = number;
+             [weakSelf.tableView reloadData];
+         }
+     }];
 }
 
 #pragma mark - Table view data source
@@ -99,6 +140,8 @@
         {
             PersonalCenterNewCell0 *cell = [PersonalCenterNewCell0 cellView];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.labelPlanCount.text = [NSString stringWithFormat: @"%ld 计划", self.planCount];
+            cell.labelPhotoCount.text = [NSString stringWithFormat: @"%ld 影像", self.photoCount];
             return cell;
         }
             break;
@@ -143,28 +186,24 @@
             break;
         case 1:
         {
-            if (indexPath.row == 0)
+            BmobUser *user = [BmobUser currentUser];
+            if (user)
             {
-                BmobUser *user = [BmobUser currentUser];
-                if (user)
+                if (indexPath.row == 0)
                 {
                     PersonalCenterMyPostsViewController *controller = [[PersonalCenterMyPostsViewController alloc] init];
                     [self.navigationController pushViewController:controller animated:YES];
+                    
                 }
-                else
+                else if (indexPath.row == 1)
                 {
-                    LogInViewController *controller = [[LogInViewController alloc] init];
+                    PersonalCenterUndonePlanViewController *controller = [[PersonalCenterUndonePlanViewController alloc] init];
                     [self.navigationController pushViewController:controller animated:YES];
                 }
             }
-            else if (indexPath.row == 1)
+            else
             {
-                PersonalCenterUndonePlanViewController *controller = [[PersonalCenterUndonePlanViewController alloc] init];
-                [self.navigationController pushViewController:controller animated:YES];
-            }
-            else if (indexPath.row == 2)
-            {
-                PersonalCenterTaskStatisticsViewController *controller = [[PersonalCenterTaskStatisticsViewController alloc] init];
+                LogInViewController *controller = [[LogInViewController alloc] init];
                 [self.navigationController pushViewController:controller animated:YES];
             }
         }

@@ -10,14 +10,18 @@
 
 @implementation PersonalCenterNewCell0
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
     [super setSelected:selected animated:animated];
 }
 
-+ (PersonalCenterNewCell0 *)cellView {
++ (PersonalCenterNewCell0 *)cellView
+{
     PersonalCenterNewCell0 *cellView = [[NSBundle mainBundle] loadNibNamed:@"PersonalCenterNewCell0" owner:self options:nil].lastObject;
     //头像
     UIImage *image = [UIImage imageNamed:png_AvatarDefault];
@@ -33,24 +37,24 @@
     cellView.imgViewAvatar.layer.cornerRadius = cellView.imgViewAvatar.frame.size.height / 2;
     //昵称
     NSString *nickname = STRCommonTip12;
-    if (![CommonFunction isEmptyString:[Config shareInstance].settings.nickname]) {
+    if (![CommonFunction isEmptyString:[Config shareInstance].settings.nickname])
+    {
         nickname = [Config shareInstance].settings.nickname;
     }
     cellView.labelNickname.text = nickname;
     cellView.labelNickname.textColor = [CommonFunction getGenderColor];
     //个性签名
     NSString *signature = STRViewTips61;
-    if (![CommonFunction isEmptyString:[Config shareInstance].settings.signature]) {
+    if (![CommonFunction isEmptyString:[Config shareInstance].settings.signature])
+    {
         signature = [Config shareInstance].settings.signature;
     }
     cellView.labelSignature.text = signature;
-    
-    NSString *planCount = [PlanCache getPlanTotalCount:@"ALL"];
-    NSString *taskCount = [PlanCache getTaskTotalCount];
-    NSString *photoCount = [PlanCache getPhotoTotalCount];
-    cellView.labelPlanCount.text = [NSString stringWithFormat: @"%@ 计划", planCount];
-    cellView.labelTaskCount.text = [NSString stringWithFormat: @"%@ 任务", taskCount];
-    cellView.labelPhotoCount.text = [NSString stringWithFormat: @"%@ 影像", photoCount];
+//    
+//    NSString *planCount = [PlanCache getPlanTotalCount:@"ALL"];
+//    NSString *photoCount = [PlanCache getPhotoTotalCount];
+//    cellView.labelPlanCount.text = [NSString stringWithFormat: @"%@ 计划", planCount];
+//    cellView.labelPhotoCount.text = [NSString stringWithFormat: @"%@ 影像", photoCount];
     
     return cellView;
 }

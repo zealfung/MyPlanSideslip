@@ -11,31 +11,31 @@
 #import "PlanCell.h"
 #import "PlanCache.h"
 #import "ThreeSubView.h"
+#import "PopupPlanRemarkView.h"
 #import "PlanDetailViewController.h"
 #import "PersonalCenterUndonePlanViewController.h"
 
 NSUInteger const kUndonePlanCellDeleteTag = 9527;
 
-@interface PersonalCenterUndonePlanViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, PlanCellDelegate, HitViewDelegate> {
+@interface PersonalCenterUndonePlanViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, PlanCellDelegate, HitViewDelegate>
     
-    PlanCell *planCell;
-    HitView *hitView;
-    BOOL canCustomEditNow;
-    Plan *deletePlan;
-
-    NSMutableArray *planArray;
-    UISearchBar *searchBar;
-    NSString *searchKeyword;
-    NSArray *searchResultArray;
-    UITableView *tableViewPlan;
-}
+@property (nonatomic, strong) PlanCell *planCell;
+@property (nonatomic, strong) HitView *hitView;
+@property (nonatomic, assign) BOOL canCustomEditNow;
+@property (nonatomic, strong) Plan *deletePlan;
+@property (nonatomic, strong) NSMutableArray *planArray;
+@property (nonatomic, strong) UISearchBar *searchBar;
+@property (nonatomic, strong) NSString *searchKeyword;
+@property (nonatomic, strong) NSMutableArray *searchResultArray;
+@property (nonatomic, strong) UITableView *tableViewPlan;
 
 @end
 
 
 @implementation PersonalCenterUndonePlanViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = @"未完计划";
     
@@ -44,20 +44,23 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
     [self loadCustomView];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
 //初始化自定义界面
-- (void)loadCustomView {
+- (void)loadCustomView
+{
     [self initTableView];
     
     [self getUndonePlan];
 }
 
-- (void)initTableView {
-    searchKeyword = @"";
-    searchResultArray = [NSArray array];
+- (void)initTableView
+{
+    self.searchKeyword = @"";
+    self.searchResultArray = [NSMutableArray array];
     
     NSUInteger tableHeight = CGRectGetHeight(self.view.bounds);
     CGRect frame = CGRectZero;
@@ -66,124 +69,218 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
     frame.size.width = CGRectGetWidth(self.view.bounds);
     frame.size.height = tableHeight;
     
-    tableViewPlan = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
-    tableViewPlan.backgroundColor = [UIColor clearColor];
-    tableViewPlan.backgroundView = nil;
-    tableViewPlan.dataSource = self;
-    tableViewPlan.delegate = self;
-    tableViewPlan.showsHorizontalScrollIndicator = NO;
-    tableViewPlan.showsVerticalScrollIndicator = NO;
-    tableViewPlan.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
-    tableViewPlan.rowHeight = kPlanCellHeight;
+    self.tableViewPlan = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
+    self.tableViewPlan.backgroundColor = [UIColor clearColor];
+    self.tableViewPlan.backgroundView = nil;
+    self.tableViewPlan.dataSource = self;
+    self.tableViewPlan.delegate = self;
+    self.tableViewPlan.showsHorizontalScrollIndicator = NO;
+    self.tableViewPlan.showsVerticalScrollIndicator = NO;
+    self.tableViewPlan.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
+    self.tableViewPlan.rowHeight = kPlanCellHeight;
     {
-        searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, 44)];
-        searchBar.delegate = self;
-        searchBar.barTintColor = color_eeeeee;
-        searchBar.searchBarStyle = UISearchBarStyleMinimal;
-        searchBar.inputAccessoryView = [self getInputAccessoryView];
-        searchBar.placeholder = @"搜索";
-        tableViewPlan.tableHeaderView = searchBar;
+        self.searchBar = [[UISearchBar alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, 44)];
+        self.searchBar.delegate = self;
+        self.searchBar.barTintColor = color_eeeeee;
+        self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
+        self.searchBar.inputAccessoryView = [self getInputAccessoryView];
+        self.searchBar.placeholder = @"搜索";
+        self.tableViewPlan.tableHeaderView = self.searchBar;
     }
     {
         UIView *footer = [[UIView alloc] init];
-        tableViewPlan.tableFooterView = footer;
+        self.tableViewPlan.tableFooterView = footer;
     }
-    tableViewPlan.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableViewPlan.separatorStyle = UITableViewCellSeparatorStyleNone;
 
-    [self.view addSubview:tableViewPlan];
+    [self.view addSubview:self.tableViewPlan];
 }
 
-- (void)getUndonePlan {
-
-    planArray = [NSMutableArray arrayWithArray:[PlanCache getUndonePlan]];
+- (void)getUndonePlan
+{
+    [self showHUD];
+    BmobUser *user = [BmobUser currentUser];
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+    [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
+    [bquery whereKey:@"isCompleted" notEqualTo:@"1"];
+    [bquery orderByDescending:@"updatedTime"];
     
-    [tableViewPlan reloadData];
+    self.planArray = [NSMutableArray array];
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+     {
+         [weakSelf hideHUD];
+
+         if (!error && array.count)
+         {
+             for (BmobObject *obj in array)
+             {
+                 Plan *plan = [[Plan alloc] init];
+                 plan.account = [obj objectForKey:@"userObjectId"];
+                 plan.planid = obj.objectId;
+                 plan.content = [obj objectForKey:@"content"];
+                 plan.createtime = [obj objectForKey:@"createdTime"];
+                 plan.completetime = [obj objectForKey:@"completedTime"];
+                 plan.updatetime = [obj objectForKey:@"updatedTime"];
+                 plan.notifytime = [obj objectForKey:@"notifyTime"];
+                 plan.iscompleted = [obj objectForKey:@"isCompleted"];
+                 plan.isnotify = [obj objectForKey:@"isNotify"];
+                 plan.isdeleted = [obj objectForKey:@"isDeleted"];
+                 plan.isRepeat = [obj objectForKey:@"isRepeat"];
+                 plan.remark = [obj objectForKey:@"remark"];
+                 plan.beginDate = [obj objectForKey:@"beginDate"];
+                 [weakSelf.planArray addObject:plan];
+             }
+         }
+         [weakSelf.tableViewPlan reloadData];
+     }];
 }
 
-- (void)searchPlan {
-    searchResultArray = [NSArray arrayWithArray:[PlanCache searchPlan:searchKeyword]];
-    [tableViewPlan reloadData];
+- (void)searchPlan
+{
+    [self showHUD];
+    BmobUser *user = [BmobUser currentUser];
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+    [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
+    [bquery whereKey:@"isCompleted" notEqualTo:@"1"];
+    [bquery whereKey:@"content" matchesWithRegex:[NSString stringWithFormat:@".*?%@.*?", self.searchKeyword]];
+    [bquery orderByDescending:@"updatedTime"];
+    
+    self.searchResultArray = [NSMutableArray array];
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+     {
+         [weakSelf hideHUD];
+         
+         if (!error && array.count)
+         {
+             for (BmobObject *obj in array)
+             {
+                 Plan *plan = [[Plan alloc] init];
+                 plan.account = [obj objectForKey:@"userObjectId"];
+                 plan.planid = obj.objectId;
+                 plan.content = [obj objectForKey:@"content"];
+                 plan.createtime = [obj objectForKey:@"createdTime"];
+                 plan.completetime = [obj objectForKey:@"completedTime"];
+                 plan.updatetime = [obj objectForKey:@"updatedTime"];
+                 plan.notifytime = [obj objectForKey:@"notifyTime"];
+                 plan.iscompleted = [obj objectForKey:@"isCompleted"];
+                 plan.isnotify = [obj objectForKey:@"isNotify"];
+                 plan.isdeleted = [obj objectForKey:@"isDeleted"];
+                 plan.isRepeat = [obj objectForKey:@"isRepeat"];
+                 plan.remark = [obj objectForKey:@"remark"];
+                 plan.beginDate = [obj objectForKey:@"beginDate"];
+                 [weakSelf.searchResultArray addObject:plan];
+             }
+         }
+         [weakSelf.tableViewPlan reloadData];
+     }];
 }
 
 #pragma mark - UITableViewDataSource
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (searchKeyword.length > 0) {
-        if (searchResultArray.count > 0) {
-            return searchResultArray.count;
-        } else {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (self.searchKeyword.length)
+    {
+        if (self.searchResultArray.count)
+        {
+            return self.searchResultArray.count;
+        }
+        else
+        {
             return 3;
         }
-    } else {
-        if (planArray.count > 0) {
-            return planArray.count;
-        } else {
+    }
+    else
+    {
+        if (self.planArray.count)
+        {
+            return self.planArray.count;
+        }
+        else
+        {
             return 3;
         }
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
     
-    if (searchKeyword.length > 0) {
-        if(indexPath.row < searchResultArray.count) {
-            
+    if (self.searchKeyword.length)
+    {
+        if(indexPath.row < self.searchResultArray.count)
+        {
             static NSString *searchCellIdentifier = @"searchCellIdentifier";
             
             PlanCell *cell = [tableView dequeueReusableCellWithIdentifier:searchCellIdentifier];
-            if(!cell) {
+            if(!cell)
+            {
                 cell = [[PlanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:searchCellIdentifier];
             }
-            Plan *plan = searchResultArray[indexPath.row];
+            Plan *plan = self.searchResultArray[indexPath.row];
             cell.plan = plan;
             cell.isDone = plan.iscompleted;
-            if ([plan.iscompleted isEqualToString:@"1"]) {
+            if ([plan.iscompleted isEqualToString:@"1"])
+            {
                 cell.moveContentView.backgroundColor = color_Green_Mint;
                 cell.backgroundColor = color_Green_Mint;
-            } else {
+            }
+            else
+            {
                 cell.moveContentView.backgroundColor = [UIColor whiteColor];
                 cell.backgroundColor = [UIColor whiteColor];
             }
             cell.delegate = self;
             return cell;
-            
-        } else {
-            
+        }
+        else
+        {
             return [self createNoDataCell:tableView indexPath:indexPath tips:@"无匹配结果"];
         }
-    } else {
-        if (indexPath.row < planArray.count) {
+    }
+    else
+    {
+        if (indexPath.row < self.planArray.count)
+        {
             static NSString *undoneCellIdentifier = @"undoneCellIdentifier";
             
             PlanCell *cell = [tableView dequeueReusableCellWithIdentifier:undoneCellIdentifier];
-            if(!cell) {
+            if(!cell)
+            {
                 cell = [[PlanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:undoneCellIdentifier];
             }
-            Plan *plan = planArray[indexPath.row];
+            Plan *plan = self.planArray[indexPath.row];
             cell.plan = plan;
             cell.isDone = plan.iscompleted;
             cell.moveContentView.backgroundColor = [UIColor whiteColor];
             cell.backgroundColor = [UIColor whiteColor];
             cell.delegate = self;
             return cell;
-            
-        } else {
-            
+        }
+        else
+        {
             return [self createNoDataCell:tableView indexPath:indexPath tips:STRViewTips13];
         }
     }
 }
 
-- (UITableViewCell *)createNoDataCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath tips:(NSString *)tips {
+- (UITableViewCell *)createNoDataCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath tips:(NSString *)tips
+{
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     static NSString *noDataCellIdentifier = @"noDataCellIdentifier";
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noDataCellIdentifier];
-    if (!cell) {
+    if (!cell)
+    {
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noDataCellIdentifier];
         cell.backgroundColor = [UIColor clearColor];
         cell.contentView.backgroundColor = [UIColor clearColor];
@@ -194,40 +291,52 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
         cell.textLabel.textColor = [UIColor lightGrayColor];
         cell.textLabel.font = font_Bold_16;
     }
-    if (indexPath.row == 2) {
+    if (indexPath.row == 2)
+    {
         cell.textLabel.text = tips;
     }
     return cell;
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [self.view endEditing:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ((searchKeyword.length == 0
-         && indexPath.row >= planArray.count)
-        || (searchKeyword.length > 0
-            && indexPath.row >= searchResultArray.count)) {
-            return;
-        }
-    Plan *selectedPlan = nil;
-    if (searchKeyword.length > 0) {
-        selectedPlan = searchResultArray[indexPath.row];
-    } else {
-        selectedPlan = planArray[indexPath.row];
+    if ((self.searchKeyword.length == 0
+         && indexPath.row >= self.planArray.count)
+        || (self.searchKeyword.length
+            && indexPath.row >= self.searchResultArray.count))
+    {
+        return;
     }
-    if (selectedPlan) {
+    Plan *selectedPlan = nil;
+    if (self.searchKeyword.length)
+    {
+        selectedPlan = self.searchResultArray[indexPath.row];
+    }
+    else
+    {
+        selectedPlan = self.planArray[indexPath.row];
+    }
+    if (selectedPlan)
+    {
         [self toPlanDetailWithPlan:selectedPlan];
     }
 }
 
 #pragma mark - action
-- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex {
-    if (alertView.tag == kUndonePlanCellDeleteTag) {
-        if (buttonIndex == 0) {
-            deletePlan = nil;
-            [planCell hideMenuView:YES Animated:YES];
-        } else {
-            [self deletePlanWithPlan:deletePlan];
+- (void)alertView:(UIAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+    if (alertView.tag == kUndonePlanCellDeleteTag)
+    {
+        if (buttonIndex == 0)
+        {
+            self.deletePlan = nil;
+            [self.planCell hideMenuView:YES Animated:YES];
+        }
+        else
+        {
+            [self deletePlanWithPlan:self.deletePlan];
         }
     }
 }
@@ -241,116 +350,219 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
 }
 
 //修改计划完成状态
-- (void)changePlanCompleteStatus:(Plan *)plan {
+- (void)changePlanCompleteStatus:(Plan *)plan
+{
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:STRDateFormatterType1];
     NSString *timeNow = [dateFormatter stringFromDate:[NSDate date]];
+    
+    plan.updatetime = timeNow;
     //1完成 0未完成
-    if ([plan.iscompleted isEqualToString:@"0"]) {
+    if ([plan.iscompleted isEqualToString:@"0"])
+    {
         plan.iscompleted = @"1";
         plan.completetime = timeNow;
-    } else {
+        //如果预计开始时间是在今天之后的，属于提前完成，把预计开始时间设成今天
+        NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
+        NSInteger days = [CommonFunction calculateDayFromDate:[NSDate date] toDate:beginDate];
+        if (days > 0)
+        {
+            plan.beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+        }
+        
+        __weak typeof(self) weakSelf = self;
+        PopupPlanRemarkView *remarkView = [[PopupPlanRemarkView alloc] initWithTitle:STRCommonTip51];
+        remarkView.callbackBlock = ^(NSString *remark) {
+            plan.remark = remark;
+            [weakSelf saveAndRefresh:plan];
+        };
+        [remarkView show];
+    }
+    else
+    {
         plan.iscompleted = @"0";
         plan.completetime = @"";
+        [self saveAndRefresh:plan];
     }
-    plan.updatetime = timeNow;
-    
-    @synchronized (STRDecodeSignal)
-    {
-        [PlanCache storePlan:plan];
-    }
-    
-    [tableViewPlan reloadData];
+}
+
+- (void)saveAndRefresh:(Plan *)plan
+{
+    [self showHUD];
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
+    [bquery getObjectInBackgroundWithId:plan.planid block:^(BmobObject *object,NSError *error)
+     {
+         if (error)
+         {
+             [weakSelf hideHUD];
+         }
+         else
+         {
+             if (object)
+             {
+                 [object setObject:plan.iscompleted forKey:@"isCompleted"];
+                 [object setObject:plan.completetime forKey:@"completedTime"];
+                 [object setObject:plan.remark forKey:@"remark"];
+                 [object updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
+                  {
+                      [weakSelf hideHUD];
+                      if (isSuccessful)
+                      {
+                          [NotificationCenter postNotificationName:NTFPlanSave object:nil];
+                      }
+                      else
+                      {
+                          [weakSelf alertButtonMessage:@"操作失败"];
+                      }
+                  }];
+             }
+             else
+             {
+                 [weakSelf hideHUD];
+             }
+         }
+     }];
 }
 
 //删除计划
-- (void)deletePlanWithPlan:(Plan *)plan {
-    BOOL result = [PlanCache deletePlan:plan];
-    if (result) {
-        [self alertToastMessage:STRCommonTip16];
-    } else {
-        [self alertButtonMessage:STRCommonTip17];
-    }
+- (void)deletePlanWithPlan:(Plan *)plan
+{
+    [self showHUD];
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
+    [bquery getObjectInBackgroundWithId:plan.planid block:^(BmobObject *object,NSError *error)
+     {
+         if (error)
+         {
+             [weakSelf hideHUD];
+         }
+         else
+         {
+             if (object)
+             {
+                 [object setObject:@"1" forKey:@"isDeleted"];
+                 [object updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
+                  {
+                      [weakSelf hideHUD];
+                      if (isSuccessful)
+                      {
+                          if ([plan.isnotify isEqualToString:@"1"])
+                          {
+                              [CommonFunction cancelPlanNotification:object.objectId];
+                          }
+                          [NotificationCenter postNotificationName:NTFPlanSave object:nil];
+                          [weakSelf alertToastMessage:STRCommonTip16];
+                      }
+                      else
+                      {
+                          [weakSelf alertButtonMessage:STRCommonTip17];
+                      }
+                  }];
+             }
+             else
+             {
+                 [weakSelf hideHUD];
+             }
+         }
+     }];
 }
 
--(void)setCanCustomEdit:(BOOL)canCustomEdit {
-    if (canCustomEditNow != canCustomEdit) {
-        canCustomEditNow = canCustomEdit;
+- (void)setCanCustomEdit:(BOOL)canCustomEdit
+{
+    if (self.canCustomEditNow != canCustomEdit)
+    {
+        self.canCustomEditNow = canCustomEdit;
         
-        CGRect frame = tableViewPlan.frame;
-        if (canCustomEditNow) {
-            if (hitView == nil) {
-                hitView = [[HitView alloc] init];
-                hitView.delegate = self;
-                hitView.frame = frame;
+        CGRect frame = self.tableViewPlan.frame;
+        if (self.canCustomEditNow)
+        {
+            if (self.hitView == nil)
+            {
+                self.hitView = [[HitView alloc] init];
+                self.hitView.delegate = self;
+                self.hitView.frame = frame;
             }
-            hitView.frame = frame;
-            [self.view addSubview:hitView];
+            self.hitView.frame = frame;
+            [self.view addSubview:self.hitView];
             
-            tableViewPlan.scrollEnabled = NO;
-        } else {
-            planCell = nil;
-            [hitView removeFromSuperview];
+            self.tableViewPlan.scrollEnabled = NO;
+        }
+        else
+        {
+            self.planCell = nil;
+            [self.hitView removeFromSuperview];
             
-            tableViewPlan.scrollEnabled = YES;
+            self.tableViewPlan.scrollEnabled = YES;
         }
     }
 }
 
-- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (planCell == [tableView cellForRowAtIndexPath:indexPath]) {
-        [planCell hideMenuView:YES Animated:YES ];
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (self.planCell == [tableView cellForRowAtIndexPath:indexPath])
+    {
+        [self.planCell hideMenuView:YES Animated:YES ];
         return NO;
     }
     return YES;
 }
 
-- (UIView *)hitViewClicked:(CGPoint)point event:(UIEvent *)event touchView:(UIView *)touchView {
+- (UIView *)hitViewClicked:(CGPoint)point event:(UIEvent *)event touchView:(UIView *)touchView
+{
     BOOL vCloudReceiveTouch = NO;
     CGRect vSlidedCellRect;
     
-    vSlidedCellRect = [hitView convertRect:planCell.frame fromView:tableViewPlan];
+    vSlidedCellRect = [self.hitView convertRect:self.planCell.frame fromView:self.tableViewPlan];
     
     vCloudReceiveTouch = CGRectContainsPoint(vSlidedCellRect, point);
-    if (!vCloudReceiveTouch) {
-        [planCell hideMenuView:YES Animated:YES];
+    if (!vCloudReceiveTouch)
+    {
+        [self.planCell hideMenuView:YES Animated:YES];
     }
-    return vCloudReceiveTouch ? [planCell hitTest:point withEvent:event] : touchView;
+    return vCloudReceiveTouch ? [self.planCell hitTest:point withEvent:event] : touchView;
 }
 
-- (void)didCellWillShow:(id)aSender {
-    planCell = aSender;
+- (void)didCellWillShow:(id)aSender
+{
+    self.planCell = aSender;
     self.canCustomEdit = YES;
 }
 
-- (void)didCellWillHide:(id)aSender {
-    planCell = nil;
+- (void)didCellWillHide:(id)aSender
+{
+    self.planCell = nil;
     self.canCustomEdit = NO;
 }
 
-- (void)didCellHided:(id)aSender {
-    planCell = nil;
+- (void)didCellHided:(id)aSender
+{
+    self.planCell = nil;
     self.canCustomEdit = NO;
 }
 
-- (void)didCellShowed:(id)aSender {
-    planCell = aSender;
+- (void)didCellShowed:(id)aSender
+{
+    self.planCell = aSender;
     self.canCustomEdit = YES;
 }
 
-- (void)didCellClicked:(id)aSender {
+- (void)didCellClicked:(id)aSender
+{
     PlanCell *cell = (PlanCell *)aSender;
     [self toPlanDetailWithPlan:cell.plan];
 }
 
-- (void)didCellClickedDoneButton:(id)aSender {
+- (void)didCellClickedDoneButton:(id)aSender
+{
     PlanCell *cell = (PlanCell *)aSender;
     [self changePlanCompleteStatus:cell.plan];
 }
 
-- (void)didCellClickedDeleteButton:(id)aSender {
+- (void)didCellClickedDeleteButton:(id)aSender
+{
     PlanCell *cell = (PlanCell *)aSender;
-    deletePlan = cell.plan;
+    self.deletePlan = cell.plan;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:STRViewTips11
                                                     message:nil
                                                    delegate:self
@@ -362,14 +574,18 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
 }
 
 //搜索栏事件
-- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText {
-    searchResultArray = [NSArray array];
-    searchKeyword = [searchText copy];
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    self.searchResultArray = [NSMutableArray array];
+    self.searchKeyword = [searchText copy];
 
-    if (searchKeyword.length == 0) {
-        [self getUndonePlan];
-    } else {
+    if (self.searchKeyword.length)
+    {
         [self searchPlan];
+    }
+    else
+    {
+        [self getUndonePlan];
     }
 }
 

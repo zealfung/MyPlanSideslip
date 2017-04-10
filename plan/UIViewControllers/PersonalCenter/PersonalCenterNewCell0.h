@@ -14,7 +14,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *labelNickname;
 @property (strong, nonatomic) IBOutlet UILabel *labelSignature;
 @property (strong, nonatomic) IBOutlet UILabel *labelPlanCount;
-@property (strong, nonatomic) IBOutlet UILabel *labelTaskCount;
 @property (strong, nonatomic) IBOutlet UILabel *labelPhotoCount;
 
 + (PersonalCenterNewCell0 *)cellView;
