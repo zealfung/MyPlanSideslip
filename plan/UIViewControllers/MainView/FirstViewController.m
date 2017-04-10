@@ -128,53 +128,60 @@ NSUInteger const kHoursPerDay = 24;
 
 - (void)loadCustomView
 {
-    BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
     BmobUser *user = [BmobUser currentUser];
-    __weak typeof(self) weakSelf = self;
-    [bquery getObjectInBackgroundWithId:user.objectId block:^(BmobObject *object,NSError *error) {
-        
-        if (error)
+    
+    if (user)
+    {
+        BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
+        [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+        __weak typeof(self) weakSelf = self;
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
         {
-            [Config shareInstance].settings = [PlanCache getPersonalSettings];
-        }
-        else
-        {
-            if (object)
-            {
-                [Config shareInstance].settings.objectId = object.objectId;
-                [Config shareInstance].settings.nickname = [object objectForKey:@"nickName"];
-                [Config shareInstance].settings.birthday = [object objectForKey:@"birthday"];
-                [Config shareInstance].settings.gender = [object objectForKey:@"gender"];
-                [Config shareInstance].settings.lifespan = [object objectForKey:@"lifespan"];
-                [Config shareInstance].settings.isAutoSync = [object objectForKey:@"isAutoSync"];
-                [Config shareInstance].settings.createtime = [object objectForKey:@"createdTime"];
-                [Config shareInstance].settings.updatetime = [object objectForKey:@"updatedTime"];
-                [Config shareInstance].settings.syntime = [object objectForKey:@"syncTime"];
-                [Config shareInstance].settings.countdownType = [object objectForKey:@"countdownType"];
-                [Config shareInstance].settings.dayOrMonth = [object objectForKey:@"dayOrMonth"];
-                [Config shareInstance].settings.autoDelayUndonePlan = [object objectForKey:@"autoDelayUndonePlan"];
-                [Config shareInstance].settings.signature = [object objectForKey:@"signature"];
-                [Config shareInstance].settings.avatarURL = [object objectForKey:@"avatarURL"];
-                [Config shareInstance].settings.centerTopURL = [object objectForKey:@"centerTopURL"];
-                
-                [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:NO];
-            }
-            else
+            if (error)
             {
                 [Config shareInstance].settings = [PlanCache getPersonalSettings];
             }
-        }
-        
-        [weakSelf createAvatar];
-        [weakSelf createLabelText];
-    }];
-    
-    //小红点
-    [self refreshRedDot];
-    
-//    [self createAvatar];
-//    [self createLabelText];
-//    [self createStatisticsView];
+            else
+            {
+                if (array.count)
+                {
+                    BmobObject *object = array[0];
+                    [Config shareInstance].settings.objectId = object.objectId;
+                    [Config shareInstance].settings.nickname = [object objectForKey:@"nickName"];
+                    [Config shareInstance].settings.birthday = [object objectForKey:@"birthday"];
+                    [Config shareInstance].settings.gender = [object objectForKey:@"gender"];
+                    [Config shareInstance].settings.lifespan = [object objectForKey:@"lifespan"];
+                    [Config shareInstance].settings.isAutoSync = [object objectForKey:@"isAutoSync"];
+                    [Config shareInstance].settings.createtime = [object objectForKey:@"createdTime"];
+                    [Config shareInstance].settings.updatetime = [object objectForKey:@"updatedTime"];
+                    [Config shareInstance].settings.syntime = [object objectForKey:@"syncTime"];
+                    [Config shareInstance].settings.countdownType = [object objectForKey:@"countdownType"];
+                    [Config shareInstance].settings.dayOrMonth = [object objectForKey:@"dayOrMonth"];
+                    [Config shareInstance].settings.autoDelayUndonePlan = [object objectForKey:@"autoDelayUndonePlan"];
+                    [Config shareInstance].settings.signature = [object objectForKey:@"signature"];
+                    [Config shareInstance].settings.avatarURL = [object objectForKey:@"avatarURL"];
+                    [Config shareInstance].settings.centerTopURL = [object objectForKey:@"centerTopURL"];
+                    
+                    [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:NO];
+                }
+                else
+                {
+                    [Config shareInstance].settings = [PlanCache getPersonalSettings];
+                }
+            }
+            
+            [weakSelf createAvatar];
+            [weakSelf createLabelText];
+            [weakSelf refreshRedDot];
+        }];
+    }
+    else
+    {
+        [Config shareInstance].settings = [PlanCache getPersonalSettings];
+        [self createAvatar];
+        [self createLabelText];
+    }
+
     [self createShareLogo];
 }
 
