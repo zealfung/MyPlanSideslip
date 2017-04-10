@@ -147,10 +147,10 @@ NSUInteger const kPhotoDeleteTag = 20151011;
 {
     NSArray *menuItems =
     @[
-      [KxMenuItem menuItem:STRCommonTip33
-                     image:[UIImage imageNamed:png_Btn_Edit]
-                    target:self
-                    action:@selector(editAction:)],
+//      [KxMenuItem menuItem:STRCommonTip33
+//                     image:[UIImage imageNamed:png_Btn_Edit]
+//                    target:self
+//                    action:@selector(editAction:)],
       [KxMenuItem menuItem:STRCommonTip34
                      image:[UIImage imageNamed:png_Btn_Delete]
                     target:self
