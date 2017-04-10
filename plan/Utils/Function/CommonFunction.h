@@ -105,4 +105,7 @@
 /** 新增本地通知 */
 + (void)addPlanNotification:(Plan *)plan;
 
+/** 计算两个日期之间的天数 */
++ (NSInteger)calculateDayFromDate:(NSDate *)date1 toDate:(NSDate *)date2;
+
 @end

@@ -460,4 +460,13 @@ static NSString * const kKeyMinutes = @"minutes";
     [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
 }
 
+
++ (NSInteger)calculateDayFromDate:(NSDate *)date1 toDate:(NSDate *)date2
+{
+    NSCalendar *userCalendar = [NSCalendar currentCalendar];
+    NSDateComponents *components = [userCalendar components:NSCalendarUnitDay fromDate:date1 toDate:date2 options:0];
+    NSInteger days = [components day];
+    return days;
+}
+
 @end

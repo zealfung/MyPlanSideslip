@@ -485,7 +485,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         Plan *plan = array[i];
         
         NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
-        NSInteger days = [self calculateDayFromDate:[NSDate date] toDate:beginDate];
+        NSInteger days = [CommonFunction calculateDayFromDate:[NSDate date] toDate:beginDate];
         
         if (days >= 0 && days < 1)
         {//
@@ -592,14 +592,6 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
          }
          [weakSelf.tableViewPlan reloadData];
      }];
-}
-
-- (NSInteger)calculateDayFromDate:(NSDate *)date1 toDate:(NSDate *)date2
-{
-    NSCalendar *userCalendar = [NSCalendar currentCalendar];
-    NSDateComponents *components = [userCalendar components:NSCalendarUnitDay fromDate:date1 toDate:date2 options:0];
-    NSInteger days = [components day];
-    return days;
 }
 
 - (void)setPlanType:(PlanType)type
@@ -1105,7 +1097,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         plan.completetime = timeNow;
         //如果预计开始时间是在今天之后的，属于提前完成，把预计开始时间设成今天
         NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
-        NSInteger days = [self calculateDayFromDate:[NSDate date] toDate:beginDate];
+        NSInteger days = [CommonFunction calculateDayFromDate:[NSDate date] toDate:beginDate];
         if (days > 0)
         {
             plan.beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
