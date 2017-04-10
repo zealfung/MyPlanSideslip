@@ -23,7 +23,6 @@ NSString *const kEdgeWhiteSpace = @"  ";
 @interface SettingsPersonalViewController () <UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
 
 @property (nonatomic, strong) UIDatePicker *datePicker;
-@property (nonatomic, strong) BmobObject *userSettingsObj;
 @property (nonatomic, strong) NSArray *arrayGender;//性别
 @property (nonatomic, strong) NSArray *arrayDayOrMonth;//日月模式
 @property (nonatomic, strong) NSArray *arrayCountdown;//倒计样式
@@ -42,8 +41,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
     [self initTableView];
     [self initSelectItem];
     
-//    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFLogIn object:nil];
-//    [NotificationCenter addObserver:self selector:@selector(loadCustomView) name:NTFLogOut object:nil];
+    [NotificationCenter addObserver:self selector:@selector(refreshTableView) name:NTFSettingsSave object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -112,6 +110,11 @@ NSString *const kEdgeWhiteSpace = @"  ";
     itemShow.itemName = @"显示";
     itemShow.itemValue = @"1";
     self.arrayShowGesture = [NSArray arrayWithObjects:itemNotShow, itemShow, nil];
+}
+    
+- (void)refreshTableView
+{
+    [self.tableView reloadData];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
