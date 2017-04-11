@@ -349,6 +349,18 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                  plan.remark = [obj objectForKey:@"remark"];
                  plan.beginDate = [obj objectForKey:@"beginDate"];
                  [weakSelf.arrayPlanDay addObject:plan];
+                 
+                 if ([plan.isnotify isEqualToString:@"1"]
+                     && [plan.iscompleted isEqualToString:@"0"])
+                 {
+                     plan.notifytime = [CommonFunction updateNotifyTime:plan.notifytime];
+                     
+                     [CommonFunction updatePlanNotification:plan];
+                 }
+                 else
+                 {
+                     [CommonFunction cancelPlanNotification:plan.planid];
+                 }
              }
          }
          [weakSelf groupPlanDay:weakSelf.arrayPlanDay];
