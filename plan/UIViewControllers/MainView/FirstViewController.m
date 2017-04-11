@@ -220,18 +220,14 @@ NSUInteger const kHoursPerDay = 24;
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toSettingsViewController)];
     [avatar addGestureRecognizer:singleTap];
     
-    [avatar sd_setImageWithPreviousCachedImageWithURL:[NSURL URLWithString:[Config shareInstance].settings.avatarURL] andPlaceholderImage:image options:SDWebImageHighPriority progress:^(NSInteger receivedSize, NSInteger expectedSize)
-     {
-     }
-     completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
-     {
-         if (image)
-         {
-             NSData *imgData = UIImageJPEGRepresentation(image, 1);
-             [Config shareInstance].settings.avatar = imgData;
-             [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:NO];
-         }
-     }];
+    [avatar sd_setImageWithURL:[NSURL URLWithString:[Config shareInstance].settings.avatarURL] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    {
+        if (image)
+        {
+            NSData *imgData = UIImageJPEGRepresentation(image, 1);
+            [Config shareInstance].settings.avatar = imgData;
+        }
+    }];
     
     [self.scrollView addSubview:avatar];
     
