@@ -20,6 +20,8 @@
 
 + (void)storePersonalSettings:(Settings *)settings isNotify:(BOOL)isNotify;
 
++ (void)deletePersonalSettings:(Settings *)settings;
+
 + (BOOL)storePlan:(Plan *)plan;
 
 /** 更新计划的完成状态 */
@@ -49,9 +51,17 @@
 
 + (BOOL)deletePlan:(Plan *)plan;
 
++ (void)cleanPlan:(Plan *)plan;
+
 + (BOOL)deletePhoto:(Photo *)photo;
 
++ (void)cleanPhoto:(Photo *)photo;
+
 + (BOOL)deleteTask:(Task *)task;
+
++ (void)cleanTask:(Task *)task;
+
++ (void)cleanTaskRecordByTaskId:(NSString *)taskId;
 
 + (BOOL)cleanHasReadMessages;
 

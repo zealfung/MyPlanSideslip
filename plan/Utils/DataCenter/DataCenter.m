@@ -14,62 +14,17 @@
 #import "SDWebImageDownloader.h"
 #import <BmobSDK/BmobObjectsBatch.h>
 
-static BOOL finishSettings;
-static BOOL finishUploadAvatar;
-static BOOL finishUploadCenterTop;
-static BOOL finishPlan;
-static BOOL finishTask;
 
 @implementation DataCenter
 
-+ (void)setPlanBeginDate
-{
-    NSString *flag = [UserDefaults objectForKey:STRBeginDateFlag];
-    if (!flag || ![flag isEqualToString:@"1"])
-    {
-        NSArray *array = [PlanCache getPlanForSync:nil];
-        for (Plan *plan in array)
-        {
-            @synchronized (STRDecodeSignal)
-            {
-                [PlanCache storePlan:plan];
-            }
-        }
-        [UserDefaults setObject:@"1" forKey:STRBeginDateFlag];
-        [UserDefaults synchronize];
-    }
-}
-
-+ (void)setRepeatPlan
-{
-    NSString *flag = [UserDefaults objectForKey:STRRepeatPlanFlag];
-    NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
-    if (!flag || ![flag isEqualToString:today])
-    {
-        [PlanCache setRepeatPlan];
-        [UserDefaults setObject:today forKey:STRRepeatPlanFlag];
-        [UserDefaults synchronize];
-    }
-}
-
 + (void)startSyncData
 {
-    if (![LogIn isLogin] || [Config shareInstance].isSyncingData)
+    if (![LogIn isLogin])
         return;
-    
-    //重置完成标识
-    [self resetUploadFlag];
     
     //把本地无账号关联的数据与当前登录账号进行关联
     [PlanCache linkedLocalDataToAccount];
     
-    //优化同步逻辑后，把本地数据都过一遍，防止之前同步落下的数据
-    NSString *tmp = [UserDefaults objectForKey:STRCleanCacheFlag];
-    if (!tmp || ![tmp isEqualToString:@"1"])
-    {
-        [Config shareInstance].settings.syntime = @"2015-09-01 09:09:09";
-    }
-
     //同步影像
     [self startSyncPhoto];
     
@@ -83,47 +38,8 @@ static BOOL finishTask;
     [self startSyncSettings];
 }
 
-+ (void)resetUploadFlag
-{
-    [Config shareInstance].isSyncSettingsOnly = NO;
-    [Config shareInstance].isSyncingData = YES;
-    finishSettings = NO;
-    finishUploadAvatar = NO;
-    finishUploadCenterTop = NO;
-    finishPlan = NO;
-    finishTask = NO;
-    //优化同步逻辑后，把本地数据都过一遍，防止之前同步落下的数据
-    NSString *tmp = [UserDefaults objectForKey:STRCleanCacheFlag];
-    if (!tmp || ![tmp isEqualToString:@"1"])
-    {
-        [UserDefaults setObject:@"1" forKey:STRCleanCacheFlag];
-        [UserDefaults synchronize];
-    }
-}
-
-+ (void)IsAllUploadFinished
-{
-    if (finishSettings
-        && finishUploadAvatar
-        && finishUploadCenterTop
-        && finishPlan
-        && finishTask)
-    {
-        [Config shareInstance].isSyncingData = NO;
-        [AlertCenter alertNavBarGreenMessage:STRViewTips122];
-    }
-}
-
 + (void)startSyncSettings
 {
-    if ([Config shareInstance].isSyncSettingsOnly)
-    {
-        finishSettings = NO;
-        finishUploadAvatar = NO;
-        finishUploadCenterTop = NO;
-        finishPlan = NO;
-        finishTask = NO;
-    }
     __weak typeof(self) weakSelf = self;
     BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
@@ -136,15 +52,7 @@ static BOOL finishTask;
              
              NSString *serverNickName = [obj objectForKey:@"nickName"];
              NSString *serverUpdatedTime = [obj objectForKey:@"updatedTime"];
-             if (serverNickName
-                 && serverNickName.length
-                 && (![Config shareInstance].settings.nickname
-                     || [Config shareInstance].settings.nickname.length == 0))
-             {
-                 //服务器上昵称不为空，本地昵称为空，用服务器配置覆盖本地的
-                 [weakSelf syncServerToLocalForSettings:obj];
-             }
-             else if ((!serverNickName || serverNickName.length == 0)
+             if ((!serverNickName || serverNickName.length == 0)
                       && [Config shareInstance].settings.nickname
                       && [Config shareInstance].settings.nickname.length)
              {
@@ -158,25 +66,12 @@ static BOOL finishTask;
                  //服务器上更新时间为空，本地更新时间不为空，用本地的覆盖服务器的
                  [weakSelf updateSettings:obj];
              }
-             else if ((![Config shareInstance].settings.updatetime
-                       || [Config shareInstance].settings.updatetime.length == 0)
-                      && serverUpdatedTime
-                      && serverUpdatedTime.length)
-             {
-                 //服务器上更新时间不为空，本地更新时间为空，用服务器配置覆盖本地的
-                 [weakSelf syncServerToLocalForSettings:obj];
-             }
              else if ([Config shareInstance].settings.updatetime.length
                       && serverUpdatedTime.length > 0) {
                  NSDate *localUpdatedTime = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.updatetime formatter:STRDateFormatterType1];
                  NSDate *serverUpdatetime = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:STRDateFormatterType1];
                  
-                 if ([localUpdatedTime compare:serverUpdatetime] == NSOrderedAscending)
-                 {
-                     //服务器的设置较新
-                     [weakSelf syncServerToLocalForSettings:obj];
-                 }
-                 else if ([localUpdatedTime compare:serverUpdatetime] == NSOrderedDescending)
+                 if ([localUpdatedTime compare:serverUpdatetime] == NSOrderedDescending)
                  {
                      //本地的设置较新
                      [weakSelf syncLocalToServerForSettings];
@@ -184,8 +79,7 @@ static BOOL finishTask;
              }
              else
              {
-                 finishSettings = YES;
-                 [weakSelf IsAllUploadFinished];
+                 [PlanCache deletePersonalSettings:[Config shareInstance].settings];
              }
          }
          else if (!error)
@@ -194,85 +88,6 @@ static BOOL finishTask;
              [weakSelf addSettingsToServer];
          }
      }];
-}
-
-+ (void)syncServerToLocalForSettings:(BmobObject *)obj
-{
-    [Config shareInstance].settings.objectId = obj.objectId;
-    [Config shareInstance].settings.nickname = [obj objectForKey:@"nickName"];
-    [Config shareInstance].settings.birthday = [obj objectForKey:@"birthday"];
-    [Config shareInstance].settings.gender = [obj objectForKey:@"gender"];
-    [Config shareInstance].settings.lifespan = [obj objectForKey:@"lifespan"];
-    [Config shareInstance].settings.isAutoSync = [obj objectForKey:@"isAutoSync"];
-    [Config shareInstance].settings.createtime = [obj objectForKey:@"createdTime"];
-    [Config shareInstance].settings.updatetime = [obj objectForKey:@"updatedTime"];
-    [Config shareInstance].settings.syntime = [obj objectForKey:@"syncTime"];
-    [Config shareInstance].settings.countdownType = [obj objectForKey:@"countdownType"];
-    [Config shareInstance].settings.dayOrMonth = [obj objectForKey:@"dayOrMonth"];
-    [Config shareInstance].settings.autoDelayUndonePlan = [obj objectForKey:@"autoDelayUndonePlan"];
-    [Config shareInstance].settings.signature = [obj objectForKey:@"signature"];
-    
-    NSString *serverAvatarURL = [obj objectForKey:@"avatarURL"];
-    NSString *serverCenterTopURL = [obj objectForKey:@"centerTopURL"];
-    [Config shareInstance].settings.avatar = [NSData data];
-    [Config shareInstance].settings.centerTop = [NSData data];
-    
-    if (!serverAvatarURL || serverAvatarURL.length == 0)
-    {
-        [Config shareInstance].settings.avatarURL = @"";
-    }
-    else
-    {
-        if (![[Config shareInstance].settings.avatarURL isEqualToString:serverAvatarURL])
-        {
-            [Config shareInstance].settings.avatarURL = serverAvatarURL;
-            
-            SDWebImageDownloader *imageDownloader = [SDWebImageDownloader sharedDownloader];
-            NSURL *url = [NSURL URLWithString: [Config shareInstance].settings.avatarURL];
-            [imageDownloader downloadImageWithURL:url options:SDWebImageDownloaderLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize)
-            {
-                NSLog(@"下载头像图片进度： %ld/%ld",(long)receivedSize , (long)expectedSize);
-            }
-            completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished)
-            {
-                if (data)
-                {
-                    [Config shareInstance].settings.avatar = data;
-                    [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
-                }
-            }];
-        }
-    }
-    
-    if (!serverCenterTopURL || serverCenterTopURL.length == 0)
-    {
-        [Config shareInstance].settings.centerTopURL = @"";
-    }
-    else
-    {
-        if (![[Config shareInstance].settings.centerTopURL isEqualToString:serverCenterTopURL])
-        {
-            [Config shareInstance].settings.centerTopURL = serverCenterTopURL;
-            
-            SDWebImageDownloader *imageDownloader = [SDWebImageDownloader sharedDownloader];
-            NSURL *url = [NSURL URLWithString: [Config shareInstance].settings.centerTopURL];
-            [imageDownloader downloadImageWithURL:url options:SDWebImageDownloaderLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize)
-             {
-                NSLog(@"下载个人中心图片进度： %ld/%ld",(long)receivedSize , (long)expectedSize);
-            }
-            completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished)
-            {
-                if (data)
-                {
-                    [Config shareInstance].settings.centerTop = data;
-                    [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
-                }
-            }];
-        }
-    }
-    [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
-    finishSettings = YES;
-    [self IsAllUploadFinished];
 }
 
 + (void)syncLocalToServerForSettings
@@ -346,33 +161,14 @@ static BOOL finishTask;
     {
         [self uploadAvatar:settingsObject];
     }
-    else
-    {
-        finishUploadAvatar = YES;
-    }
+
     //上传个人中心顶部图片
     if ([Config shareInstance].settings.centerTop
         && ![[Config shareInstance].settings.centerTopURL isEqualToString:centerTopUrl])
     {
         [self uploadCenterTop:settingsObject];
     }
-    else
-    {
-        finishUploadCenterTop = YES;
-    }
-    
-    NSString *timeNow = [CommonFunction getTimeNowString];
-    if (finishUploadAvatar
-        && finishUploadCenterTop
-        && [Config shareInstance].settings.updatetime)
-    {
-        [settingsObject setObject:[Config shareInstance].settings.updatetime forKey:@"updatedTime"];
-        if (![Config shareInstance].isSyncSettingsOnly)
-        {
-            [settingsObject setObject:timeNow forKey:@"syncTime"];
-        }
-    }
-    __weak typeof(self) weakSelf = self;
+
     BmobACL *acl = [BmobACL ACL];
     [acl setPublicReadAccess];//设置所有人可读
     [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
@@ -381,11 +177,7 @@ static BOOL finishTask;
      {
         if (isSuccessful)
         {
-            if (finishUploadAvatar && finishUploadCenterTop)
-            {
-                [Config shareInstance].settings.syntime = timeNow;
-                [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
-            }
+            NSLog(@"更新本地设置到服务器成功");
         }
         else if (error)
         {
@@ -395,8 +187,6 @@ static BOOL finishTask;
         {
             NSLog(@"更新本地设置到服务器遇到未知错误");
         }
-        finishSettings = YES;
-        [weakSelf IsAllUploadFinished];
     }];
 }
 
@@ -497,38 +287,22 @@ static BOOL finishTask;
     {
         [self uploadAvatar:userSettings];
     }
-    else
-    {
-        finishUploadAvatar = YES;
-    }
+    
     //上传个人中心顶部图片
     if ([Config shareInstance].settings.centerTop)
     {
         [self uploadCenterTop:userSettings];
     }
-    else
-    {
-        finishUploadCenterTop = YES;
-    }
-    
-    if (finishUploadAvatar
-        && finishUploadCenterTop
-        && [Config shareInstance].settings.updatetime)
-    {
-        [userSettings setObject:[Config shareInstance].settings.updatetime forKey:@"updatedTime"];
-    }
-    __weak typeof(self) weakSelf = self;
+
     BmobACL *acl = [BmobACL ACL];
     [acl setPublicReadAccess];//设置所有人可读
     [acl setWriteAccessForUser:user];//设置只有当前用户可写
     userSettings.ACL = acl;
     [userSettings saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
     {
-        finishSettings = YES;
         if (isSuccessful)
         {
-            [Config shareInstance].settings.objectId = userSettings.objectId;
-            [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
+            NSLog(@"添加本地设置到服务器成功");
         }
         else if (error)
         {
@@ -538,39 +312,24 @@ static BOOL finishTask;
         {
             NSLog(@"添加本地设置到服务器遇到未知错误");
         }
-        [weakSelf IsAllUploadFinished];
     }];
 }
 
 + (void)uploadAvatar:(BmobObject *)obj
 {
     //上传头像
-    __weak typeof(self) weakSelf = self;
     BmobFile *file = [[BmobFile alloc] initWithFileName:@"avatar.png" withFileData:[Config shareInstance].settings.avatar];
     [file saveInBackground:^(BOOL isSuccessful, NSError *error)
      {
-        finishUploadAvatar = YES;
         if (isSuccessful)
         {
-            NSString *timeNow = [CommonFunction getTimeNowString];
             [Config shareInstance].settings.avatarURL = file.url;
-            if (finishUploadAvatar
-                && finishUploadCenterTop
-                && [Config shareInstance].settings.updatetime)
-            {
-                if (![Config shareInstance].isSyncSettingsOnly)
-                {
-                    [obj setObject:[Config shareInstance].settings.updatetime forKey:@"updatedTime"];
-                    [obj setObject:timeNow forKey:@"syncTime"];
-                    [Config shareInstance].settings.syntime = timeNow;
-                }
-            }
+
             //把上传完的文件保存到“头像”字段
             [obj setObject:file.url forKey:@"avatarURL"];
             [obj updateInBackground];
-            [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
+            [PlanCache deletePersonalSettings:[Config shareInstance].settings];
         }
-        [weakSelf IsAllUploadFinished];
     }
     withProgressBlock:^(CGFloat progress)
      {
@@ -581,32 +340,16 @@ static BOOL finishTask;
 
 + (void)uploadCenterTop:(BmobObject *)obj
 {
-    __weak typeof(self) weakSelf = self;
     BmobFile *file = [[BmobFile alloc] initWithFileName:@"centerTop.png" withFileData:[Config shareInstance].settings.centerTop];
     [file saveInBackground:^(BOOL isSuccessful, NSError *error)
     {
-        finishUploadCenterTop = YES;
         if (isSuccessful)
         {
-            NSString *timeNow = [CommonFunction getTimeNowString];
             [Config shareInstance].settings.centerTopURL = file.url;
-            if (finishUploadAvatar
-                && finishUploadCenterTop
-                && [Config shareInstance].settings.updatetime)
-            {
-                if (![Config shareInstance].isSyncSettingsOnly)
-                {
-                    [obj setObject:[Config shareInstance].settings.updatetime forKey:@"updatedTime"];
-                    [obj setObject:timeNow forKey:@"syncTime"];
-                    [Config shareInstance].settings.syntime = timeNow;
-                }
-            }
-            
+
             [obj setObject:file.url forKey:@"centerTopURL"];
             [obj updateInBackground];
-            [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
         }
-        [weakSelf IsAllUploadFinished];
     }
     withProgressBlock:^(CGFloat progress)
     {
@@ -618,20 +361,12 @@ static BOOL finishTask;
 + (void)startSyncPlan
 {
     [self syncLocalToServerForPlan];
-    [self syncServerToLocalForPlan];
 }
 
 + (void)syncLocalToServerForPlan
 {
-    NSArray *localNewArray = [NSArray array];
-    if ([Config shareInstance].settings.syntime)
-    {
-        localNewArray = [PlanCache getPlanForSync:[Config shareInstance].settings.syntime];
-    }
-    else
-    {
-        localNewArray = [PlanCache getPlanForSync:nil];
-    }
+    NSArray *localNewArray = [PlanCache getPlanForSync:nil];
+
     __weak typeof(self) weakSelf = self;
     BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
@@ -644,34 +379,7 @@ static BOOL finishTask;
             if (array.count)
             {
                 BmobObject *obj = array[0];
-                NSString *serverUpdatedTime = [obj objectForKey:@"updatedTime"];
-                if (plan.updatetime.length == 0 && serverUpdatedTime.length == 0)
-                {
-
-                }
-                else if (plan.updatetime.length != 0 && serverUpdatedTime.length == 0)
-                {
-                    [weakSelf updatePlanForServer:plan obj:obj];
-                }
-                else if (plan.updatetime.length == 0 && serverUpdatedTime.length != 0)
-                {
-                    
-                }
-                else
-                {
-                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:plan.updatetime formatter:STRDateFormatterType1];
-                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:STRDateFormatterType1];
-                    
-                    if ([localDate compare:serverDate] == NSOrderedAscending)
-                    {
-                        
-                    }
-                    else if ([localDate compare:serverDate] == NSOrderedDescending)
-                    {
-                        //本地的设置较新
-                        [weakSelf updatePlanForServer:plan obj:obj];
-                    }
-                }
+                [weakSelf updatePlanForServer:plan obj:obj];
             }
             else if (!error)
             {//防止网络超时也会新增
@@ -694,7 +402,12 @@ static BOOL finishTask;
                 [acl setReadAccessForUser:user];//设置只有当前用户可读
                 [acl setWriteAccessForUser:user];//设置只有当前用户可写
                 newPlan.ACL = acl;
-                [newPlan saveInBackground];
+                [newPlan saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+                    if (isSuccessful)
+                    {
+                        [PlanCache cleanPlan:plan];
+                    }
+                }];
             }
         }];
     }
@@ -746,107 +459,27 @@ static BOOL finishTask;
     [acl setReadAccessForUser:[BmobUser currentUser]];//设置只有当前用户可读
     [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
     obj.ACL = acl;
-    [obj updateInBackground];
-}
-
-+ (void)syncServerToLocalForPlan
-{
-    BmobUser *user = [BmobUser currentUser];
-    NSString *count = [PlanCache getPlanTotalCount:@"ALL"];
-    __weak typeof(self) weakSelf = self;
-    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
-    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
-    [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
-    [bquery orderByDescending:@"updatedTime"];
-    if ([count integerValue])
-    {
-        bquery.limit = 100;
-    }
-    else
-    {
-        bquery.limit = 999;
-    }
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
-    {
-        if (!error && array.count)
+    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        if (isSuccessful)
         {
-            for (BmobObject *obj in array)
-            {
-                Plan *plan = [PlanCache findPlan:user.objectId planid:[obj objectForKey:@"planId"]];
-                if (plan.content)
-                {
-                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:plan.updatetime formatter:STRDateFormatterType1];
-                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"updatedTime"] formatter:STRDateFormatterType1];
-                    
-                    if ([localDate compare:serverDate] == NSOrderedAscending)
-                    {
-                        //服务器的较新
-                        [weakSelf updatePlanForLocal:plan obj:obj];
-                        
-                    }
-                    else if ([localDate compare:serverDate] == NSOrderedDescending)
-                    {
-                        //本地的设置较新
-                    }
-                }
-                else
-                {
-                    [weakSelf updatePlanForLocal:plan obj:obj];
-                }
-            }
+            [PlanCache cleanPlan:plan];
         }
-        finishPlan = YES;
-        [weakSelf IsAllUploadFinished];
     }];
-}
-
-+ (void)updatePlanForLocal:(Plan *)plan obj:(BmobObject *)obj
-{
-    plan.account = [obj objectForKey:@"userObjectId"];
-    plan.planid = [obj objectForKey:@"planId"];
-    plan.content = [obj objectForKey:@"content"];
-    plan.createtime = [obj objectForKey:@"createdTime"];
-    plan.completetime = [obj objectForKey:@"completedTime"];
-    plan.updatetime = [obj objectForKey:@"updatedTime"];
-    plan.notifytime = [obj objectForKey:@"notifyTime"];
-    plan.iscompleted = [obj objectForKey:@"isCompleted"];
-    plan.isnotify = [obj objectForKey:@"isNotify"];
-    plan.isdeleted = [obj objectForKey:@"isDeleted"];
-    plan.isRepeat = [obj objectForKey:@"isRepeat"];
-    plan.remark = [obj objectForKey:@"remark"];
-    plan.beginDate = [obj objectForKey:@"beginDate"];
-    @synchronized (STRDecodeSignal)
-    {
-        [PlanCache storePlan:plan];
-    }
 }
 
 + (void)startSyncPhoto
 {
     [self syncLocalToServerForPhoto];
-    
-    //优化同步逻辑后，把本地数据都过一遍，防止之前同步落下的数据
-    NSString *tmp = [UserDefaults objectForKey:STRCleanCacheFlag];
-    if (tmp && [tmp isEqualToString:@"1"])
-    {
-        [self syncServerToLocalForPhoto];
-    }
 }
 
 + (void)syncLocalToServerForPhoto
 {
     __weak typeof(self) weakSelf = self;
-    NSArray *localNewArray = [NSArray array];
-    if ([Config shareInstance].settings.syntime.length)
-    {
-        localNewArray = [PlanCache getPhotoForSync:[Config shareInstance].settings.syntime];
-    }
-    else
-    {
-        localNewArray = [PlanCache getPhotoForSync:nil];
-    }
+    NSArray *localNewArray = [PlanCache getPhotoForSync:nil];
+    
     BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Photo"];
+    
     for (Photo *photo in localNewArray)
     {
         [bquery whereKey:@"userObjectId" equalTo:user.objectId];
@@ -856,24 +489,8 @@ static BOOL finishTask;
             if (array.count)
             {
                 BmobObject *obj = array[0];
-                //优化同步逻辑后，把本地数据都过一遍，防止之前同步落下的数据
-                NSString *tmp = [UserDefaults objectForKey:STRCleanCacheFlag];
-                if (!tmp || ![tmp isEqualToString:@"1"])
-                {
-                    [weakSelf updatePhotoForServer:photo obj:obj];
-                }
-                else
-                {
-                    NSString *serverUpdatedTime = [obj objectForKey:@"updatedTime"];
-                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:photo.updatetime formatter:STRDateFormatterType1];
-                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:STRDateFormatterType1];
-                    
-                    if ([localDate compare:serverDate] == NSOrderedDescending)
-                    {
-                        //本地的设置较新
-                        [weakSelf updatePhotoForServer:photo obj:obj];
-                    }
-                }
+                
+                [weakSelf updatePhotoForServer:photo obj:obj];
             }
             else if (!error)
             {//防止网络超时也会新增
@@ -895,7 +512,7 @@ static BOOL finishTask;
                           @"updatedTime":@"2015-09-09 09:09:09",
                           @"isDeleted":photo.isdeleted};
     [newPhoto saveAllWithDictionary:dic];
-    __weak typeof(self) weakSelf = self;
+
     BmobACL *acl = [BmobACL ACL];
     [acl setReadAccessForUser:[BmobUser currentUser]];//设置只有当前用户可读
     [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
@@ -904,9 +521,34 @@ static BOOL finishTask;
     {
         if (isSuccessful)
         {
+            __block int count = 0;
             for (NSInteger i = 0; i < photo.photoArray.count; i++)
             {
-                [weakSelf uploadPhoto:photo index:i obj:newPhoto];
+                NSData *imgData = photo.photoArray[i];
+                NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", (long)(index+1)];
+                if (imgData)
+                {
+                    BmobFile *file = [[BmobFile alloc] initWithFileName:@"imgPhoto.png" withFileData:imgData];
+                    [file saveInBackground:^(BOOL isSuccessful, NSError *error)
+                     {
+                         count++;
+                         if (isSuccessful)
+                         {
+                             [newPhoto setObject:file.url forKey:urlName];
+                             [newPhoto setObject:photo.updatetime forKey:@"updatedTime"];
+                             [newPhoto updateInBackground];
+                         }
+                         if (count == photo.photoArray.count)
+                         {
+                             [PlanCache cleanPhoto:photo];
+                         }
+                     }
+                    withProgressBlock:^(CGFloat progress)
+                     {
+                         //上传进度
+                         NSLog(@"上传影像图片进度： %f",progress);
+                     }];
+                }
             }
         }
         else if (error)
@@ -948,171 +590,49 @@ static BOOL finishTask;
     [acl setWriteAccessForUser:user];//设置只有当前用户可写
     obj.ACL = acl;
     [obj updateInBackground];
-
+    
+    __block int count = 0;
     for (NSInteger i = 0; i < photo.photoArray.count; i++)
     {
-        [self uploadPhoto:photo index:i obj:obj];
-    }
-}
-
-+ (void)uploadPhoto:(Photo *)photo index:(NSInteger)index obj:(BmobObject *)obj
-{
-    NSData *imgData = photo.photoArray[index];
-    NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", (long)(index+1)];
-    NSString *serverURL = [obj objectForKey:urlName];
-    if ((!serverURL
-         || serverURL.length == 0
-         || ![photo.photoURLArray[index] isEqualToString:serverURL])
-        && imgData)
-    {
-        BmobFile *file = [[BmobFile alloc] initWithFileName:@"imgPhoto.png" withFileData:imgData];
-        [file saveInBackground:^(BOOL isSuccessful, NSError *error)
+        NSData *imgData = photo.photoArray[i];
+        NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", (long)(index+1)];
+        if (imgData)
         {
-            if (isSuccessful)
-            {
-                [obj setObject:file.url forKey:urlName];
-                [obj setObject:photo.updatetime forKey:@"updatedTime"];
-                [obj updateInBackground];
-                
-                photo.photoURLArray[index] = file.url;
-                [PlanCache storePhoto:photo];
-            }
-        }
-        withProgressBlock:^(CGFloat progress)
-        {
-            //上传进度
-            NSLog(@"上传影像图片进度： %f",progress);
-        }];
-    }
-}
-
-+ (void)syncServerToLocalForPhoto
-{
-    NSString *count = [PlanCache getPhotoTotalCount];
-    BmobUser *user = [BmobUser currentUser];
-    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Photo"];
-    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
-    [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
-    [bquery orderByDescending:@"updatedTime"];
-    if ([count integerValue])
-    {
-        bquery.limit = 100;
-    }
-    else
-    {
-        bquery.limit = 999;
-    }
-    __weak typeof(self) weakSelf = self;
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
-     {
-        if (!error && array.count)
-        {
-            for (BmobObject *obj in array)
-            {
-                Photo *photo = [PlanCache getPhotoById:[obj objectForKey:@"photoId"]];
-                if (photo.createtime)
-                {
-                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:photo.updatetime formatter:STRDateFormatterType1];
-                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"updatedTime"] formatter:STRDateFormatterType1];
-                    
-                    if ([localDate compare:serverDate] == NSOrderedAscending)
-                    {
-                        //服务器的较新
-                        [weakSelf updatePhotoForLocal:photo obj:obj];
-                    }
-                }
-                else
-                {
-                    [weakSelf updatePhotoForLocal:photo obj:obj];
-                }
-            }
-        }
-    }];
-}
-
-+ (void)updatePhotoForLocal:(Photo *)photo obj:(BmobObject *)obj
-{
-    photo.account = [obj objectForKey:@"userObjectId"];
-    photo.photoid = [obj objectForKey:@"photoId"];
-    photo.content = [obj objectForKey:@"content"];
-    photo.createtime = [obj objectForKey:@"createdTime"];
-    photo.phototime = [obj objectForKey:@"photoTime"];
-    photo.updatetime = [obj objectForKey:@"updatedTime"];
-    photo.location = [obj objectForKey:@"location"];
-    photo.isdeleted = @"0";
-    if (!photo.photoURLArray)
-    {
-        photo.photoURLArray = [NSMutableArray arrayWithCapacity:9];
-        for (NSInteger i = 0; i < 9; i++)
-        {
-            photo.photoURLArray[i] = @"";
-        }
-    }
-    if (!photo.photoArray)
-    {
-        photo.photoArray = [NSMutableArray array];
-    }
-    for (NSInteger i = 0; i < 9; i++)
-    {
-        NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", (long)(i + 1)];
-        NSString *serverPhotoURL = [obj objectForKey:urlName];
-        if (serverPhotoURL
-            && serverPhotoURL.length > 0
-            && ![photo.photoURLArray[i] isEqualToString:serverPhotoURL])
-        {
-            //本地与服务器的URL不一样，需要更新本地图片
-            [self downloadPhoto:photo index:i url:serverPhotoURL];
-        }
-    }
-    [PlanCache storePhoto:photo];
-}
-
-+ (void)downloadPhoto:(Photo *)photo index:(NSInteger)index url:(NSString *)url
-{
-    photo.photoURLArray[index] = url;
-    
-    SDWebImageDownloader *imageDownloader = [SDWebImageDownloader sharedDownloader];
-    [imageDownloader downloadImageWithURL:[NSURL URLWithString:url] options:SDWebImageDownloaderLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize)
-     {
-//         NSLog(@"下载影像图片进度： %ld/%ld",receivedSize , expectedSize);
-     }
-    completed:^(UIImage *image, NSData *data, NSError *error, BOOL finished)
-     {
-         NSLog(@"下载影像图片完成");
-         if (data)
-         {
-             if (index < photo.photoArray.count)
+            BmobFile *file = [[BmobFile alloc] initWithFileName:@"imgPhoto.png" withFileData:imgData];
+            [file saveInBackground:^(BOOL isSuccessful, NSError *error)
              {
-                 photo.photoArray[index] = data;
+                 count ++;
+                 if (isSuccessful)
+                 {
+                     [obj setObject:file.url forKey:urlName];
+                     [obj setObject:photo.updatetime forKey:@"updatedTime"];
+                     [obj updateInBackground];
+                 }
+                 if (count == photo.photoArray.count)
+                 {
+                     [PlanCache cleanPhoto:photo];
+                 }
              }
-             else
+            withProgressBlock:^(CGFloat progress)
              {
-                 [photo.photoArray addObject:data];
-             }
-             [PlanCache storePhoto:photo];
-         }
-     }];
+                 //上传进度
+                 NSLog(@"上传影像图片进度： %f",progress);
+             }];
+        }
+    }
 }
 
 + (void)startSyncTask
 {
     [self syncLocalToServerForTask];
-    [self syncServerToLocalForTask];
 }
 
 + (void)syncLocalToServerForTask
 {
     __weak typeof(self) weakSelf = self;
     BmobUser *user = [BmobUser currentUser];
-    NSArray *localNewArray = [NSArray array];
-    if ([Config shareInstance].settings.syntime.length)
-    {
-        localNewArray = [PlanCache getTaskForSync:[Config shareInstance].settings.syntime];
-    }
-    else
-    {
-        localNewArray = [PlanCache getTaskForSync:nil];
-    }
+    NSArray *localNewArray = [PlanCache getTaskForSync:nil];
+
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Task"];
     for (Task *task in localNewArray)
     {
@@ -1158,7 +678,12 @@ static BOOL finishTask;
                 [acl setReadAccessForUser:[BmobUser currentUser]];//设置只有当前用户可读
                 [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
                 newTask.ACL = acl;
-                [newTask saveInBackground];
+                [newTask saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+                    if (isSuccessful)
+                    {
+                        [PlanCache cleanTask:task];
+                    }
+                }];
                 //同时上传改任务的完成记录
                 [weakSelf syncTaskRecord:task.taskId syncTime:[Config shareInstance].settings.syntime];
             }
@@ -1189,7 +714,12 @@ static BOOL finishTask;
         [acl setReadAccessForUser:user];//设置只有当前用户可读
         [acl setWriteAccessForUser:user];//设置只有当前用户可写
         newTaskRecord.ACL = acl;
-        [newTaskRecord saveInBackground];
+        [newTaskRecord saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+            if (isSuccessful)
+            {
+                [PlanCache cleanTaskRecordByTaskId:taskId];
+            }
+        }];
     }
 }
 
@@ -1247,86 +777,10 @@ static BOOL finishTask;
     [acl setReadAccessForUser:[BmobUser currentUser]];//设置只有当前用户可读
     [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
     obj.ACL = acl;
-    [obj updateInBackground];
-}
-
-+ (void)syncServerToLocalForTask
-{
-    __weak typeof(self) weakSelf = self;
-    BmobUser *user = [BmobUser currentUser];
-    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Task"];
-    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
-    [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
-    [bquery orderByDescending:@"updatedTime"];
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
-    {
-        if (!error && array.count)
+    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+        if (isSuccessful)
         {
-            for (BmobObject *obj in array)
-            {
-                Task *task = [PlanCache findTask:user.objectId taskId:[obj objectForKey:@"taskId"]];
-                if (task.content)
-                {
-                    NSDate *localDate = [CommonFunction NSStringDateToNSDate:task.updateTime formatter:STRDateFormatterType1];
-                    NSDate *serverDate = [CommonFunction NSStringDateToNSDate:[obj objectForKey:@"updatedTime"] formatter:STRDateFormatterType1];
-                    if ([localDate compare:serverDate] == NSOrderedAscending)
-                    {
-                        //服务器的较新
-                        [weakSelf updateTaskForLocal:task obj:obj];
-                        
-                    }
-                }
-                else
-                {
-                    [weakSelf updateTaskForLocal:task obj:obj];
-                }
-            }
-        }
-        finishTask = YES;
-        [weakSelf IsAllUploadFinished];
-    }];
-}
-
-+ (void)updateTaskForLocal:(Task *)task obj:(BmobObject *)obj
-{
-    task.account = [obj objectForKey:@"userObjectId"];
-    task.taskId = [obj objectForKey:@"taskId"];
-    task.content = [obj objectForKey:@"content"];
-    task.totalCount = [obj objectForKey:@"totalCount"];
-    task.completionDate = [obj objectForKey:@"completionDate"];
-    task.createTime = [obj objectForKey:@"createdTime"];
-    task.updateTime = [obj objectForKey:@"updatedTime"];
-    task.isNotify = [obj objectForKey:@"isNotify"];
-    task.notifyTime = [obj objectForKey:@"notifyTime"];
-    task.isTomato = [obj objectForKey:@"isTomato"];
-    task.tomatoMinute = [obj objectForKey:@"tomatoMinute"];
-    task.isRepeat = [obj objectForKey:@"isRepeat"];
-    task.repeatType = [obj objectForKey:@"repeatType"];
-    task.taskOrder = [obj objectForKey:@"taskOrder"];
-    task.isDeleted = [obj objectForKey:@"isDeleted"];
-    [self getNewTaskRecordFromServer:task.taskId];
-    [PlanCache storeTask:task updateNotify:YES];
-}
-
-+ (void)getNewTaskRecordFromServer:(NSString *)recordId
-{
-    BmobUser *user = [BmobUser currentUser];
-    BmobQuery *bquery = [BmobQuery queryWithClassName:@"TaskRecord"];
-    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
-    [bquery whereKey:@"recordId" equalTo:recordId];
-    NSString *time = [Config shareInstance].settings.syntime;
-    [bquery whereKey:@"createdTime" greaterThanOrEqualTo:time];
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
-    {
-        if (!error && array.count)
-        {
-            for (BmobObject *obj in array)
-            {
-                TaskRecord *taskRecord = [[TaskRecord alloc] init];
-                taskRecord.recordId = recordId;
-                taskRecord.createTime = [obj objectForKey:@"createdTime"];
-                [PlanCache storeTaskRecord:taskRecord];
-            }
+            [PlanCache cleanTask:task];
         }
     }];
 }

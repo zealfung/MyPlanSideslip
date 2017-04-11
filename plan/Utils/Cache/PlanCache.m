@@ -362,6 +362,40 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
++ (void)deletePersonalSettings:(Settings *)settings
+{
+    @synchronized(__db)
+    {
+        if (![__db open])
+        {
+            __db = nil;
+            return ;
+        }
+        
+        if ([LogIn isLogin])
+        {
+            BmobUser *user = [BmobUser currentUser];
+            settings.account = user.objectId;
+        }
+        else
+        {
+            return;
+        }
+        
+        BOOL hasRec = NO;
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", STRTableName1];
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[settings.account]];
+        hasRec = [rs next];
+        [rs close];
+        if (hasRec)
+        {
+            sqlString = [NSString stringWithFormat:@"DELETE FROM %@ WHERE account=?", STRTableName1];
+            
+            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.account]];
+        }
+    }
+}
+
 + (BOOL)storePlan:(Plan *)plan
 {
     @synchronized(__db)
@@ -1121,6 +1155,48 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
++ (void)cleanPlan:(Plan *)plan
+{
+    @synchronized(__db)
+    {
+        if (![__db open])
+        {
+            __db = nil;
+            return;
+        }
+        
+        if ([LogIn isLogin])
+        {
+            BmobUser *user = [BmobUser currentUser];
+            plan.account = user.objectId;
+        }
+        else
+        {
+            return;
+        }
+
+        BOOL hasRec = NO;
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE planid=? AND account=?", STRTableName2];
+        
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[plan.planid, plan.account]];
+        hasRec = [rs next];
+        [rs close];
+        BOOL b = NO;
+        if (hasRec)
+        {
+            sqlString = [NSString stringWithFormat:@"DELETE FROM %@ WHERE planid=? AND account=?", STRTableName2];
+            
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.planid, plan.account]];
+            
+            //取消提醒
+            if (b && [plan.isnotify isEqualToString:@"1"])
+            {
+                [CommonFunction cancelPlanNotification:plan.planid];
+            }
+        }
+    }
+}
+
 + (BOOL)deletePhoto:(Photo *)photo
 {
     @synchronized(__db)
@@ -1162,6 +1238,42 @@ static NSMutableDictionary *__contactsOnlineState;
             [NotificationCenter postNotificationName:NTFPhotoSave object:nil];
         }
         return b;
+    }
+}
+
++ (void)cleanPhoto:(Photo *)photo
+{
+    @synchronized(__db)
+    {
+        if (![__db open])
+        {
+            __db = nil;
+            return;
+        }
+        
+        if ([LogIn isLogin])
+        {
+            BmobUser *user = [BmobUser currentUser];
+            photo.account = user.objectId;
+        }
+        else
+        {
+            return;
+        }
+
+        BOOL hasRec = NO;
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE photoid=? AND account=?", STRTableName3];
+        
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[photo.photoid, photo.account]];
+        hasRec = [rs next];
+        [rs close];
+        BOOL b = NO;
+        if (hasRec)
+        {
+            sqlString = [NSString stringWithFormat:@"DELETE FROM %@ WHERE photoid=? AND account=?", STRTableName3];
+            
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[photo.photoid, photo.account]];
+        }
     }
 }
 
@@ -1212,6 +1324,48 @@ static NSMutableDictionary *__contactsOnlineState;
             [NotificationCenter postNotificationName:NTFTaskSave object:nil];
         }
         return b;
+    }
+}
+
++ (void)cleanTask:(Task *)task
+{
+    @synchronized(__db)
+    {
+        if (![__db open])
+        {
+            __db = nil;
+            return;
+        }
+        
+        if ([LogIn isLogin])
+        {
+            BmobUser *user = [BmobUser currentUser];
+            task.account = user.objectId;
+        }
+        else
+        {
+            return;
+        }
+        
+        BOOL hasRec = NO;
+        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", STRTableName5];
+        
+        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[task.taskId, task.account]];
+        hasRec = [rs next];
+        [rs close];
+        BOOL b = NO;
+        if (hasRec)
+        {
+            sqlString = [NSString stringWithFormat:@"DELETE FROM %@ WHERE taskId=? AND account=?", STRTableName5];
+            
+            b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.taskId, task.account]];
+            
+            //取消提醒
+            if (b && [task.isNotify isEqualToString:@"1"])
+            {
+                [self cancelTaskNotification:task.taskId];
+            }
+        }
     }
 }
 
@@ -2441,7 +2595,6 @@ static NSMutableDictionary *__contactsOnlineState;
                     
                     FMDBQuickCheck(b, sqlString, __db);
                 }
-                [NotificationCenter postNotificationName:NTFSettingsSave object:nil];
             }
         }];
     }
@@ -2460,7 +2613,6 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMDBQuickCheck(b, sqlString, __db);
     }
-    [NotificationCenter postNotificationName:NTFPlanSave object:nil];
     //影像
     hasRec = NO;
     sqlString = [NSString stringWithFormat:@"SELECT photoid FROM %@ WHERE account=?", STRTableName3];
@@ -2475,7 +2627,6 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMDBQuickCheck(b, sqlString, __db);
     }
-    [NotificationCenter postNotificationName:NTFPhotoSave object:nil];
     //任务
     hasRec = NO;
     sqlString = [NSString stringWithFormat:@"SELECT taskId FROM %@ WHERE account=?", STRTableName5];
@@ -2490,7 +2641,6 @@ static NSMutableDictionary *__contactsOnlineState;
         
         FMDBQuickCheck(b, sqlString, __db);
     }
-    [NotificationCenter postNotificationName:NTFTaskSave object:nil];
 }
 
 + (NSArray *)getPlanForSync:(NSString *)syntime
@@ -2861,6 +3011,22 @@ static NSMutableDictionary *__contactsOnlineState;
         [rs close];
         
         return array;
+    }
+}
+
++ (void)cleanTaskRecordByTaskId:(NSString *)taskId
+{
+    @synchronized(__db)
+    {
+        if (![__db open])
+        {
+            __db = nil;
+            return;
+        }
+
+        NSString *sqlString = [NSString stringWithFormat:@"DELETE FROM %@ WHERE recordId=?", STRTableName6];
+
+        BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[taskId]];
     }
 }
 

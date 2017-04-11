@@ -112,16 +112,10 @@
         [StatisticsCenter checkIn];
         //更新版本号信息
         [DataCenter updateVersionToServerForSettings];
-        //自动同步数据
-        if ([[Config shareInstance].settings.isAutoSync isEqualToString:@"1"])
-        {
-            [DataCenter startSyncData];
-        }
+        //处理本地数据
+        [DataCenter startSyncData];
     }
-    
-    //自动生成每日重复计划
-    [DataCenter setRepeatPlan];
-    
+
     //加载系统消息
     [DataCenter getMessagesFromServer];
 }
