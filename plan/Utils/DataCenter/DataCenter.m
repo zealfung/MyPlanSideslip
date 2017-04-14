@@ -25,21 +25,16 @@
     //把本地无账号关联的数据与当前登录账号进行关联
     [PlanCache linkedLocalDataToAccount];
     
-    //同步影像
-    [self startSyncPhoto];
-    
     //同步计划
-    [self startSyncPlan];
+    [self uploadPlanForServer];
     
-    //同步任务
-    [self startSyncTask];
-
     //同步个人设置 (一定要最后同步个人设置，因为需要更新同步时间)
     [self startSyncSettings];
 }
 
 + (void)startSyncSettings
 {
+    NSLog(@"开始上传个人设置数据");
     __weak typeof(self) weakSelf = self;
     BmobUser *user = [BmobUser currentUser];
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
@@ -48,6 +43,7 @@
      {
          if (array.count)
          {
+             NSLog(@"从服务器查到该用户设置记录");
              BmobObject *obj = array[0];
              
              NSString *serverNickName = [obj objectForKey:@"nickName"];
@@ -56,14 +52,14 @@
                       && [Config shareInstance].settings.nickname
                       && [Config shareInstance].settings.nickname.length)
              {
-                 //服务器上昵称为空，本地昵称不为空，用本地的覆盖服务器的
+                 NSLog(@"服务器上昵称为空，本地昵称不为空，用本地的覆盖服务器的");
                  [weakSelf updateSettings:obj];
              }
              else if ([Config shareInstance].settings.updatetime
                       && [Config shareInstance].settings.updatetime.length
                       && (!serverUpdatedTime || serverUpdatedTime.length == 0))
              {
-                 //服务器上更新时间为空，本地更新时间不为空，用本地的覆盖服务器的
+                 NSLog(@"服务器上更新时间为空，本地更新时间不为空，用本地的覆盖服务器的");
                  [weakSelf updateSettings:obj];
              }
              else if ([Config shareInstance].settings.updatetime.length
@@ -73,18 +69,14 @@
                  
                  if ([localUpdatedTime compare:serverUpdatetime] == NSOrderedDescending)
                  {
-                     //本地的设置较新
+                     NSLog(@"本地的设置较新");
                      [weakSelf syncLocalToServerForSettings];
                  }
-             }
-             else
-             {
-                 [PlanCache deletePersonalSettings:[Config shareInstance].settings];
              }
          }
          else if (!error)
          {//防止网络超时也会新增
-             //将本地的设置同步到服务器
+             NSLog(@"将本地的设置同步到服务器");
              [weakSelf addSettingsToServer];
          }
      }];
@@ -112,6 +104,7 @@
 
 + (void)updateSettings:(BmobObject *)settingsObject
 {
+    NSLog(@"开始更新本地个人设置数据到服务器");
     if ([Config shareInstance].settings.nickname)
     {
         [settingsObject setObject:[Config shareInstance].settings.nickname forKey:@"nickName"];
@@ -328,7 +321,6 @@
             //把上传完的文件保存到“头像”字段
             [obj setObject:file.url forKey:@"avatarURL"];
             [obj updateInBackground];
-            [PlanCache deletePersonalSettings:[Config shareInstance].settings];
         }
     }
     withProgressBlock:^(CGFloat progress)
@@ -358,63 +350,72 @@
     }];
 }
 
-+ (void)startSyncPlan
++ (void)uploadPlanForServer
 {
-    [self syncLocalToServerForPlan];
-}
-
-+ (void)syncLocalToServerForPlan
-{
+    NSLog(@"开始上传本地计划数据到服务器");
     NSArray *localNewArray = [PlanCache getPlanForSync:nil];
-
-    __weak typeof(self) weakSelf = self;
-    BmobUser *user = [BmobUser currentUser];
-    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
-    for (Plan *plan in localNewArray)
+    
+    if (localNewArray.count)
     {
+        Plan *plan = localNewArray[0];
+        
+        BmobUser *user = [BmobUser currentUser];
+        BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
         [bquery whereKey:@"userObjectId" equalTo:user.objectId];
         [bquery whereKey:@"planId" equalTo:plan.planid];
+        __weak typeof(self) weakSelf = self;
         [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
-        {
-            if (array.count)
-            {
-                BmobObject *obj = array[0];
-                [weakSelf updatePlanForServer:plan obj:obj];
-            }
-            else if (!error)
-            {//防止网络超时也会新增
-                BmobObject *newPlan = [BmobObject objectWithClassName:@"Plan"];
-                NSDictionary *dic = @{@"userObjectId":plan.account,
-                                      @"planId":plan.planid,
-                                      @"content":plan.content,
-                                      @"createdTime":plan.createtime,
-                                      @"completedTime":plan.completetime,
-                                      @"updatedTime":plan.updatetime,
-                                      @"notifyTime":plan.notifytime,
-                                      @"isCompleted":plan.iscompleted,
-                                      @"isNotify":plan.isnotify,
-                                      @"isDeleted":plan.isdeleted,
-                                      @"isRepeat":plan.isRepeat,
-                                      @"remark":plan.remark,
-                                      @"beginDate":plan.beginDate};
-                [newPlan saveAllWithDictionary:dic];
-                BmobACL *acl = [BmobACL ACL];
-                [acl setReadAccessForUser:user];//设置只有当前用户可读
-                [acl setWriteAccessForUser:user];//设置只有当前用户可写
-                newPlan.ACL = acl;
-                [newPlan saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-                    if (isSuccessful)
-                    {
-                        [PlanCache cleanPlan:plan];
-                    }
-                }];
-            }
-        }];
+         {
+             if (array.count)
+             {
+                 BmobObject *obj = array[0];
+                 [weakSelf updatePlanForServer:plan obj:obj];
+             }
+             else if (!error)
+             {//防止网络超时也会新增
+                 BmobObject *newPlan = [BmobObject objectWithClassName:@"Plan"];
+                 NSDictionary *dic = @{@"userObjectId":plan.account,
+                                       @"planId":plan.planid,
+                                       @"content":plan.content,
+                                       @"createdTime":plan.createtime,
+                                       @"completedTime":plan.completetime,
+                                       @"updatedTime":plan.updatetime,
+                                       @"notifyTime":plan.notifytime,
+                                       @"isCompleted":plan.iscompleted,
+                                       @"isNotify":plan.isnotify,
+                                       @"isDeleted":plan.isdeleted,
+                                       @"isRepeat":plan.isRepeat,
+                                       @"remark":plan.remark,
+                                       @"beginDate":plan.beginDate};
+                 [newPlan saveAllWithDictionary:dic];
+                 BmobACL *acl = [BmobACL ACL];
+                 [acl setReadAccessForUser:user];//设置只有当前用户可读
+                 [acl setWriteAccessForUser:user];//设置只有当前用户可写
+                 newPlan.ACL = acl;
+                 [newPlan saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+                     if (isSuccessful)
+                     {
+                         NSLog(@"清理本地计划");
+                         [PlanCache cleanPlan:plan];
+                     }
+                     else
+                     {
+                         NSLog(@"新增本地计划到服务器失败");
+                     }
+                     [weakSelf uploadPlanForServer];
+                 }];
+             }
+         }];
+    }
+    else
+    {
+        [self uploadTaskForServer];
     }
 }
 
 + (void)updatePlanForServer:(Plan *)plan obj:(BmobObject *)obj
 {
+    NSLog(@"更新本地计划到服务器");
     if (plan.content)
     {
         [obj setObject:plan.content forKey:@"content"];
@@ -459,49 +460,54 @@
     [acl setReadAccessForUser:[BmobUser currentUser]];//设置只有当前用户可读
     [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
     obj.ACL = acl;
+    __weak typeof(self) weakSelf = self;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful)
         {
+            NSLog(@"清理本地计划");
             [PlanCache cleanPlan:plan];
         }
+        else
+        {
+            NSLog(@"更新本地计划到服务器失败");
+        }
+        [weakSelf uploadPlanForServer];
     }];
 }
 
-+ (void)startSyncPhoto
++ (void)uploadPhotoForServer
 {
-    [self syncLocalToServerForPhoto];
-}
-
-+ (void)syncLocalToServerForPhoto
-{
-    __weak typeof(self) weakSelf = self;
+    NSLog(@"开始上传本地岁月影像");
     NSArray *localNewArray = [PlanCache getPhotoForSync:nil];
     
-    BmobUser *user = [BmobUser currentUser];
-    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Photo"];
-    
-    for (Photo *photo in localNewArray)
+    if (localNewArray.count)
     {
+        Photo *photo = localNewArray[0];
+        
+        BmobUser *user = [BmobUser currentUser];
+        BmobQuery *bquery = [BmobQuery queryWithClassName:@"Photo"];
         [bquery whereKey:@"userObjectId" equalTo:user.objectId];
         [bquery whereKey:@"photoId" equalTo:photo.photoid];
+        __weak typeof(self) weakSelf = self;
         [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
-        {
-            if (array.count)
-            {
-                BmobObject *obj = array[0];
-                
-                [weakSelf updatePhotoForServer:photo obj:obj];
-            }
-            else if (!error)
-            {//防止网络超时也会新增
-                [weakSelf addPhotoToServer:photo];
-            }
-        }];
+         {
+             if (array.count)
+             {
+                 BmobObject *obj = array[0];
+                 
+                 [weakSelf updatePhotoForServer:photo obj:obj];
+             }
+             else if (!error)
+             {//防止网络超时也会新增
+                 [weakSelf addPhotoToServer:photo];
+             }
+         }];
     }
 }
 
 + (void)addPhotoToServer:(Photo *)photo
 {
+    NSLog(@"新增本地岁月影像数据到服务器");
     BmobObject *newPhoto = [BmobObject objectWithClassName:@"Photo"];
     NSDictionary *dic = @{@"userObjectId":photo.account,
                           @"photoId":photo.photoid,
@@ -517,53 +523,29 @@
     [acl setReadAccessForUser:[BmobUser currentUser]];//设置只有当前用户可读
     [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
     newPhoto.ACL = acl;
+    __weak typeof(self) weakSelf = self;
     [newPhoto saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
     {
         if (isSuccessful)
         {
-            __block int count = 0;
-            for (NSInteger i = 0; i < photo.photoArray.count; i++)
-            {
-                NSData *imgData = photo.photoArray[i];
-                NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", (long)(index+1)];
-                if (imgData)
-                {
-                    BmobFile *file = [[BmobFile alloc] initWithFileName:@"imgPhoto.png" withFileData:imgData];
-                    [file saveInBackground:^(BOOL isSuccessful, NSError *error)
-                     {
-                         count++;
-                         if (isSuccessful)
-                         {
-                             [newPhoto setObject:file.url forKey:urlName];
-                             [newPhoto setObject:photo.updatetime forKey:@"updatedTime"];
-                             [newPhoto updateInBackground];
-                         }
-                         if (count == photo.photoArray.count)
-                         {
-                             [PlanCache cleanPhoto:photo];
-                         }
-                     }
-                    withProgressBlock:^(CGFloat progress)
-                     {
-                         //上传进度
-                         NSLog(@"上传影像图片进度： %f",progress);
-                     }];
-                }
-            }
+            [weakSelf uploadImageInPhoto:[NSMutableArray arrayWithArray:photo.photoArray] obj:newPhoto photo:photo];
         }
         else if (error)
         {
             NSLog(@"新增岁月影像到服务器失败：%@",error);
+            [weakSelf uploadPhotoForServer];
         }
         else
         {
             NSLog(@"新增岁月影像到服务器失败：Unknow error");
+            [weakSelf uploadPhotoForServer];
         }
     }];
 }
 
 + (void)updatePhotoForServer:(Photo *)photo obj:(BmobObject *)obj
 {
+    NSLog(@"开始更新本地岁月影像数据到服务器");
     BmobUser *user = [BmobUser currentUser];
     if (photo.content)
     {
@@ -591,120 +573,132 @@
     obj.ACL = acl;
     [obj updateInBackground];
     
-    __block int count = 0;
-    for (NSInteger i = 0; i < photo.photoArray.count; i++)
+    [self uploadImageInPhoto:[NSMutableArray arrayWithArray:photo.photoArray] obj:obj photo:photo];
+}
+
++ (void)uploadImageInPhoto:(NSMutableArray *)photoArray obj:(BmobObject *)obj photo:(Photo *)photo
+{
+    if (photoArray.count)
     {
-        NSData *imgData = photo.photoArray[i];
+        NSData *imgData = photoArray[0];
         NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", (long)(index+1)];
         if (imgData)
         {
             BmobFile *file = [[BmobFile alloc] initWithFileName:@"imgPhoto.png" withFileData:imgData];
+            __weak typeof(self) weakSelf = self;
             [file saveInBackground:^(BOOL isSuccessful, NSError *error)
              {
-                 count ++;
                  if (isSuccessful)
                  {
                      [obj setObject:file.url forKey:urlName];
                      [obj setObject:photo.updatetime forKey:@"updatedTime"];
                      [obj updateInBackground];
                  }
-                 if (count == photo.photoArray.count)
-                 {
-                     [PlanCache cleanPhoto:photo];
-                 }
+                 [photoArray removeObject:imgData];
+                 [weakSelf uploadImageInPhoto:photoArray obj:obj photo:photo];
              }
-            withProgressBlock:^(CGFloat progress)
+             withProgressBlock:^(CGFloat progress)
              {
                  //上传进度
                  NSLog(@"上传影像图片进度： %f",progress);
              }];
         }
     }
-}
-
-+ (void)startSyncTask
-{
-    [self syncLocalToServerForTask];
-}
-
-+ (void)syncLocalToServerForTask
-{
-    __weak typeof(self) weakSelf = self;
-    BmobUser *user = [BmobUser currentUser];
-    NSArray *localNewArray = [PlanCache getTaskForSync:nil];
-
-    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Task"];
-    for (Task *task in localNewArray)
+    else
     {
-        [bquery whereKey:@"userObjectId" equalTo:user.objectId];
-        [bquery whereKey:@"taskId" equalTo:task.taskId];
-        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
-        {
-            if (array.count)
-            {
-                BmobObject *obj = array[0];
-                NSString *serverUpdatedTime = [obj objectForKey:@"updatedTime"];
-                NSDate *localDate = [CommonFunction NSStringDateToNSDate:task.updateTime formatter:STRDateFormatterType1];
-                NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:STRDateFormatterType1];
-                
-                if ([localDate compare:serverDate] == NSOrderedDescending)
-                {
-                    //本地的设置较新
-                    [weakSelf updateTaskForServer:task obj:obj];
-                    //同时上传改任务的完成记录
-                    [weakSelf syncTaskRecord:task.taskId syncTime:[Config shareInstance].settings.syntime];
-                }
-            }
-            else if (!error)
-            {
-                BmobObject *newTask = [BmobObject objectWithClassName:@"Task"];
-                NSDictionary *dic = @{@"userObjectId":task.account,
-                                      @"taskId":task.taskId,
-                                      @"content":task.content,
-                                      @"totalCount":task.totalCount,
-                                      @"completionDate":task.completionDate,
-                                      @"createdTime":task.createTime,
-                                      @"updatedTime":task.updateTime,
-                                      @"isNotify":task.isNotify,
-                                      @"notifyTime":task.notifyTime,
-                                      @"isTomato":task.isTomato,
-                                      @"tomatoMinute":task.tomatoMinute,
-                                      @"isRepeat":task.isRepeat,
-                                      @"repeatType":task.repeatType,
-                                      @"taskOrder":task.taskOrder,
-                                      @"isDeleted":task.isDeleted};
-                [newTask saveAllWithDictionary:dic];
-                BmobACL *acl = [BmobACL ACL];
-                [acl setReadAccessForUser:[BmobUser currentUser]];//设置只有当前用户可读
-                [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
-                newTask.ACL = acl;
-                [newTask saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-                    if (isSuccessful)
-                    {
-                        [PlanCache cleanTask:task];
-                    }
-                }];
-                //同时上传改任务的完成记录
-                [weakSelf syncTaskRecord:task.taskId syncTime:[Config shareInstance].settings.syntime];
-            }
-        }];
+        NSLog(@"清理本地岁月影像");
+        [PlanCache cleanPhoto:photo];
+        [self uploadPhotoForServer];
     }
 }
 
-+ (void)syncTaskRecord:(NSString *)taskId syncTime:(NSString *)syncTime
++ (void)uploadTaskForServer
 {
-    NSArray *localNewArray = [NSArray array];
-    if (syncTime.length)
+    NSLog(@"开始上传本地任务到服务器");
+    NSArray *localNewArray = [PlanCache getTaskForSync:nil];
+    
+    if (localNewArray.count)
     {
-        localNewArray = [PlanCache getTaskRecordForSyncByTaskId:taskId syntime:syncTime];
+        Task *task = localNewArray[0];
+        
+        BmobUser *user = [BmobUser currentUser];
+        BmobQuery *bquery = [BmobQuery queryWithClassName:@"Task"];
+        [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+        [bquery whereKey:@"taskId" equalTo:task.taskId];
+        __weak typeof(self) weakSelf = self;
+        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+         {
+             if (array.count)
+             {
+                 BmobObject *obj = array[0];
+                 NSString *serverUpdatedTime = [obj objectForKey:@"updatedTime"];
+                 NSDate *localDate = [CommonFunction NSStringDateToNSDate:task.updateTime formatter:STRDateFormatterType1];
+                 NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:STRDateFormatterType1];
+                 
+                 if ([localDate compare:serverDate] == NSOrderedDescending)
+                 {
+                     //本地的设置较新
+                     [weakSelf updateTaskForServer:task obj:obj];
+                     //同时上传改任务的完成记录
+                     [weakSelf uploadTaskRecordForServer:task.taskId];
+                 }
+             }
+             else if (!error)
+             {
+                 BmobObject *newTask = [BmobObject objectWithClassName:@"Task"];
+                 NSDictionary *dic = @{@"userObjectId":task.account,
+                                       @"taskId":task.taskId,
+                                       @"content":task.content,
+                                       @"totalCount":task.totalCount,
+                                       @"completionDate":task.completionDate,
+                                       @"createdTime":task.createTime,
+                                       @"updatedTime":task.updateTime,
+                                       @"isNotify":task.isNotify,
+                                       @"notifyTime":task.notifyTime,
+                                       @"isTomato":task.isTomato,
+                                       @"tomatoMinute":task.tomatoMinute,
+                                       @"isRepeat":task.isRepeat,
+                                       @"repeatType":task.repeatType,
+                                       @"taskOrder":task.taskOrder,
+                                       @"isDeleted":task.isDeleted};
+                 [newTask saveAllWithDictionary:dic];
+                 BmobACL *acl = [BmobACL ACL];
+                 [acl setReadAccessForUser:[BmobUser currentUser]];//设置只有当前用户可读
+                 [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
+                 newTask.ACL = acl;
+                 [newTask saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
+                     if (isSuccessful)
+                     {
+                         NSLog(@"清理本地任务");
+                         [PlanCache cleanTask:task];
+                     }
+                     [weakSelf uploadTaskForServer];
+                 }];
+                 //同时上传改任务的完成记录
+                 [weakSelf uploadTaskRecordForServer:task.taskId];
+             }
+         }];
     }
     else
     {
-        localNewArray = [PlanCache getTaskRecordForSyncByTaskId:taskId syntime:nil];
+        [self uploadPhotoForServer];
     }
-    BmobUser *user = [BmobUser currentUser];
-    for (TaskRecord *taskrecord in localNewArray)
+}
+
++ (void)uploadTaskRecordForServer:(NSString *)taskId
+{
+    NSMutableArray *localNewArray = [PlanCache getTaskRecordForSyncByTaskId:taskId syntime:nil];
+
+    [self uploadTaskRecordOneByOne:localNewArray taskId:taskId];
+}
+
++ (void)uploadTaskRecordOneByOne:(NSMutableArray *)array taskId:(NSString *)taskId
+{
+    if (array.count)
     {
+        TaskRecord *taskrecord = array[0];
+        
+        BmobUser *user = [BmobUser currentUser];
         BmobObject *newTaskRecord = [BmobObject objectWithClassName:@"TaskRecord"];
         NSDictionary *dic = @{@"userObjectId":user.objectId,
                               @"recordId":taskrecord.recordId,
@@ -714,17 +708,23 @@
         [acl setReadAccessForUser:user];//设置只有当前用户可读
         [acl setWriteAccessForUser:user];//设置只有当前用户可写
         newTaskRecord.ACL = acl;
+        __weak typeof(self) weakSelf = self;
         [newTaskRecord saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-            if (isSuccessful)
-            {
-                [PlanCache cleanTaskRecordByTaskId:taskId];
-            }
+            
+            [array removeObject:taskrecord];
+            [weakSelf uploadTaskRecordOneByOne:array taskId:taskId];
         }];
+    }
+    else
+    {
+        NSLog(@"清理本地任务记录");
+        [PlanCache cleanTaskRecordByTaskId:taskId];
     }
 }
 
 + (void)updateTaskForServer:(Task *)task obj:(BmobObject *)obj
 {
+    NSLog(@"更新本地任务到服务器");
     if (task.content)
     {
         [obj setObject:task.content forKey:@"content"];
@@ -777,11 +777,14 @@
     [acl setReadAccessForUser:[BmobUser currentUser]];//设置只有当前用户可读
     [acl setWriteAccessForUser:[BmobUser currentUser]];//设置只有当前用户可写
     obj.ACL = acl;
+    __weak typeof(self) weakSelf = self;
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful)
         {
+            NSLog(@"清理本地任务");
             [PlanCache cleanTask:task];
         }
+        [weakSelf uploadTaskForServer];
     }];
 }
 

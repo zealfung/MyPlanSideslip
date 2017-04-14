@@ -20,8 +20,6 @@
 
 + (void)storePersonalSettings:(Settings *)settings isNotify:(BOOL)isNotify;
 
-+ (void)deletePersonalSettings:(Settings *)settings;
-
 + (BOOL)storePlan:(Plan *)plan;
 
 /** 更新计划的完成状态 */
@@ -118,7 +116,7 @@
 
 + (NSArray *)getTaskForSync:(NSString *)syntime;
 
-+ (NSArray *)getTaskRecordForSyncByTaskId:(NSString *)taskId syntime:(NSString *)syntime;
++ (NSMutableArray *)getTaskRecordForSyncByTaskId:(NSString *)taskId syntime:(NSString *)syntime;
 
 + (Task *)findTask:(NSString *)account taskId:(NSString *)taskId;
 

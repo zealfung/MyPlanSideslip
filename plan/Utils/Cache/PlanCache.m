@@ -362,40 +362,6 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (void)deletePersonalSettings:(Settings *)settings
-{
-    @synchronized(__db)
-    {
-        if (![__db open])
-        {
-            __db = nil;
-            return ;
-        }
-        
-        if ([LogIn isLogin])
-        {
-            BmobUser *user = [BmobUser currentUser];
-            settings.account = user.objectId;
-        }
-        else
-        {
-            return;
-        }
-        
-        BOOL hasRec = NO;
-        NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE account=?", STRTableName1];
-        FMResultSet *rs = [__db executeQuery:sqlString withArgumentsInArray:@[settings.account]];
-        hasRec = [rs next];
-        [rs close];
-        if (hasRec)
-        {
-            sqlString = [NSString stringWithFormat:@"DELETE FROM %@ WHERE account=?", STRTableName1];
-            
-            BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[settings.account]];
-        }
-    }
-}
-
 + (BOOL)storePlan:(Plan *)plan
 {
     @synchronized(__db)
@@ -2568,6 +2534,8 @@ static NSMutableDictionary *__contactsOnlineState;
     BmobUser *user = [BmobUser currentUser];
     if (!user) return;
     
+    NSLog(@"开始关联本地数据");
+    
     [Config shareInstance].settings = [PlanCache getPersonalSettings];
     if (![Config shareInstance].settings.createtime)
     {
@@ -2592,8 +2560,6 @@ static NSMutableDictionary *__contactsOnlineState;
                     NSString *sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName1];
                     
                     BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
-                    
-                    FMDBQuickCheck(b, sqlString, __db);
                 }
             }
         }];
@@ -2610,8 +2576,6 @@ static NSMutableDictionary *__contactsOnlineState;
         sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName2];
         
         BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
-        
-        FMDBQuickCheck(b, sqlString, __db);
     }
     //影像
     hasRec = NO;
@@ -2624,8 +2588,6 @@ static NSMutableDictionary *__contactsOnlineState;
         sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName3];
         
         BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
-        
-        FMDBQuickCheck(b, sqlString, __db);
     }
     //任务
     hasRec = NO;
@@ -2638,8 +2600,6 @@ static NSMutableDictionary *__contactsOnlineState;
         sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName5];
         
         BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
-        
-        FMDBQuickCheck(b, sqlString, __db);
     }
 }
 
@@ -2976,7 +2936,7 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (NSArray *)getTaskRecordForSyncByTaskId:(NSString *)taskId syntime:(NSString *)syntime
++ (NSMutableArray *)getTaskRecordForSyncByTaskId:(NSString *)taskId syntime:(NSString *)syntime
 {
     @synchronized(__db)
     {
