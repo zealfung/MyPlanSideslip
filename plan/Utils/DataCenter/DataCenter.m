@@ -642,6 +642,12 @@
                      //同时上传改任务的完成记录
                      [weakSelf uploadTaskRecordForServer:task.taskId];
                  }
+                 else
+                 {
+                     NSLog(@"清理本地任务");
+                     [PlanCache cleanTask:task];
+                     [weakSelf uploadTaskForServer];
+                 }
              }
              else if (!error)
              {
@@ -669,8 +675,12 @@
                  [newTask saveInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
                      if (isSuccessful)
                      {
-                         NSLog(@"清理本地任务");
+                         NSLog(@"上传本地任务成功，清理本地任务");
                          [PlanCache cleanTask:task];
+                     }
+                     else
+                     {
+                         NSLog(@"上传本地任务失败");
                      }
                      [weakSelf uploadTaskForServer];
                  }];
@@ -781,8 +791,12 @@
     [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
         if (isSuccessful)
         {
-            NSLog(@"清理本地任务");
+            NSLog(@"更新本地任务到服务器成功，清理本地任务");
             [PlanCache cleanTask:task];
+        }
+        else
+        {
+            NSLog(@"更新本地任务到服务器失败");
         }
         [weakSelf uploadTaskForServer];
     }];
