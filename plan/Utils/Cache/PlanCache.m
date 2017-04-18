@@ -1159,6 +1159,15 @@ static NSMutableDictionary *__contactsOnlineState;
             {
                 [CommonFunction cancelPlanNotification:plan.planid];
             }
+            
+            if (b)
+            {
+                NSLog(@"删除本地计划成功");
+            }
+            else
+            {
+                NSLog(@"删除本地计划失败");
+            }
         }
     }
 }
@@ -1239,6 +1248,15 @@ static NSMutableDictionary *__contactsOnlineState;
             sqlString = [NSString stringWithFormat:@"DELETE FROM %@ WHERE photoid=? AND account=?", STRTableName3];
             
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[photo.photoid, photo.account]];
+            
+            if (b)
+            {
+                NSLog(@"删除本地岁月影像成功");
+            }
+            else
+            {
+                NSLog(@"删除本地岁月影像失败");
+            }
         }
     }
 }
@@ -1330,6 +1348,15 @@ static NSMutableDictionary *__contactsOnlineState;
             if (b && [task.isNotify isEqualToString:@"1"])
             {
                 [self cancelTaskNotification:task.taskId];
+            }
+            
+            if (b)
+            {
+                NSLog(@"删除本地任务成功");
+            }
+            else
+            {
+                NSLog(@"删除本地任务失败");
             }
         }
     }
@@ -2987,6 +3014,15 @@ static NSMutableDictionary *__contactsOnlineState;
         NSString *sqlString = [NSString stringWithFormat:@"DELETE FROM %@ WHERE recordId=?", STRTableName6];
 
         BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[taskId]];
+        
+        if (b)
+        {
+            NSLog(@"删除本地任务记录成功");
+        }
+        else
+        {
+            NSLog(@"删除本地任务记录失败");
+        }
     }
 }
 
