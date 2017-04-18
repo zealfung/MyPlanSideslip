@@ -128,12 +128,7 @@ CGFloat kPhotoCellHeight;
         NSURL *photoURL = [NSURL URLWithString:photo.photoURLArray[i]];
         
         UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(pXOffset, 0, imageWidth, photoHeight)];
-        [imageView sd_setImageWithPreviousCachedImageWithURL:photoURL andPlaceholderImage:[UIImage imageNamed:@"ImgDefault_Rectangle"] options:SDWebImageHighPriority progress:^(NSInteger receivedSize, NSInteger expectedSize)
-         {
-         }
-         completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
-         {
-         }];
+        [imageView sd_setImageWithURL:photoURL placeholderImage:[UIImage imageNamed:png_ImageDefault_Rectangle]];
         imageView.contentMode = UIViewContentModeScaleAspectFill;
         imageView.clipsToBounds = YES;
         imageView.layer.borderWidth = 1;

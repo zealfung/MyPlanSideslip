@@ -88,14 +88,12 @@
 
     __weak SDBrowserImageView *imageViewWeak = self;
 
-    [self sd_setImageWithURL:url placeholderImage:placeholder options:SDWebImageRetryFailed progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-        imageViewWeak.progress = (CGFloat)receivedSize / expectedSize;
-        
-    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+    [self sd_setImageWithURL:url placeholderImage:placeholder completed:^(UIImage * _Nullable image, NSError * _Nullable error, SDImageCacheType cacheType, NSURL * _Nullable imageURL)
+    {
         [imageViewWeak removeWaitingView];
         
-        
-        if (error) {
+        if (error)
+        {
             UILabel *label = [[UILabel alloc] init];
             label.bounds = CGRectMake(0, 0, 160, 30);
             label.center = CGPointMake(imageViewWeak.bounds.size.width * 0.5, imageViewWeak.bounds.size.height * 0.5);
@@ -107,11 +105,12 @@
             label.clipsToBounds = YES;
             label.textAlignment = NSTextAlignmentCenter;
             [imageViewWeak addSubview:label];
-        } else {
+        }
+        else
+        {
             _scrollImageView.image = image;
             [_scrollImageView setNeedsDisplay];
         }
-   
     }];
 }
 

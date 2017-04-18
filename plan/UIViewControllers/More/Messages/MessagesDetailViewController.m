@@ -138,20 +138,20 @@
     [imgArray addObject:imgDefault];
     NSURL *URL = [NSURL URLWithString:imgURL];
     __weak typeof(self) weakSelf = self;
-    [[SDWebImageManager sharedManager] downloadImageWithURL:URL options:SDWebImageLowPriority progress:^(NSInteger receivedSize, NSInteger expectedSize) {
-        
-    } completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
-        
+    [[SDWebImageManager sharedManager] loadImageWithURL:URL options:SDWebImageLowPriority progress:nil completed:^(UIImage * _Nullable image, NSData * _Nullable data, NSError * _Nullable error, SDImageCacheType cacheType, BOOL finished, NSURL * _Nullable imageURL)
+     {
         postImgDownloadCount ++;
         
-        if (!error && image) {
+        if (!error && image)
+        {
             imgArray[index] = image;
         }
         
-        if (postImgDownloadCount == self.message.imgURLArray.count) {
+        if (postImgDownloadCount == self.message.imgURLArray.count)
+        {
             [weakSelf loadCustomView];
         }
-    }];
+    } ];
 }
 
 #pragma mark - photobrowser代理方法

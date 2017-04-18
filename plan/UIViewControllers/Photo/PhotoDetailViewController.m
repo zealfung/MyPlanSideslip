@@ -225,12 +225,7 @@ NSUInteger const kPhotoDeleteTag = 20151011;
     imageView.contentMode = UIViewContentModeScaleAspectFit;
 
     NSURL *photoURL = [NSURL URLWithString:self.photo.photoURLArray[index]];
-    [imageView sd_setImageWithPreviousCachedImageWithURL:photoURL andPlaceholderImage:[UIImage imageNamed:@"ImgDefault_Rectangle"] options:SDWebImageHighPriority progress:^(NSInteger receivedSize, NSInteger expectedSize)
-     {
-     }
-    completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
-     {
-     }];
+    [imageView sd_setImageWithURL:photoURL placeholderImage:[UIImage imageNamed:png_ImageDefault_Rectangle]];
     return imageView;
 }
 

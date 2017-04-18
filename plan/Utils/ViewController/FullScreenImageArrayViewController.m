@@ -182,10 +182,8 @@ NSInteger const kFullScreenImageArrayViewBaseTag = 20151121;
     ImageScrollView *imgView = [[ImageScrollView alloc] initWithFrame:[self getPhotoViewFrameForIndex:index]];
     imgView.tag = kFullScreenImageArrayViewBaseTag + index;
     imgView.imageView.contentMode = UIViewContentModeScaleAspectFit;
-    [imgView.imageView sd_setImageWithPreviousCachedImageWithURL:[NSURL URLWithString:self.imgURLArray[index]] andPlaceholderImage:[UIImage imageNamed:png_ImageDefault] options:SDWebImageHighPriority progress:^(NSInteger receivedSize, NSInteger expectedSize)
-     {
-     }
-     completed:nil];
+    [imgView.imageView sd_setImageWithURL:[NSURL URLWithString:self.imgURLArray[index]] placeholderImage:[UIImage imageNamed:png_ImageDefault]];
+    
     [self.myScrollView addSubview:imgView];
 }
 
