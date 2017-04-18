@@ -139,6 +139,8 @@
 
 + (NSUInteger)platformTypeForString:(NSString *)platform {
     
+    if (!platform) return UIDeviceUnknown;
+    
     // The ever mysterious iFPGA
     if ([platform isEqualToString:@"iFPGA"])        return UIDeviceIFPGA;
     

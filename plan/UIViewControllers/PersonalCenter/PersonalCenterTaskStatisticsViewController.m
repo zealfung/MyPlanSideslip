@@ -217,17 +217,23 @@
     }
 }
 
-- (NSString *)setStrPrefixByStr:(NSString *)str {
-    if ([str hasPrefix:@"0"]) {
+- (NSString *)setStrPrefixByStr:(NSString *)str
+{
+    if (str && [str hasPrefix:@"0"])
+    {
         str = [str substringFromIndex:1];
     }
     return str;
 }
 
-- (BOOL)bissextile:(int)year {
-    if ((year % 4 == 0 && year % 100 !=0) || year %400 == 0) {
+- (BOOL)bissextile:(int)year
+{
+    if ((year % 4 == 0 && year % 100 !=0) || year %400 == 0)
+    {
         return YES;
-    } else {
+    }
+    else
+    {
         return NO;
     }
     return NO;
