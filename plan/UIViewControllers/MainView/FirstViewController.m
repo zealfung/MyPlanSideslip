@@ -139,12 +139,14 @@ NSUInteger const kHoursPerDay = 24;
         {
             if (error)
             {
+                NSLog(@"加载个人设置出错");
                 [Config shareInstance].settings = [PlanCache getPersonalSettings];
             }
             else
             {
                 if (array.count)
                 {
+                    NSLog(@"加载个人设置成功");
                     BmobObject *object = array[0];
                     [Config shareInstance].settings.objectId = object.objectId;
                     [Config shareInstance].settings.nickname = [object objectForKey:@"nickName"];
@@ -202,7 +204,16 @@ NSUInteger const kHoursPerDay = 24;
     NSUInteger avatarSize = WIDTH_FULL_SCREEN / 3;
     self.xMiddle = WIDTH_FULL_SCREEN / 2;
     self.ySpace = HEIGHT_FULL_SCREEN / 25;
-    self.yOffset = iPhone4 ? HEIGHT_FULL_SCREEN / 28 : HEIGHT_FULL_SCREEN / 15 - self.ySpace;
+    
+    self.yOffset = HEIGHT_FULL_SCREEN / 8;
+    if (iPhone4)
+    {
+        self.yOffset = HEIGHT_FULL_SCREEN / 28;
+    }
+    else if (iPhone5)
+    {
+        self.yOffset = HEIGHT_FULL_SCREEN / 13;
+    }
     
     UIImage *image = [UIImage imageNamed:png_AvatarDefault];
     if ([Config shareInstance].settings.avatar)
@@ -220,7 +231,7 @@ NSUInteger const kHoursPerDay = 24;
     UITapGestureRecognizer *singleTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(toSettingsViewController)];
     [avatar addGestureRecognizer:singleTap];
     
-    [avatar sd_setImageWithURL:[NSURL URLWithString:[Config shareInstance].settings.avatarURL] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
+    [avatar sd_setImageWithURL:[NSURL URLWithString:[Config shareInstance].settings.avatarURL] placeholderImage:[UIImage imageNamed:png_AvatarDefault] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL)
     {
         if (image)
         {
