@@ -46,33 +46,7 @@
              NSLog(@"从服务器查到该用户设置记录");
              BmobObject *obj = array[0];
              
-             NSString *serverNickName = [obj objectForKey:@"nickName"];
-             NSString *serverUpdatedTime = [obj objectForKey:@"updatedTime"];
-             if ((!serverNickName || serverNickName.length == 0)
-                      && [Config shareInstance].settings.nickname
-                      && [Config shareInstance].settings.nickname.length)
-             {
-                 NSLog(@"服务器上昵称为空，本地昵称不为空，用本地的覆盖服务器的");
-                 [weakSelf updateSettings:obj];
-             }
-             else if ([Config shareInstance].settings.updatetime
-                      && [Config shareInstance].settings.updatetime.length
-                      && (!serverUpdatedTime || serverUpdatedTime.length == 0))
-             {
-                 NSLog(@"服务器上更新时间为空，本地更新时间不为空，用本地的覆盖服务器的");
-                 [weakSelf updateSettings:obj];
-             }
-             else if ([Config shareInstance].settings.updatetime.length
-                      && serverUpdatedTime.length > 0) {
-                 NSDate *localUpdatedTime = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.updatetime formatter:STRDateFormatterType1];
-                 NSDate *serverUpdatetime = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:STRDateFormatterType1];
-                 
-                 if ([localUpdatedTime compare:serverUpdatetime] == NSOrderedDescending)
-                 {
-                     NSLog(@"本地的设置较新");
-                     [weakSelf syncLocalToServerForSettings];
-                 }
-             }
+             [weakSelf updateSettings:obj];
          }
          else if (!error)
          {//防止网络超时也会新增
@@ -80,26 +54,6 @@
              [weakSelf addSettingsToServer];
          }
      }];
-}
-
-+ (void)syncLocalToServerForSettings
-{
-    __weak typeof(self) weakSelf = self;
-    BmobUser *user = [BmobUser currentUser];
-    BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
-    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
-     {
-        if (array.count)
-        {
-            BmobObject *obj = array[0];
-            [weakSelf updateSettings:obj];
-        }
-        else if (!error)
-        {//防止网络请求失败也会新增
-            [weakSelf addSettingsToServer];
-        }
-    }];
 }
 
 + (void)updateSettings:(BmobObject *)settingsObject
