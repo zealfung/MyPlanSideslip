@@ -422,6 +422,7 @@
                               [CommonFunction cancelPlanNotification:weakSelf.plan.planid];
                           }
                           [NotificationCenter postNotificationName:NTFPlanSave object:nil];
+                          [weakSelf.navigationController popViewControllerAnimated:YES];
                       }
                       else
                       {
