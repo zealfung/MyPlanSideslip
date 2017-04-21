@@ -13,8 +13,17 @@ static LocalNotificationManager * instance = nil;
 @implementation LocalNotificationManager
 
 
-+ (void)createLocalNotification:(NSDate*)fireDate userInfo:(NSDictionary*)userDic alertBody:(NSString*)body {
-    [LocalNotificationManager createLocalNotification:fireDate userInfo:userDic alertBody:body repeatInterval:0];
++ (void)createLocalNotification:(NSDate*)fireDate userInfo:(NSDictionary*)userDic alertBody:(NSString*)body
+{
+    NSInteger isRepeat = [[userDic objectForKey:@"isRepeat"] integerValue];
+    if (isRepeat)
+    {
+        [LocalNotificationManager createLocalNotification:fireDate userInfo:userDic alertBody:body repeatInterval:NSCalendarUnitDay];
+    }
+    else
+    {
+        [LocalNotificationManager createLocalNotification:fireDate userInfo:userDic alertBody:body repeatInterval:0];
+    }
 }
 
 + (void)createLocalNotification:(NSDate*)fireDate userInfo:(NSDictionary*)userDic alertBody:(NSString*)body repeatInterval:(NSCalendarUnit)repeatInterval {

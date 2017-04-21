@@ -457,6 +457,7 @@ static NSString * const kKeyMinutes = @"minutes";
     [destDic setObject:plan.content forKey:@"content"];
     [destDic setObject:plan.notifytime forKey:@"notifytime"];
     [destDic setObject:plan.remark ?:@"" forKey:@"remark"];
+    [destDic setObject:plan.isRepeat ?:@"0" forKey:@"isRepeat"];
     [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
 }
 
