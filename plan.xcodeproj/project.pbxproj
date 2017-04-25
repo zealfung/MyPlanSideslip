@@ -32,6 +32,7 @@
 		131912561EADAB1F005AE10C /* PlanAddCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 131912541EADAB1F005AE10C /* PlanAddCell.m */; };
 		131912571EADAB1F005AE10C /* PlanAddCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 131912551EADAB1F005AE10C /* PlanAddCell.xib */; };
 		1319125A1EADAC09005AE10C /* MPTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 131912591EADAC09005AE10C /* MPTextView.m */; };
+		131912621EAF1A80005AE10C /* PlanDetailNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131912611EAF1A80005AE10C /* PlanDetailNewViewController.m */; };
 		131D69E81BF37614009FDD72 /* Statistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D69E71BF37614009FDD72 /* Statistics.m */; };
 		131D69F51BF466D2009FDD72 /* StatisticsCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D69F41BF466D2009FDD72 /* StatisticsCenter.m */; };
 		131D6A1E1BF478D1009FDD72 /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A1D1BF478D1009FDD72 /* SideMenuViewController.m */; };
@@ -310,6 +311,8 @@
 		131912551EADAB1F005AE10C /* PlanAddCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlanAddCell.xib; sourceTree = "<group>"; };
 		131912581EADAC09005AE10C /* MPTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPTextView.h; sourceTree = "<group>"; };
 		131912591EADAC09005AE10C /* MPTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPTextView.m; sourceTree = "<group>"; };
+		131912601EAF1A80005AE10C /* PlanDetailNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanDetailNewViewController.h; sourceTree = "<group>"; };
+		131912611EAF1A80005AE10C /* PlanDetailNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanDetailNewViewController.m; sourceTree = "<group>"; };
 		131D69E61BF37614009FDD72 /* Statistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Statistics.h; sourceTree = "<group>"; };
 		131D69E71BF37614009FDD72 /* Statistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Statistics.m; sourceTree = "<group>"; };
 		131D69F31BF466D2009FDD72 /* StatisticsCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatisticsCenter.h; sourceTree = "<group>"; };
@@ -717,6 +720,8 @@
 				130583DB1E2B486C0090A930 /* PlanDetailViewController.m */,
 				131912501EADA587005AE10C /* PlanAddNewViewController.h */,
 				131912511EADA587005AE10C /* PlanAddNewViewController.m */,
+				131912601EAF1A80005AE10C /* PlanDetailNewViewController.h */,
+				131912611EAF1A80005AE10C /* PlanDetailNewViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1965,6 +1970,7 @@
 				131D6A261BF4D95F009FDD72 /* RootViewController.m in Sources */,
 				13A6AC9A1BC347D6005A02F9 /* PhotoCell.m in Sources */,
 				13A6AC9D1BC38849005A02F9 /* Photo.m in Sources */,
+				131912621EAF1A80005AE10C /* PlanDetailNewViewController.m in Sources */,
 				135B22151B92C0D4005CE84A /* FatherViewController.m in Sources */,
 				1300998A1D7D423800BEF9FC /* ThemeNewCell.m in Sources */,
 				135B21E01B9136A4005CE84A /* PlanCache.m in Sources */,

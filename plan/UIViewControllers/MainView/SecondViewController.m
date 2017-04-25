@@ -18,7 +18,7 @@
 #import "PopupPlanRemarkView.h"
 #import "SecondViewController.h"
 #import "PlanAddNewViewController.h"
-#import "PlanDetailViewController.h"
+#import "PlanDetailNewViewController.h"
 
 NSUInteger const kPlan_MenuHeight = 44;
 NSUInteger const kPlan_MenuLineHeight = 3;
@@ -1089,7 +1089,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 - (void)toPlanDetailWithPlan:(Plan *)plan
 {
-    PlanDetailViewController *controller = [[PlanDetailViewController alloc] init];
+    PlanDetailNewViewController *controller = [[PlanDetailNewViewController alloc] init];
     controller.plan = plan;
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
