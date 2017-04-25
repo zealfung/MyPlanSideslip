@@ -31,23 +31,11 @@
      }];
     
     [self initView];
-    
-    [NotificationCenter addObserver:self selector:@selector(backToLastView) name:NTFPlanSave object:nil];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-//    //注册通知,监听键盘出现
-//    [NotificationCenter addObserver:self selector:@selector(handleKeyboardDidShow:) name:UIKeyboardDidShowNotification object:nil];
-//    //注册通知，监听键盘消失事件
-//    [NotificationCenter addObserver:self selector:@selector(handleKeyboardDidHidden:) name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)initView
@@ -103,35 +91,6 @@
     [self.view addSubview:pickerView];
 }
 
-#pragma mark - action
-- (void)saveAction:(UIButton *)button
-{
-    NSString *content = [self.plan.content stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    if (content.length == 0)
-    {
-        [self alertButtonMessage:STRCommonTip3];
-        return;
-    }
-    [self savePlan];
-}
-
-////监听事件
-//- (void)handleKeyboardDidShow:(NSNotification*)showNotification
-//{
-//    //获取键盘高度
-//    NSValue *keyboardRectAsObject=[[showNotification userInfo]objectForKey:UIKeyboardFrameEndUserInfoKey];
-//    
-//    CGRect keyboardRect;
-//    [keyboardRectAsObject getValue:&keyboardRect];
-//    
-//    self.txtViewContent.contentInset = UIEdgeInsetsMake(0, 0,keyboardRect.size.height, 0);
-//}
-//
-//- (void)handleKeyboardDidHidden:(NSNotification*)hiddenNotification
-//{
-//    self.txtViewContent.contentInset = UIEdgeInsetsZero;
-//}
-
 - (void)onPickerCertainBtn
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
@@ -154,6 +113,18 @@
 {
     UIView *pickerView = [self.view viewWithTag:kDatePickerBgViewTag];
     [pickerView removeFromSuperview];
+}
+
+#pragma mark - action
+- (void)saveAction:(UIButton *)button
+{
+    NSString *content = [self.plan.content stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    if (content.length == 0)
+    {
+        [self alertButtonMessage:STRCommonTip3];
+        return;
+    }
+    [self savePlan];
 }
 
 - (void)savePlan
@@ -207,11 +178,6 @@
              [weakSelf alertButtonMessage:@"新建计划失败"];
          }
      }];
-}
-
-- (void)backToLastView
-{
-    [self.navigationController popViewControllerAnimated:YES];
 }
 
 #pragma mark - Table view data source
@@ -323,16 +289,9 @@
             }
         }
             break;
-//        case 2:
-//        {
-//            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-//            cell.textLabel.text = [NSString stringWithFormat:@"开始时间:%@", [CommonFunction getBeginDateStringForShow:self.beginDate]];
-//        }
-//            break;
         default:
             break;
     }
 }
-
 
 @end
