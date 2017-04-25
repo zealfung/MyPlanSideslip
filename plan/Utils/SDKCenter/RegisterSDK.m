@@ -20,37 +20,37 @@
 
     [Bmob registerWithAppKey:IDSTRBmobApplicationID];
     
-    [ShareSDK registerApp:IDSTRShareSDKAppKey activePlatforms:@[@(SSDKPlatformTypeSinaWeibo),@(SSDKPlatformTypeQQ),@(SSDKPlatformTypeWechat)] onImport:^(SSDKPlatformType platformType) {
-        
-        switch (platformType) {
-            case SSDKPlatformTypeQQ:
-                [ShareSDKConnector connectQQ:[QQApiInterface class] tencentOAuthClass:[TencentOAuth class]];
-                break;
-            case SSDKPlatformTypeWechat:
-                [ShareSDKConnector connectWeChat:[WXApi class]];
-                break;
-            default:
-                break;
-        }
-        
-    } onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo) {
-        
-        switch (platformType) {
-            case SSDKPlatformTypeSinaWeibo:
-                [appInfo SSDKSetupSinaWeiboByAppKey:IDSTRSinaWeiboAppKey appSecret:IDSTRSinaWeiboAppSecret redirectUri:STRAppWebsite1 authType:SSDKAuthTypeBoth];
-                break;
-            case SSDKPlatformTypeQQ:
-                [appInfo SSDKSetupQQByAppId:IDSTRQQAppID appKey:IDSTRQQAppKey authType:SSDKAuthTypeBoth];
-                break;
-            case SSDKPlatformTypeWechat:
-                [appInfo SSDKSetupWeChatByAppId:IDSTRWechatAppKey appSecret:IDSTRWechatAppSecret];
-                break;
-                
-            default:
-                break;
-        }
-        
-    }];
+//    [ShareSDK registerApp:IDSTRShareSDKAppKey activePlatforms:@[@(SSDKPlatformTypeSinaWeibo),@(SSDKPlatformTypeQQ),@(SSDKPlatformTypeWechat)] onImport:^(SSDKPlatformType platformType) {
+//        
+//        switch (platformType) {
+//            case SSDKPlatformTypeQQ:
+//                [ShareSDKConnector connectQQ:[QQApiInterface class] tencentOAuthClass:[TencentOAuth class]];
+//                break;
+//            case SSDKPlatformTypeWechat:
+//                [ShareSDKConnector connectWeChat:[WXApi class]];
+//                break;
+//            default:
+//                break;
+//        }
+//        
+//    } onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo) {
+//        
+//        switch (platformType) {
+//            case SSDKPlatformTypeSinaWeibo:
+//                [appInfo SSDKSetupSinaWeiboByAppKey:IDSTRSinaWeiboAppKey appSecret:IDSTRSinaWeiboAppSecret redirectUri:STRAppWebsite1 authType:SSDKAuthTypeBoth];
+//                break;
+//            case SSDKPlatformTypeQQ:
+//                [appInfo SSDKSetupQQByAppId:IDSTRQQAppID appKey:IDSTRQQAppKey authType:SSDKAuthTypeBoth];
+//                break;
+//            case SSDKPlatformTypeWechat:
+//                [appInfo SSDKSetupWeChatByAppId:IDSTRWechatAppKey appSecret:IDSTRWechatAppSecret];
+//                break;
+//                
+//            default:
+//                break;
+//        }
+//        
+//    }];
     
 }
 
