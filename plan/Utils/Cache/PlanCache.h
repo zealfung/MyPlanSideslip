@@ -103,8 +103,6 @@
 
 + (Statistics *)getStatistics;
 
-+ (void)updatePlanNotification:(Plan *)plan;
-
 + (void)linkedLocalDataToAccount;
 
 + (NSArray *)getPlanForSync:(NSString *)syntime;
@@ -121,8 +119,6 @@
 + (Task *)findTask:(NSString *)account taskId:(NSString *)taskId;
 
 + (NSArray *)getPhotoForSync:(NSString *)syntime;
-
-+ (void)addPlanNotification:(Plan *)plan;
 
 + (void)setFiveDayNotification;
 

@@ -433,20 +433,6 @@ static NSMutableDictionary *__contactsOnlineState;
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.beginDate, plan.isdeleted, plan.isRepeat, plan.remark, plan.planid, plan.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
-            
-            //更新提醒
-            if (b && [plan.isnotify isEqualToString:@"1"]
-                && [plan.iscompleted isEqualToString:@"0"])
-            {
-                //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
-                plan.notifytime = [CommonFunction updateNotifyTime:plan.notifytime];
-                
-                [self updatePlanNotification:plan];
-            }
-            else
-            {
-                [self cancelPlanNotification:plan.planid];
-            }
         }
         else
         {
@@ -455,12 +441,7 @@ static NSMutableDictionary *__contactsOnlineState;
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[plan.account, plan.planid, plan.content, plan.createtime, plan.completetime, plan.updatetime, plan.iscompleted, plan.isnotify, plan.notifytime, plan.beginDate, plan.isdeleted, plan.isRepeat]];
             
             FMDBQuickCheck(b, sqlString, __db);
-            
-            //添加提醒
-            if (b && [plan.isnotify isEqualToString:@"1"])
-            {
-                [self addPlanNotification:plan];
-            }
+
             //更新5天没有新建计划的提醒时间
             [self setFiveDayNotification];
         }
@@ -779,22 +760,6 @@ static NSMutableDictionary *__contactsOnlineState;
             b = [__db executeUpdate:sqlString withArgumentsInArray:@[task.content, task.totalCount, task.completionDate, task.updateTime, task.isNotify, task.notifyTime, task.isRepeat, task.repeatType, task.taskOrder, task.taskId, task.account]];
             
             FMDBQuickCheck(b, sqlString, __db);
-            
-            //更新提醒
-            if (b && updateNotify)
-            {
-                if ([task.isNotify isEqualToString:@"1"])
-                {
-                    //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
-                    task.notifyTime = [CommonFunction updateNotifyTime:task.notifyTime];
-                    
-                    [self updateTaskNotification:task];
-                }
-                else
-                {
-                    [self cancelTaskNotification:task.taskId];
-                }
-            }
         }
         else
         {
@@ -805,11 +770,6 @@ static NSMutableDictionary *__contactsOnlineState;
             
             FMDBQuickCheck(b, sqlString, __db);
             
-            //添加提醒
-            if (b && [task.isNotify isEqualToString:@"1"])
-            {
-                [self addTaskNotification:task];
-            }
             //更新5天没有新建计划的提醒时间
             [self setFiveDayNotification];
         }
@@ -1110,7 +1070,7 @@ static NSMutableDictionary *__contactsOnlineState;
             //取消提醒
             if (b && [plan.isnotify isEqualToString:@"1"])
             {
-                [self cancelPlanNotification:plan.planid];
+                [CommonFunction cancelPlanNotification:plan.planid];
             }
         }
         if (b)
@@ -2400,105 +2360,6 @@ static NSMutableDictionary *__contactsOnlineState;
     }
 }
 
-+ (void)addPlanNotification:(Plan *)plan
-{
-    //时间格式：yyyy-MM-dd HH:mm
-    NSDate *date = [CommonFunction NSStringDateToNSDate:plan.notifytime formatter:STRDateFormatterType3];
-    
-    if (!date) return;
-    
-    NSMutableDictionary *destDic = [NSMutableDictionary dictionary];
-    [destDic setObject:plan.account forKey:@"account"];
-    [destDic setObject:plan.planid forKey:@"tag"];
-    [destDic setObject:@([date timeIntervalSince1970]) forKey:@"time"];
-    [destDic setObject:@(NotificationTypePlan) forKey:@"type"];
-    [destDic setObject:plan.createtime forKey:@"createtime"];
-    [destDic setObject:plan.beginDate forKey:@"beginDate"];
-    [destDic setObject:plan.iscompleted forKey:@"iscompleted"];
-    [destDic setObject:plan.completetime forKey:@"completetime"];
-    [destDic setObject:plan.content forKey:@"content"];
-    [destDic setObject:plan.notifytime forKey:@"notifytime"];
-    [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
-}
-
-+ (void)updatePlanNotification:(Plan *)plan
-{
-    //首先取消该计划的本地所有通知
-    [self cancelPlanNotification:plan.planid];
-    //重新添加新的通知
-    [self addPlanNotification:plan];
-}
-
-+ (void)cancelPlanNotification:(NSString*)planid
-{
-    //取消该计划的本地所有通知
-    NSArray *array = [LocalNotificationManager getNotificationWithTag:planid type:NotificationTypePlan];
-    for (UILocalNotification *item in array)
-    {
-        [LocalNotificationManager cancelNotification:item];
-    }
-}
-
-+ (void)addTaskNotification:(Task *)task
-{
-    //时间格式：yyyy-MM-dd HH:mm
-    NSDate *date = [CommonFunction NSStringDateToNSDate:task.notifyTime formatter:STRDateFormatterType3];
-    
-    if (!date) return;
-
-    NSMutableDictionary *destDic = [NSMutableDictionary dictionary];
-    [destDic setObject:task.account forKey:@"account"];
-    [destDic setObject:task.taskId forKey:@"tag"];
-    [destDic setObject:@([date timeIntervalSince1970]) forKey:@"time"];
-    [destDic setObject:@(NotificationTypeTask) forKey:@"type"];
-    [destDic setObject:task.totalCount forKey:@"totalCount"];
-    [destDic setObject:task.createTime forKey:@"createTime"];
-    [destDic setObject:task.updateTime forKey:@"updateTime"];
-    [destDic setObject:task.completionDate forKey:@"completionDate"];
-    [destDic setObject:task.content forKey:@"content"];
-    [destDic setObject:task.isNotify forKey:@"isNotify"];
-    [destDic setObject:task.notifyTime forKey:@"notifyTime"];
-    [destDic setObject:task.isTomato forKey:@"isTomato"];
-    [destDic setObject:task.tomatoMinute forKey:@"tomatoMinute"];
-    [destDic setObject:task.isRepeat forKey:@"isRepeat"];
-    [destDic setObject:task.repeatType forKey:@"repeatType"];
-    [destDic setObject:task.taskOrder forKey:@"taskOrder"];
-    if ([task.isRepeat isEqualToString:@"1"])
-    {
-        NSCalendarUnit repeatUnit = NSCalendarUnitEra;
-        switch ([task.repeatType integerValue])
-        {
-            case 0://每日
-                repeatUnit = NSCalendarUnitDay;
-                break;
-            case 1://每周
-                repeatUnit = NSCalendarUnitWeekday;
-                break;
-            case 2://每月
-                repeatUnit = NSCalendarUnitMonth;
-                break;
-            case 3://每年
-                repeatUnit = NSCalendarUnitYear;
-                break;
-            default:
-                break;
-        }
-        [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:task.content repeatInterval:repeatUnit];
-    }
-    else
-    {
-        [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:task.content];
-    }
-}
-
-+ (void)updateTaskNotification:(Task *)task
-{
-    //首先取消该任务的本地所有通知
-    [self cancelTaskNotification:task.taskId];
-    //重新添加新的通知
-    [self addTaskNotification:task];
-}
-
 + (void)cancelTaskNotification:(NSString*)taskId
 {
     //取消该任务的本地所有通知
@@ -2508,7 +2369,6 @@ static NSMutableDictionary *__contactsOnlineState;
         [LocalNotificationManager cancelNotification:item];
     }
 }
-
 + (void)setFiveDayNotification
 {
     BOOL hasFiveDayNotification = NO;
@@ -2548,11 +2408,11 @@ static NSMutableDictionary *__contactsOnlineState;
     
     if (hasFiveDayNotification)
     {//更新提醒时间
-        [self updatePlanNotification:fiveDayPlan];
+        [CommonFunction updatePlanNotification:fiveDayPlan];
     }
     else
     {//新建提醒
-        [self addPlanNotification:fiveDayPlan];
+        [CommonFunction addPlanNotification:fiveDayPlan];
     }
 }
 
@@ -2586,7 +2446,7 @@ static NSMutableDictionary *__contactsOnlineState;
                 {
                     NSString *sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName1];
                     
-                    BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
+                    [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
                 }
             }
         }];
@@ -2602,7 +2462,7 @@ static NSMutableDictionary *__contactsOnlineState;
     {
         sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName2];
         
-        BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
+        [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
     }
     //影像
     hasRec = NO;
@@ -2614,7 +2474,7 @@ static NSMutableDictionary *__contactsOnlineState;
     {
         sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName3];
         
-        BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
+        [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
     }
     //任务
     hasRec = NO;
@@ -2626,7 +2486,7 @@ static NSMutableDictionary *__contactsOnlineState;
     {
         sqlString = [NSString stringWithFormat:@"UPDATE %@ SET account=? WHERE account=?", STRTableName5];
         
-        BOOL b = [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
+        [__db executeUpdate:sqlString withArgumentsInArray:@[user.objectId, @""]];
     }
 }
 

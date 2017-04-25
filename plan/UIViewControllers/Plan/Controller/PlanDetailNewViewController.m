@@ -208,7 +208,7 @@
                           }
                           [NotificationCenter postNotificationName:NTFPlanSave object:nil];
                           [weakSelf.tableView reloadData];
-                          [weakSelf alertButtonMessage:@"保存成功"];
+                          [weakSelf alertToastMessage:@"保存成功"];
                       }
                       else
                       {

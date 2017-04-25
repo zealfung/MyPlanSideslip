@@ -153,7 +153,7 @@ static LocalNotificationManager * instance = nil;
         if (dict) {
             NSString *tag = [dict objectForKey:@"tag"];
             NotificationType type = [[dict objectForKey:@"type"] integerValue];
-            if ([tag longLongValue] == [aTag longLongValue] &&
+            if ([tag isEqualToString:aTag] &&
                 type == aType) {
                 [resultArray addObject:noti];
             }
