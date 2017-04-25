@@ -28,6 +28,10 @@
 		1310C3741C47292200A2A404 /* ChangePasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1310C3721C47292200A2A404 /* ChangePasswordViewController.xib */; };
 		1310C37B1C47AD2C00A2A404 /* UserLevelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1310C37A1C47AD2C00A2A404 /* UserLevelViewController.m */; };
 		1310C3801C47D3A300A2A404 /* Btn_M@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 1310C37F1C47D3A300A2A404 /* Btn_M@2x.png */; };
+		131912521EADA587005AE10C /* PlanAddNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131912511EADA587005AE10C /* PlanAddNewViewController.m */; };
+		131912561EADAB1F005AE10C /* PlanAddCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 131912541EADAB1F005AE10C /* PlanAddCell.m */; };
+		131912571EADAB1F005AE10C /* PlanAddCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 131912551EADAB1F005AE10C /* PlanAddCell.xib */; };
+		1319125A1EADAC09005AE10C /* MPTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 131912591EADAC09005AE10C /* MPTextView.m */; };
 		131D69E81BF37614009FDD72 /* Statistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D69E71BF37614009FDD72 /* Statistics.m */; };
 		131D69F51BF466D2009FDD72 /* StatisticsCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D69F41BF466D2009FDD72 /* StatisticsCenter.m */; };
 		131D6A1E1BF478D1009FDD72 /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A1D1BF478D1009FDD72 /* SideMenuViewController.m */; };
@@ -299,6 +303,13 @@
 		1310C3791C47AD2C00A2A404 /* UserLevelViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserLevelViewController.h; sourceTree = "<group>"; };
 		1310C37A1C47AD2C00A2A404 /* UserLevelViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserLevelViewController.m; sourceTree = "<group>"; };
 		1310C37F1C47D3A300A2A404 /* Btn_M@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Btn_M@2x.png"; sourceTree = "<group>"; };
+		131912501EADA587005AE10C /* PlanAddNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanAddNewViewController.h; sourceTree = "<group>"; };
+		131912511EADA587005AE10C /* PlanAddNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanAddNewViewController.m; sourceTree = "<group>"; };
+		131912531EADAB1F005AE10C /* PlanAddCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanAddCell.h; sourceTree = "<group>"; };
+		131912541EADAB1F005AE10C /* PlanAddCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanAddCell.m; sourceTree = "<group>"; };
+		131912551EADAB1F005AE10C /* PlanAddCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PlanAddCell.xib; sourceTree = "<group>"; };
+		131912581EADAC09005AE10C /* MPTextView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MPTextView.h; sourceTree = "<group>"; };
+		131912591EADAC09005AE10C /* MPTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MPTextView.m; sourceTree = "<group>"; };
 		131D69E61BF37614009FDD72 /* Statistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Statistics.h; sourceTree = "<group>"; };
 		131D69E71BF37614009FDD72 /* Statistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Statistics.m; sourceTree = "<group>"; };
 		131D69F31BF466D2009FDD72 /* StatisticsCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatisticsCenter.h; sourceTree = "<group>"; };
@@ -704,6 +715,8 @@
 				130583C81E2B32EC0090A930 /* PlanAddViewController.m */,
 				130583DA1E2B486C0090A930 /* PlanDetailViewController.h */,
 				130583DB1E2B486C0090A930 /* PlanDetailViewController.m */,
+				131912501EADA587005AE10C /* PlanAddNewViewController.h */,
+				131912511EADA587005AE10C /* PlanAddNewViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -718,6 +731,9 @@
 				130583D21E2B32EC0090A930 /* PlanSectionView.m */,
 				130583E61E2DA8800090A930 /* PopupPlanRemarkView.h */,
 				130583E71E2DA8800090A930 /* PopupPlanRemarkView.m */,
+				131912531EADAB1F005AE10C /* PlanAddCell.h */,
+				131912541EADAB1F005AE10C /* PlanAddCell.m */,
+				131912551EADAB1F005AE10C /* PlanAddCell.xib */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -799,6 +815,8 @@
 			children = (
 				131D6AC21C007BF3009FDD72 /* ImageScrollView.h */,
 				131D6AC31C007BF3009FDD72 /* ImageScrollView.m */,
+				131912581EADAC09005AE10C /* MPTextView.h */,
+				131912591EADAC09005AE10C /* MPTextView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1800,6 +1818,7 @@
 				135B22311B9301C9005CE84A /* Btn_Plan_Doing@2x.png in Resources */,
 				13F6708C1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib in Resources */,
 				13D916611CDDC4D7001F34EA /* TaskDetailNewViewController.xib in Resources */,
+				131912571EADAB1F005AE10C /* PlanAddCell.xib in Resources */,
 				136E6FCA1D4894BB00E0E9B5 /* PostsOneImageCell.xib in Resources */,
 				13D405FB1C2D13360089D702 /* Icon_Posts_Eyes@2x.png in Resources */,
 				133B07AD1B9FC46A0015E752 /* Questions in Resources */,
@@ -1865,6 +1884,7 @@
 				132263A91B9C809400D21637 /* SecondViewController.m in Sources */,
 				137470941C07E66B00B7822A /* CLLockItemView.m in Sources */,
 				130583D91E2B32EC0090A930 /* PlanSectionView.m in Sources */,
+				1319125A1EADAC09005AE10C /* MPTextView.m in Sources */,
 				13F670A41CC11A2E009D2BA9 /* PersonalCenterMyPostsViewController.m in Sources */,
 				130583D41E2B32EC0090A930 /* PlanAddViewController.m in Sources */,
 				1310C3731C47292200A2A404 /* ChangePasswordViewController.m in Sources */,
@@ -1889,6 +1909,7 @@
 				1374712D1C17161600B7822A /* MessagesViewController.m in Sources */,
 				1361AFC61BCBA5E700DD5FFB /* DoImagePickerController.m in Sources */,
 				131D6A6F1BFB5DDE009FDD72 /* PhotoViewController.m in Sources */,
+				131912521EADA587005AE10C /* PlanAddNewViewController.m in Sources */,
 				135B21D21B909955005CE84A /* Config.m in Sources */,
 				13D916601CDDC4D7001F34EA /* TaskDetailNewViewController.m in Sources */,
 				132819421C61D1D000FB8628 /* NSLayoutConstraint+Util.m in Sources */,
@@ -1968,6 +1989,7 @@
 				139A5D1E1C785B2200541106 /* StringConst.m in Sources */,
 				137470961C07E66B00B7822A /* CLLockMainView.m in Sources */,
 				136E6FC91D4894BB00E0E9B5 /* PostsOneImageCell.m in Sources */,
+				131912561EADAB1F005AE10C /* PlanAddCell.m in Sources */,
 				137700DB1B952EE5008C83FD /* MoreViewController.m in Sources */,
 				130BA99A1E73A8DE009939A3 /* SingleSelectedViewController.m in Sources */,
 				1374704F1C03ED1200B7822A /* RegisterViewController.m in Sources */,

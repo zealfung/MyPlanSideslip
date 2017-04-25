@@ -17,7 +17,7 @@
 #import "LogInViewController.h"
 #import "PopupPlanRemarkView.h"
 #import "SecondViewController.h"
-#import "PlanAddViewController.h"
+#import "PlanAddNewViewController.h"
 #import "PlanDetailViewController.h"
 
 NSUInteger const kPlan_MenuHeight = 44;
@@ -74,7 +74,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
      {
          if ([LogIn isLogin])
          {
-             PlanAddViewController *controller = [[PlanAddViewController alloc] init];
+             PlanAddNewViewController *controller = [[PlanAddNewViewController alloc] init];
              controller.hidesBottomBarWhenPushed = YES;
              [weakSelf.navigationController pushViewController:controller animated:YES];
          }
@@ -318,7 +318,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     NSArray *array =  @[@{@"beginDate":@{@"$lte":today}}];
     [bquery addTheConstraintByOrOperationWithArray:array];
 
-    [bquery orderByDescending:@"updatedTime"];
+    [bquery orderByDescending:@"updatedAt"];
     bquery.limit = 100;
     bquery.skip = self.arrayPlanDay.count;
 
