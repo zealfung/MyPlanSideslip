@@ -450,7 +450,6 @@ static NSString * const kKeyMinutes = @"minutes";
     [destDic setObject:plan.planid forKey:@"tag"];
     [destDic setObject:@([date timeIntervalSince1970]) forKey:@"time"];
     [destDic setObject:@(NotificationTypePlan) forKey:@"type"];
-    [destDic setObject:plan.createtime forKey:@"createtime"];
     [destDic setObject:plan.beginDate forKey:@"beginDate"];
     [destDic setObject:plan.iscompleted forKey:@"iscompleted"];
     [destDic setObject:plan.completetime ?: @"" forKey:@"completetime"];
