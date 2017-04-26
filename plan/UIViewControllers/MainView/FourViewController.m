@@ -25,43 +25,43 @@
 #import "UserLevelViewController.h"
 #import "PostsDetailViewController.h"
 
-@interface FourViewController () <SDCycleScrollViewDelegate> {
+@interface FourViewController () <SDCycleScrollViewDelegate>
     
-    BOOL isLoadMore;
-    BOOL isLoadingBanner;
-    BOOL isLoadingTheme;
-    BOOL isLoadingPosts;
-    BOOL isSendingLikes;
-    BOOL isLoadEnd;
-    NSInteger startIndex;
-    NSMutableArray *themeArray;
-    NSMutableArray *postsArray;
-    NSArray *userTagsArray;
-    SDCycleScrollView *bannerView;
-    NSMutableArray *bannerObjArray;
-    NSMutableArray *headerTitlesArray;
-    NSMutableArray *headerImagesURLArray;
-    NSMutableArray *headerDetailURLArray;
-    UIButton *btnBackToTop;
-    CGFloat buttonY;
-    NSInteger checkLikeCount;
-}
+@property (nonatomic, assign) BOOL isLoadMore;
+@property (nonatomic, assign) BOOL isLoadingBanner;
+@property (nonatomic, assign) BOOL isLoadingTheme;
+@property (nonatomic, assign) BOOL isLoadingPosts;
+@property (nonatomic, assign) BOOL isSendingLikes;
+@property (nonatomic, assign) BOOL isLoadEnd;
+@property (nonatomic, assign) NSInteger startIndex;
+@property (nonatomic, strong) NSMutableArray *themeArray;
+@property (nonatomic, strong) NSMutableArray *postsArray;
+@property (nonatomic, strong) NSArray *userTagsArray;
+@property (nonatomic, strong) SDCycleScrollView *bannerView;
+@property (nonatomic, strong) NSMutableArray *bannerObjArray;
+@property (nonatomic, strong) NSMutableArray *headerTitlesArray;
+@property (nonatomic, strong) NSMutableArray *headerImagesURLArray;
+@property (nonatomic, strong) NSMutableArray *headerDetailURLArray;
+@property (nonatomic, strong) UIButton *btnBackToTop;
+@property (nonatomic, assign) CGFloat buttonY;
+@property (nonatomic, assign) NSInteger checkLikeCount;
 
 @end
 
 @implementation FourViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = STRViewTitle14;
     self.tabBarItem.title = STRViewTitle14;
 
-    userTagsArray = [NSArray array];
-    postsArray = [NSMutableArray array];
-    themeArray = [NSMutableArray array];
-    headerTitlesArray = [NSMutableArray array];
-    headerImagesURLArray = [NSMutableArray array];
-    headerDetailURLArray = [NSMutableArray array];
+    self.userTagsArray = [NSArray array];
+    self.postsArray = [NSMutableArray array];
+    self.themeArray = [NSMutableArray array];
+    self.headerTitlesArray = [NSMutableArray array];
+    self.headerImagesURLArray = [NSMutableArray array];
+    self.headerDetailURLArray = [NSMutableArray array];
     
     [NotificationCenter addObserver:self selector:@selector(reloadData) name:NTFPostsNew object:nil];
     [NotificationCenter addObserver:self selector:@selector(reloadData) name:NTFPostsRefresh object:nil];
@@ -73,48 +73,56 @@
     [self reloadData];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
 }
 
-- (void)viewDidAppear:(BOOL)animated {
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
     //计算最近一次加载数据时间是否已经超过十分钟，如果是，就自动刷新一次数据
     NSDate *lastUpdatedTime = [UserDefaults objectForKey:STRPostsListFlag];
-    if (lastUpdatedTime) {
+    if (lastUpdatedTime)
+    {
         NSTimeInterval last = [lastUpdatedTime timeIntervalSince1970];
         NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
 
-        if ((now-last)/60 > 10) {//大于十分钟，自动重载一次数据
+        if ((now-last)/60 > 10)
+        {//大于十分钟，自动重载一次数据
             [self reloadData];
         }
     }
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)createBack2TopButton {
-    btnBackToTop = [[UIButton alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - 60, HEIGHT_FULL_VIEW - 120, 50, 50)];
-    [btnBackToTop setBackgroundImage:[UIImage imageNamed:png_Btn_BackToTop] forState:UIControlStateNormal];
-    btnBackToTop.layer.cornerRadius = 25;
-    [btnBackToTop.layer setMasksToBounds:YES];
-    btnBackToTop.alpha = 0.0;
-    [btnBackToTop addTarget:self action:@selector(backToTop:) forControlEvents:UIControlEventTouchUpInside];
-    [self.tableView addSubview:btnBackToTop];
-    [self.tableView bringSubviewToFront:btnBackToTop];
-    buttonY = btnBackToTop.frame.origin.y;
+- (void)createBack2TopButton
+{
+    self.btnBackToTop = [[UIButton alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - 60, HEIGHT_FULL_VIEW - 120, 50, 50)];
+    [self.btnBackToTop setBackgroundImage:[UIImage imageNamed:png_Btn_BackToTop] forState:UIControlStateNormal];
+    self.btnBackToTop.layer.cornerRadius = 25;
+    [self.btnBackToTop.layer setMasksToBounds:YES];
+    self.btnBackToTop.alpha = 0.0;
+    [self.btnBackToTop addTarget:self action:@selector(backToTop:) forControlEvents:UIControlEventTouchUpInside];
+    [self.tableView addSubview:self.btnBackToTop];
+    [self.tableView bringSubviewToFront:self.btnBackToTop];
+    self.buttonY = self.btnBackToTop.frame.origin.y;
 }
 
-- (void)reloadData {
+- (void)reloadData
+{
     [self reloadBannerData];
     [self reloadThemeData];
     [self reloadPostsData];
     [self loadUserTagsData];
 }
 
-- (void)initTableView {
+- (void)initTableView
+{
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     self.tableView.tableHeaderView = [self createTableHeaderView];
@@ -122,109 +130,133 @@
     self.tableView.showsVerticalScrollIndicator = NO;
     __weak typeof(self) weakSelf = self;
     MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
-        isLoadMore = NO;
+        weakSelf.isLoadMore = NO;
         [weakSelf reloadData];
     }];
     header.lastUpdatedTimeLabel.hidden = YES;
     self.tableView.mj_header = header;
     self.tableView.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-        isLoadMore = YES;
+        weakSelf.isLoadMore = YES;
         //加载更多帖子数据
         [weakSelf reloadPostsData];
     }];
 }
 
-- (UIView *)createTableHeaderView {
+- (UIView *)createTableHeaderView
+{
     CGFloat fullViewHeight = HEIGHT_FULL_VIEW;
     CGFloat headerViewHeight = fullViewHeight / 3;
-    bannerView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 320, WIDTH_FULL_SCREEN, headerViewHeight) imageURLStringsGroup:headerImagesURLArray];
-    bannerView.autoScrollTimeInterval = 6.0;
-    bannerView.pageControlDotSize = CGSizeMake(5, 5);
-    bannerView.backgroundColor = [UIColor whiteColor];
-    bannerView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
-    bannerView.delegate = self;
-    bannerView.titlesGroup = headerTitlesArray;
-    bannerView.placeholderImage = [UIImage imageNamed:png_ImageDefault_Rectangle];
-    return bannerView;
+    self.bannerView = [SDCycleScrollView cycleScrollViewWithFrame:CGRectMake(0, 320, WIDTH_FULL_SCREEN, headerViewHeight) imageURLStringsGroup:self.headerImagesURLArray];
+    self.bannerView.autoScrollTimeInterval = 6.0;
+    self.bannerView.pageControlDotSize = CGSizeMake(5, 5);
+    self.bannerView.backgroundColor = [UIColor whiteColor];
+    self.bannerView.pageControlAliment = SDCycleScrollViewPageContolAlimentRight;
+    self.bannerView.delegate = self;
+    self.bannerView.titlesGroup = self.headerTitlesArray;
+    self.bannerView.placeholderImage = [UIImage imageNamed:png_ImageDefault_Rectangle];
+    return self.bannerView;
 }
 
-- (void)backToTop:(id)sender {
+- (void)backToTop:(id)sender
+{
     [self.tableView setContentOffset:CGPointMake(0, 0) animated:YES];
 }
 
-- (void)mAction:(UIButton *)button {
+- (void)mAction:(UIButton *)button
+{
     UserLevelViewController *controller = [[UserLevelViewController alloc] init];
-    controller.userTagsArray = userTagsArray;
+    controller.userTagsArray = self.userTagsArray;
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
     [UIView animateWithDuration:0.2 animations:^(void) {
         if (scrollView.contentOffset.y <= 150)
-            btnBackToTop.alpha = 0.0;
+        {
+            self.btnBackToTop.alpha = 0.0;
+        }
         else
-            btnBackToTop.alpha = 1.0;
+        {
+            self.btnBackToTop.alpha = 1.0;
+        }
     }];
-    btnBackToTop.frame = CGRectMake(btnBackToTop.frame.origin.x, buttonY+self.tableView.contentOffset.y , btnBackToTop.frame.size.width, btnBackToTop.frame.size.height);
+    self.btnBackToTop.frame = CGRectMake(self.btnBackToTop.frame.origin.x, self.buttonY+self.tableView.contentOffset.y , self.btnBackToTop.frame.size.width, self.btnBackToTop.frame.size.height);
 }
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    if (themeArray.count > 0) {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    if (self.themeArray.count)
+    {
         return 2;
-    } else {
+    }
+    else
+    {
         return 1;
     }
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    if (indexPath.section == 0 && themeArray.count > 0) {
-        
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0 && self.themeArray.count)
+    {
         return 101.f;
-        
-    } else {
-        
-        if (postsArray.count > indexPath.row) {
-            BmobObject *obj = postsArray[indexPath.row];
+    }
+    else
+    {
+        if (self.postsArray.count > indexPath.row)
+        {
+            BmobObject *obj = self.postsArray[indexPath.row];
             NSArray *imgURLArray = [NSArray arrayWithArray:[obj objectForKey:@"imgURLArray"]];
-            if (imgURLArray && imgURLArray.count > 0) {
+            if (imgURLArray && imgURLArray.count)
+            {
                 return 275.f;
-            } else {
+            }
+            else
+            {
                 return 130.f;
             }
-        } else {
+        }
+        else
+        {
             return 44.f;
         }
     }
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0 && themeArray.count > 0) {
-        
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    if (section == 0 && self.themeArray.count)
+    {
         return 1;
-        
-    } else {
-        
-        if (postsArray.count > 0) {
-            return postsArray.count;
-        } else {
+    }
+    else
+    {
+        if (self.postsArray.count)
+        {
+            return self.postsArray.count;
+        }
+        else
+        {
             return 2;
         }
     }
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    if (indexPath.section == 0) {
-        
-        if (themeArray.count >= 6) {
+    if (indexPath.section == 0)
+    {
+        if (self.themeArray.count >= 6)
+        {
             __weak typeof(self) weakSelf = self;
             
             ThemeNewCell *cell = [ThemeNewCell cellView];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             
-            BmobObject *obj1 = themeArray[0];
+            BmobObject *obj1 = self.themeArray[0];
             NSString *name1 = [obj1 objectForKey:@"name"];
             NSString *imgURL1 = [obj1 objectForKey:@"imgURL"];
             cell.label1.text = name1;
@@ -233,7 +265,7 @@
                 [weakSelf toThemeList:obj1];
             };
             
-            BmobObject *obj2 = themeArray[1];
+            BmobObject *obj2 = self.themeArray[1];
             NSString *name2 = [obj2 objectForKey:@"name"];
             NSString *imgURL2 = [obj2 objectForKey:@"imgURL"];
             cell.label2.text = name2;
@@ -242,7 +274,7 @@
                 [weakSelf toThemeList:obj2];
             };
             
-            BmobObject *obj3 = themeArray[2];
+            BmobObject *obj3 = self.themeArray[2];
             NSString *name3 = [obj3 objectForKey:@"name"];
             NSString *imgURL3 = [obj3 objectForKey:@"imgURL"];
             cell.label3.text = name3;
@@ -251,7 +283,7 @@
                 [weakSelf toThemeList:obj3];
             };
             
-            BmobObject *obj4 = themeArray[3];
+            BmobObject *obj4 = self.themeArray[3];
             NSString *name4 = [obj4 objectForKey:@"name"];
             NSString *imgURL4 = [obj4 objectForKey:@"imgURL"];
             cell.label4.text = name4;
@@ -260,7 +292,7 @@
                 [weakSelf toThemeList:obj4];
             };
             
-            BmobObject *obj5 = themeArray[4];
+            BmobObject *obj5 = self.themeArray[4];
             NSString *name5 = [obj5 objectForKey:@"name"];
             NSString *imgURL5 = [obj5 objectForKey:@"imgURL"];
             cell.label5.text = name5;
@@ -269,7 +301,7 @@
                 [weakSelf toThemeList:obj5];
             };
             
-            BmobObject *obj6 = themeArray[5];
+            BmobObject *obj6 = self.themeArray[5];
             NSString *name6 = [obj6 objectForKey:@"name"];
             NSString *imgURL6 = [obj6 objectForKey:@"imgURL"];
             cell.label6.text = name6;
@@ -279,20 +311,23 @@
             };
             
             return cell;
-            
-        } else {
-            
+        }
+        else
+        {
             static NSString *noDataCellIdentifier = @"noDataCellIdentifier";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noDataCellIdentifier];
-            if (!cell) {
+            if (!cell)
+            {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noDataCellIdentifier];
             }
             return cell;
         }
-        
-    } else {
-        if (postsArray.count > indexPath.row) {
-            BmobObject *obj = postsArray[indexPath.row];
+    }
+    else
+    {
+        if (self.postsArray.count > indexPath.row)
+        {
+            BmobObject *obj = self.postsArray[indexPath.row];
             BmobObject *author = [obj objectForKey:@"author"];
             NSString *nickName = [author objectForKey:@"nickName"];
             NSString *gender = [author objectForKey:@"gender"];
@@ -309,39 +344,51 @@
             NSInteger commentsCount = [[obj objectForKey:@"commentsCount"] integerValue];
             NSArray *imgURLArray = [NSArray arrayWithArray:[obj objectForKey:@"imgURLArray"]];
             BOOL isLike = NO;
-            if ([LogIn isLogin]) {
+            if ([LogIn isLogin])
+            {
                 isLike = [[obj objectForKey:@"isLike"] boolValue];
             }
             __weak typeof(self) weakSelf = self;
-            if (imgURLArray && imgURLArray.count > 0) {
-                if (imgURLArray.count == 1) {
+            if (imgURLArray && imgURLArray.count)
+            {
+                if (imgURLArray.count == 1)
+                {
                     PostsOneImageCell *cell = [PostsOneImageCell cellView];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
                     
                     cell.labelNickName.text = nickName;
-                    if (!gender || [gender isEqualToString:@"1"]) {
+                    if (!gender || [gender isEqualToString:@"1"])
+                    {
                         cell.labelNickName.textColor = color_Blue;
-                    } else {
+                    }
+                    else
+                    {
                         cell.labelNickName.textColor = color_Pink;
                     }
-                    if (level) {
+                    if (level)
+                    {
                         cell.btnUserLevel.enabled = YES;
                         [cell.btnUserLevel setBackgroundImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
-                    } else {
+                    }
+                    else
+                    {
                         cell.btnUserLevel.enabled = NO;
                     }
                     
                     cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
                     cell.labelContent.text = content;
-                    if ([isTop isEqualToString:@"1"]) {
+                    if ([isTop isEqualToString:@"1"])
+                    {
                         cell.labelIsTop.hidden = NO;
                     }
-                    if ([isHighlight isEqualToString:@"1"]) {
+                    if ([isHighlight isEqualToString:@"1"])
+                    {
                         cell.labelIsHighlight.hidden = NO;
                     }
                     [cell.imgViewOne sd_setImageWithURL:[NSURL URLWithString:imgURLArray[0]] placeholderImage:[UIImage imageNamed:png_ImageDefault_Rectangle]];
-                    if (isLike) {
+                    if (isLike)
+                    {
                         cell.isLiked = YES;
                         cell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Selected];
                         cell.labelLike.textColor = color_Red;
@@ -360,17 +407,21 @@
                         [weakSelf toPostsDetail:obj];
                     };
                     cell.postsCellLikeBlock = ^(){
-                        if ([LogIn isLogin]) {
-                            BmobObject *obj = postsArray[indexPath.row];
+                        if ([LogIn isLogin])
+                        {
+                            BmobObject *obj = weakSelf.postsArray[indexPath.row];
                             weakCell.isLiked = !weakCell.isLiked;
-                            if (weakCell.isLiked) {
+                            if (weakCell.isLiked)
+                            {
                                 [weakSelf likePosts:obj];
                                 NSInteger likesCount = [[obj objectForKey:@"likesCount"] integerValue];
                                 likesCount += 1;
                                 weakCell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Selected];
                                 weakCell.labelLike.textColor = color_Red;
                                 weakCell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
-                            } else {
+                            }
+                            else
+                            {
                                 [weakSelf unlikePosts:obj];
                                 NSInteger likesCount = [[obj objectForKey:@"likesCount"] integerValue];
                                 likesCount -= 1;
@@ -378,40 +429,53 @@
                                 weakCell.labelLike.textColor = color_8f8f8f;
                                 weakCell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
                             }
-                        } else {
+                        }
+                        else
+                        {
                             [weakSelf toLogInView];
                         }
                     };
                     return cell;
-                } else {
+                }
+                else
+                {
                     PostsTwoImageCell *cell = [PostsTwoImageCell cellView];
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
                     [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
                     
                     cell.labelNickName.text = nickName;
-                    if (!gender || [gender isEqualToString:@"1"]) {
+                    if (!gender || [gender isEqualToString:@"1"])
+                    {
                         cell.labelNickName.textColor = color_Blue;
-                    } else {
+                    }
+                    else
+                    {
                         cell.labelNickName.textColor = color_Pink;
                     }
-                    if (level) {
+                    if (level)
+                    {
                         cell.btnUserLevel.enabled = YES;
                         [cell.btnUserLevel setBackgroundImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
-                    } else {
+                    }
+                    else
+                    {
                         cell.btnUserLevel.enabled = NO;
                     }
                     
                     cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
                     cell.labelContent.text = content;
-                    if ([isTop isEqualToString:@"1"]) {
+                    if ([isTop isEqualToString:@"1"])
+                    {
                         cell.labelIsTop.hidden = NO;
                     }
-                    if ([isHighlight isEqualToString:@"1"]) {
+                    if ([isHighlight isEqualToString:@"1"])
+                    {
                         cell.labelIsHighlight.hidden = NO;
                     }
                     [cell.imgViewOne sd_setImageWithURL:[NSURL URLWithString:imgURLArray[0]] placeholderImage:[UIImage imageNamed:png_ImageDefault]];
                     [cell.imgViewTwo sd_setImageWithURL:[NSURL URLWithString:imgURLArray[1]] placeholderImage:[UIImage imageNamed:png_ImageDefault]];
-                    if (isLike) {
+                    if (isLike)
+                    {
                         cell.isLiked = YES;
                         cell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Selected];
                         cell.labelLike.textColor = color_Red;
@@ -430,8 +494,9 @@
                         [weakSelf toPostsDetail:obj];
                     };
                     cell.postsCellLikeBlock = ^(){
-                        if ([LogIn isLogin]) {
-                            BmobObject *obj = postsArray[indexPath.row];
+                        if ([LogIn isLogin])
+                        {
+                            BmobObject *obj = weakSelf.postsArray[indexPath.row];
                             weakCell.isLiked = !weakCell.isLiked;
                             if (weakCell.isLiked) {
                                 [weakSelf likePosts:obj];
@@ -440,7 +505,9 @@
                                 weakCell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Selected];
                                 weakCell.labelLike.textColor = color_Red;
                                 weakCell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
-                            } else {
+                            }
+                            else
+                            {
                                 [weakSelf unlikePosts:obj];
                                 NSInteger likesCount = [[obj objectForKey:@"likesCount"] integerValue];
                                 likesCount -= 1;
@@ -448,39 +515,52 @@
                                 weakCell.labelLike.textColor = color_8f8f8f;
                                 weakCell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
                             }
-                        } else {
+                        }
+                        else
+                        {
                             [weakSelf toLogInView];
                         }
                     };
                     return cell;
                 }
-            } else {
+            }
+            else
+            {
                 PostsNoImageCell *cell = [PostsNoImageCell cellView];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
                 [cell.imgViewAvatar sd_setImageWithURL:[NSURL URLWithString:avatarURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
                 
                 cell.labelNickName.text = nickName;
-                if (!gender || [gender isEqualToString:@"1"]) {
+                if (!gender || [gender isEqualToString:@"1"])
+                {
                     cell.labelNickName.textColor = color_Blue;
-                } else {
+                }
+                else
+                {
                     cell.labelNickName.textColor = color_Pink;
                 }
-                if (level) {
+                if (level)
+                {
                     cell.btnUserLevel.enabled = YES;
                     [cell.btnUserLevel setBackgroundImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
-                } else {
+                }
+                else
+                {
                     cell.btnUserLevel.enabled = NO;
                 }
                 
                 cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
                 cell.labelContent.text = content;
-                if ([isTop isEqualToString:@"1"]) {
+                if ([isTop isEqualToString:@"1"])
+                {
                     cell.labelIsTop.hidden = NO;
                 }
-                if ([isHighlight isEqualToString:@"1"]) {
+                if ([isHighlight isEqualToString:@"1"])
+                {
                     cell.labelIsHighlight.hidden = NO;
                 }
-                if (isLike) {
+                if (isLike)
+                {
                     cell.isLiked = YES;
                     cell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Selected];
                     cell.labelLike.textColor = color_Red;
@@ -499,17 +579,21 @@
                     [weakSelf toPostsDetail:obj];
                 };
                 cell.postsCellLikeBlock = ^(){
-                    if ([LogIn isLogin]) {
-                        BmobObject *obj = postsArray[indexPath.row];
+                    if ([LogIn isLogin])
+                    {
+                        BmobObject *obj = weakSelf.postsArray[indexPath.row];
                         weakCell.isLiked = !weakCell.isLiked;
-                        if (weakCell.isLiked) {
+                        if (weakCell.isLiked)
+                        {
                             [weakSelf likePosts:obj];
                             NSInteger likesCount = [[obj objectForKey:@"likesCount"] integerValue];
                             likesCount += 1;
                             weakCell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Selected];
                             weakCell.labelLike.textColor = color_Red;
                             weakCell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
-                        } else {
+                        }
+                        else
+                        {
                             [weakSelf unlikePosts:obj];
                             NSInteger likesCount = [[obj objectForKey:@"likesCount"] integerValue];
                             likesCount -= 1;
@@ -517,17 +601,21 @@
                             weakCell.labelLike.textColor = color_8f8f8f;
                             weakCell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
                         }
-                    } else {
+                    }
+                    else
+                    {
                         [weakSelf toLogInView];
                     }
                 };
                 return cell;
             }
-        } else {
-            
+        }
+        else
+        {
             static NSString *noDataCellIdentifier = @"noDataCellIdentifier";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noDataCellIdentifier];
-            if (!cell) {
+            if (!cell)
+            {
                 cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noDataCellIdentifier];
                 cell.backgroundColor = [UIColor clearColor];
                 cell.contentView.backgroundColor = [UIColor clearColor];
@@ -538,41 +626,45 @@
                 cell.textLabel.textColor = [UIColor lightGrayColor];
                 cell.textLabel.font = font_Bold_16;
             }
-            if (indexPath.row == 1) {
-                cell.textLabel.text = isLoadEnd ? STRCommonTip43 : @"";
+            if (indexPath.row == 1)
+            {
+                cell.textLabel.text = self.isLoadEnd ? STRCommonTip43 : @"";
             }
             return cell;
         }
     }
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if (((themeArray.count == 0 && indexPath.section == 0)
-        || (themeArray.count > 0 && indexPath.section == 1))
-        && (postsArray.count > indexPath.row)) {
-        
-        
-        BmobObject *obj = postsArray[indexPath.row];
+    if (((self.themeArray.count == 0 && indexPath.section == 0)
+        || (self.themeArray.count && indexPath.section == 1))
+        && (self.postsArray.count > indexPath.row))
+    {
+        BmobObject *obj = self.postsArray[indexPath.row];
         [self toPostsDetail:obj];
-        
-    } else {
+    }
+    else
+    {
         [self reloadData];
     }
 }
 
 #pragma mark - SDCycleScrollViewDelegate
-- (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index {
-    NSLog(@"banner被点击了第%ld张图片", (long)index);
-
-    if (bannerObjArray.count > index) {
+- (void)cycleScrollView:(SDCycleScrollView *)cycleScrollView didSelectItemAtIndex:(NSInteger)index
+{
+    if (self.bannerObjArray.count > index)
+    {
         //记录点击数
-        BmobObject *obj = bannerObjArray[index];
+        BmobObject *obj = self.bannerObjArray[index];
         [self incrementBannerReadTimes:obj];
         //根据类型做不同处理
         NSString *bannerType = [obj objectForKey:@"bannerType"];
-        if (bannerType) {
-            switch ([bannerType integerValue]) {
+        if (bannerType)
+        {
+            switch ([bannerType integerValue])
+            {
                 case 1://内部帖子
                 {
                     NSString *postsObjectId = [obj objectForKey:@"postsObjectId"];
@@ -582,12 +674,14 @@
                     [bquery includeKey:@"author"];//声明该次查询需要将author关联对象信息一并查询出来
                     [bquery whereKey:@"objectId" equalTo:postsObjectId];
                     __weak typeof(self) weakSelf = self;
-                    isLoadingTheme = YES;
+                    self.isLoadingTheme = YES;
                     [self showHUD];
-                    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+                    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+                     {
                         [weakSelf hideHUD];
-                        isLoadingTheme = NO;
-                        if (!error && array.count > 0) {
+                        weakSelf.isLoadingTheme = NO;
+                        if (!error && array.count)
+                        {
                             BmobObject *obj = array[0];
                             [weakSelf toPostsDetail:obj];
                         }
@@ -610,54 +704,68 @@
     }
 }
 
-- (void)reloadBannerData {
-    if (isLoadingBanner) return;
+- (void)reloadBannerData
+{
+    if (self.isLoadingBanner) return;
     
-    isLoadingBanner = YES;
+    self.isLoadingBanner = YES;
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Banner"];
     [bquery whereKey:@"isDeleted" equalTo:@"0"];
     [bquery orderByDescending:@"createdAt"];
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-        isLoadingBanner = NO;
-        if (!error && array.count > 0) {
-            
-            bannerObjArray = [NSMutableArray arrayWithArray:array];
-            headerTitlesArray = [NSMutableArray array];
-            headerImagesURLArray = [NSMutableArray array];
-            headerDetailURLArray = [NSMutableArray array];
-            for (BmobObject *obj in array) {
+    __weak typeof(self) weakSelf = self;
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+     {
+        weakSelf.isLoadingBanner = NO;
+        if (!error && array.count)
+        {
+            weakSelf.bannerObjArray = [NSMutableArray arrayWithArray:array];
+            weakSelf.headerTitlesArray = [NSMutableArray array];
+            weakSelf.headerImagesURLArray = [NSMutableArray array];
+            weakSelf.headerDetailURLArray = [NSMutableArray array];
+            for (BmobObject *obj in array)
+            {
                 NSString *imgURL = [obj objectForKey:@"imgURL"];
                 NSString *title = [obj objectForKey:@"title"];
                 NSString *detailURL = [obj objectForKey:@"detailURL"];
-                if (imgURL) {
-                    [headerImagesURLArray addObject:imgURL];
-                } else {
-                    [headerImagesURLArray addObject:@""];
+                if (imgURL)
+                {
+                    [weakSelf.headerImagesURLArray addObject:imgURL];
+                }
+                else
+                {
+                    [weakSelf.headerImagesURLArray addObject:@""];
                 }
                 
-                if (title) {
-                    [headerTitlesArray addObject:title];
-                } else {
-                    [headerTitlesArray addObject:@""];
+                if (title)
+                {
+                    [weakSelf.headerTitlesArray addObject:title];
+                }
+                else
+                {
+                    [weakSelf.headerTitlesArray addObject:@""];
                 }
                 
-                if (detailURL) {
-                    [headerDetailURLArray addObject:detailURL];
-                } else {
-                    [headerDetailURLArray addObject:@""];
+                if (detailURL)
+                {
+                    [weakSelf.headerDetailURLArray addObject:detailURL];
+                }
+                else
+                {
+                    [weakSelf.headerDetailURLArray addObject:@""];
                 }
             }
             
-            bannerView.titlesGroup = headerTitlesArray;
-            bannerView.imageURLStringsGroup = headerImagesURLArray;
+            weakSelf.bannerView.titlesGroup = weakSelf.headerTitlesArray;
+            weakSelf.bannerView.imageURLStringsGroup = weakSelf.headerImagesURLArray;
         }
     }];
 }
 
-- (void)reloadThemeData {
-    if (isLoadingTheme) return;
+- (void)reloadThemeData
+{
+    if (self.isLoadingTheme) return;
     
-    isLoadingTheme = YES;
+    self.isLoadingTheme = YES;
     [self showHUD];
 
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Theme"];
@@ -665,32 +773,33 @@
     [bquery orderByAscending:@"orderNo"];
 
     __weak typeof(self) weakSelf = self;
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+     {
         [weakSelf hideHUD];
         
-        isLoadingTheme = NO;
-        isLoadEnd = YES;
+        weakSelf.isLoadingTheme = NO;
+        weakSelf.isLoadEnd = YES;
         [weakSelf.tableView.mj_header endRefreshing];
         [weakSelf.tableView.mj_footer endRefreshing];
         //记录加载时间
         [UserDefaults setObject:[NSDate date] forKey:STRPostsListFlag];
         [UserDefaults synchronize];
         
-        themeArray = [NSMutableArray arrayWithArray:array];
-        [self.tableView reloadData];
-        
+        weakSelf.themeArray = [NSMutableArray arrayWithArray:array];
+        [weakSelf.tableView reloadData];
     }];
 }
 
-- (void)reloadPostsData {
-    if (isLoadingPosts) return;
+- (void)reloadPostsData
+{
+    if (self.isLoadingPosts) return;
     
-    isLoadingPosts = YES;
+    self.isLoadingPosts = YES;
     [self showHUD];
-    if (!isLoadMore) {
-        startIndex = 0;
-        postsArray = [NSMutableArray array];
+    if (!self.isLoadMore)
+    {
+        self.startIndex = 0;
+        self.postsArray = [NSMutableArray array];
     }
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
     [bquery includeKey:@"author"];//声明该次查询需要将author关联对象信息一并查询出来
@@ -698,19 +807,20 @@
     [bquery orderByDescending:@"isTop"];//先按照是否置顶排序
     [bquery orderByDescending:@"updatedTime"];//再按照更新时间排序
     bquery.limit = 10;
-    bquery.skip = postsArray.count;
+    bquery.skip = self.postsArray.count;
     __weak typeof(self) weakSelf = self;
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-        
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+    {
         [weakSelf hideHUD];
         
         //自动回顶部
-        if (!isLoadMore) {
+        if (!weakSelf.isLoadMore)
+        {
             [weakSelf backToTop:nil];
         }
-        isLoadMore = NO;
-        isLoadingPosts = NO;
-        isLoadEnd = YES;
+        weakSelf.isLoadMore = NO;
+        weakSelf.isLoadingPosts = NO;
+        weakSelf.isLoadEnd = YES;
         [weakSelf.tableView.mj_header endRefreshing];
         [weakSelf.tableView.mj_footer endRefreshing];
 
@@ -718,44 +828,58 @@
         [UserDefaults setObject:[NSDate date] forKey:STRPostsListFlag];
         [UserDefaults synchronize];
         
-        if (!error && array.count > 0) {
-            [postsArray addObjectsFromArray:array];
-            [weakSelf checkIsLike:postsArray];
-        } else {
+        if (!error && array.count)
+        {
+            [weakSelf.postsArray addObjectsFromArray:array];
+            [weakSelf checkIsLike:weakSelf.postsArray];
+        }
+        else
+        {
             [weakSelf.tableView.mj_footer endRefreshingWithNoMoreData];
             [weakSelf hideHUD];
         }
     }];
 }
 
-- (void)loadUserTagsData {
+- (void)loadUserTagsData
+{
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserTags"];
     [bquery whereKey:@"isUsed" equalTo:@"1"];
     [bquery orderByAscending:@"orderNo"];
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-        if (!error && array.count > 0) {
-            userTagsArray = [NSArray arrayWithArray:array];
+    __weak typeof(self) weakSelf = self;
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+     {
+        if (!error && array.count)
+        {
+            weakSelf.userTagsArray = [NSArray arrayWithArray:array];
         }
     }];
 }
 
-- (void)checkIsLike:(NSMutableArray *)array {
-    if ([LogIn isLogin]) {
-        checkLikeCount = 0;
-        for (NSInteger i=0; i < array.count; i++) {
+- (void)checkIsLike:(NSMutableArray *)array
+{
+    if ([LogIn isLogin])
+    {
+        self.checkLikeCount = 0;
+        for (NSInteger i=0; i < array.count; i++)
+        {
             [self isLikedPost:array[i]];
         }
-    } else {
+    }
+    else
+    {
         [self hideHUD];
         [self.tableView reloadData];
     }
 }
 
-- (void)incrementBannerReadTimes:(BmobObject *)obj {
+- (void)incrementBannerReadTimes:(BmobObject *)obj
+{
     BmobObject *banner = [BmobObject objectWithoutDataWithClassName:@"Banner" objectId:obj.objectId];
     //查看数加1
     [banner incrementKey:@"readTimes"];
-    if ([LogIn isLogin]) {
+    if ([LogIn isLogin])
+    {
         //新建relation对象
         BmobRelation *relation = [[BmobRelation alloc] init];
         BmobUser *user = [BmobUser currentUser];
@@ -764,16 +888,11 @@
         [banner addRelation:relation forKey:@"readUser"];
     }
     //异步更新obj的数据
-    [banner updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-        if (isSuccessful) {
-            NSLog(@"successful");
-        }else{
-            NSLog(@"error %@",[error description]);
-        }
-    }];
+    [banner updateInBackground];
 }
 
-- (void)incrementPostsReadTimes:(BmobObject *)posts {
+- (void)incrementPostsReadTimes:(BmobObject *)posts
+{
     BmobObject *obj = [BmobObject objectWithoutDataWithClassName:@"Posts" objectId:posts.objectId];
     //查看数加1
     [obj incrementKey:@"readTimes"];
@@ -789,9 +908,10 @@
     [obj updateInBackground];
 }
 
-- (void)likePosts:(BmobObject *)posts {
+- (void)likePosts:(BmobObject *)posts
+{
     BOOL isLike = [[posts objectForKey:@"isLike"] boolValue];
-    if (isSendingLikes && isLike) return;
+    if (self.isSendingLikes && isLike) return;
     
     __weak typeof(self) weakSelf = self;
     BmobObject *obj = [BmobObject objectWithoutDataWithClassName:@"Posts" objectId:posts.objectId];
@@ -799,47 +919,58 @@
     BmobRelation *relation = [[BmobRelation alloc] init];
     [relation addObject:[BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
-    isSendingLikes = YES;
-    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-        isSendingLikes = NO;
-        if (isSuccessful) {
+    self.isSendingLikes = YES;
+    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
+    {
+        weakSelf.isSendingLikes = NO;
+        if (isSuccessful)
+        {
             NSInteger likesCount = [[posts objectForKey:@"likesCount"] integerValue];
             likesCount += 1;
             [posts setObject:@(likesCount) forKey:@"likesCount"];
             [posts setObject:@(YES) forKey:@"isLike"];
             [weakSelf addNoticesForLikesPosts:posts];
-        } else {
+        }
+        else
+        {
             NSLog(@"error %@",[error description]);
         }
     }];
 }
 
-- (void)unlikePosts:(BmobObject *)posts {
+- (void)unlikePosts:(BmobObject *)posts
+{
     NSInteger likesCount = [[posts objectForKey:@"likesCount"] integerValue];
     BOOL isLike = [[posts objectForKey:@"isLike"] boolValue];
-    if (isSendingLikes || likesCount < 1 || !isLike) return;
+    if (self.isSendingLikes || likesCount < 1 || !isLike) return;
     
     BmobObject *obj = [BmobObject objectWithoutDataWithClassName:@"Posts" objectId:posts.objectId];
     [obj decrementKey:@"likesCount"];
     BmobRelation *relation = [[BmobRelation alloc] init];
     [relation removeObject:[BmobObject objectWithoutDataWithClassName:@"UserSettings" objectId:[Config shareInstance].settings.objectId]];
     [obj addRelation:relation forKey:@"likes"];
-    isSendingLikes = YES;
-    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error) {
-        isSendingLikes = NO;
-        if (isSuccessful) {
+    self.isSendingLikes = YES;
+    __weak typeof(self) weakSelf = self;
+    [obj updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
+    {
+        weakSelf.isSendingLikes = NO;
+        if (isSuccessful)
+        {
             NSInteger likesCount = [[posts objectForKey:@"likesCount"] integerValue];
             likesCount -= 1;
             [posts setObject:@(likesCount) forKey:@"likesCount"];
             [posts setObject:@(NO) forKey:@"isLike"];
             NSLog(@"successful");
-        }else{
+        }
+        else
+        {
             NSLog(@"error %@",[error description]);
         }
     }];
 }
 
-- (void)isLikedPost:(BmobObject *)posts {
+- (void)isLikedPost:(BmobObject *)posts
+{
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
     BmobQuery *inQuery = [BmobQuery queryWithClassName:@"UserSettings"];
     BmobUser *user = [BmobUser currentUser];
@@ -848,22 +979,28 @@
     [bquery whereKey:@"likes" matchesQuery:inQuery];//（查询所有有关联的数据）
     [bquery whereKey:@"objectId" equalTo:posts.objectId];
     __weak typeof(self) weakSelf = self;
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
-        if (!error && array.count > 0) {
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+     {
+        if (!error && array.count)
+        {
             [posts setObject:@(YES) forKey:@"isLike"];
-        } else {
+        }
+        else
+        {
             [posts setObject:@(NO) forKey:@"isLike"];
         }
         
-        checkLikeCount ++;
-        if (checkLikeCount == postsArray.count) {
+        weakSelf.checkLikeCount ++;
+        if (weakSelf.checkLikeCount == weakSelf.postsArray.count)
+        {
             [weakSelf hideHUD];
             [weakSelf.tableView reloadData];
         }
     }];
 }
 
-- (void)addNoticesForLikesPosts:(BmobObject *)posts {
+- (void)addNoticesForLikesPosts:(BmobObject *)posts
+{
     BmobObject *author = [posts objectForKey:@"author"];
     NSString *userObjectId = [author objectForKey:@"userObjectId"];
     BmobUser *user = [BmobUser currentUser];
@@ -880,14 +1017,16 @@
     [newNotice saveInBackground];
 }
 
-- (void)toThemeList:(BmobObject *)theme {
+- (void)toThemeList:(BmobObject *)theme
+{
     ThemeViewController *controller = [[ThemeViewController alloc] init];
     controller.theme = theme;
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)toPostsDetail:(BmobObject *)posts {
+- (void)toPostsDetail:(BmobObject *)posts
+{
     [self incrementPostsReadTimes:posts];
     NSInteger readTimes = [[posts objectForKey:@"readTimes"] integerValue];
     readTimes += 1;
@@ -895,12 +1034,13 @@
     
     PostsDetailViewController *controller = [[PostsDetailViewController alloc] init];
     controller.posts = posts;
-    controller.userTagsArray = [NSArray arrayWithArray:userTagsArray];
+    controller.userTagsArray = [NSArray arrayWithArray:self.userTagsArray];
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)toLogInView {
+- (void)toLogInView
+{
     LogInViewController *controller = [[LogInViewController alloc] init];
     controller.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:controller animated:YES];
