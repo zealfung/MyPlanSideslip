@@ -55,12 +55,12 @@ NSUInteger const kHoursPerDay = 24;
     self.title = STRViewTitle1;
     self.tabBarItem.title = STRViewTitle1;
 
-//    __weak typeof(self) weakSelf = self;
+    __weak typeof(self) weakSelf = self;
     self.leftBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_LeftMenu selectedImageName:png_Btn_LeftMenu selector:@selector(leftMenuAction)];
-//    [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_Share] action:^(UIButton *sender)
-//     {
-//         [weakSelf shareAction];
-//    }];
+    [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_Share] action:^(UIButton *sender)
+     {
+         [weakSelf shareAction];
+    }];
     
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFSettingsSave object:nil];
     [NotificationCenter addObserver:self selector:@selector(refreshView:) name:NTFLogIn object:nil];
