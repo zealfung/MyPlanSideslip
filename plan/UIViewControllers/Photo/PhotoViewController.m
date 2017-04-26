@@ -47,6 +47,7 @@
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
     self.tableView.tableFooterView = [[UIView alloc] init];
+    [self.tableView setDefaultEmpty];
     
     self.photoArray = [NSMutableArray array];
     MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
@@ -137,26 +138,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    if (self.photoArray.count)
-    {
-        return self.photoArray.count;
-    }
-    else
-    {
-        return 5;
-    }
+    return self.photoArray.count;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.photoArray.count)
-    {
-        return kPhotoCellHeight;
-    }
-    else
-    {
-        return 44.f;
-    }
+    return kPhotoCellHeight;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -171,25 +158,7 @@
     }
     else
     {
-        static NSString *noticeCellIdentifier = @"noPhotoCellIdentifier";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noticeCellIdentifier];
-        if (!cell)
-        {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noticeCellIdentifier];
-            cell.backgroundColor = [UIColor clearColor];
-            cell.contentView.backgroundColor = [UIColor clearColor];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = @"";
-            cell.textLabel.frame = cell.contentView.bounds;
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-            cell.textLabel.textColor = [UIColor lightGrayColor];
-            cell.textLabel.font = font_Bold_16;
-        }
-        
-        if (indexPath.row == 4)
-        {
-            cell.textLabel.text = STRViewTips31;
-        }
+        UITableViewCell *cell = [[UITableViewCell alloc] init];
         return cell;
     }
 }

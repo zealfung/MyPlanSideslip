@@ -182,6 +182,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     self.tableViewPlan.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [weakSelf getPlanData];
     }];
+    [self.tableViewPlan setDefaultEmpty];
     [self.view addSubview:self.tableViewPlan];
 }
 
@@ -633,25 +634,11 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     {
         if (self.planType == EverydayPlan)
         {
-            if (self.dayPlanDict.count)
-            {
-                return self.dayPlanDict.count;
-            }
-            else
-            {
-                return 1;
-            }
+            return self.dayPlanDict.count;
         }
         else
         {
-            if (self.futurePlanDict.count)
-            {
-                return self.futurePlanDict.count;
-            }
-            else
-            {
-                return 1;
-            }
+            return self.futurePlanDict.count;
         }
     }
 }
@@ -660,14 +647,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 {
     if (self.searchKeyword.length)
     {
-        if (self.searchResultArray.count)
-        {
-            return self.searchResultArray.count;
-        }
-        else
-        {
-            return 3;
-        }
+        return self.searchResultArray.count;
     }
     else
     {
@@ -688,7 +668,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
             }
             else
             {
-                return 3;
+                return 0;
             }
         }
         else
@@ -708,7 +688,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
             }
             else
             {
-                return 3;
+                return 0;
             }
         }
     }
@@ -746,10 +726,6 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
             return cell;
             
         }
-        else
-        {
-            return [self createNoDataCell:tableView indexPath:indexPath tips:@"无匹配结果"];
-        }
     }
     else
     {
@@ -785,10 +761,6 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                     return cell;
                 }
             }
-            else
-            {
-                return [self createNoDataCell:tableView indexPath:indexPath tips:STRViewTips12];
-            }
         }
         else if (self.planType == FuturePlan)
         {
@@ -813,10 +785,6 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                     cell.delegate = self;
                     return cell;
                 }
-            }
-            else
-            {
-                return [self createNoDataCell:tableView indexPath:indexPath tips:STRViewTips13];
             }
         }
     }
