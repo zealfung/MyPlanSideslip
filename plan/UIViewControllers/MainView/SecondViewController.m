@@ -353,7 +353,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                  if ([plan.isnotify isEqualToString:@"1"]
                      && [plan.iscompleted isEqualToString:@"0"])
                  {
-                     plan.notifytime = [CommonFunction updateNotifyTime:plan.notifytime];
+//                     plan.notifytime = [CommonFunction updateNotifyTime:plan.notifytime];
                      
                      [CommonFunction updatePlanNotification:plan];
                  }
