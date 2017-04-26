@@ -6,7 +6,7 @@ PODS:
   - FMDB/standard (2.6.2)
   - MBProgressHUD (1.0.0)
   - MJRefresh (3.1.12)
-  - MOBFoundation (2.2.18)
+  - MOBFoundation (2.2.19)
   - RESideMenu (4.0.7)
   - SDCycleScrollView (1.66):
     - SDWebImage (~> 4.0.0)
@@ -53,7 +53,7 @@ SPEC CHECKSUMS:
   FMDB: 854a0341b4726e53276f2a8996f06f1b80f9259a
   MBProgressHUD: 4890f671c94e8a0f3cf959aa731e9de2f036d71a
   MJRefresh: b96cdb21c4aa75a7b07654311ab2f315c497e806
-  MOBFoundation: 209abfa5bb189c193f693bb610fa33f0031956e4
+  MOBFoundation: e962b2aee79e2b8f626e2d30c2f23e9f13e5331e
   RESideMenu: f24c508404b49c667344c54aba7e590883533958
   SDCycleScrollView: e3ade90e9b3159bec04330b208fbfd81c3f3b671
   SDWebImage: 76a6348bdc74eb5a55dd08a091ef298e56b55e41
