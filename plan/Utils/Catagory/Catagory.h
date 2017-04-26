@@ -14,6 +14,7 @@
 #import "UIImage+Util.h"
 #import "NSString+Util.h"
 #import "UIButton+Util.h"
+#import "UIScrollView+Util.h"
 #import "UIViewController+Util.h"
 
 #endif

@@ -12,6 +12,7 @@ target 'plan' do
   pod 'SDWebImage'
   pod 'RESideMenu'
   pod 'MBProgressHUD'
+  pod 'DZNEmptyDataSet'
   pod 'SDCycleScrollView'
   
   # ShareSDK begin
