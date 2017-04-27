@@ -92,6 +92,7 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
         self.tableViewPlan.tableFooterView = footer;
     }
     self.tableViewPlan.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.tableViewPlan setDefaultEmpty];
 
     [self.view addSubview:self.tableViewPlan];
 }
@@ -189,25 +190,11 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
 {
     if (self.searchKeyword.length)
     {
-        if (self.searchResultArray.count)
-        {
-            return self.searchResultArray.count;
-        }
-        else
-        {
-            return 3;
-        }
+        return self.searchResultArray.count;
     }
     else
     {
-        if (self.planArray.count)
-        {
-            return self.planArray.count;
-        }
-        else
-        {
-            return 3;
-        }
+        return self.planArray.count;
     }
 }
 
@@ -242,10 +229,6 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
             cell.delegate = self;
             return cell;
         }
-        else
-        {
-            return [self createNoDataCell:tableView indexPath:indexPath tips:@"无匹配结果"];
-        }
     }
     else
     {
@@ -266,36 +249,8 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
             cell.delegate = self;
             return cell;
         }
-        else
-        {
-            return [self createNoDataCell:tableView indexPath:indexPath tips:STRViewTips13];
-        }
     }
-}
-
-- (UITableViewCell *)createNoDataCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath tips:(NSString *)tips
-{
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    static NSString *noDataCellIdentifier = @"noDataCellIdentifier";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noDataCellIdentifier];
-    if (!cell)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noDataCellIdentifier];
-        cell.backgroundColor = [UIColor clearColor];
-        cell.contentView.backgroundColor = [UIColor clearColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.textLabel.text = @"";
-        cell.textLabel.frame = cell.contentView.bounds;
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.textLabel.textColor = [UIColor lightGrayColor];
-        cell.textLabel.font = font_Bold_16;
-    }
-    if (indexPath.row == 2)
-    {
-        cell.textLabel.text = tips;
-    }
-    return cell;
+    return [[UITableViewCell alloc] init];
 }
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
