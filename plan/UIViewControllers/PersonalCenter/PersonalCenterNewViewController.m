@@ -11,6 +11,7 @@
 #import "PersonalCenterNewCell0.h"
 #import "SettingsPersonalViewController.h"
 #import "PersonalCenterNewViewController.h"
+#import "PersonalCenterTaskViewController.h"
 #import "PersonalCenterMyPostsViewController.h"
 #import "PersonalCenterUndonePlanViewController.h"
 #import "PersonalCenterTaskStatisticsViewController.h"
@@ -34,7 +35,7 @@
     self.tableView.backgroundColor = color_eeeeee;
     [NotificationCenter addObserver:self selector:@selector(reloadTableView) name:NTFSettingsSave object:nil];
     
-    self.titleArray = [NSMutableArray arrayWithObjects:@"我的帖子", @"未完计划", nil];
+    self.titleArray = [NSMutableArray arrayWithObjects:@"我的帖子", @"未完计划", @"我的任务", nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -101,9 +102,8 @@
         case 1:
             return self.titleArray.count;
         default:
-            break;
+            return 0;
     }
-    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -115,9 +115,8 @@
         case 1:
             return kTableViewCellHeight;
         default:
-            break;
+            return 0;
     }
-    return 0;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
@@ -198,6 +197,11 @@
                 else if (indexPath.row == 1)
                 {
                     PersonalCenterUndonePlanViewController *controller = [[PersonalCenterUndonePlanViewController alloc] init];
+                    [self.navigationController pushViewController:controller animated:YES];
+                }
+                else if (indexPath.row == 2)
+                {
+                    PersonalCenterTaskViewController *controller = [[PersonalCenterTaskViewController alloc] init];
                     [self.navigationController pushViewController:controller animated:YES];
                 }
             }

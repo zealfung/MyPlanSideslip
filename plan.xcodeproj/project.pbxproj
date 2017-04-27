@@ -34,6 +34,7 @@
 		1319125A1EADAC09005AE10C /* MPTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 131912591EADAC09005AE10C /* MPTextView.m */; };
 		131912621EAF1A80005AE10C /* PlanDetailNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131912611EAF1A80005AE10C /* PlanDetailNewViewController.m */; };
 		131912651EB0708A005AE10C /* UIScrollView+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 131912641EB0708A005AE10C /* UIScrollView+Util.m */; };
+		131912681EB1F032005AE10C /* PersonalCenterTaskViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131912671EB1F032005AE10C /* PersonalCenterTaskViewController.m */; };
 		131D69E81BF37614009FDD72 /* Statistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D69E71BF37614009FDD72 /* Statistics.m */; };
 		131D69F51BF466D2009FDD72 /* StatisticsCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D69F41BF466D2009FDD72 /* StatisticsCenter.m */; };
 		131D6A1E1BF478D1009FDD72 /* SideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 131D6A1D1BF478D1009FDD72 /* SideMenuViewController.m */; };
@@ -316,6 +317,8 @@
 		131912611EAF1A80005AE10C /* PlanDetailNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanDetailNewViewController.m; sourceTree = "<group>"; };
 		131912631EB0708A005AE10C /* UIScrollView+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIScrollView+Util.h"; sourceTree = "<group>"; };
 		131912641EB0708A005AE10C /* UIScrollView+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIScrollView+Util.m"; sourceTree = "<group>"; };
+		131912661EB1F032005AE10C /* PersonalCenterTaskViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterTaskViewController.h; sourceTree = "<group>"; };
+		131912671EB1F032005AE10C /* PersonalCenterTaskViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterTaskViewController.m; sourceTree = "<group>"; };
 		131D69E61BF37614009FDD72 /* Statistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Statistics.h; sourceTree = "<group>"; };
 		131D69E71BF37614009FDD72 /* Statistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Statistics.m; sourceTree = "<group>"; };
 		131D69F31BF466D2009FDD72 /* StatisticsCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StatisticsCenter.h; sourceTree = "<group>"; };
@@ -781,6 +784,8 @@
 				136DF2231D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.h */,
 				136DF2241D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.m */,
 				136DF2251D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.xib */,
+				131912661EB1F032005AE10C /* PersonalCenterTaskViewController.h */,
+				131912671EB1F032005AE10C /* PersonalCenterTaskViewController.m */,
 				13C725EE1D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.h */,
 				13C725EF1D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.m */,
 			);
@@ -1894,6 +1899,7 @@
 				132263A91B9C809400D21637 /* SecondViewController.m in Sources */,
 				137470941C07E66B00B7822A /* CLLockItemView.m in Sources */,
 				130583D91E2B32EC0090A930 /* PlanSectionView.m in Sources */,
+				131912681EB1F032005AE10C /* PersonalCenterTaskViewController.m in Sources */,
 				1319125A1EADAC09005AE10C /* MPTextView.m in Sources */,
 				13F670A41CC11A2E009D2BA9 /* PersonalCenterMyPostsViewController.m in Sources */,
 				130583D41E2B32EC0090A930 /* PlanAddViewController.m in Sources */,
