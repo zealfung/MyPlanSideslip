@@ -69,85 +69,85 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
     
     [self.btnStart setAllTitle:STRViewTips45];
 
-    if ([self.task.isNotify isEqualToString:@"0"])
-    {
+//    if ([self.task.isNotify isEqualToString:@"0"])
+//    {
         self.imgViewAlarm.hidden = YES;
         self.labelAlram.hidden = YES;
         self.imgViewRepeat.hidden = YES;
         self.labelRepeat.hidden = YES;
         self.layoutConstraintTxtViewBottom.constant = 10.f;
-    }
-    else
-    {
-        self.imgViewAlarm.hidden = NO;
-        self.labelAlram.hidden = NO;
-        self.labelAlram.text = [NSString stringWithFormat:@"%@%@", STRViewTips48, self.task.notifyTime];
-        self.layoutConstraintTxtViewBottom.constant = 90.f;
-    }
-    if ([self.task.isRepeat isEqualToString:@"0"])
-    {
+//    }
+//    else
+//    {
+//        self.imgViewAlarm.hidden = NO;
+//        self.labelAlram.hidden = NO;
+//        self.labelAlram.text = [NSString stringWithFormat:@"%@%@", STRViewTips48, self.task.notifyTime];
+//        self.layoutConstraintTxtViewBottom.constant = 90.f;
+//    }
+//    if ([self.task.isRepeat isEqualToString:@"0"])
+//    {
         self.imgViewRepeat.hidden = YES;
         self.labelRepeat.hidden = YES;
-    }
-    else
-    {
-        self.imgViewRepeat.hidden = NO;
-        self.labelRepeat.hidden = NO;
-        switch ([self.task.repeatType integerValue])
-        {
-            case 0:
-                self.labelRepeat.text = STRCommonTip8;
-                break;
-            case 1:
-                self.labelRepeat.text = STRCommonTip9;
-                break;
-            case 2:
-                self.labelRepeat.text = STRCommonTip10;
-                break;
-            case 3:
-                self.labelRepeat.text = STRCommonTip11;
-                break;
-            default:
-                break;
-        }
-    }
-    if (self.task.totalCount.length == 0
-        || [self.task.totalCount integerValue] == 0)
-    {
-        self.labelFinishedTimes.text = @"0";
-    }
-    else
-    {
-        self.labelFinishedTimes.text = self.task.totalCount;
-    }
+//    }
+//    else
+//    {
+//        self.imgViewRepeat.hidden = NO;
+//        self.labelRepeat.hidden = NO;
+//        switch ([self.task.repeatType integerValue])
+//        {
+//            case 0:
+//                self.labelRepeat.text = STRCommonTip8;
+//                break;
+//            case 1:
+//                self.labelRepeat.text = STRCommonTip9;
+//                break;
+//            case 2:
+//                self.labelRepeat.text = STRCommonTip10;
+//                break;
+//            case 3:
+//                self.labelRepeat.text = STRCommonTip11;
+//                break;
+//            default:
+//                break;
+//        }
+//    }
+//    if (self.task.totalCount.length == 0
+//        || [self.task.totalCount integerValue] == 0)
+//    {
+//        self.labelFinishedTimes.text = @"0";
+//    }
+//    else
+//    {
+//        self.labelFinishedTimes.text = self.task.totalCount;
+//    }
     
     self.tableRecord.dataSource = self;
     self.tableRecord.delegate = self;
     
-    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
-    if ([self.task.completionDate isEqualToString:date])
-    {
-        self.btnStart.enabled = NO;
-        [self.btnStart setBackgroundColor:color_8f8f8f];
-    }
-    else
-    {
-        self.btnStart.enabled = YES;
-        [self.btnStart setBackgroundColor:color_0BA32A];
-    }
+//    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+//    if ([self.task.completionDate isEqualToString:date])
+//    {
+//        self.btnStart.enabled = NO;
+//        [self.btnStart setBackgroundColor:color_8f8f8f];
+//    }
+//    else
+//    {
+//        self.btnStart.enabled = YES;
+//        [self.btnStart setBackgroundColor:color_0BA32A];
+//    }
 
-    self.finishRecordArray = [PlanCache getTaskRecord:self.task.taskId];
-    [self.tableRecord reloadData];
+    self.finishRecordArray = [NSArray array];//[PlanCache getTaskRecord:self.task.taskId];
+//    [self.tableRecord reloadData];
 }
 
 - (void)showMenu:(UIButton *)sender
 {
     NSArray *menuItems =
     @[
-      [KxMenuItem menuItem:STRCommonTip33
-                     image:[UIImage imageNamed:png_Btn_Edit]
-                    target:self
-                    action:@selector(editAction:)],
+//      [KxMenuItem menuItem:STRCommonTip33
+//                     image:[UIImage imageNamed:png_Btn_Edit]
+//                    target:self
+//                    action:@selector(editAction:)],
       [KxMenuItem menuItem:STRCommonTip34
                      image:[UIImage imageNamed:png_Btn_Delete]
                     target:self
