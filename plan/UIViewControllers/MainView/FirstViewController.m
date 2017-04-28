@@ -32,9 +32,8 @@ NSUInteger const kHoursPerDay = 24;
 @property (strong, nonatomic) ThreeSubView *secondsLeftView;
 @property (strong, nonatomic) ThreeSubView *minuteLeftView;
 @property (strong, nonatomic) ThreeSubView *hourLeftView;
-@property (strong, nonatomic) UIView *statisticsView;
-@property (strong, nonatomic) ThreeSubView *everydayView;
-@property (strong, nonatomic) ThreeSubView *longtermView;
+@property (strong, nonatomic) ThreeSubView *todayStatisticsView;
+@property (strong, nonatomic) ThreeSubView *everydayStatisticsView;
 @property (strong, nonatomic) UIView *shareLogoView;
 
 @property (strong, nonatomic) NSTimer *timer;
@@ -44,6 +43,11 @@ NSUInteger const kHoursPerDay = 24;
 @property (assign, nonatomic) NSUInteger xMiddle;
 @property (assign, nonatomic) NSUInteger yOffset;
 @property (assign, nonatomic) NSUInteger ySpace;
+
+@property (nonatomic, assign) NSInteger planTotalCount;
+@property (nonatomic, assign) NSInteger planDoneTotalCount;
+@property (nonatomic, assign) NSInteger planTodayCount;
+@property (nonatomic, assign) NSInteger planDoneTodayCount;
 
 @end
 
@@ -174,6 +178,8 @@ NSUInteger const kHoursPerDay = 24;
             
             [weakSelf createAvatar];
             [weakSelf createLabelText];
+            [weakSelf createStatisticsView];
+            [weakSelf getCount];
             [weakSelf refreshRedDot];
         }];
     }
@@ -185,6 +191,70 @@ NSUInteger const kHoursPerDay = 24;
     }
 
     [self createShareLogo];
+}
+
+- (void)getCount
+{
+    BmobUser *user = [BmobUser currentUser];
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *queryPlan = [BmobQuery queryWithClassName:@"Plan"];
+    [queryPlan whereKey:@"userObjectId" equalTo:user.objectId];
+    [queryPlan whereKey:@"isDeleted" notEqualTo:@"1"];
+    [queryPlan countObjectsInBackgroundWithBlock:^(int number,NSError  *error)
+     {
+         if (!error)
+         {
+             weakSelf.planTotalCount = number;
+             [weakSelf freshStatistics];
+         }
+     }];
+    
+    queryPlan = [BmobQuery queryWithClassName:@"Plan"];
+    [queryPlan whereKey:@"userObjectId" equalTo:user.objectId];
+    [queryPlan whereKey:@"isDeleted" notEqualTo:@"1"];
+    [queryPlan whereKey:@"isCompleted" notEqualTo:@"0"];
+    [queryPlan countObjectsInBackgroundWithBlock:^(int number,NSError  *error)
+     {
+         if (!error)
+         {
+             weakSelf.planDoneTotalCount = number;
+             if (weakSelf.planTotalCount)
+             {
+                 [weakSelf freshStatistics];
+             }
+         }
+     }];
+    
+    queryPlan = [BmobQuery queryWithClassName:@"Plan"];
+    [queryPlan whereKey:@"userObjectId" equalTo:user.objectId];
+    [queryPlan whereKey:@"isDeleted" notEqualTo:@"1"];
+    NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    [queryPlan whereKey:@"beginDate" equalTo:today];
+    [queryPlan countObjectsInBackgroundWithBlock:^(int number,NSError  *error)
+     {
+         if (!error)
+         {
+             weakSelf.planTodayCount = number;
+             [weakSelf freshStatistics];
+         }
+     }];
+    
+    queryPlan = [BmobQuery queryWithClassName:@"Plan"];
+    [queryPlan whereKey:@"userObjectId" equalTo:user.objectId];
+    [queryPlan whereKey:@"isDeleted" notEqualTo:@"1"];
+    [queryPlan whereKey:@"beginDate" equalTo:today];
+    [queryPlan whereKey:@"isCompleted" notEqualTo:@"0"];
+    [queryPlan countObjectsInBackgroundWithBlock:^(int number,NSError  *error)
+     {
+         if (!error)
+         {
+             weakSelf.planDoneTodayCount = number;
+             if (weakSelf.planTodayCount)
+             {
+                 [weakSelf freshStatistics];
+             }
+         }
+     }];
 }
 
 - (void)createAvatar
@@ -206,14 +276,14 @@ NSUInteger const kHoursPerDay = 24;
     self.ySpace = HEIGHT_FULL_SCREEN / 25;
     
     self.yOffset = HEIGHT_FULL_SCREEN / 8;
-    if (iPhone4)
-    {
+//    if (iPhone4)
+//    {
         self.yOffset = HEIGHT_FULL_SCREEN / 28;
-    }
-    else if (iPhone5)
-    {
-        self.yOffset = HEIGHT_FULL_SCREEN / 13;
-    }
+//    }
+//    else if (iPhone5)
+//    {
+//        self.yOffset = HEIGHT_FULL_SCREEN / 13;
+//    }
     
     UIImage *image = [UIImage imageNamed:png_AvatarDefault];
     if ([Config shareInstance].settings.avatar)
@@ -475,15 +545,15 @@ NSUInteger const kHoursPerDay = 24;
     CGFloat subviewWidth = viewWidth / 3;
     CGFloat viewHeight = HEIGHT_FULL_SCREEN * 0.1875;
     CGFloat subviewHeight = viewHeight / 3;
-
+    
     UIView *statisticsBgView = [[UIView alloc] initWithFrame:CGRectMake(xOffset, self.yOffset, viewWidth, subviewHeight * 4)];
+//    self.statisticsView = statisticsBgView;
     [self.scrollView addSubview:statisticsBgView];
     [self addSeparatorForLeft:statisticsBgView];
     [self addSeparatorForMiddleLeft:statisticsBgView];
     [self addSeparatorForMiddleRight:statisticsBgView];
     [self addSeparatorForTop:statisticsBgView];
     [self addSeparatorForRight:statisticsBgView];
-    self.statisticsView = statisticsBgView;
     
     ThreeSubView *topTitleView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, 0, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
     [topTitleView.leftButton.titleLabel setFont:font_Normal_16];
@@ -500,26 +570,25 @@ NSUInteger const kHoursPerDay = 24;
     topTitleView.fixRightWidth = subviewWidth;
     [self addSeparatorForBottom:topTitleView];
     [topTitleView autoLayout];
-    [self.statisticsView addSubview:topTitleView];
+    [statisticsBgView addSubview:topTitleView];
 
     {
         ThreeSubView *everydayStatisticsView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
 
-        float total = [[PlanCache getPlanTotalCount:@"ALL"] floatValue];
         [everydayStatisticsView.leftButton.titleLabel setFont:font_Normal_16];
         [everydayStatisticsView.leftButton setAllTitleColor:color_Black];
-        [everydayStatisticsView.leftButton setAllTitle:[NSString stringWithFormat:@"%.0f", total]];
+        [everydayStatisticsView.leftButton setAllTitle:[NSString stringWithFormat:@"%ld", self.planTotalCount]];
         everydayStatisticsView.fixLeftWidth = subviewWidth;
         
-        float done = [[PlanCache getPlanCompletedCount] floatValue];
         [everydayStatisticsView.centerButton.titleLabel setFont:font_Normal_16];
         [everydayStatisticsView.centerButton setAllTitleColor:color_Green_Emerald];
-        [everydayStatisticsView.centerButton setAllTitle:[NSString stringWithFormat:@"%.0f", done]];
+        [everydayStatisticsView.centerButton setAllTitle:[NSString stringWithFormat:@"%ld", self.planDoneTotalCount]];
         everydayStatisticsView.fixCenterWidth = subviewWidth;
         
         float percent = 0;
-        if (total > 0) {
-            percent = (float)done*100 /(float)total;
+        if (self.planTotalCount)
+        {
+            percent = (float)self.planDoneTotalCount*100 /(float)self.planTotalCount;
         }
         [everydayStatisticsView.rightButton.titleLabel setFont:font_Normal_16];
         [everydayStatisticsView.rightButton setAllTitleColor:color_Red];
@@ -528,7 +597,8 @@ NSUInteger const kHoursPerDay = 24;
         
         [self addSeparatorForBottom:everydayStatisticsView];
         [everydayStatisticsView autoLayout];
-        [self.statisticsView addSubview:everydayStatisticsView];
+        [statisticsBgView addSubview:everydayStatisticsView];
+        self.everydayStatisticsView = everydayStatisticsView;
     }
     
     ThreeSubView *titleView2 = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight * 2, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
@@ -546,60 +616,25 @@ NSUInteger const kHoursPerDay = 24;
     titleView2.fixRightWidth = subviewWidth;
     [self addSeparatorForBottom:titleView2];
     [titleView2 autoLayout];
-    [self.statisticsView addSubview:titleView2];
+    [statisticsBgView addSubview:titleView2];
     
     {
         ThreeSubView *todayStatisticsView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, subviewHeight * 3, subviewWidth * 3, subviewHeight)leftButtonSelectBlock:nil centerButtonSelectBlock:nil rightButtonSelectBlock:nil];
         
-        NSArray *array = [NSArray arrayWithArray:[PlanCache getPlan:YES startIndex:0]];
-        NSMutableArray *todayArray = [NSMutableArray array];
-        
-        NSString *todayKey = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
-        NSString *key = @"";
-        for (NSInteger i = 0; i < array.count; i++)
-        {
-            Plan *plan = array[i];
-            
-            if ([[Config shareInstance].settings.autoDelayUndonePlan isEqualToString:@"1"]
-                && [plan.iscompleted isEqualToString:@"0"])
-            {
-                key = todayKey;
-                plan.beginDate = todayKey;
-            }
-            else
-            {
-                key = plan.beginDate;
-            }
-            
-            if ([key isEqualToString:todayKey])
-            {
-                [todayArray addObject:plan];
-            }
-        }
-        
-        float total = todayArray.count;
         [todayStatisticsView.leftButton.titleLabel setFont:font_Normal_16];
         [todayStatisticsView.leftButton setAllTitleColor:color_Black];
-        [todayStatisticsView.leftButton setAllTitle:[NSString stringWithFormat:@"%.0f", total]];
+        [todayStatisticsView.leftButton setAllTitle:[NSString stringWithFormat:@"%ld", self.planTodayCount]];
         todayStatisticsView.fixLeftWidth = subviewWidth;
         
-        float done = 0;
-        for (Plan *plan in todayArray)
-        {
-            if ([plan.iscompleted isEqualToString:@"1"])
-            {
-                done ++;
-            }
-        }
         [todayStatisticsView.centerButton.titleLabel setFont:font_Normal_16];
         [todayStatisticsView.centerButton setAllTitleColor:color_Green_Emerald];
-        [todayStatisticsView.centerButton setAllTitle:[NSString stringWithFormat:@"%.0f", done]];
+        [todayStatisticsView.centerButton setAllTitle:[NSString stringWithFormat:@"%ld", self.planDoneTodayCount]];
         todayStatisticsView.fixCenterWidth = subviewWidth;
         
         float percent = 0;
-        if (total)
+        if (self.planTodayCount)
         {
-            percent = (float)done*100 /(float)total;
+            percent = (float)self.planDoneTodayCount*100 /(float)self.planTodayCount;
         }
         [todayStatisticsView.rightButton.titleLabel setFont:font_Normal_16];
         [todayStatisticsView.rightButton setAllTitleColor:color_Red];
@@ -608,11 +643,10 @@ NSUInteger const kHoursPerDay = 24;
         
         [self addSeparatorForBottom:todayStatisticsView];
         [todayStatisticsView autoLayout];
-        [self.statisticsView addSubview:todayStatisticsView];
+        [statisticsBgView addSubview:todayStatisticsView];
+        self.todayStatisticsView = todayStatisticsView;
     }
-
     self.yOffset += subviewHeight * 5 + 20;
-    
     self.scrollView.contentSize = CGSizeMake(WIDTH_FULL_SCREEN, self.yOffset);
 }
 
@@ -737,6 +771,32 @@ NSUInteger const kHoursPerDay = 24;
         CGRect frame = self.daysLeftView.frame;
         frame.origin.x = WIDTH_FULL_SCREEN / 2 - self.daysLeftView.frame.size.width / 2;
         self.daysLeftView.frame = frame;
+    }
+}
+
+- (void)freshStatistics
+{
+    {
+        [self.everydayStatisticsView.leftButton setAllTitle:[NSString stringWithFormat:@"%ld", self.planTotalCount]];
+        [self.everydayStatisticsView.centerButton setAllTitle:[NSString stringWithFormat:@"%ld", self.planDoneTotalCount]];
+        float percent = 0;
+        if (self.planTotalCount)
+        {
+            percent = (float)self.planDoneTotalCount*100 /(float)self.planTotalCount;
+        }
+        [self.everydayStatisticsView.rightButton setAllTitle:[NSString stringWithFormat:@"%.2f%%", percent]];
+        [self.everydayStatisticsView autoLayout];
+    }
+    {
+        [self.todayStatisticsView.leftButton setAllTitle:[NSString stringWithFormat:@"%ld", self.planTodayCount]];
+        [self.todayStatisticsView.centerButton setAllTitle:[NSString stringWithFormat:@"%ld", self.planDoneTodayCount]];
+        float percent = 0;
+        if (self.planTodayCount)
+        {
+            percent = (float)self.planDoneTodayCount*100 /(float)self.planTodayCount;
+        }
+        [self.todayStatisticsView.rightButton setAllTitle:[NSString stringWithFormat:@"%.2f%%", percent]];
+        [self.todayStatisticsView autoLayout];
     }
 }
 
