@@ -461,8 +461,8 @@ NSString *const STRSettingsViewTips1 = @"自动同步";
 NSString *const STRSettingsViewTips2 = @"倒计样式";
 /** 手势解锁 */
 NSString *const STRSettingsViewTips3 = @"手势解锁";
-/** 显示手势 */
-NSString *const STRSettingsViewTips4 = @"显示手势";
+/** 显示轨迹 */
+NSString *const STRSettingsViewTips4 = @"手势轨迹";
 /** 修改手势 */
 NSString *const STRSettingsViewTips5 = @"修改手势";
 /** 首页倒计时样式设置 */

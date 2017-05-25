@@ -458,7 +458,7 @@ UIKIT_EXTERN NSString *const STRSettingsViewTips1;
 UIKIT_EXTERN NSString *const STRSettingsViewTips2;
 /** 手势解锁 */
 UIKIT_EXTERN NSString *const STRSettingsViewTips3;
-/** 显示手势 */
+/** 手势轨迹 */
 UIKIT_EXTERN NSString *const STRSettingsViewTips4;
 /** 修改手势 */
 UIKIT_EXTERN NSString *const STRSettingsViewTips5;
