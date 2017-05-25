@@ -128,6 +128,7 @@
     self.tableView.tableHeaderView = [self createTableHeaderView];
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.showsVerticalScrollIndicator = NO;
+    [self.tableView setEmptyWithText:@"加载失败，下拉列表重试"];
     __weak typeof(self) weakSelf = self;
     MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         weakSelf.isLoadMore = NO;
@@ -187,14 +188,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.themeArray.count)
-    {
-        return 2;
-    }
-    else
-    {
-        return 1;
-    }
+    return 2;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -220,7 +214,7 @@
         }
         else
         {
-            return 44.f;
+            return 0;
         }
     }
 }
@@ -233,14 +227,7 @@
     }
     else
     {
-        if (self.postsArray.count)
-        {
-            return self.postsArray.count;
-        }
-        else
-        {
-            return 2;
-        }
+        return self.postsArray.count;
     }
 }
 
@@ -314,12 +301,7 @@
         }
         else
         {
-            static NSString *noDataCellIdentifier = @"noDataCellIdentifier";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noDataCellIdentifier];
-            if (!cell)
-            {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noDataCellIdentifier];
-            }
+            UITableViewCell *cell = [[UITableViewCell alloc] init];
             return cell;
         }
     }
@@ -612,24 +594,7 @@
         }
         else
         {
-            static NSString *noDataCellIdentifier = @"noDataCellIdentifier";
-            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noDataCellIdentifier];
-            if (!cell)
-            {
-                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noDataCellIdentifier];
-                cell.backgroundColor = [UIColor clearColor];
-                cell.contentView.backgroundColor = [UIColor clearColor];
-                cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                cell.textLabel.text = @"";
-                cell.textLabel.frame = cell.contentView.bounds;
-                cell.textLabel.textAlignment = NSTextAlignmentCenter;
-                cell.textLabel.textColor = [UIColor lightGrayColor];
-                cell.textLabel.font = font_Bold_16;
-            }
-            if (indexPath.row == 1)
-            {
-                cell.textLabel.text = self.isLoadEnd ? STRCommonTip43 : @"";
-            }
+            UITableViewCell *cell = [[UITableViewCell alloc] init];
             return cell;
         }
     }
