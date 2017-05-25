@@ -14,6 +14,7 @@
 #import "SDWebImageDownloader.h"
 #import <BmobSDK/BmobObjectsBatch.h>
 
+static int photoIndex;
 
 @implementation DataCenter
 
@@ -482,6 +483,7 @@
     {
         if (isSuccessful)
         {
+            photoIndex = 0;
             [weakSelf uploadImageInPhoto:[NSMutableArray arrayWithArray:photo.photoArray] obj:newPhoto photo:photo];
         }
         else if (error)
@@ -527,6 +529,7 @@
     obj.ACL = acl;
     [obj updateInBackground];
     
+    photoIndex = 0;
     [self uploadImageInPhoto:[NSMutableArray arrayWithArray:photo.photoArray] obj:obj photo:photo];
 }
 
@@ -535,7 +538,7 @@
     if (photoArray.count)
     {
         NSData *imgData = photoArray[0];
-        NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", (long)(index+1)];
+        NSString *urlName = [NSString stringWithFormat:@"photo%ldURL", (long)(photoIndex+1)];
         if (imgData)
         {
             BmobFile *file = [[BmobFile alloc] initWithFileName:@"imgPhoto.png" withFileData:imgData];
