@@ -111,7 +111,9 @@ NSUInteger const kHoursPerDay = 24;
 
 - (void)refreshView:(NSNotification*)notification
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_time_t delayTime = dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.0/*延迟执行时间*/ * NSEC_PER_SEC));
+    
+    dispatch_after(delayTime, dispatch_get_main_queue(), ^{
         [self loadCustomView];
     });
 }

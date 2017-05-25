@@ -58,10 +58,8 @@ NSUInteger const kSettingsSetTextViewEdgeInset = 10;
     textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     textField.delegate = self;
     textField.inputAccessoryView = [self getInputAccessoryView];
-    if (self.textFieldPlaceholder.length)
-    {
-        textField.placeholder = self.textFieldPlaceholder;
-    }
+    textField.text = self.textFieldDefaultValue;
+    textField.placeholder = self.textFieldPlaceholder;
     
     if (self.setType == SetLife)
     {

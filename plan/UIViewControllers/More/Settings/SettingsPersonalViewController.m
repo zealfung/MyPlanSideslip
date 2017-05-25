@@ -572,6 +572,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
     __weak typeof(self) weakSelf = self;
     SettingsSetTextViewController *controller = [[SettingsSetTextViewController alloc] init];
     controller.title = STRSettingsViewTips18;
+    controller.textFieldDefaultValue = [Config shareInstance].settings.nickname;
     controller.textFieldPlaceholder = STRSettingsViewTips19;
     controller.setType = SetNickName;
     controller.finishedBlock = ^(NSString *text)
@@ -647,7 +648,6 @@ NSString *const kEdgeWhiteSpace = @"  ";
                      [Config shareInstance].settings.gender = selectedValue;
                      [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
                      [weakSelf alertToastMessage:STRCommonTip13];
-                     [weakSelf.navigationController popViewControllerAnimated:YES];
                      [weakSelf.tableView reloadData];
                  }
              }
@@ -665,6 +665,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
     __weak typeof(self) weakSelf = self;
     SettingsSetTextViewController *controller = [[SettingsSetTextViewController alloc] init];
     controller.title = STRSettingsViewTips21;
+    controller.textFieldDefaultValue = [Config shareInstance].settings.signature;
     controller.textFieldPlaceholder = STRSettingsViewTips22;
     controller.setType = SetNickName;
     controller.finishedBlock = ^(NSString *text)
@@ -714,6 +715,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
     __weak typeof(self) weakSelf = self;
     SettingsSetTextViewController *controller = [[SettingsSetTextViewController alloc] init];
     controller.title = STRSettingsViewTips23;
+    controller.textFieldDefaultValue = [Config shareInstance].settings.lifespan;
     controller.textFieldPlaceholder = STRSettingsViewTips24;
     controller.setType = SetLife;
     controller.finishedBlock = ^(NSString *text)
@@ -790,7 +792,6 @@ NSString *const kEdgeWhiteSpace = @"  ";
                      [Config shareInstance].settings.dayOrMonth = selectedValue;
                      [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
                      [weakSelf alertToastMessage:STRCommonTip13];
-                     [weakSelf.navigationController popViewControllerAnimated:YES];
                      [weakSelf.tableView reloadData];
                  }
              }
@@ -830,7 +831,6 @@ NSString *const kEdgeWhiteSpace = @"  ";
                      [Config shareInstance].settings.countdownType = selectedValue;
                      [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
                      [weakSelf alertToastMessage:STRCommonTip13];
-                     [weakSelf.navigationController popViewControllerAnimated:YES];
                      [weakSelf.tableView reloadData];
                  }
              }

@@ -18,12 +18,16 @@ typedef NS_ENUM(NSUInteger, SetType) {
     
 };
 
-typedef void(^kSettingsFinishedBlock)(NSString *text);
 
 @interface SettingsSetTextViewController : FatherViewController
 
-@property (nonatomic, copy) kSettingsFinishedBlock finishedBlock;
-@property (nonatomic, strong) NSString *textFieldPlaceholder;
+/** 回调函数 */
+@property (nonatomic, copy) void(^finishedBlock)(NSString *text);
+/** 默认值 */
+@property (nonatomic, copy) NSString *textFieldDefaultValue;
+/** 灰色提示输入文案 */
+@property (nonatomic, copy) NSString *textFieldPlaceholder;
+/** 设置类型 */
 @property (nonatomic, assign) SetType setType;
 
 @end
