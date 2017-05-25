@@ -26,8 +26,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
 @property (nonatomic, strong) NSArray *arrayGender;//性别
 @property (nonatomic, strong) NSArray *arrayDayOrMonth;//日月模式
 @property (nonatomic, strong) NSArray *arrayCountdown;//倒计样式
-@property (nonatomic, strong) NSArray *arrayUndonePlan;//未完计划
-@property (nonatomic, strong) NSArray *arrayShowGesture;//未完计划
+@property (nonatomic, strong) NSArray *arrayShowGesture;//显示手势
 
 @end
 
@@ -95,14 +94,6 @@ NSString *const kEdgeWhiteSpace = @"  ";
     itemAll.itemValue = @"3";
     self.arrayCountdown = [NSArray arrayWithObjects:itemSecond, itemMinute, itemHour, itemAll, nil];
 
-    SelectItem *itemNotAuto = [[SelectItem alloc] init];
-    itemNotAuto.itemName = STRSettingsViewTips16;
-    itemNotAuto.itemValue = @"0";
-    SelectItem *itemAuto = [[SelectItem alloc] init];
-    itemAuto.itemName = STRSettingsViewTips17;
-    itemAuto.itemValue = @"1";
-    self.arrayUndonePlan = [NSArray arrayWithObjects:itemNotAuto, itemAuto, nil];
-
     SelectItem *itemNotShow = [[SelectItem alloc] init];
     itemNotShow.itemName = @"隐藏";
     itemNotShow.itemValue = @"0";
@@ -141,11 +132,11 @@ NSString *const kEdgeWhiteSpace = @"  ";
         BOOL usePwd = [[Config shareInstance].settings.isUseGestureLock isEqualToString:@"1"];
         if (usePwd)
         {
-            return 6;
+            return 5;
         }
         else
         {
-            return 4;
+            return 3;
         }
     }
     else
@@ -381,20 +372,17 @@ NSString *const kEdgeWhiteSpace = @"  ";
                 {
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.textLabel.text = @"未完计划";
+                    cell.textLabel.text = @"手势解锁";
                     
-                    NSString *autoDelayUndonePlan = [Config shareInstance].settings.autoDelayUndonePlan;
+                    NSString *isUseGestureLock = [Config shareInstance].settings.isUseGestureLock;
                     NSString *showText = @"";
-                    switch ([autoDelayUndonePlan integerValue]) {
-                        case 0:
-                            showText = STRSettingsViewTips16;
-                            break;
-                        case 1:
-                            showText = STRSettingsViewTips17;
-                            break;
-                        default:
-                            showText = STRSettingsViewTips16;
-                            break;
+                    if ([isUseGestureLock intValue] == 1)
+                    {
+                        showText = @"已启用";
+                    }
+                    else
+                    {
+                        showText = @"未启用";
                     }
                     cell.detailTextLabel.text = showText;
                 }
@@ -403,26 +391,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                 {
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.textLabel.text = @"手势解锁";
-                    
-                    NSString *isUseGestureLock = [Config shareInstance].settings.isUseGestureLock;
-                    NSString *showText = @"";
-                    if ([isUseGestureLock intValue] == 1)
-                    {
-                        showText = @"启用";
-                    }
-                    else
-                    {
-                        showText = @"关闭";
-                    }
-                    cell.detailTextLabel.text = showText;
-                }
-                    break;
-                case 4:
-                {
-                    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-                    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.textLabel.text = @"显示手势";
+                    cell.textLabel.text = STRSettingsViewTips4;
                     
                     NSString *isShowGestureTrack = [Config shareInstance].settings.isShowGestureTrack;
                     NSString *showText = @"";
@@ -437,7 +406,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                     cell.detailTextLabel.text = showText;
                 }
                     break;
-                case 5:
+                case 4:
                 {
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -540,22 +509,17 @@ NSString *const kEdgeWhiteSpace = @"  ";
                     [self toSetCountdownViewController];
                 }
                     break;
-                case 2://未完计划
-                {
-                    [self toSetUndonePlanViewController];
-                }
-                    break;
-                case 3://手势解锁
+                case 2://手势解锁
                 {
                     [self toSetUseGestureLockViewController];
                 }
                     break;
-                case 4://显示手势
+                case 3://显示手势
                 {
                     [self toSetShowGestureViewController];
                 }
                     break;
-                case 5://修改手势
+                case 4://修改手势
                 {
                     [self toSetChangeGestureViewController];
                 }
@@ -879,46 +843,6 @@ NSString *const kEdgeWhiteSpace = @"  ";
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)toSetUndonePlanViewController
-{
-    __weak typeof(self) weakSelf = self;
-    SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
-    controller.viewTitle = @"未完计划";
-    controller.arrayData = self.arrayUndonePlan;
-    controller.selectedValue = [Config shareInstance].settings.autoDelayUndonePlan;
-    controller.SelectedDelegate = ^(NSString *selectedValue)
-    {
-        BmobUser *user = [BmobUser currentUser];
-        [weakSelf showHUD];
-        BmobQuery *bquery = [BmobQuery queryWithClassName:@"UserSettings"];
-        [bquery whereKey:@"userObjectId" equalTo:user.objectId];
-        [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
-         {
-             [weakSelf hideHUD];
-             if (!error)
-             {
-                 if (array.count)
-                 {
-                     BmobObject *obj1 = array[0];
-                     [obj1 setObject:selectedValue forKey:@"autoDelayUndonePlan"];
-                     [obj1 updateInBackground];
-                     
-                     [Config shareInstance].settings.autoDelayUndonePlan = selectedValue;
-                     [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
-                     [weakSelf alertToastMessage:STRCommonTip13];
-                     [weakSelf.navigationController popViewControllerAnimated:YES];
-                     [weakSelf.tableView reloadData];
-                 }
-             }
-             else
-             {
-                 [AlertCenter alertToastMessage:@"更新未完计划失败"];
-             }
-         }];
-    };
-    [self.navigationController pushViewController:controller animated:YES];
-}
-
 - (void)toSetUseGestureLockViewController
 {
     __weak typeof(self) weakSelf = self;
@@ -957,7 +881,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
 {
     __weak typeof(self) weakSelf = self;
     SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
-    controller.viewTitle = @"显示手势";
+    controller.viewTitle = STRSettingsViewTips4;
     controller.arrayData = self.arrayShowGesture;
     controller.selectedValue = [Config shareInstance].settings.isShowGestureTrack;
     controller.SelectedDelegate = ^(NSString *selectedValue)
@@ -965,7 +889,6 @@ NSString *const kEdgeWhiteSpace = @"  ";
         [Config shareInstance].settings.isShowGestureTrack = selectedValue;
         [PlanCache storePersonalSettings:[Config shareInstance].settings isNotify:YES];
         [weakSelf alertToastMessage:STRCommonTip13];
-        [weakSelf.navigationController popViewControllerAnimated:YES];
         [weakSelf.tableView reloadData];
     };
     [self.navigationController pushViewController:controller animated:YES];
