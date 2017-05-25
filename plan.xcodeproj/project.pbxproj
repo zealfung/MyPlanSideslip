@@ -203,6 +203,7 @@
 		137C60831BBB6EEA00725662 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 133B07EB1BA133100015E752 /* libicucore.dylib */; };
 		137C60841BBB6F0B00725662 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 133B07EF1BA133480015E752 /* libstdc++.dylib */; };
 		137C60851BBB6F1300725662 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 133B07F11BA133590015E752 /* JavaScriptCore.framework */; };
+		137C74CA1ED6BD0B008CC181 /* PopupNewAppVersionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 137C74C91ED6BD0B008CC181 /* PopupNewAppVersionView.m */; };
 		138038ED1C53C17300E98C5F /* Icon_Task_Tomato@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 138038EC1C53C17300E98C5F /* Icon_Task_Tomato@2x.png */; };
 		138038EF1C53C67900E98C5F /* Icon_Tomato@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 138038EE1C53C67900E98C5F /* Icon_Tomato@2x.png */; };
 		138038F31C55FA7700E98C5F /* TaskDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 138038F11C55FA7700E98C5F /* TaskDetailViewController.m */; };
@@ -583,6 +584,8 @@
 		137701111B9683E3008C83FD /* CommonFunction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonFunction.h; sourceTree = "<group>"; };
 		137701121B9683E3008C83FD /* CommonFunction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonFunction.m; sourceTree = "<group>"; };
 		137C60911BBFD43200725662 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
+		137C74C81ED6BD0B008CC181 /* PopupNewAppVersionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupNewAppVersionView.h; sourceTree = "<group>"; };
+		137C74C91ED6BD0B008CC181 /* PopupNewAppVersionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupNewAppVersionView.m; sourceTree = "<group>"; };
 		138038EC1C53C17300E98C5F /* Icon_Task_Tomato@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Task_Tomato@2x.png"; sourceTree = "<group>"; };
 		138038EE1C53C67900E98C5F /* Icon_Tomato@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon_Tomato@2x.png"; sourceTree = "<group>"; };
 		138038F01C55FA7700E98C5F /* TaskDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskDetailViewController.h; sourceTree = "<group>"; };
@@ -830,6 +833,8 @@
 				131D6AC31C007BF3009FDD72 /* ImageScrollView.m */,
 				131912581EADAC09005AE10C /* MPTextView.h */,
 				131912591EADAC09005AE10C /* MPTextView.m */,
+				137C74C81ED6BD0B008CC181 /* PopupNewAppVersionView.h */,
+				137C74C91ED6BD0B008CC181 /* PopupNewAppVersionView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1914,6 +1919,7 @@
 				137700E11B95335E008C83FD /* UIImage+Util.m in Sources */,
 				13D1AD901C41FAC2007734F6 /* SDBrowserImageView.m in Sources */,
 				135B21E71B913EAF005CE84A /* ModelBase.m in Sources */,
+				137C74CA1ED6BD0B008CC181 /* PopupNewAppVersionView.m in Sources */,
 				13D1AD781C3F411F007734F6 /* PlaceholderTextView.m in Sources */,
 				133B083D1BA439560015E752 /* HitView.m in Sources */,
 				137470C81C0AE75900B7822A /* Task.m in Sources */,

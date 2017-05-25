@@ -106,6 +106,9 @@
         }
     }
     
+    //检查新版
+    [DataCenter checkNewVsrion];
+    
     if ([LogIn isLogin])
     {
         //签到

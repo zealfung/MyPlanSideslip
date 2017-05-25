@@ -547,3 +547,5 @@ UIKIT_EXTERN NSString *const STRFiveDayFlag1;
 UIKIT_EXTERN NSString *const STRFiveDayFlag2;
 /** DecodeSignal */
 UIKIT_EXTERN NSString *const STRDecodeSignal;
+/** CheckNewVersion */
+UIKIT_EXTERN NSString *const STRCheckNewVersion;

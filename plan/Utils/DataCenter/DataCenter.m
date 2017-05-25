@@ -12,6 +12,7 @@
 #import <BmobSDK/BmobACL.h>
 #import <BmobSDK/BmobFile.h>
 #import "SDWebImageDownloader.h"
+#import "PopupNewAppVersionView.h"
 #import <BmobSDK/BmobObjectsBatch.h>
 
 static int photoIndex;
@@ -136,6 +137,38 @@ static int photoIndex;
             NSLog(@"更新本地设置到服务器遇到未知错误");
         }
     }];
+}
+
++ (void)checkNewVsrion
+{
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"CheckUpdate"];
+    [bquery whereKey:@"platform" equalTo:@"iOS"];
+    [bquery whereKey:@"isDeleted" equalTo:@"0"];
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+     {
+         if (array.count)
+         {
+             BmobObject *obj = array[0];
+             
+             NSString *newVersion = [obj objectForKey:@"newVersion"];
+             NSString *isForced = [obj objectForKey:@"isForced"];
+             NSString *availableVersion = [obj objectForKey:@"availableVersion"];
+             NSString *description = [obj objectForKey:@"description"];
+             NSString *appVersion = [CommonFunction getAppVersion];
+             
+             if ([availableVersion containsString:@"ALL"]
+                 || [availableVersion containsString:appVersion])
+             {
+                 NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:@"yyyy-MM-dd"];
+                 NSString *showDate = [UserDefaults objectForKey:STRCheckNewVersion];
+                 if (![today isEqualToString:showDate])
+                 {
+                     PopupNewAppVersionView *newVersionView = [PopupNewAppVersionView shareInstance:newVersion whatNew:description isForce:[isForced isEqualToString:@"1"]];
+                     [newVersionView show];
+                 }
+             }
+         }
+     }];
 }
 
 + (void)updateVersionToServerForSettings

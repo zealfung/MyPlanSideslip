@@ -16,6 +16,9 @@
 
 + (void)getMessagesFromServer;
 
+/** 检查新版本 */
++ (void)checkNewVsrion;
+
 /** 更新版本号信息到服务器 */
 + (void)updateVersionToServerForSettings;
 
