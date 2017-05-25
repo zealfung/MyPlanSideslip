@@ -779,6 +779,14 @@ static int photoIndex;
     {
         for (BmobObject *obj in array)
         {
+            NSString *appVersion1 = [[obj objectForKey:@"appVserion"] stringValue];
+            NSString *appVersion2 = [CommonFunction getAppVersion];
+            if ([appVersion1 isEqualToString:appVersion2])
+            {
+                //过滤同级版本的版本升级提醒
+                continue;
+            }
+            
             Messages *message = [[Messages alloc] init];
             message.messageId = obj.objectId;
             message.title = [obj objectForKey:@"title"];
