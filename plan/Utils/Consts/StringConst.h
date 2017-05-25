@@ -18,9 +18,9 @@ UIKIT_EXTERN NSString *const STRFeedbackEmail;
 /** http://www.fengziyi.com */
 UIKIT_EXTERN NSString *const STRAppWebsite1;
 
-/** 请到“设置”-“隐私”-“照片”中找到”我有计划“，将按钮打开，允许访问相册 */
+/** 请到“设置”-“隐私”-“照片”中找到”计划“，将按钮打开，允许访问相册 */
 UIKIT_EXTERN NSString *const STRCommonTip1;
-/** 请到“设置”-“隐私”-“相机”中找到”我有计划“，将按钮打开，允许使用摄像头 */
+/** 请到“设置”-“隐私”-“相机”中找到”计划“，将按钮打开，允许使用摄像头 */
 UIKIT_EXTERN NSString *const STRCommonTip2;
 /** 至少写点什么吧 */
 UIKIT_EXTERN NSString *const STRCommonTip3;
@@ -341,7 +341,7 @@ UIKIT_EXTERN NSString *const STRViewTips66;
 UIKIT_EXTERN NSString *const STRViewTips67;
 /** 保存或者发送邮件失败 */
 UIKIT_EXTERN NSString *const STRViewTips68;
-/** 我有计划 For iOS */
+/** 计划 For iOS */
 UIKIT_EXTERN NSString *const STRViewTips69;
 /** 账号 */
 UIKIT_EXTERN NSString *const STRViewTips70;
@@ -423,9 +423,9 @@ UIKIT_EXTERN NSString *const STRViewTips107;
 UIKIT_EXTERN NSString *const STRViewTips108;
 /** 取消分享 */
 UIKIT_EXTERN NSString *const STRViewTips109;
-/** 来自我有计划iOS版 */
+/** 来自计划iOS版 */
 UIKIT_EXTERN NSString *const STRViewTips110;
-/** 做计划管时间的好APP：我有计划 */
+/** 做计划管时间的好APP：计划 */
 UIKIT_EXTERN NSString *const STRViewTips111;
 /** 暂无消息 */
 UIKIT_EXTERN NSString *const STRViewTips112;

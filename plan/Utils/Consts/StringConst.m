@@ -18,10 +18,10 @@ NSString *const STRFeedbackEmail = @"fengziyi@outlook.com";
 /** http://www.fengziyi.com */
 NSString *const STRAppWebsite1 = @"http://www.fengziyi.com";
 
-/** 请到“设置”-“隐私”-“照片”中找到”我有计划“，将按钮打开，允许访问相册 */
-NSString *const STRCommonTip1 = @"请到“设置”-“隐私”-“照片”中找到”我有计划“，将按钮打开，允许访问相册";
-/** 请到“设置”-“隐私”-“相机”中找到”我有计划“，将按钮打开，允许使用摄像头 */
-NSString *const STRCommonTip2 = @"请到“设置”-“隐私”-“相机”中找到”我有计划“，将按钮打开，允许使用摄像头";
+/** 请到“设置”-“隐私”-“照片”中找到”计划“，将按钮打开，允许访问相册 */
+NSString *const STRCommonTip1 = @"请到“设置”-“隐私”-“照片”中找到”计划“，将按钮打开，允许访问相册";
+/** 请到“设置”-“隐私”-“相机”中找到”计划“，将按钮打开，允许使用摄像头 */
+NSString *const STRCommonTip2 = @"请到“设置”-“隐私”-“相机”中找到”计划“，将按钮打开，允许使用摄像头";
 /** 至少写点什么吧 */
 NSString *const STRCommonTip3 = @"至少写点什么吧";
 /** 已保存到手机相册 */
@@ -344,8 +344,8 @@ NSString *const STRViewTips66 = @"保存邮件成功";
 NSString *const STRViewTips67 = @"发送邮件成功";
 /** 保存或者发送邮件失败 */
 NSString *const STRViewTips68 = @"保存或者发送邮件失败";
-/** 我有计划 For iOS */
-NSString *const STRViewTips69 = @"我有计划 For iOS";
+/** 计划 For iOS */
+NSString *const STRViewTips69 = @"计划 For iOS";
 /** 账号 */
 NSString *const STRViewTips70 = @"账号";
 /** 头像 */
@@ -426,10 +426,10 @@ NSString *const STRViewTips107 = @"分享成功";
 NSString *const STRViewTips108 = @"分享失败";
 /** 取消分享 */
 NSString *const STRViewTips109 = @"取消分享";
-/** 来自我有计划iOS版 */
-NSString *const STRViewTips110 = @"来自我有计划iOS版";
-/** 做计划管时间的好APP：我有计划 */
-NSString *const STRViewTips111 = @"做计划管时间的好APP：我有计划";
+/** 来自计划iOS版 */
+NSString *const STRViewTips110 = @"来自计划iOS版";
+/** 做计划管时间的好APP：计划 */
+NSString *const STRViewTips111 = @"做计划管时间的好APP：计划";
 /** 暂无消息 */
 NSString *const STRViewTips112 = @"暂无消息";
 /** 已读信息清理完毕 */
