@@ -198,16 +198,41 @@ NSUInteger const kPhotoDeleteTag = 20151011;
     {
         if (buttonIndex == 1)
         {
-            BOOL result = [PlanCache deletePhoto:self.photo];
-            if (result)
-            {
-                [self alertToastMessage:STRCommonTip16];
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-            else
-            {
-                [self alertButtonMessage:STRCommonTip17];
-            }
+            [self showHUD];
+            __weak typeof(self) weakSelf = self;
+            BmobQuery *bquery = [BmobQuery queryWithClassName:@"Photo"];
+            [bquery getObjectInBackgroundWithId:self.photo.photoid block:^(BmobObject *object,NSError *error)
+             {
+                 if (error)
+                 {
+                     [weakSelf hideHUD];
+                 }
+                 else
+                 {
+                     if (object)
+                     {
+                         [object setObject:@"1" forKey:@"isDeleted"];
+                         [object updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
+                          {
+                              [weakSelf hideHUD];
+                              if (isSuccessful)
+                              {
+                                  [NotificationCenter postNotificationName:NTFPhotoSave object:nil];
+                                  [weakSelf alertToastMessage:STRCommonTip16];
+                                  [weakSelf.navigationController popViewControllerAnimated:YES];
+                              }
+                              else
+                              {
+                                  [weakSelf alertButtonMessage:STRCommonTip17];
+                              }
+                          }];
+                     }
+                     else
+                     {
+                         [weakSelf hideHUD];
+                     }
+                 }
+             }];
         }
     }
 }
