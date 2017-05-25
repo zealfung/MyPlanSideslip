@@ -47,7 +47,10 @@
 {
     [super viewDidAppear:animated];
     
-    [self getCount];
+    if ([LogIn isLogin])
+    {
+        [self getCount];
+    }
 }
 
 - (void)reloadTableView
