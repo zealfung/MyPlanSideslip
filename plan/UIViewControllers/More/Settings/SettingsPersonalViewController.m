@@ -1079,6 +1079,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
 - (void)exitAction
 {
     [BmobUser logout];
+    [Config shareInstance].settings = [PlanCache getPersonalSettings];
     [NotificationCenter postNotificationName:NTFLogOut object:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }

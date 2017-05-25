@@ -35,7 +35,14 @@
     self.tableView.backgroundColor = color_eeeeee;
     [NotificationCenter addObserver:self selector:@selector(reloadTableView) name:NTFSettingsSave object:nil];
     
-    self.titleArray = [NSMutableArray arrayWithObjects:@"我的帖子", @"未完计划", @"我的任务", nil];
+    if ([LogIn isLogin])
+    {
+        self.titleArray = [NSMutableArray arrayWithObjects:@"我的帖子", @"未完计划", @"我的任务", nil];
+    }
+    else
+    {
+        self.titleArray = [NSMutableArray array];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -182,8 +189,11 @@
     {
         case 0:
         {
-            SettingsPersonalViewController *controller = [[SettingsPersonalViewController alloc] init];
-            [self.navigationController pushViewController:controller animated:YES];
+            if ([LogIn isLogin])
+            {
+                SettingsPersonalViewController *controller = [[SettingsPersonalViewController alloc] init];
+                [self.navigationController pushViewController:controller animated:YES];
+            }
         }
             break;
         case 1:

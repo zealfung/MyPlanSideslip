@@ -35,6 +35,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = [[UIView alloc] init];
     
+    [NotificationCenter addObserver:self selector:@selector(reload) name:NTFLogOut object:nil];
     [NotificationCenter addObserver:self selector:@selector(reload) name:NTFSettingsSave object:nil];
     [NotificationCenter addObserver:self selector:@selector(reload) name:NTFMessagesSave object:nil];
     
@@ -208,10 +209,13 @@
 
 - (void)pushLoginPage
 {
-    UINavigationController *navController = (UINavigationController *)((UITabBarController *)self.sideMenuViewController.contentViewController).selectedViewController;
-    SettingsPersonalViewController *controller = [[SettingsPersonalViewController alloc] init];
-    controller.hidesBottomBarWhenPushed = YES;
-    [navController pushViewController:controller animated:YES];
+    if ([LogIn isLogin])
+    {
+        UINavigationController *navController = (UINavigationController *)((UITabBarController *)self.sideMenuViewController.contentViewController).selectedViewController;
+        SettingsPersonalViewController *controller = [[SettingsPersonalViewController alloc] init];
+        controller.hidesBottomBarWhenPushed = YES;
+        [navController pushViewController:controller animated:YES];
+    }
     
     [self.sideMenuViewController hideMenuViewController];
 }

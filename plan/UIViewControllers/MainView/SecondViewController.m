@@ -302,8 +302,10 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 - (void)getPlanDay
 {
-    if (self.isLoadingPlanDay)
+    if (self.isLoadingPlanDay || ![LogIn isLogin])
     {
+        [self.tableViewPlan.mj_header endRefreshing];
+        [self.tableViewPlan.mj_footer endRefreshing];
         return;
     }
     self.isLoadingPlanDay = YES;
@@ -430,8 +432,10 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 - (void)getPlanFuture
 {
-    if (self.isLoadingPlanFuture)
+    if (self.isLoadingPlanFuture || ![LogIn isLogin])
     {
+        [self.tableViewPlan.mj_header endRefreshing];
+        [self.tableViewPlan.mj_footer endRefreshing];
         return;
     }
     self.isLoadingPlanFuture = YES;
@@ -564,6 +568,10 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 - (void)searchPlan
 {
+    if (![LogIn isLogin])
+    {
+        return;
+    }
     [self showHUD];
     BmobUser *user = [BmobUser currentUser];
     __weak typeof(self) weakSelf = self;

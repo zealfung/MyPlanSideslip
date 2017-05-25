@@ -73,8 +73,11 @@
 
 - (void)reloadPhotoData
 {
-    if (self.isLoadingPhoto)
+    
+    if (self.isLoadingPhoto || ![LogIn isLogin])
     {
+        [self.tableView.mj_header endRefreshing];
+        [self.tableView.mj_footer endRefreshing];
         return;
     }
     self.isLoadingPhoto = YES;
