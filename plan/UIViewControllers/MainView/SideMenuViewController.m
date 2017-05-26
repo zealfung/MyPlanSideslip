@@ -35,6 +35,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.tableFooterView = [[UIView alloc] init];
     
+    [NotificationCenter addObserver:self selector:@selector(reload) name:NTFLogIn object:nil];
     [NotificationCenter addObserver:self selector:@selector(reload) name:NTFLogOut object:nil];
     [NotificationCenter addObserver:self selector:@selector(reload) name:NTFSettingsSave object:nil];
     [NotificationCenter addObserver:self selector:@selector(reload) name:NTFMessagesSave object:nil];
@@ -222,6 +223,7 @@
 
 - (void)reload
 {
+    [Config shareInstance].settings = [PlanCache getPersonalSettings];
     dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
     });
