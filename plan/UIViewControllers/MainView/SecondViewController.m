@@ -174,13 +174,29 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     self.tableViewPlan.tableFooterView = footer;
     self.tableViewPlan.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableViewPlan.mj_header = [MJRefreshHeader headerWithRefreshingBlock:^{
-        weakSelf.arrayPlanDay = [NSMutableArray array];
-        weakSelf.arrayPlanFuture = [NSMutableArray array];
-        weakSelf.searchResultArray = [NSMutableArray array];
-        [weakSelf getPlanData];
+        if (self.searchKeyword.length == 0)
+        {
+            weakSelf.arrayPlanDay = [NSMutableArray array];
+            weakSelf.arrayPlanFuture = [NSMutableArray array];
+            weakSelf.searchResultArray = [NSMutableArray array];
+            [weakSelf getPlanData];
+        }
+        else
+        {
+            [weakSelf.tableViewPlan.mj_header endRefreshing];
+            [weakSelf.tableViewPlan.mj_footer endRefreshing];
+        }
     }];
     self.tableViewPlan.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
-        [weakSelf getPlanData];
+        if (self.searchKeyword.length == 0)
+        {
+            [weakSelf getPlanData];
+        }
+        else
+        {
+            [weakSelf.tableViewPlan.mj_header endRefreshing];
+            [weakSelf.tableViewPlan.mj_footer endRefreshing];
+        }
     }];
     [self.tableViewPlan setDefaultEmpty];
     [self.view addSubview:self.tableViewPlan];
