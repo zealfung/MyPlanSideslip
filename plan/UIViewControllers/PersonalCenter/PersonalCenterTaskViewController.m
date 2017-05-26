@@ -32,7 +32,6 @@
     [self initTableView];
     
     self.taskArray = [NSMutableArray array];
-    [NotificationCenter addObserver:self selector:@selector(toTask:) name:NTFLocalPush object:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -121,42 +120,6 @@
          }
          [weakSelf.tableView reloadData];
      }];
-}
-
-- (void)toTask:(NSNotification*)notification
-{
-    NSDictionary *dict = notification.userInfo;
-    NSInteger type = [[dict objectForKey:@"type"] integerValue];
-    if (type != 1)
-    {//非任务提醒
-        return;
-    }
-    Task *task = [[Task alloc] init];
-    task.account = [dict objectForKey:@"account"];
-    BmobUser *user = [BmobUser currentUser];
-    if ((user && [task.account isEqualToString:user.objectId])
-        || (!user && [task.account isEqualToString:@""]))
-    {
-        task.taskId = [dict objectForKey:@"tag"];
-        task.content = [dict objectForKey:@"content"];
-        task.totalCount = [dict objectForKey:@"totalCount"];
-        task.completionDate = [dict objectForKey:@"completionDate"];
-        task.createTime = [dict objectForKey:@"createTime"];
-        task.updateTime = [dict objectForKey:@"updateTime"];
-        task.isNotify = [dict objectForKey:@"isNotify"];
-        task.notifyTime = [dict objectForKey:@"notifyTime"];
-        task.isTomato = [dict objectForKey:@"isTomato"];
-        task.tomatoMinute = [dict objectForKey:@"tomatoMinute"];
-        task.isRepeat = [dict objectForKey:@"isRepeat"];
-        task.repeatType = [dict objectForKey:@"repeatType"];
-        task.taskOrder = [dict objectForKey:@"taskOrder"];
-        task.isDeleted = @"0";
-        
-        TaskDetailNewViewController *controller = [[TaskDetailNewViewController alloc]init];
-        controller.task = task;
-        controller.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:controller animated:YES];
-    }
 }
 
 #pragma mark - Table view data source
