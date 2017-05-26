@@ -195,16 +195,41 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
     {
         if (buttonIndex == 1)
         {
-            BOOL result = [PlanCache deleteTask:self.task];
-            if (result)
-            {
-                [self alertToastMessage:STRCommonTip16];
-                [self.navigationController popViewControllerAnimated:YES];
-            }
-            else
-            {
-                [self alertButtonMessage:STRCommonTip17];
-            }
+            [self showHUD];
+            __weak typeof(self) weakSelf = self;
+            BmobQuery *bquery = [BmobQuery queryWithClassName:@"Task"];
+            [bquery getObjectInBackgroundWithId:self.task.taskId block:^(BmobObject *object,NSError *error)
+             {
+                 if (error)
+                 {
+                     [weakSelf hideHUD];
+                 }
+                 else
+                 {
+                     if (object)
+                     {
+                         [object setObject:@"1" forKey:@"isDeleted"];
+                         [object updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
+                          {
+                              [weakSelf hideHUD];
+                              if (isSuccessful)
+                              {
+                                  [NotificationCenter postNotificationName:NTFTaskSave object:nil];
+                                  [weakSelf alertToastMessage:STRCommonTip16];
+                                  [weakSelf.navigationController popViewControllerAnimated:YES];
+                              }
+                              else
+                              {
+                                  [weakSelf alertButtonMessage:STRCommonTip17];
+                              }
+                          }];
+                     }
+                     else
+                     {
+                         [weakSelf hideHUD];
+                     }
+                 }
+             }];
         }
     }
 }
