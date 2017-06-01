@@ -9,7 +9,6 @@
 #ifndef plan_ImageMacro_h
 #define plan_ImageMacro_h
 
-#define png_AvatarBg @"Bg_Avatar"
 #define png_AvatarDefault @"ImgDefault_Avatar_Blue"
 #define png_AvatarDefault1 @"ImgDefault_Avatar_Gray"
 #define png_ImageDefault @"ImgDefault_Square"
@@ -21,13 +20,11 @@
 #define png_Btn_Save @"Btn_Save"
 #define png_Btn_Delete @"Btn_Delete"
 #define png_Btn_Delete66 @"Btn_Delete66"
-#define png_Btn_Settings @"Btn_Settings"
 #define png_Btn_AddPhoto @"Btn_AddPhoto"
 #define png_Btn_LeftMenu @"Btn_LeftMenu"
 #define png_Btn_Share @"Btn_Share"
 #define png_Btn_Share66 @"Btn_Share66"
 #define png_Btn_Share_circle @"Btn_Share_circle"
-#define png_Btn_Sync @"Btn_Sync"
 #define png_Btn_Clean @"Btn_Clean"
 #define png_Btn_More @"Btn_More"
 #define png_Btn_Refresh @"Btn_Refresh"
@@ -51,7 +48,6 @@
 #define png_Btn_Photo_Delete @"Btn_Photo_Delete"
 
 #define png_Icon_Arrow_Left @"Icon_Arrow_Left"
-#define png_Icon_Arrow_Right @"Icon_Arrow_Right"
 #define png_Icon_Logo_512 @"Icon_Logo_512"
 #define png_Icon_Gender_F_Normal @"Icon_Gender_F_Normal"
 #define png_Icon_Gender_F_Selected @"Icon_Gender_F_Selected"

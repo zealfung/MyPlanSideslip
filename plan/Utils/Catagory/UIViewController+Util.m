@@ -99,7 +99,7 @@ NSInteger const kIOS7SmartRightMarginWidth = -14;
                 frame.size.width = 60;
             }
             button.frame = frame;
-            [button setImage:[UIImage imageNamed:@"Btn_Arrow_Left2"] forState:UIControlStateNormal];
+            [button setImage:[UIImage imageNamed:@"Btn_Arrow_Left"] forState:UIControlStateNormal];
             [button addTarget:self action:@selector(backAction:) forControlEvents:UIControlEventTouchUpInside];
             
             UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithCustomView:button];
