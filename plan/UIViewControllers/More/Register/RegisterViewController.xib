@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,13 +21,14 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lYS-ys-J0L">
+                    <rect key="frame" x="12" y="160" width="351" height="50"/>
                     <color key="backgroundColor" red="0.043137254901960784" green="0.63921568627450975" blue="0.16470588235294117" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="gde-Od-KSg"/>
+                        <constraint firstAttribute="height" constant="50" id="gde-Od-KSg"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <state key="normal">
@@ -35,20 +39,23 @@
                     </connections>
                 </button>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="ahz-q4-2o6">
+                    <rect key="frame" x="12" y="20" width="351" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="P6L-oC-wUS"/>
+                        <constraint firstAttribute="height" constant="50" id="P6L-oC-wUS"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                     <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="done"/>
                 </textField>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="3ql-S5-0co">
+                    <rect key="frame" x="12" y="90" width="351" height="50"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="atl-fv-gaH"/>
+                        <constraint firstAttribute="height" constant="50" id="atl-fv-gaH"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                     <textInputTraits key="textInputTraits" keyboardType="emailAddress" returnKeyType="done" enablesReturnKeyAutomatically="YES" secureTextEntry="YES"/>
                 </textField>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3c0-b5-zHk">
+                    <rect key="frame" x="283" y="230" width="80" height="30"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="30" id="31O-MU-rnI"/>
                         <constraint firstAttribute="width" constant="80" id="NtD-uJ-RBh"/>
@@ -62,6 +69,7 @@
                     </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kyi-NL-6gm">
+                    <rect key="frame" x="12" y="270" width="351" height="60"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="60" id="HfZ-jj-Hku"/>
                     </constraints>
@@ -74,8 +82,8 @@
             <constraints>
                 <constraint firstItem="ahz-q4-2o6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="39D-9T-pvc"/>
                 <constraint firstAttribute="trailing" secondItem="lYS-ys-J0L" secondAttribute="trailing" constant="12" id="7Xh-e7-8Z6"/>
-                <constraint firstItem="ahz-q4-2o6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="7te-Wa-9zo"/>
-                <constraint firstItem="3ql-S5-0co" firstAttribute="top" secondItem="ahz-q4-2o6" secondAttribute="bottom" constant="10" id="AKF-Iu-3xU"/>
+                <constraint firstItem="ahz-q4-2o6" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="7te-Wa-9zo"/>
+                <constraint firstItem="3ql-S5-0co" firstAttribute="top" secondItem="ahz-q4-2o6" secondAttribute="bottom" constant="20" id="AKF-Iu-3xU"/>
                 <constraint firstAttribute="trailing" secondItem="Kyi-NL-6gm" secondAttribute="trailing" constant="12" id="BY6-lE-2Lk"/>
                 <constraint firstItem="lYS-ys-J0L" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="12" id="Jwc-xm-WEm"/>
                 <constraint firstItem="Kyi-NL-6gm" firstAttribute="top" secondItem="3c0-b5-zHk" secondAttribute="bottom" constant="10" id="Lau-6x-1um"/>
