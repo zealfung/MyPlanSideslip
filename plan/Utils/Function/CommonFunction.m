@@ -291,16 +291,6 @@ static NSString * const kKeyMinutes = @"minutes";
     }
 }
 
-//根据性别获取icon图标
-+ (UIImage *)getGenderIcon {
-    NSString *gender = [Config shareInstance].settings.gender;
-    if (gender && [gender isEqualToString:@"0"]) {
-        return [UIImage imageNamed:png_Icon_Gender_F_Selected];
-    } else {
-        return [UIImage imageNamed:png_Icon_Gender_M_Selected];
-    }
-}
-
 //用户等级icon图标
 + (UIImage *)getUserLevelIcon:(NSString *)level {
     NSInteger levelCode = [level integerValue];

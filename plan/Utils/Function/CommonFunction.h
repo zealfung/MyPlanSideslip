@@ -72,9 +72,6 @@
 /** 根据性别获取颜色 */
 + (UIColor *)getGenderColor;
 
-/** 根据性别获取icon图标 */
-+ (UIImage *)getGenderIcon;
-
 /** 用户等级icon图标 */
 + (UIImage *)getUserLevelIcon:(NSString *)level;
 
