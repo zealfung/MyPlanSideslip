@@ -14,6 +14,7 @@
 
 @property (strong, nonatomic) Plan *plan;
 @property (strong, nonatomic) NSArray *arrayPlanLevel;
+@property (strong, nonatomic) NSArray *arrayRepeat;
 @property (strong, nonatomic) UIDatePicker *datePicker;
 @property (assign, nonatomic) BOOL isSelectBeginDate;
 
@@ -45,6 +46,7 @@
 {
     self.plan = [Plan new];
     self.plan.planLevel = @"0";
+    self.plan.isRepeat = @"0";
     self.plan.beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     self.tableView.tableFooterView = [[UIView alloc] init];
 }
@@ -61,6 +63,14 @@
     itemLevel2.itemName = @"很紧急";
     itemLevel2.itemValue = @"2";
     self.arrayPlanLevel = [NSArray arrayWithObjects:itemLevel0, itemLevel1, itemLevel2, nil];
+    
+    SelectItem *itemRepeat0 = [[SelectItem alloc] init];
+    itemRepeat0.itemName = @"否";
+    itemRepeat0.itemValue = @"0";
+    SelectItem *itemRepeat1 = [[SelectItem alloc] init];
+    itemRepeat1.itemName = @"是";
+    itemRepeat1.itemValue = @"1";
+    self.arrayRepeat = [NSArray arrayWithObjects:itemRepeat0, itemRepeat1, nil];
 }
 
 - (void)showDatePicker
@@ -168,7 +178,7 @@
                           @"isCompleted":self.plan.iscompleted,
                           @"isNotify":self.plan.isnotify,
                           @"isDeleted":self.plan.isdeleted,
-                          @"isRepeat":@"0",
+                          @"isRepeat":self.plan.isRepeat,
                           @"beginDate":self.plan.beginDate};
     [newPlan saveAllWithDictionary:dic];
     BmobACL *acl = [BmobACL ACL];
@@ -207,12 +217,12 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 4;
+    return 5;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 3)
+    if (indexPath.row == 4)
     {
         return 300.f;
     }
@@ -237,7 +247,7 @@
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         cell.textLabel.text = @"";
         cell.textLabel.frame = cell.contentView.bounds;
-        cell.textLabel.textColor = color_333333;
+        cell.textLabel.textColor = color_666666;
         cell.textLabel.font = font_Normal_16;
     }
     switch (indexPath.row)
@@ -271,6 +281,13 @@
         }
             break;
         case 3:
+        {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.text = @"每天重复";
+            cell.detailTextLabel.text = [CommonFunction getRepeatStringForShow:self.plan.isRepeat];
+        }
+            break;
+        case 4:
         {
             __weak typeof(self) weakSelf = self;
             PlanAddCell *cell1 = [PlanAddCell cellView];
@@ -317,6 +334,8 @@
             break;
         case 2:
             [self toSetPlanLevel];
+        case 3:
+            [self toSetPlanRepeat];
             break;
         default:
             break;
@@ -333,6 +352,21 @@
     controller.SelectedDelegate = ^(NSString *selectedValue)
     {
         weakSelf.plan.planLevel = selectedValue;
+        [weakSelf.tableView reloadData];
+    };
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)toSetPlanRepeat
+{
+    __weak typeof(self) weakSelf = self;
+    SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
+    controller.viewTitle = @"每天重复";
+    controller.arrayData = self.arrayRepeat;
+    controller.selectedValue = self.plan.isRepeat;
+    controller.SelectedDelegate = ^(NSString *selectedValue)
+    {
+        weakSelf.plan.isRepeat = selectedValue;
         [weakSelf.tableView reloadData];
     };
     [self.navigationController pushViewController:controller animated:YES];

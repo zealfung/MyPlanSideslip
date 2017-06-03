@@ -19,6 +19,7 @@ NSUInteger const kBounceSpace = 20;
 @property (nonatomic, strong) UILabel *labelBeginDate;
 @property (nonatomic, strong) UILabel *labelDateLeft;
 @property (nonatomic, strong) UIImageView *imgViewAlarm;
+@property (nonatomic, strong) UIImageView *imgViewRepeat;
 @property (nonatomic, assign) CGFloat startLocation;
 @property (nonatomic, assign) BOOL hideMenuView;
 
@@ -83,6 +84,11 @@ NSUInteger const kBounceSpace = 20;
     self.imgViewAlarm.image = [UIImage imageNamed:png_Icon_Alarm];
     self.imgViewAlarm.hidden = YES;
     [self.labelContent addSubview:self.imgViewAlarm];
+    
+    self.imgViewRepeat = [[UIImageView alloc] initWithFrame:CGRectMake(WIDTH_FULL_SCREEN - kEdgeInset * 2 - kPlanCellHeight / 3 * 2, kPlanCellHeight / 6, kPlanCellHeight / 3, kPlanCellHeight / 3)];
+    self.imgViewRepeat.image = [UIImage imageNamed:png_Icon_EverydayNotify];
+    self.imgViewRepeat.hidden = YES;
+    [self.labelContent addSubview:self.imgViewRepeat];
     
     UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 60, 15)];
     labelDate.textColor = color_666666;
@@ -307,10 +313,22 @@ NSUInteger const kBounceSpace = 20;
     if ([plan.isnotify isEqualToString:@"1"])
     {
         self.imgViewAlarm.hidden = NO;
+        self.imgViewRepeat.frame = CGRectMake(WIDTH_FULL_SCREEN - kEdgeInset * 2 - kPlanCellHeight / 3 * 2, kPlanCellHeight / 6, kPlanCellHeight / 3, kPlanCellHeight / 3);
     }
     else
     {
         self.imgViewAlarm.hidden = YES;
+        CGRect frame = self.imgViewAlarm.frame;
+        self.imgViewRepeat.frame = frame;
+    }
+    
+    if ([plan.isRepeat isEqualToString:@"1"])
+    {
+        self.imgViewRepeat.hidden = NO;
+    }
+    else
+    {
+        self.imgViewRepeat.hidden = YES;
     }
 }
 

@@ -281,6 +281,12 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                  
                  if ([plan.isnotify isEqualToString:@"1"])
                  {
+                     if ([plan.isRepeat isEqualToString:@"1"])
+                     {
+                         //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
+                         plan.notifytime = [CommonFunction updateNotifyTime:plan.notifytime];
+                     }
+                     
                      [CommonFunction updatePlanNotification:plan];
                  }
                  else
@@ -796,9 +802,29 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                         Plan *plan = planArray[indexPath.row];
                         cell.plan = plan;
                         cell.isDone = plan.iscompleted;
-                        cell.moveContentView.backgroundColor = [UIColor whiteColor];
-                        cell.backgroundColor = [UIColor whiteColor];
                         cell.delegate = self;
+                        if (plan.completetime.length)
+                        {
+                            NSDate *today = [NSDate date];
+                            NSString *todayString = [CommonFunction NSDateToNSString:today formatter:STRDateFormatterType4];
+                            NSDate *completeDate = [CommonFunction NSStringDateToNSDate:plan.completetime formatter:STRDateFormatterType1];
+                            NSString *completeDateString = [CommonFunction NSDateToNSString:completeDate formatter:STRDateFormatterType4];
+                            if ([todayString isEqualToString:completeDateString])
+                            {
+                                cell.moveContentView.backgroundColor = color_Green_Mint;
+                                cell.backgroundColor = color_Green_Mint;
+                            }
+                            else
+                            {
+                                cell.moveContentView.backgroundColor = [UIColor whiteColor];
+                                cell.backgroundColor = [UIColor whiteColor];
+                            }
+                        }
+                        else
+                        {
+                            cell.moveContentView.backgroundColor = [UIColor whiteColor];
+                            cell.backgroundColor = [UIColor whiteColor];
+                        }
                         return cell;
                     }
                 }
@@ -1123,6 +1149,8 @@ NSUInteger const kPlanCellDeleteTag = 9527;
         plan.completetime = [dict objectForKey:@"completetime"];
         plan.isnotify = @"1";
         plan.notifytime = [dict objectForKey:@"notifytime"];
+        plan.planLevel = [dict objectForKey:@"planLevel"];
+        plan.isRepeat = [dict objectForKey:@"isRepeat"];
         
         [self toPlanDetailWithPlan:plan];
     }
@@ -1139,14 +1167,19 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 //修改计划完成状态
 - (void)changePlanCompleteStatus:(Plan *)plan
 {
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:STRDateFormatterType1];
-    NSString *timeNow = [dateFormatter stringFromDate:[NSDate date]];
+    NSString *timeNow = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType1];
     plan.updatetime = timeNow;
     //1完成 0未完成
     if ([plan.iscompleted isEqualToString:@"0"])
     {
-        plan.iscompleted = @"1";
+        if ([plan.isRepeat isEqualToString:@"1"])
+        {
+            plan.iscompleted = @"0";
+        }
+        else
+        {
+            plan.iscompleted = @"1";
+        }
         plan.completetime = timeNow;
         //如果预计开始时间是在今天之后的，属于提前完成，把预计开始时间设成今天
         NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
@@ -1187,6 +1220,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
          {
              if (object)
              {
+                 [object setObject:plan.beginDate forKey:@"beginDate"];
                  [object setObject:plan.iscompleted forKey:@"isCompleted"];
                  [object setObject:plan.completetime forKey:@"completedTime"];
                  [object setObject:plan.remark forKey:@"remark"];
@@ -1196,6 +1230,10 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                       if (isSuccessful)
                       {
                           [NotificationCenter postNotificationName:NTFPlanSave object:nil];
+                          if ([plan.isRepeat isEqualToString:@"1"])
+                          {
+                              [weakSelf addDonePlan:plan];
+                          }
                       }
                       else
                       {
@@ -1209,6 +1247,41 @@ NSUInteger const kPlanCellDeleteTag = 9527;
              }
          }
      }];
+}
+
+- (void)addDonePlan:(Plan *)plan
+{
+    plan.iscompleted = @"1";
+    plan.beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    NSString *timeNow = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType1];
+    plan.updatetime = timeNow;
+    plan.completetime = timeNow;
+
+    if (!plan.isnotify)
+    {
+        plan.isnotify = @"0";
+        plan.notifytime = @"";
+    }
+    
+    BmobUser *user = [BmobUser currentUser];
+    BmobObject *newPlan = [BmobObject objectWithClassName:@"Plan"];
+    NSDictionary *dic = @{@"userObjectId":user.objectId,
+                          @"content":plan.content,
+                          @"planLevel":plan.planLevel,
+                          @"notifyTime":plan.notifytime,
+                          @"isCompleted":plan.iscompleted,
+                          @"completedTime":plan.completetime,
+                          @"isNotify":plan.isnotify,
+                          @"isDeleted":plan.isdeleted,
+                          @"isRepeat":plan.isRepeat,
+                          @"remark":plan.remark,
+                          @"beginDate":plan.beginDate};
+    [newPlan saveAllWithDictionary:dic];
+    BmobACL *acl = [BmobACL ACL];
+    [acl setReadAccessForUser:user];//设置只有当前用户可读
+    [acl setWriteAccessForUser:user];//设置只有当前用户可写
+    newPlan.ACL = acl;
+    [newPlan saveInBackground];
 }
 
 //删除计划

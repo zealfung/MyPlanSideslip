@@ -15,6 +15,7 @@
 
 @property (strong, nonatomic) NSArray *arrayDone;
 @property (strong, nonatomic) NSArray *arrayPlanLevel;
+@property (strong, nonatomic) NSArray *arrayRepeat;
 @property (strong, nonatomic) UIDatePicker *datePicker;
 @property (assign, nonatomic) BOOL isSelectBeginDate;
 
@@ -67,6 +68,14 @@
     itemLevel2.itemName = @"很紧急";
     itemLevel2.itemValue = @"2";
     self.arrayPlanLevel = [NSArray arrayWithObjects:itemLevel0, itemLevel1, itemLevel2, nil];
+    
+    SelectItem *itemRepeat0 = [[SelectItem alloc] init];
+    itemRepeat0.itemName = @"否";
+    itemRepeat0.itemValue = @"0";
+    SelectItem *itemRepeat1 = [[SelectItem alloc] init];
+    itemRepeat1.itemName = @"是";
+    itemRepeat1.itemValue = @"1";
+    self.arrayRepeat = [NSArray arrayWithObjects:itemRepeat0, itemRepeat1, nil];
 }
 
 - (void)showDatePicker
@@ -163,13 +172,18 @@
         self.plan.planLevel = @"0";
     }
     
+    if (!self.plan.isRepeat)
+    {
+        self.plan.isRepeat = @"0";
+    }
+    
     if (![self.plan.isnotify isEqualToString:@"1"])
     {
         self.plan.isnotify = @"0";
         self.plan.notifytime = @"";
     }
     
-    if ([self.plan.iscompleted isEqualToString:@"0"])
+    if ([self.plan.iscompleted isEqualToString:@"1"])
     {
         NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
         [dateFormatter setDateFormat:STRDateFormatterType1];
@@ -203,8 +217,17 @@
                  [object setObject:weakSelf.plan.notifytime forKey:@"notifyTime"];
                  [object setObject:weakSelf.plan.isnotify forKey:@"isNotify"];
                  [object setObject:weakSelf.plan.beginDate forKey:@"beginDate"];
-                 [object setObject:weakSelf.plan.iscompleted forKey:@"isCompleted"];
+                 if ([self.plan.isRepeat isEqualToString:@"1"]
+                     && [self.plan.iscompleted isEqualToString:@"1"])
+                 {
+                     [object setObject:@"0" forKey:@"isCompleted"];
+                 }
+                 else
+                 {
+                     [object setObject:weakSelf.plan.iscompleted forKey:@"isCompleted"];
+                 }
                  [object setObject:weakSelf.plan.completetime forKey:@"completedTime"];
+                 [object setObject:weakSelf.plan.isRepeat forKey:@"isRepeat"];
                  [object setObject:weakSelf.plan.remark forKey:@"remark"];
                  
                  [object updateInBackgroundWithResultBlock:^(BOOL isSuccessful, NSError *error)
@@ -212,11 +235,22 @@
                       [weakSelf hideHUD];
                       if (isSuccessful)
                       {
+                          if ([weakSelf.plan.isRepeat isEqualToString:@"1"]
+                              && [weakSelf.plan.iscompleted isEqualToString:@"1"])
+                          {
+                              [weakSelf addDonePlan:weakSelf.plan];
+                          }
+                          
                           //更新提醒
                           if ([weakSelf.plan.isnotify isEqualToString:@"1"])
                           {
-                              //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
-                              weakSelf.plan.notifytime = [CommonFunction updateNotifyTime:weakSelf.plan.notifytime];
+                              NSString *isCompleted = [object objectForKey:@"isCompleted"];
+                              if ([weakSelf.plan.isRepeat isEqualToString:@"1"]
+                                  && [isCompleted isEqualToString:@"0"])
+                              {
+                                  //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
+                                  weakSelf.plan.notifytime = [CommonFunction updateNotifyTime:weakSelf.plan.notifytime];
+                              }
                               
                               [CommonFunction updatePlanNotification:weakSelf.plan];
                           }
@@ -242,6 +276,41 @@
      }];
 }
 
+- (void)addDonePlan:(Plan *)plan
+{
+    plan.iscompleted = @"1";
+    plan.beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    NSString *timeNow = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType1];
+    plan.updatetime = timeNow;
+    plan.completetime = timeNow;
+    
+    if (!plan.isnotify)
+    {
+        plan.isnotify = @"0";
+        plan.notifytime = @"";
+    }
+    
+    BmobUser *user = [BmobUser currentUser];
+    BmobObject *newPlan = [BmobObject objectWithClassName:@"Plan"];
+    NSDictionary *dic = @{@"userObjectId":user.objectId,
+                          @"content":plan.content,
+                          @"planLevel":plan.planLevel,
+                          @"notifyTime":plan.notifytime,
+                          @"isCompleted":plan.iscompleted,
+                          @"completedTime":plan.completetime,
+                          @"isNotify":plan.isnotify,
+                          @"isDeleted":plan.isdeleted,
+                          @"isRepeat":plan.isRepeat,
+                          @"remark":plan.remark,
+                          @"beginDate":plan.beginDate};
+    [newPlan saveAllWithDictionary:dic];
+    BmobACL *acl = [BmobACL ACL];
+    [acl setReadAccessForUser:user];//设置只有当前用户可读
+    [acl setWriteAccessForUser:user];//设置只有当前用户可写
+    newPlan.ACL = acl;
+    [newPlan saveInBackground];
+}
+
 #pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -252,7 +321,7 @@
 {
     if (section == 0)
     {
-        return 5;
+        return 6;
     }
     else
     {
@@ -262,7 +331,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == 0 && indexPath.row == 4)
+    if ((indexPath.section == 0 && indexPath.row == 5)
         || (indexPath.section == 1 && indexPath.row == 0))
     {
         return 300.f;
@@ -302,7 +371,7 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.textLabel.text = @"";
             cell.textLabel.frame = cell.contentView.bounds;
-            cell.textLabel.textColor = color_333333;
+            cell.textLabel.textColor = color_666666;
             cell.textLabel.font = font_Normal_16;
         }
         switch (indexPath.row)
@@ -350,6 +419,13 @@
             }
                 break;
             case 4:
+            {
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.textLabel.text = @"每天重复";
+                cell.detailTextLabel.text = [CommonFunction getRepeatStringForShow:self.plan.isRepeat];
+            }
+                break;
+            case 5:
             {
                 __weak typeof(self) weakSelf = self;
                 PlanAddCell *cell1 = [PlanAddCell cellView];
@@ -414,6 +490,9 @@
         case 3:
             [self toSetPlanDoneOrUndo];
             break;
+        case 4:
+            [self toSetPlanRepeat];
+            break;
         default:
             break;
     }
@@ -444,6 +523,21 @@
     controller.SelectedDelegate = ^(NSString *selectedValue)
     {
         weakSelf.plan.iscompleted = selectedValue;
+        [weakSelf.tableView reloadData];
+    };
+    [self.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)toSetPlanRepeat
+{
+    __weak typeof(self) weakSelf = self;
+    SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
+    controller.viewTitle = @"每天重复";
+    controller.arrayData = self.arrayRepeat;
+    controller.selectedValue = self.plan.isRepeat;
+    controller.SelectedDelegate = ^(NSString *selectedValue)
+    {
+        weakSelf.plan.isRepeat = selectedValue;
         [weakSelf.tableView reloadData];
     };
     [self.navigationController pushViewController:controller animated:YES];

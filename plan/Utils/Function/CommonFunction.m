@@ -373,6 +373,19 @@ static NSString * const kKeyMinutes = @"minutes";
     }
 }
 
+// 计划每天重复显示格式：否，是
++ (NSString *)getRepeatStringForShow:(NSString *)isRepeat
+{
+    if ([isRepeat isEqualToString:@"1"])
+    {
+        return @"是";
+    }
+    else
+    {
+        return @"否";
+    }
+}
+
 /** toDay格式：2016-03-18 */
 + (NSInteger)howManyDaysLeft:(NSString*)toDay {
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
@@ -464,6 +477,7 @@ static NSString * const kKeyMinutes = @"minutes";
     [destDic setObject:plan.notifytime forKey:@"notifytime"];
     [destDic setObject:plan.remark ?:@"" forKey:@"remark"];
     [destDic setObject:plan.isRepeat ?:@"0" forKey:@"isRepeat"];
+    [destDic setObject:plan.planLevel ?:@"0" forKey:@"planLevel"];
     [LocalNotificationManager createLocalNotification:date userInfo:destDic alertBody:plan.content];
 }
 

@@ -84,6 +84,9 @@
 /** 计划紧急等级显示格式：很紧急，一般急，或不紧急 */
 + (NSString *)getPlanLevelStringForShow:(NSString *)level;
 
+/** 计划每天重复显示格式：否，是 */
++ (NSString *)getRepeatStringForShow:(NSString *)isRepeat;
+
 /** 计算剩余天数，toDay格式：2016-03-18 */
 + (NSInteger)howManyDaysLeft:(NSString*)toDay;
 

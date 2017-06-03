@@ -49,6 +49,7 @@
 #define png_Icon_Arrow_Left @"Icon_Arrow_Left"
 #define png_Icon_Logo_512 @"Icon_Logo_512"
 #define png_Icon_Alarm @"Icon_Alarm"
+#define png_Icon_EverydayNotify @"Icon_EverydayNotify"
 #define png_Icon_Menu_About @"Icon_Menu_About"
 #define png_Icon_Menu_FiveStar @"Icon_Menu_FiveStar"
 #define png_Icon_Menu_Money @"Icon_Menu_Money"
