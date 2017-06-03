@@ -18,7 +18,6 @@
 
 @interface AHSegment : UIControl
 
-@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIFont *textFont;
 @property (nonatomic, assign) NSInteger selectedIndex;
 @property (nonatomic, weak) id<AHSegmentDelegate> delegate;
