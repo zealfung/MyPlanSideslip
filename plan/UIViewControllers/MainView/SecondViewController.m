@@ -11,7 +11,7 @@
 #import "PlanCell.h"
 #import "PlanCache.h"
 #import "MJRefresh.h"
-#import "ThreeSubView.h"
+#import "AHSegment.h"
 #import "PlanSectionView.h"
 #import <BmobSDK/BmobUser.h>
 #import "LogInViewController.h"
@@ -20,12 +20,9 @@
 #import "PlanAddNewViewController.h"
 #import "PlanDetailNewViewController.h"
 
-NSUInteger const kPlan_MenuHeight = 44;
-NSUInteger const kPlan_MenuLineHeight = 3;
 NSUInteger const kPlanCellDeleteTag = 9527;
-NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
-@interface SecondViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, PlanCellDelegate, HitViewDelegate>
+@interface SecondViewController () <UISearchBarDelegate, UITableViewDataSource, UITableViewDelegate, PlanCellDelegate, HitViewDelegate, AHSegmentDelegate>
 
 @property (nonatomic, strong) PlanCell *planCell;
 @property (nonatomic, strong) HitView *hitView;
@@ -38,20 +35,21 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 @property (nonatomic, assign) BOOL canCustomEditNow;
 @property (nonatomic, assign) BOOL isLoadingPlanDay;
 @property (nonatomic, assign) BOOL isLoadingPlanFuture;
-@property (nonatomic, assign) PlanType planType;
+@property (nonatomic, assign) BOOL isLoadingPlanDone;
 @property (nonatomic, strong) Plan *deletePlan;
 @property (nonatomic, strong) NSMutableArray *arrayPlanDay;
 @property (nonatomic, strong) NSMutableArray *arrayPlanFuture;
-@property (nonatomic, strong) NSMutableArray *dayDateKeyArray;
-@property (nonatomic, strong) NSMutableDictionary *dayPlanDict;
-@property (nonatomic, strong) NSMutableArray *futureDateKeyArray;
-@property (nonatomic, strong) NSMutableDictionary *futurePlanDict;
+@property (nonatomic, strong) NSMutableArray *arrayPlanDone;
+@property (nonatomic, strong) NSMutableArray *arrayDayDateKey;
+@property (nonatomic, strong) NSMutableDictionary *dictDayPlan;
+@property (nonatomic, strong) NSMutableArray *arrayFutureDateKey;
+@property (nonatomic, strong) NSMutableDictionary *dictFuturePlan;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) NSString *searchKeyword;
-@property (nonatomic, strong) NSMutableArray *searchResultArray;
+@property (nonatomic, strong) NSMutableArray *arraySearchResult;
 @property (nonatomic, strong) UITableView *tableViewPlan;
-@property (nonatomic, strong) ThreeSubView *menuTabView;
-@property (nonatomic, strong) UIView *underLineView;
+@property (nonatomic, strong) AHSegment *segment;
+@property (nonatomic, assign) NSInteger segmentIndex;
 
 @end
 
@@ -62,7 +60,6 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     [super viewDidLoad];
     self.title = STRViewTitle2;
     self.tabBarItem.title = STRViewTitle2;
-    self.planType = 1;
 
     [NotificationCenter addObserver:self selector:@selector(reloadData) name:NTFLogIn object:nil];
     [NotificationCenter addObserver:self selector:@selector(reloadData) name:NTFLogOut object:nil];
@@ -112,10 +109,6 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
             [UserDefaults synchronize];
         }
     }
-    if (self.planType == EverydayPlan)
-    {
-        [self moveUnderLineViewToButton:self.menuTabView.leftButton];
-    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -126,14 +119,19 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 //初始化自定义界面
 - (void)loadCustomView
 {
-    [self initTableView];
+    [self initSegment];
     
-    if (!self.underLineView)
-    {
-        [self showMenuView];
-        [self showUnderLineView];
-    }
+    [self initTableView];
+
     [self getPlanData];
+}
+
+- (void)initSegment
+{
+    self.segment = [[AHSegment alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, 44)];
+    [self.segment updateChannels:@[@"进行中",@"待开始",@"已完成"]];
+    self.segment.delegate = self;
+    [self.view addSubview:self.segment];
 }
 
 - (void)initTableView
@@ -141,15 +139,13 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     self.searchKeyword = @"";
     self.arrayPlanDay = [NSMutableArray array];
     self.arrayPlanFuture = [NSMutableArray array];
-    self.searchResultArray = [NSMutableArray array];
+    self.arrayPlanDone = [NSMutableArray array];
+    self.arraySearchResult = [NSMutableArray array];
     
-    NSUInteger yOffset = kPlan_MenuHeight;
-    NSUInteger tableHeight = CGRectGetHeight(self.view.bounds) - yOffset -40;
     CGRect frame = CGRectZero;
-    frame.origin.x = 0;
-    frame.origin.y =yOffset;
-    frame.size.width = CGRectGetWidth(self.view.bounds);
-    frame.size.height = tableHeight;
+    frame.origin.y = 44;
+    frame.size.width = WIDTH_FULL_SCREEN;
+    frame.size.height = HEIGHT_FULL_VIEW - 44;
     
     __weak typeof(self) weakSelf = self;
     self.tableViewPlan = [[UITableView alloc] initWithFrame:frame style:UITableViewStylePlain];
@@ -178,7 +174,8 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         {
             weakSelf.arrayPlanDay = [NSMutableArray array];
             weakSelf.arrayPlanFuture = [NSMutableArray array];
-            weakSelf.searchResultArray = [NSMutableArray array];
+            weakSelf.arrayPlanDone = [NSMutableArray array];
+            weakSelf.arraySearchResult = [NSMutableArray array];
             [weakSelf getPlanData];
         }
         else
@@ -202,117 +199,30 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     [self.view addSubview:self.tableViewPlan];
 }
 
-- (void)showMenuView
-{
-    __weak typeof(self) weakSelf = self;
-    self.menuTabView = [[ThreeSubView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.bounds), kPlan_MenuHeight) leftButtonSelectBlock: ^{
-        
-        weakSelf.planType = EverydayPlan;
-        
-    } centerButtonSelectBlock: ^{
-        
-        weakSelf.planType = FuturePlan;
-        
-    } rightButtonSelectBlock:nil];
-    
-    self.menuTabView.fixLeftWidth = CGRectGetWidth(self.view.bounds)/2;
-    self.menuTabView.fixCenterWidth = CGRectGetWidth(self.view.bounds)/2;
-    [self.menuTabView.leftButton setAllTitleColor:[CommonFunction getGenderColor]];
-    [self.menuTabView.centerButton setAllTitleColor:[CommonFunction getGenderColor]];
-    self.menuTabView.leftButton.titleLabel.font = font_Bold_18;
-    self.menuTabView.centerButton.titleLabel.font = font_Bold_18;
-    [self.menuTabView.leftButton setAllTitle:STRViewTips9];
-    [self.menuTabView.centerButton setAllTitle:STRViewTips10];
-    [self.menuTabView autoLayout];
-    [self.view addSubview:self.menuTabView];
-    {
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(CGRectGetWidth(self.view.bounds)/2, 5, 1, kPlan_MenuHeight - 10)];
-        view.backgroundColor = color_dedede;
-        [self.menuTabView addSubview:view];
-    }
-    {
-        UIImage *image = [UIImage imageNamed:png_Bg_Cell_White];
-        UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.menuTabView.frame];
-        imageView.backgroundColor = [UIColor clearColor];
-        imageView.image = [image resizableImageWithCapInsets:UIEdgeInsetsMake(5, 5, 5, 5)];
-        [self.view insertSubview:imageView belowSubview:self.menuTabView];
-    }
-}
-
-- (void)showUnderLineView
-{
-    CGRect frame = [self.menuTabView.leftButton convertRect:self.menuTabView.leftButton.titleLabel.frame toView:self.menuTabView];
-    frame.origin.y = self.menuTabView.frame.size.height - kPlan_MenuLineHeight;
-    frame.size.height = kPlan_MenuLineHeight;
-    UIView *view = [[UIView alloc] initWithFrame:frame];
-    view.backgroundColor = [CommonFunction getGenderColor];
-    [self.menuTabView addSubview:view];
-    self.underLineView = view;
-}
-
-- (void)moveUnderLineViewToLeft
-{
-    [self moveUnderLineViewToButton:self.menuTabView.leftButton];
-    if (self.arrayPlanDay.count)
-    {
-        [self.tableViewPlan reloadData];
-    }
-    else
-    {
-        [self getPlanData];
-    }
-}
-
-- (void)moveUnderLineViewToRight
-{
-    [self moveUnderLineViewToButton:self.menuTabView.centerButton];
-    if (self.arrayPlanFuture.count)
-    {
-        [self.tableViewPlan reloadData];
-    }
-    else
-    {
-        [self getPlanData];
-    }
-}
-
-- (void)moveUnderLineViewToButton:(UIButton *)button
-{
-    [self.view endEditing:YES];
-    
-    CGRect frame = [button convertRect:button.titleLabel.frame toView:button.superview];
-    frame.origin.y = self.menuTabView.frame.size.height - kPlan_MenuLineHeight;
-    frame.size.height = kPlan_MenuLineHeight;
-    button.superview.userInteractionEnabled = NO;
-    [UIView animateWithDuration:0.25 animations: ^{
-        
-        self.underLineView.frame = frame;
-        
-    } completion:^(BOOL finished) {
-        if (finished)
-        {
-            button.superview.userInteractionEnabled = YES;
-        }
-    }];
-}
-
 - (void)reloadData
 {
     self.arrayPlanDay = [NSMutableArray array];
     self.arrayPlanFuture = [NSMutableArray array];
-    self.searchResultArray = [NSMutableArray array];
+    self.arrayPlanDone = [NSMutableArray array];
+    self.arraySearchResult = [NSMutableArray array];
     [self getPlanData];
 }
 
 - (void)getPlanData
 {
-    if (self.planType == FuturePlan)
+    switch (self.segmentIndex)
     {
-        [self getPlanFuture];
-    }
-    else
-    {
-        [self getPlanDay];
+        case 0:
+            [self getPlanDay];
+            break;
+        case 1:
+            [self getPlanFuture];
+            break;
+        case 2:
+            [self getPlanDone];
+            break;
+        default:
+            break;
     }
 }
 
@@ -332,16 +242,16 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
+    [bquery whereKey:@"isCompleted" notEqualTo:@"1"];
     NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     //查询beginDate列中值早于今天的数据
     NSArray *array =  @[@{@"beginDate":@{@"$lte":today}}];
     [bquery addTheConstraintByOrOperationWithArray:array];
 
-    [bquery orderByDescending:@"updatedAt"];
+    [bquery orderByDescending:@"beginDate"];
     bquery.limit = 100;
     bquery.skip = self.arrayPlanDay.count;
 
-    self.arrayPlanDay = [NSMutableArray array];
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
      {
          [weakSelf hideHUD];
@@ -369,11 +279,8 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                  plan.beginDate = [obj objectForKey:@"beginDate"];
                  [weakSelf.arrayPlanDay addObject:plan];
                  
-                 if ([plan.isnotify isEqualToString:@"1"]
-                     && [plan.iscompleted isEqualToString:@"0"])
+                 if ([plan.isnotify isEqualToString:@"1"])
                  {
-//                     plan.notifytime = [CommonFunction updateNotifyTime:plan.notifytime];
-                     
                      [CommonFunction updatePlanNotification:plan];
                  }
                  else
@@ -382,68 +289,8 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                  }
              }
          }
-         [weakSelf groupPlanDay:weakSelf.arrayPlanDay];
+         [weakSelf.tableViewPlan reloadData];
      }];
-}
-
-- (void)groupPlanDay:(NSArray *)array
-{
-    self.dayDateKeyArray = [NSMutableArray array];
-    self.dayPlanDict = [NSMutableDictionary dictionary];
-    NSMutableArray *dayDateKeyArrayTmp = [NSMutableArray array];
-    
-    NSString *key = @"";
-    for (NSInteger i = 0; i < array.count; i++)
-    {
-        Plan *plan = array[i];
-        
-        if ([[Config shareInstance].settings.autoDelayUndonePlan isEqualToString:@"1"]
-            && [plan.iscompleted isEqualToString:@"0"])
-        {
-            key = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
-            plan.beginDate = key;
-        }
-        else
-        {
-            key = plan.beginDate;
-        }
-
-        NSMutableArray *dateArray = [self.dayPlanDict objectForKey:key];
-        if (!dateArray)
-        {
-            dateArray = [[NSMutableArray alloc] init];
-            [self.dayPlanDict setValue:dateArray forKey:key];
-            [dayDateKeyArrayTmp addObject:key];
-        }
-        
-        if ([plan.iscompleted isEqualToString:@"1"])
-        {
-            [dateArray addObject:plan];
-        }
-        else
-        {
-            [dateArray insertObject:plan atIndex:0];
-        }
-    }
-    [self.dayDateKeyArray addObjectsFromArray:dayDateKeyArrayTmp];
-    //日期降序排列
-    self.dayDateKeyArray = [NSMutableArray arrayWithArray:[CommonFunction arraySort:self.dayDateKeyArray ascending:NO]];
-    
-    NSUInteger sections = self.dayDateKeyArray.count;
-    self.daySectionFlag = (BOOL *)malloc(sections * sizeof(BOOL));
-    memset((void *)self.daySectionFlag, NO, sections * sizeof(BOOL));
-    self.daySectionFlag[0] = !self.daySectionFlag[0];
-    
-    if (self.dayStart < self.dayTotal)
-    {
-        self.dayStart += kPlanLoadMax;
-    }
-    else if (self.planType == EverydayPlan)
-    {
-        [self.tableViewPlan.mj_footer endRefreshingWithNoMoreData];
-    }
-    [self.tableViewPlan.mj_footer endRefreshing];
-    [self.tableViewPlan reloadData];
 }
 
 - (void)getPlanFuture
@@ -467,7 +314,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     NSArray *array =  @[@{@"beginDate":@{@"$gt":today}}];
     [bquery addTheConstraintByOrOperationWithArray:array];
     
-    [bquery orderByDescending:@"updatedTime"];
+    [bquery orderByAscending:@"beginDate"];
     bquery.limit = 100;
     bquery.skip = self.arrayPlanFuture.count;
     
@@ -505,12 +352,12 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 - (void)groupPlanFuture:(NSArray *)array
 {
-    self.futureDateKeyArray = [NSMutableArray array];
-    [self.futureDateKeyArray addObject:STRViewTips17];
-    [self.futureDateKeyArray addObject:STRViewTips18];
-    [self.futureDateKeyArray addObject:STRViewTips19];
-    [self.futureDateKeyArray addObject:STRViewTips20];
-    self.futurePlanDict = [NSMutableDictionary dictionary];
+    self.arrayFutureDateKey = [NSMutableArray array];
+    [self.arrayFutureDateKey addObject:STRViewTips17];
+    [self.arrayFutureDateKey addObject:STRViewTips18];
+    [self.arrayFutureDateKey addObject:STRViewTips19];
+    [self.arrayFutureDateKey addObject:STRViewTips20];
+    self.dictFuturePlan = [NSMutableDictionary dictionary];
 
     NSString *key = @"";
     for (NSInteger i = 0; i < array.count; i++)
@@ -536,49 +383,156 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
         {//一个月后开始
             key = STRViewTips20;
         }
-        NSMutableArray *dateArray = [self.futurePlanDict objectForKey:key];
+        NSMutableArray *dateArray = [self.dictFuturePlan objectForKey:key];
         if (!dateArray)
         {
             dateArray = [[NSMutableArray alloc] init];
-            [self.futurePlanDict setValue:dateArray forKey:key];
+            [self.dictFuturePlan setValue:dateArray forKey:key];
         }
         [dateArray addObject:plan];
     }
     //----------------去掉没有子项的section-----------------------------------------
-    NSMutableArray *arrayTomorrow = [self.futurePlanDict objectForKey:STRViewTips17];
+    NSMutableArray *arrayTomorrow = [self.dictFuturePlan objectForKey:STRViewTips17];
     if (!arrayTomorrow || arrayTomorrow.count == 0)
     {
-        [self.futureDateKeyArray removeObject:STRViewTips17];
+        [self.arrayFutureDateKey removeObject:STRViewTips17];
     }
-    NSMutableArray *arrayWeek = [self.futurePlanDict objectForKey:STRViewTips18];
+    NSMutableArray *arrayWeek = [self.dictFuturePlan objectForKey:STRViewTips18];
     if (!arrayWeek || arrayWeek.count == 0)
     {
-        [self.futureDateKeyArray removeObject:STRViewTips18];
+        [self.arrayFutureDateKey removeObject:STRViewTips18];
     }
-    NSMutableArray *arrayMonth = [self.futurePlanDict objectForKey:STRViewTips19];
+    NSMutableArray *arrayMonth = [self.dictFuturePlan objectForKey:STRViewTips19];
     if (!arrayMonth || arrayMonth.count == 0)
     {
-        [self.futureDateKeyArray removeObject:STRViewTips19];
+        [self.arrayFutureDateKey removeObject:STRViewTips19];
     }
-    NSMutableArray *arrayYear = [self.futurePlanDict objectForKey:STRViewTips20];
+    NSMutableArray *arrayYear = [self.dictFuturePlan objectForKey:STRViewTips20];
     if (!arrayYear || arrayYear.count == 0)
     {
-        [self.futureDateKeyArray removeObject:STRViewTips20];
+        [self.arrayFutureDateKey removeObject:STRViewTips20];
     }
     //----------------------------------------------------------------------------
-    NSUInteger sections = self.futureDateKeyArray.count;
+    NSUInteger sections = self.arrayFutureDateKey.count;
     self.futureSectionFlag = (BOOL *)malloc(sections * sizeof(BOOL));
     memset((void *)self.futureSectionFlag, YES, sections * sizeof(BOOL));
 
     if (self.futureStart < self.futureTotal)
     {
         self.futureStart += kPlanLoadMax;
+        [self.tableViewPlan.mj_footer endRefreshing];
     }
-    else if (self.planType == FuturePlan)
+    else
     {
         [self.tableViewPlan.mj_footer endRefreshingWithNoMoreData];
     }
-    [self.tableViewPlan.mj_footer endRefreshing];
+    [self.tableViewPlan reloadData];
+}
+
+- (void)getPlanDone
+{
+    if (self.isLoadingPlanDone || ![LogIn isLogin])
+    {
+        [self.tableViewPlan.mj_header endRefreshing];
+        [self.tableViewPlan.mj_footer endRefreshing];
+        return;
+    }
+    self.isLoadingPlanDone = YES;
+    
+    [self showHUD];
+    BmobUser *user = [BmobUser currentUser];
+    __weak typeof(self) weakSelf = self;
+    BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
+    [bquery whereKey:@"userObjectId" equalTo:user.objectId];
+    [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
+    [bquery whereKey:@"isCompleted" equalTo:@"1"];
+    NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    //查询beginDate列中值早于今天的数据
+    NSArray *array =  @[@{@"beginDate":@{@"$lte":today}}];
+    [bquery addTheConstraintByOrOperationWithArray:array];
+    
+    [bquery orderByDescending:@"updatedAt"];
+    bquery.limit = 100;
+    bquery.skip = self.arrayPlanDone.count;
+    
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+     {
+         [weakSelf hideHUD];
+         weakSelf.isLoadingPlanDone = NO;
+         [weakSelf.tableViewPlan.mj_header endRefreshing];
+         [weakSelf.tableViewPlan.mj_footer endRefreshing];
+         
+         if (!error && array.count)
+         {
+             for (BmobObject *obj in array)
+             {
+                 Plan *plan = [[Plan alloc] init];
+                 plan.account = [obj objectForKey:@"userObjectId"];
+                 plan.planid = obj.objectId;
+                 plan.content = [obj objectForKey:@"content"];
+                 plan.createtime = [obj objectForKey:@"createdTime"];
+                 plan.completetime = [obj objectForKey:@"completedTime"];
+                 plan.updatetime = [obj objectForKey:@"updatedTime"];
+                 plan.notifytime = [obj objectForKey:@"notifyTime"];
+                 plan.iscompleted = [obj objectForKey:@"isCompleted"];
+                 plan.isnotify = [obj objectForKey:@"isNotify"];
+                 plan.isdeleted = [obj objectForKey:@"isDeleted"];
+                 plan.isRepeat = [obj objectForKey:@"isRepeat"];
+                 plan.remark = [obj objectForKey:@"remark"];
+                 plan.beginDate = [obj objectForKey:@"beginDate"];
+                 [weakSelf.arrayPlanDone addObject:plan];
+                 
+                 if ([plan.isnotify isEqualToString:@"1"])
+                 {
+                     [CommonFunction cancelPlanNotification:plan.planid];
+                 }
+             }
+         }
+         [weakSelf groupPlanDone:weakSelf.arrayPlanDone];
+     }];
+}
+
+- (void)groupPlanDone:(NSArray *)array
+{
+    self.arrayDayDateKey = [NSMutableArray array];
+    self.dictDayPlan = [NSMutableDictionary dictionary];
+    NSMutableArray *arrayDayDateKeyTmp = [NSMutableArray array];
+    
+    NSString *key = @"";
+    for (NSInteger i = 0; i < array.count; i++)
+    {
+        Plan *plan = array[i];
+        
+        key = plan.beginDate;
+        
+        NSMutableArray *dateArray = [self.dictDayPlan objectForKey:key];
+        if (!dateArray)
+        {
+            dateArray = [[NSMutableArray alloc] init];
+            [self.dictDayPlan setValue:dateArray forKey:key];
+            [arrayDayDateKeyTmp addObject:key];
+        }
+        
+        [dateArray addObject:plan];
+    }
+    [self.arrayDayDateKey addObjectsFromArray:arrayDayDateKeyTmp];
+    //日期降序排列
+    self.arrayDayDateKey = [NSMutableArray arrayWithArray:[CommonFunction arraySort:self.arrayDayDateKey ascending:NO]];
+    
+    NSUInteger sections = self.arrayDayDateKey.count;
+    self.daySectionFlag = (BOOL *)malloc(sections * sizeof(BOOL));
+    memset((void *)self.daySectionFlag, NO, sections * sizeof(BOOL));
+    self.daySectionFlag[0] = !self.daySectionFlag[0];
+    
+    if (self.dayStart < self.dayTotal)
+    {
+        self.dayStart += kPlanLoadMax;
+        [self.tableViewPlan.mj_footer endRefreshing];
+    }
+    else
+    {
+        [self.tableViewPlan.mj_footer endRefreshingWithNoMoreData];
+    }
     [self.tableViewPlan reloadData];
 }
 
@@ -597,7 +551,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     [bquery whereKey:@"content" matchesWithRegex:[NSString stringWithFormat:@".*?%@.*?", self.searchKeyword]];
     [bquery orderByDescending:@"updatedTime"];
     bquery.limit = 100;
-    bquery.skip = self.searchResultArray.count;
+    bquery.skip = self.arraySearchResult.count;
     
     [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
      {
@@ -624,45 +578,46 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                  plan.isRepeat = [obj objectForKey:@"isRepeat"];
                  plan.remark = [obj objectForKey:@"remark"];
                  plan.beginDate = [obj objectForKey:@"beginDate"];
-                 [weakSelf.searchResultArray addObject:plan];
+                 [weakSelf.arraySearchResult addObject:plan];
              }
          }
          [weakSelf.tableViewPlan reloadData];
      }];
 }
 
-- (void)setPlanType:(PlanType)type
+#pragma mark - AHSegmentDelegate
+- (void)AHSegment:(AHSegment *)segment didSelectedIndex:(NSInteger)index
 {
-    _planType = type;
-    switch (type)
+    self.segmentIndex = index;
+    
+    if ((self.segmentIndex == 0 && self.arrayPlanDay.count)
+        || (self.segmentIndex == 1 && self.arrayPlanFuture.count)
+        || (self.segmentIndex == 2 && self.arrayPlanDone.count))
     {
-        case EverydayPlan:
-            [self moveUnderLineViewToLeft];
-            break;
-        case FuturePlan:
-            [self moveUnderLineViewToRight];
-            break;
-        default:
-            break;
+        [self.tableViewPlan reloadData];
+    }
+    else
+    {
+        [self getPlanData];
     }
 }
 
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.searchKeyword.length)
+    if (self.searchKeyword.length || self.segmentIndex == 0)
     {
         return 1;
     }
     else
     {
-        if (self.planType == EverydayPlan)
+        if (self.segmentIndex == 2)
         {
-            return self.dayPlanDict.count;
+            return self.dictDayPlan.count;
         }
         else
         {
-            return self.futurePlanDict.count;
+            return self.dictFuturePlan.count;
         }
     }
 }
@@ -671,49 +626,58 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 {
     if (self.searchKeyword.length)
     {
-        return self.searchResultArray.count;
+        return self.arraySearchResult.count;
     }
     else
     {
-        if (self.planType == EverydayPlan)
+        switch (self.segmentIndex)
         {
-            if(self.dayDateKeyArray.count)
+            case 0:
             {
-                if (self.daySectionFlag[section])
+                return self.arrayPlanDay.count;
+            }
+            case 1:
+            {
+                if(self.arrayFutureDateKey.count)
                 {
-                    NSString *key = self.dayDateKeyArray[section];
-                    NSArray *dateArray = [self.dayPlanDict objectForKey:key];
-                    return dateArray.count;
+                    if (self.futureSectionFlag[section])
+                    {
+                        NSString *key = self.arrayFutureDateKey[section];
+                        NSArray *dateArray = [self.dictFuturePlan objectForKey:key];
+                        return dateArray.count;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
                 }
                 else
                 {
                     return 0;
                 }
             }
-            else
+            case 2:
             {
-                return 0;
-            }
-        }
-        else
-        {
-            if(self.futureDateKeyArray.count)
-            {
-                if (self.futureSectionFlag[section])
+                if(self.arrayDayDateKey.count)
                 {
-                    NSString *key = self.futureDateKeyArray[section];
-                    NSArray *dateArray = [self.futurePlanDict objectForKey:key];
-                    return dateArray.count;
+                    if (self.daySectionFlag[section])
+                    {
+                        NSString *key = self.arrayDayDateKey[section];
+                        NSArray *dateArray = [self.dictDayPlan objectForKey:key];
+                        return dateArray.count;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
                 }
                 else
                 {
                     return 0;
                 }
             }
-            else
-            {
+            default:
                 return 0;
-            }
         }
     }
 }
@@ -724,16 +688,15 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     
     if (self.searchKeyword.length)
     {
-        if(indexPath.row < self.searchResultArray.count)
+        if(indexPath.row < self.arraySearchResult.count)
         {
             static NSString *searchCellIdentifier = @"searchCellIdentifier";
-            
             PlanCell *cell = [tableView dequeueReusableCellWithIdentifier:searchCellIdentifier];
             if(!cell)
             {
                 cell = [[PlanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:searchCellIdentifier];
             }
-            Plan *plan = self.searchResultArray[indexPath.row];
+            Plan *plan = self.arraySearchResult[indexPath.row];
             cell.plan = plan;
             cell.isDone = plan.iscompleted;
             if ([plan.iscompleted isEqualToString:@"1"])
@@ -748,60 +711,23 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
             }
             cell.delegate = self;
             return cell;
-            
         }
     }
     else
     {
-        if (self.planType == EverydayPlan)
+        switch (self.segmentIndex)
         {
-            if(indexPath.section < self.dayDateKeyArray.count)
+            case 0:
             {
-                NSString *dateKey = self.dayDateKeyArray[indexPath.section];
-                NSArray *planArray = [self.dayPlanDict objectForKey:dateKey];
-                if (indexPath.row < planArray.count)
+                if (indexPath.row < self.arrayPlanDay.count)
                 {
                     static NSString *everydayCellIdentifier = @"everydayCellIdentifier";
-                    
                     PlanCell *cell = [tableView dequeueReusableCellWithIdentifier:everydayCellIdentifier];
                     if(!cell)
                     {
                         cell = [[PlanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:everydayCellIdentifier];
                     }
-                    Plan *plan = planArray[indexPath.row];
-                    cell.plan = plan;
-                    cell.isDone = plan.iscompleted;
-                    if ([plan.iscompleted isEqualToString:@"1"])
-                    {
-                        cell.moveContentView.backgroundColor = color_Green_Mint;
-                        cell.backgroundColor = color_Green_Mint;
-                    }
-                    else
-                    {
-                        cell.moveContentView.backgroundColor = [UIColor whiteColor];
-                        cell.backgroundColor = [UIColor whiteColor];
-                    }
-                    cell.delegate = self;
-                    return cell;
-                }
-            }
-        }
-        else if (self.planType == FuturePlan)
-        {
-            if(indexPath.section < self.futureDateKeyArray.count)
-            {
-                NSString *dateKey = self.futureDateKeyArray[indexPath.section];
-                NSArray *planArray = [self.futurePlanDict objectForKey:dateKey];
-                if (indexPath.row < planArray.count)
-                {
-                    static NSString *futureCellIdentifier = @"futureCellIdentifier";
-                    
-                    PlanCell *cell = [tableView dequeueReusableCellWithIdentifier:futureCellIdentifier];
-                    if(!cell)
-                    {
-                        cell = [[PlanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:futureCellIdentifier];
-                    }
-                    Plan *plan = planArray[indexPath.row];
+                    Plan *plan = self.arrayPlanDay[indexPath.row];
                     cell.plan = plan;
                     cell.isDone = plan.iscompleted;
                     cell.moveContentView.backgroundColor = [UIColor whiteColor];
@@ -810,10 +736,62 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
                     return cell;
                 }
             }
+                break;
+            case 1:
+            {
+                if(indexPath.section < self.arrayFutureDateKey.count)
+                {
+                    NSString *dateKey = self.arrayFutureDateKey[indexPath.section];
+                    NSArray *planArray = [self.dictFuturePlan objectForKey:dateKey];
+                    if (indexPath.row < planArray.count)
+                    {
+                        static NSString *futureCellIdentifier = @"futureCellIdentifier";
+                        PlanCell *cell = [tableView dequeueReusableCellWithIdentifier:futureCellIdentifier];
+                        if(!cell)
+                        {
+                            cell = [[PlanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:futureCellIdentifier];
+                        }
+                        Plan *plan = planArray[indexPath.row];
+                        cell.plan = plan;
+                        cell.isDone = plan.iscompleted;
+                        cell.moveContentView.backgroundColor = [UIColor whiteColor];
+                        cell.backgroundColor = [UIColor whiteColor];
+                        cell.delegate = self;
+                        return cell;
+                    }
+                }
+            }
+                break;
+            case 2:
+            {
+                if(indexPath.section < self.arrayDayDateKey.count)
+                {
+                    NSString *dateKey = self.arrayDayDateKey[indexPath.section];
+                    NSArray *planArray = [self.dictDayPlan objectForKey:dateKey];
+                    if (indexPath.row < planArray.count)
+                    {
+                        static NSString *doneCellIdentifier = @"doneCellIdentifier";
+                        PlanCell *cell = [tableView dequeueReusableCellWithIdentifier:doneCellIdentifier];
+                        if(!cell)
+                        {
+                            cell = [[PlanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:doneCellIdentifier];
+                        }
+                        Plan *plan = planArray[indexPath.row];
+                        cell.plan = plan;
+                        cell.isDone = plan.iscompleted;
+                        cell.moveContentView.backgroundColor = color_Green_Mint;
+                        cell.backgroundColor = color_Green_Mint;
+                        cell.delegate = self;
+                        return cell;
+                    }
+                }
+            }
+                break;
+            default:
+                break;
         }
     }
-    UITableViewCell *cell = [[UITableViewCell alloc] init];
-    return cell;
+    return [[UITableViewCell alloc] init];
 }
 
 - (UITableViewCell *)createNoDataCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath tips:(NSString *)tips
@@ -844,10 +822,11 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if ((self.planType == EverydayPlan
-         && self.dayDateKeyArray.count == 0)
-        || (self.planType == FuturePlan
-         && self.futureDateKeyArray.count == 0)
+    if (self.segmentIndex == 0
+        || (self.segmentIndex == 1
+         && self.arrayFutureDateKey.count == 0)
+        || (self.segmentIndex == 2
+            && self.arrayDayDateKey.count == 0)
         || self.searchKeyword.length > 0)
     {
         return 0.1f;
@@ -860,17 +839,17 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (self.searchKeyword.length)
+    if (self.searchKeyword.length || self.segmentIndex == 0)
     {
         return [[UIView alloc] init];
     }
     else
     {
         PlanSectionView *view;
-        if (self.planType == EverydayPlan && self.dayDateKeyArray.count > section)
+        if (self.segmentIndex == 2 && self.arrayDayDateKey.count > section)
         {
-            NSString *date = self.dayDateKeyArray[section];
-            NSArray *planArray = [self.dayPlanDict objectForKey:date];
+            NSString *date = self.arrayDayDateKey[section];
+            NSArray *planArray = [self.dictDayPlan objectForKey:date];
             NSDictionary *dic = [self isAllDone:planArray];
             NSString *count = [dic objectForKey:@"count"];
             BOOL isAllDone = [[dic objectForKey:@"isAllDone"] boolValue];
@@ -883,9 +862,9 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
             [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sectionClickedAction:)]];
             return view;
         }
-        else if (self.planType == FuturePlan && self.futureDateKeyArray.count > section)
+        else
         {
-            NSString *date = self.futureDateKeyArray[section];
+            NSString *date = self.arrayFutureDateKey[section];
             BOOL isAllDone = YES;
             if ([date isEqualToString:STRViewTips17])
             {
@@ -898,10 +877,6 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
             [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sectionClickedAction:)]];
             return view;
         }
-        else
-        {
-            return [[UIView alloc] init];
-        }
     }
 }
 
@@ -909,33 +884,47 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 {
     [self.view endEditing:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
-    if ((self.planType == EverydayPlan
-         && indexPath.section >= self.dayDateKeyArray.count)
-        || (self.planType == FuturePlan
-            && indexPath.section >= self.futureDateKeyArray.count)
+    if ((self.segmentIndex == 2
+         && indexPath.section >= self.arrayDayDateKey.count)
+        || (self.segmentIndex == 1
+            && indexPath.section >= self.arrayFutureDateKey.count)
+        || (self.segmentIndex == 0
+            && indexPath.row >= self.arrayPlanDay.count)
         || (self.searchKeyword.length
-            && indexPath.row >= self.searchResultArray.count))
+            && indexPath.row >= self.arraySearchResult.count))
     {
         return;
     }
     Plan *selectedPlan = nil;
     if (self.searchKeyword.length)
     {
-        selectedPlan = self.searchResultArray[indexPath.row];
+        selectedPlan = self.arraySearchResult[indexPath.row];
     }
     else
     {
-        if (self.planType == EverydayPlan)
+        switch (self.segmentIndex)
         {
-            NSString *dateKey = self.dayDateKeyArray[indexPath.section];
-            NSArray *planArray = [self.dayPlanDict objectForKey:dateKey];
-            selectedPlan = planArray[indexPath.row];
-        }
-        else if (self.planType == FuturePlan)
-        {
-            NSString *dateKey = self.futureDateKeyArray[indexPath.section];
-            NSArray *planArray = [self.futurePlanDict objectForKey:dateKey];
-            selectedPlan = planArray[indexPath.row];
+            case 0:
+            {
+                selectedPlan = self.arrayPlanDay[indexPath.row];
+            }
+                break;
+            case 1:
+            {
+                NSString *dateKey = self.arrayFutureDateKey[indexPath.section];
+                NSArray *planArray = [self.dictFuturePlan objectForKey:dateKey];
+                selectedPlan = planArray[indexPath.row];
+            }
+                break;
+            case 2:
+            {
+                NSString *dateKey = self.arrayDayDateKey[indexPath.section];
+                NSArray *planArray = [self.dictDayPlan objectForKey:dateKey];
+                selectedPlan = planArray[indexPath.row];
+            }
+                break;
+            default:
+                break;
         }
     }
     if (selectedPlan)
@@ -1013,7 +1002,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
     PlanSectionView *view = (PlanSectionView *) sender.view;
     [view toggleArrow];
     
-    if (self.planType == EverydayPlan)
+    if (self.segmentIndex == 2)
     {
         self.daySectionFlag[view.sectionIndex] = !self.daySectionFlag[view.sectionIndex];
         [self.tableViewPlan reloadSections:[NSIndexSet indexSetWithIndex:view.sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -1024,7 +1013,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
             [self.tableViewPlan scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
         }
     }
-    else if (self.planType == FuturePlan)
+    else if (self.segmentIndex == 1)
     {
         self.futureSectionFlag[view.sectionIndex] = !self.futureSectionFlag[view.sectionIndex];
         [self.tableViewPlan reloadSections:[NSIndexSet indexSetWithIndex:view.sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -1311,7 +1300,7 @@ NSUInteger const kPlan_TodayCellHeaderViewHeight = 30;
 //搜索栏事件
 - (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
 {
-    self.searchResultArray = [NSMutableArray array];
+    self.arraySearchResult = [NSMutableArray array];
     self.searchKeyword = [searchText copy];
     if (self.searchKeyword.length == 0)
     {
