@@ -286,17 +286,24 @@ NSUInteger const kBounceSpace = 20;
     _plan = plan;
     self.labelContent.text = plan.content;
     NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
-    if ([plan.iscompleted isEqualToString:@"0"]
-        && [beginDate compare:[NSDate date]] == NSOrderedDescending)
+    if (![plan.iscompleted isEqualToString:@"1"])
     {
         self.labelBeginDate.text = [CommonFunction getBeginDateStringForShow:plan.beginDate];
-        self.labelDateLeft.text = [NSString stringWithFormat:STRCommonTime10,[CommonFunction howManyDaysLeft:plan.beginDate]];
-        self.labelDateLeft.hidden = NO;
+        if ([beginDate compare:[NSDate date]] == NSOrderedDescending)
+        {
+            self.labelDateLeft.text = [NSString stringWithFormat:STRCommonTime10,[CommonFunction howManyDaysLeft:plan.beginDate]];
+            self.labelDateLeft.hidden = NO;
+        }
+        else
+        {
+            self.labelDateLeft.hidden = YES;
+        }
     }
     else
     {
         self.labelDateLeft.hidden = YES;
     }
+    
     if ([plan.isnotify isEqualToString:@"1"])
     {
         self.imgViewAlarm.hidden = NO;
