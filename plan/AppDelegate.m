@@ -238,11 +238,6 @@
                 //切换到计划栏
                 [self changeTabbarSelectedItem:1];
             }
-            else if (type == 1)
-            {//任务提醒
-                //切换到任务栏
-                [self changeTabbarSelectedItem:2];
-            }
         }
         else
         {
