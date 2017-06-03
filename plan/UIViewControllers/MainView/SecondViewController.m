@@ -26,12 +26,9 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 
 @property (nonatomic, strong) PlanCell *planCell;
 @property (nonatomic, strong) HitView *hitView;
-@property (nonatomic, assign) NSInteger dayTotal;
-@property (nonatomic, assign) NSInteger futureTotal;
-@property (nonatomic, assign) NSInteger dayStart;
-@property (nonatomic, assign) NSInteger futureStart;
 @property (nonatomic, assign) BOOL *daySectionFlag;
 @property (nonatomic, assign) BOOL *futureSectionFlag;
+@property (nonatomic, assign) BOOL *doneSectionFlag;
 @property (nonatomic, assign) BOOL canCustomEditNow;
 @property (nonatomic, assign) BOOL isLoadingPlanDay;
 @property (nonatomic, assign) BOOL isLoadingPlanFuture;
@@ -42,6 +39,8 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 @property (nonatomic, strong) NSMutableArray *arrayPlanDone;
 @property (nonatomic, strong) NSMutableArray *arrayDayDateKey;
 @property (nonatomic, strong) NSMutableDictionary *dictDayPlan;
+@property (nonatomic, strong) NSMutableArray *arrayDoneDateKey;
+@property (nonatomic, strong) NSMutableDictionary *dictDonePlan;
 @property (nonatomic, strong) NSMutableArray *arrayFutureDateKey;
 @property (nonatomic, strong) NSMutableDictionary *dictFuturePlan;
 @property (nonatomic, strong) UISearchBar *searchBar;
@@ -267,6 +266,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                  plan.account = [obj objectForKey:@"userObjectId"];
                  plan.planid = obj.objectId;
                  plan.content = [obj objectForKey:@"content"];
+                 plan.planLevel = [obj objectForKey:@"planLevel"];
                  plan.createtime = [obj objectForKey:@"createdTime"];
                  plan.completetime = [obj objectForKey:@"completedTime"];
                  plan.updatetime = [obj objectForKey:@"updatedTime"];
@@ -289,8 +289,65 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                  }
              }
          }
-         [weakSelf.tableViewPlan reloadData];
+         [weakSelf groupPlanDay:weakSelf.arrayPlanDay];
      }];
+}
+
+- (void)groupPlanDay:(NSArray *)array
+{
+    self.arrayDayDateKey = [NSMutableArray array];
+    [self.arrayDayDateKey addObject:@"很紧急"];
+    [self.arrayDayDateKey addObject:@"一般急"];
+    [self.arrayDayDateKey addObject:@"不紧急"];
+    self.dictDayPlan = [NSMutableDictionary dictionary];
+    
+    NSString *key = @"";
+    for (NSInteger i = 0; i < array.count; i++)
+    {
+        Plan *plan = array[i];
+
+        if ([plan.planLevel isEqualToString:@"2"])
+        {
+            key = @"很紧急";
+        }
+        else if ([plan.planLevel isEqualToString:@"1"])
+        {
+            key = @"一般急";
+        }
+        else
+        {
+            key = @"不紧急";
+        }
+        NSMutableArray *arrayLevel = [self.dictDayPlan objectForKey:key];
+        if (!arrayLevel)
+        {
+            arrayLevel = [[NSMutableArray alloc] init];
+            [self.dictDayPlan setValue:arrayLevel forKey:key];
+        }
+        [arrayLevel addObject:plan];
+    }
+    //----------------去掉没有子项的section-----------------------------------------
+    NSMutableArray *arrayLevel2 = [self.dictDayPlan objectForKey:@"很紧急"];
+    if (!arrayLevel2 || arrayLevel2.count == 0)
+    {
+        [self.arrayDayDateKey removeObject:@"很紧急"];
+    }
+    NSMutableArray *arrayLevel1 = [self.dictDayPlan objectForKey:@"一般急"];
+    if (!arrayLevel1 || arrayLevel1.count == 0)
+    {
+        [self.arrayDayDateKey removeObject:@"一般急"];
+    }
+    NSMutableArray *arrayLevel0 = [self.dictDayPlan objectForKey:@"不紧急"];
+    if (!arrayLevel0 || arrayLevel0.count == 0)
+    {
+        [self.arrayDayDateKey removeObject:@"不紧急"];
+    }
+    //----------------------------------------------------------------------------
+    NSUInteger sections = self.arrayDayDateKey.count;
+    self.daySectionFlag = (BOOL *)malloc(sections * sizeof(BOOL));
+    memset((void *)self.daySectionFlag, YES, sections * sizeof(BOOL));
+
+    [self.tableViewPlan reloadData];
 }
 
 - (void)getPlanFuture
@@ -333,6 +390,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                  plan.account = [obj objectForKey:@"userObjectId"];
                  plan.planid = obj.objectId;
                  plan.content = [obj objectForKey:@"content"];
+                 plan.planLevel = [obj objectForKey:@"planLevel"];
                  plan.createtime = [obj objectForKey:@"createdTime"];
                  plan.completetime = [obj objectForKey:@"completedTime"];
                  plan.updatetime = [obj objectForKey:@"updatedTime"];
@@ -417,15 +475,6 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     self.futureSectionFlag = (BOOL *)malloc(sections * sizeof(BOOL));
     memset((void *)self.futureSectionFlag, YES, sections * sizeof(BOOL));
 
-    if (self.futureStart < self.futureTotal)
-    {
-        self.futureStart += kPlanLoadMax;
-        [self.tableViewPlan.mj_footer endRefreshing];
-    }
-    else
-    {
-        [self.tableViewPlan.mj_footer endRefreshingWithNoMoreData];
-    }
     [self.tableViewPlan reloadData];
 }
 
@@ -470,6 +519,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                  plan.account = [obj objectForKey:@"userObjectId"];
                  plan.planid = obj.objectId;
                  plan.content = [obj objectForKey:@"content"];
+                 plan.planLevel = [obj objectForKey:@"planLevel"];
                  plan.createtime = [obj objectForKey:@"createdTime"];
                  plan.completetime = [obj objectForKey:@"completedTime"];
                  plan.updatetime = [obj objectForKey:@"updatedTime"];
@@ -494,9 +544,9 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 
 - (void)groupPlanDone:(NSArray *)array
 {
-    self.arrayDayDateKey = [NSMutableArray array];
-    self.dictDayPlan = [NSMutableDictionary dictionary];
-    NSMutableArray *arrayDayDateKeyTmp = [NSMutableArray array];
+    self.arrayDoneDateKey = [NSMutableArray array];
+    self.dictDonePlan = [NSMutableDictionary dictionary];
+    NSMutableArray *arrayDoneDateKeyTmp = [NSMutableArray array];
     
     NSString *key = @"";
     for (NSInteger i = 0; i < array.count; i++)
@@ -505,34 +555,25 @@ NSUInteger const kPlanCellDeleteTag = 9527;
         
         key = plan.beginDate;
         
-        NSMutableArray *dateArray = [self.dictDayPlan objectForKey:key];
+        NSMutableArray *dateArray = [self.dictDonePlan objectForKey:key];
         if (!dateArray)
         {
             dateArray = [[NSMutableArray alloc] init];
-            [self.dictDayPlan setValue:dateArray forKey:key];
-            [arrayDayDateKeyTmp addObject:key];
+            [self.dictDonePlan setValue:dateArray forKey:key];
+            [arrayDoneDateKeyTmp addObject:key];
         }
         
         [dateArray addObject:plan];
     }
-    [self.arrayDayDateKey addObjectsFromArray:arrayDayDateKeyTmp];
+    [self.arrayDoneDateKey addObjectsFromArray:arrayDoneDateKeyTmp];
     //日期降序排列
-    self.arrayDayDateKey = [NSMutableArray arrayWithArray:[CommonFunction arraySort:self.arrayDayDateKey ascending:NO]];
+    self.arrayDoneDateKey = [NSMutableArray arrayWithArray:[CommonFunction arraySort:self.arrayDoneDateKey ascending:NO]];
     
-    NSUInteger sections = self.arrayDayDateKey.count;
-    self.daySectionFlag = (BOOL *)malloc(sections * sizeof(BOOL));
-    memset((void *)self.daySectionFlag, NO, sections * sizeof(BOOL));
-    self.daySectionFlag[0] = !self.daySectionFlag[0];
+    NSUInteger sections = self.arrayDoneDateKey.count;
+    self.doneSectionFlag = (BOOL *)malloc(sections * sizeof(BOOL));
+    memset((void *)self.doneSectionFlag, NO, sections * sizeof(BOOL));
+    self.doneSectionFlag[0] = !self.doneSectionFlag[0];
     
-    if (self.dayStart < self.dayTotal)
-    {
-        self.dayStart += kPlanLoadMax;
-        [self.tableViewPlan.mj_footer endRefreshing];
-    }
-    else
-    {
-        [self.tableViewPlan.mj_footer endRefreshingWithNoMoreData];
-    }
     [self.tableViewPlan reloadData];
 }
 
@@ -568,6 +609,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                  plan.account = [obj objectForKey:@"userObjectId"];
                  plan.planid = obj.objectId;
                  plan.content = [obj objectForKey:@"content"];
+                 plan.planLevel = [obj objectForKey:@"planLevel"];
                  plan.createtime = [obj objectForKey:@"createdTime"];
                  plan.completetime = [obj objectForKey:@"completedTime"];
                  plan.updatetime = [obj objectForKey:@"updatedTime"];
@@ -605,7 +647,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 #pragma mark - UITableViewDataSource
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    if (self.searchKeyword.length || self.segmentIndex == 0)
+    if (self.searchKeyword.length)
     {
         return 1;
     }
@@ -613,11 +655,15 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     {
         if (self.segmentIndex == 2)
         {
-            return self.dictDayPlan.count;
+            return self.dictDonePlan.count;
+        }
+        else if (self.segmentIndex == 1)
+        {
+            return self.dictFuturePlan.count;
         }
         else
         {
-            return self.dictFuturePlan.count;
+            return self.dictDayPlan.count;
         }
     }
 }
@@ -634,7 +680,23 @@ NSUInteger const kPlanCellDeleteTag = 9527;
         {
             case 0:
             {
-                return self.arrayPlanDay.count;
+                if(self.arrayDayDateKey.count)
+                {
+                    if (self.daySectionFlag[section])
+                    {
+                        NSString *key = self.arrayDayDateKey[section];
+                        NSArray *dateArray = [self.dictDayPlan objectForKey:key];
+                        return dateArray.count;
+                    }
+                    else
+                    {
+                        return 0;
+                    }
+                }
+                else
+                {
+                    return 0;
+                }
             }
             case 1:
             {
@@ -658,12 +720,12 @@ NSUInteger const kPlanCellDeleteTag = 9527;
             }
             case 2:
             {
-                if(self.arrayDayDateKey.count)
+                if(self.arrayDoneDateKey.count)
                 {
-                    if (self.daySectionFlag[section])
+                    if (self.doneSectionFlag[section])
                     {
-                        NSString *key = self.arrayDayDateKey[section];
-                        NSArray *dateArray = [self.dictDayPlan objectForKey:key];
+                        NSString *key = self.arrayDoneDateKey[section];
+                        NSArray *dateArray = [self.dictDonePlan objectForKey:key];
                         return dateArray.count;
                     }
                     else
@@ -719,21 +781,26 @@ NSUInteger const kPlanCellDeleteTag = 9527;
         {
             case 0:
             {
-                if (indexPath.row < self.arrayPlanDay.count)
+                if(indexPath.section < self.arrayDayDateKey.count)
                 {
-                    static NSString *everydayCellIdentifier = @"everydayCellIdentifier";
-                    PlanCell *cell = [tableView dequeueReusableCellWithIdentifier:everydayCellIdentifier];
-                    if(!cell)
+                    NSString *dateKey = self.arrayDayDateKey[indexPath.section];
+                    NSArray *planArray = [self.dictDayPlan objectForKey:dateKey];
+                    if (indexPath.row < planArray.count)
                     {
-                        cell = [[PlanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:everydayCellIdentifier];
+                        static NSString *dayCellIdentifier = @"dayCellIdentifier";
+                        PlanCell *cell = [tableView dequeueReusableCellWithIdentifier:dayCellIdentifier];
+                        if(!cell)
+                        {
+                            cell = [[PlanCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:dayCellIdentifier];
+                        }
+                        Plan *plan = planArray[indexPath.row];
+                        cell.plan = plan;
+                        cell.isDone = plan.iscompleted;
+                        cell.moveContentView.backgroundColor = [UIColor whiteColor];
+                        cell.backgroundColor = [UIColor whiteColor];
+                        cell.delegate = self;
+                        return cell;
                     }
-                    Plan *plan = self.arrayPlanDay[indexPath.row];
-                    cell.plan = plan;
-                    cell.isDone = plan.iscompleted;
-                    cell.moveContentView.backgroundColor = [UIColor whiteColor];
-                    cell.backgroundColor = [UIColor whiteColor];
-                    cell.delegate = self;
-                    return cell;
                 }
             }
                 break;
@@ -764,10 +831,10 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                 break;
             case 2:
             {
-                if(indexPath.section < self.arrayDayDateKey.count)
+                if(indexPath.section < self.arrayDoneDateKey.count)
                 {
-                    NSString *dateKey = self.arrayDayDateKey[indexPath.section];
-                    NSArray *planArray = [self.dictDayPlan objectForKey:dateKey];
+                    NSString *dateKey = self.arrayDoneDateKey[indexPath.section];
+                    NSArray *planArray = [self.dictDonePlan objectForKey:dateKey];
                     if (indexPath.row < planArray.count)
                     {
                         static NSString *doneCellIdentifier = @"doneCellIdentifier";
@@ -794,39 +861,15 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     return [[UITableViewCell alloc] init];
 }
 
-- (UITableViewCell *)createNoDataCell:(UITableView *)tableView indexPath:(NSIndexPath *)indexPath tips:(NSString *)tips
-{
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    static NSString *noDataCellIdentifier = @"noDataCellIdentifier";
-    
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noDataCellIdentifier];
-    if (!cell)
-    {
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noDataCellIdentifier];
-        cell.backgroundColor = [UIColor clearColor];
-        cell.contentView.backgroundColor = [UIColor clearColor];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        cell.textLabel.text = @"";
-        cell.textLabel.frame = cell.contentView.bounds;
-        cell.textLabel.textAlignment = NSTextAlignmentCenter;
-        cell.textLabel.textColor = [UIColor lightGrayColor];
-        cell.textLabel.font = font_Bold_16;
-    }
-    if (indexPath.row == 2)
-    {
-        cell.textLabel.text = tips;
-    }
-    return cell;
-}
-
 #pragma mark - UITableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    if (self.segmentIndex == 0
+    if ((self.segmentIndex == 0
+         && self.arrayDayDateKey.count == 0)
         || (self.segmentIndex == 1
          && self.arrayFutureDateKey.count == 0)
         || (self.segmentIndex == 2
-            && self.arrayDayDateKey.count == 0)
+            && self.arrayDoneDateKey.count == 0)
         || self.searchKeyword.length > 0)
     {
         return 0.1f;
@@ -839,17 +882,17 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    if (self.searchKeyword.length || self.segmentIndex == 0)
+    if (self.searchKeyword.length)
     {
         return [[UIView alloc] init];
     }
     else
     {
         PlanSectionView *view;
-        if (self.segmentIndex == 2 && self.arrayDayDateKey.count > section)
+        if (self.segmentIndex == 2 && self.arrayDoneDateKey.count > section)
         {
-            NSString *date = self.arrayDayDateKey[section];
-            NSArray *planArray = [self.dictDayPlan objectForKey:date];
+            NSString *date = self.arrayDoneDateKey[section];
+            NSArray *planArray = [self.dictDonePlan objectForKey:date];
             NSDictionary *dic = [self isAllDone:planArray];
             NSString *count = [dic objectForKey:@"count"];
             BOOL isAllDone = [[dic objectForKey:@"isAllDone"] boolValue];
@@ -857,12 +900,12 @@ NSUInteger const kPlanCellDeleteTag = 9527;
             
             view = [[PlanSectionView alloc] initWithTitle:date count:count isAllDone:isAllDone];
             view.sectionIndex = section;
-            if (self.daySectionFlag[section])
+            if (self.doneSectionFlag[section])
                 [view toggleArrow];
             [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sectionClickedAction:)]];
             return view;
         }
-        else
+        else if (self.segmentIndex == 1 && self.arrayFutureDateKey.count > section)
         {
             NSString *date = self.arrayFutureDateKey[section];
             BOOL isAllDone = YES;
@@ -877,6 +920,16 @@ NSUInteger const kPlanCellDeleteTag = 9527;
             [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sectionClickedAction:)]];
             return view;
         }
+        else
+        {
+            NSString *date = self.arrayDayDateKey[section];
+            view = [[PlanSectionView alloc] initWithTitle:date count:@"" isAllDone:YES];
+            view.sectionIndex = section;
+            if (self.daySectionFlag[section])
+                [view toggleArrow];
+            [view addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(sectionClickedAction:)]];
+            return view;
+        }
     }
 }
 
@@ -885,11 +938,11 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     [self.view endEditing:YES];
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     if ((self.segmentIndex == 2
-         && indexPath.section >= self.arrayDayDateKey.count)
+         && indexPath.section >= self.arrayDoneDateKey.count)
         || (self.segmentIndex == 1
             && indexPath.section >= self.arrayFutureDateKey.count)
         || (self.segmentIndex == 0
-            && indexPath.row >= self.arrayPlanDay.count)
+            && indexPath.row >= self.arrayDayDateKey.count)
         || (self.searchKeyword.length
             && indexPath.row >= self.arraySearchResult.count))
     {
@@ -906,7 +959,9 @@ NSUInteger const kPlanCellDeleteTag = 9527;
         {
             case 0:
             {
-                selectedPlan = self.arrayPlanDay[indexPath.row];
+                NSString *dateKey = self.arrayDayDateKey[indexPath.section];
+                NSArray *planArray = [self.dictDayPlan objectForKey:dateKey];
+                selectedPlan = planArray[indexPath.row];
             }
                 break;
             case 1:
@@ -918,8 +973,8 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                 break;
             case 2:
             {
-                NSString *dateKey = self.arrayDayDateKey[indexPath.section];
-                NSArray *planArray = [self.dictDayPlan objectForKey:dateKey];
+                NSString *dateKey = self.arrayDoneDateKey[indexPath.section];
+                NSArray *planArray = [self.dictDonePlan objectForKey:dateKey];
                 selectedPlan = planArray[indexPath.row];
             }
                 break;
@@ -1004,10 +1059,10 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     
     if (self.segmentIndex == 2)
     {
-        self.daySectionFlag[view.sectionIndex] = !self.daySectionFlag[view.sectionIndex];
+        self.doneSectionFlag[view.sectionIndex] = !self.doneSectionFlag[view.sectionIndex];
         [self.tableViewPlan reloadSections:[NSIndexSet indexSetWithIndex:view.sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
         //section自动上移
-        if (self.daySectionFlag[view.sectionIndex])
+        if (self.doneSectionFlag[view.sectionIndex])
         {
             NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:view.sectionIndex];
             [self.tableViewPlan scrollToRowAtIndexPath:indexPath atScrollPosition:UITableViewScrollPositionTop animated:YES];
@@ -1016,6 +1071,11 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     else if (self.segmentIndex == 1)
     {
         self.futureSectionFlag[view.sectionIndex] = !self.futureSectionFlag[view.sectionIndex];
+        [self.tableViewPlan reloadSections:[NSIndexSet indexSetWithIndex:view.sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+    else
+    {
+        self.daySectionFlag[view.sectionIndex] = !self.daySectionFlag[view.sectionIndex];
         [self.tableViewPlan reloadSections:[NSIndexSet indexSetWithIndex:view.sectionIndex] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
