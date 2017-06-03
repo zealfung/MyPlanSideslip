@@ -143,6 +143,8 @@
 		137C60841BBB6F0B00725662 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 133B07EF1BA133480015E752 /* libstdc++.dylib */; };
 		137C60851BBB6F1300725662 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 133B07F11BA133590015E752 /* JavaScriptCore.framework */; };
 		137C74CA1ED6BD0B008CC181 /* PopupNewAppVersionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 137C74C91ED6BD0B008CC181 /* PopupNewAppVersionView.m */; };
+		137C75461EE257B3008CC181 /* AHSegment.m in Sources */ = {isa = PBXBuildFile; fileRef = 137C75451EE257B3008CC181 /* AHSegment.m */; };
+		137C75491EE25BF9008CC181 /* AHSegmentPageView.m in Sources */ = {isa = PBXBuildFile; fileRef = 137C75481EE25BF9008CC181 /* AHSegmentPageView.m */; };
 		139A5D1E1C785B2200541106 /* StringConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 139A5D1D1C785B2100541106 /* StringConst.m */; };
 		13A6AC8D1BBFDDD6005A02F9 /* DataCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A6AC8C1BBFDDD6005A02F9 /* DataCenter.m */; };
 		13A6AC901BC3439E005A02F9 /* ThreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13A6AC8F1BC3439E005A02F9 /* ThreeViewController.m */; };
@@ -429,6 +431,10 @@
 		137C60911BBFD43200725662 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		137C74C81ED6BD0B008CC181 /* PopupNewAppVersionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PopupNewAppVersionView.h; sourceTree = "<group>"; };
 		137C74C91ED6BD0B008CC181 /* PopupNewAppVersionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PopupNewAppVersionView.m; sourceTree = "<group>"; };
+		137C75441EE257B3008CC181 /* AHSegment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHSegment.h; sourceTree = "<group>"; };
+		137C75451EE257B3008CC181 /* AHSegment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AHSegment.m; sourceTree = "<group>"; };
+		137C75471EE25BF9008CC181 /* AHSegmentPageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHSegmentPageView.h; sourceTree = "<group>"; };
+		137C75481EE25BF9008CC181 /* AHSegmentPageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AHSegmentPageView.m; sourceTree = "<group>"; };
 		139A5D1C1C785B2100541106 /* StringConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringConst.h; sourceTree = "<group>"; };
 		139A5D1D1C785B2100541106 /* StringConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StringConst.m; sourceTree = "<group>"; };
 		139A5E371C78614300541106 /* AHConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AHConst.h; sourceTree = "<group>"; };
@@ -755,6 +761,7 @@
 		135B21B01B900FD9005CE84A /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				137C75431EE25750008CC181 /* Segment */,
 				136DF2131D5DDEA300CFB8FF /* Clendar */,
 				1361AFB71BCBA5E700DD5FFB /* DoImagePicker */,
 				13D406971C3D00310089D702 /* DOPNavbarMenu */,
@@ -1180,6 +1187,17 @@
 			path = About;
 			sourceTree = "<group>";
 		};
+		137C75431EE25750008CC181 /* Segment */ = {
+			isa = PBXGroup;
+			children = (
+				137C75441EE257B3008CC181 /* AHSegment.h */,
+				137C75451EE257B3008CC181 /* AHSegment.m */,
+				137C75471EE25BF9008CC181 /* AHSegmentPageView.h */,
+				137C75481EE25BF9008CC181 /* AHSegmentPageView.m */,
+			);
+			path = Segment;
+			sourceTree = "<group>";
+		};
 		139A5D1B1C785A2400541106 /* Consts */ = {
 			isa = PBXGroup;
 			children = (
@@ -1581,10 +1599,12 @@
 				137470CB1C0AEB0300B7822A /* TaskRecord.m in Sources */,
 				131D6AC71C00AEB0009FDD72 /* UINavigationController+Util.m in Sources */,
 				137700E91B953521008C83FD /* AboutViewController.m in Sources */,
+				137C75461EE257B3008CC181 /* AHSegment.m in Sources */,
 				132263A21B9C7DC200D21637 /* LocalNotificationManager.m in Sources */,
 				13A6AC931BC344A2005A02F9 /* FatherTableViewController.m in Sources */,
 				130583E81E2DA8800090A930 /* PopupPlanRemarkView.m in Sources */,
 				13A6AC8D1BBFDDD6005A02F9 /* DataCenter.m in Sources */,
+				137C75491EE25BF9008CC181 /* AHSegmentPageView.m in Sources */,
 				135B21891B900394005CE84A /* main.m in Sources */,
 				13A6ACC71BC69E61005A02F9 /* PhotoDetailViewController.m in Sources */,
 				131D69E81BF37614009FDD72 /* Statistics.m in Sources */,
