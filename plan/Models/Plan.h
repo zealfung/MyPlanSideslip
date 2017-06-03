@@ -24,6 +24,8 @@ typedef NS_ENUM(NSUInteger, PlanType)
 @property (nonatomic, strong) NSString *account;
 /** 计划内容 */
 @property (nonatomic, strong) NSString *content;
+/** 计划等级：0 不紧急 1 一般急 2 非常急 */
+@property (nonatomic, strong) NSString *planLevel;
 /** 计划创建日期 */
 @property (nonatomic, strong) NSString *createtime;
 /** 计划开始日期 */
