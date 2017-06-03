@@ -15,17 +15,20 @@
 
 @implementation ChangePasswordViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = STRViewTitle15;
     [self setControls];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-- (void)setControls {
+- (void)setControls
+{
     self.txtOldPassword.placeholder = STRViewTips98;
     self.txtOldPassword.inputAccessoryView = [self getInputAccessoryView];
     self.txtNewPassword.placeholder = STRViewTips98;
@@ -33,33 +36,40 @@
     self.txtNewPasswordAgain.placeholder = STRViewTips100;
     self.txtNewPasswordAgain.inputAccessoryView = [self getInputAccessoryView];
     [self.txtOldPassword becomeFirstResponder];
-    self.btnSubmit.layer.cornerRadius = 5;
+    self.btnSubmit.layer.cornerRadius = 2;
+    self.btnSubmit.backgroundColor = color_Blue;
     [self.btnSubmit setAllTitle:STRViewTitle15];
 }
 
-- (IBAction)submitAction:(id)sender {
+- (IBAction)submitAction:(id)sender
+{
     [self.view endEditing:YES];
     if (![self checkInput]) return;
     [self submit];
 }
 
-- (BOOL)checkInput {
-    if (self.txtOldPassword.text.length == 0) {
+- (BOOL)checkInput
+{
+    if (self.txtOldPassword.text.length == 0)
+    {
         [self.txtOldPassword becomeFirstResponder];
         [self alertToastMessage:STRViewTips98];
         return NO;
     }
-    if (self.txtNewPassword.text.length == 0) {
+    if (self.txtNewPassword.text.length == 0)
+    {
         [self.txtNewPassword becomeFirstResponder];
         [self alertToastMessage:STRViewTips98];
         return NO;
     }
-    if (self.txtNewPasswordAgain.text.length == 0) {
+    if (self.txtNewPasswordAgain.text.length == 0)
+    {
         [self.txtNewPasswordAgain becomeFirstResponder];
         [self alertToastMessage:STRViewTips100];
         return NO;
     }
-    if (![self.txtNewPassword.text isEqualToString:self.txtNewPasswordAgain.text]) {
+    if (![self.txtNewPassword.text isEqualToString:self.txtNewPasswordAgain.text])
+    {
         self.txtNewPasswordAgain.text = @"";
         [self.txtNewPasswordAgain becomeFirstResponder];
         [self alertToastMessage:STRViewTips101];
@@ -68,29 +78,41 @@
     return YES;
 }
 
-- (void)submit {
+- (void)submit
+{
     [self showHUD];
     __weak typeof(self) weakSelf = self;
     BmobUser *user = [BmobUser currentUser];
-    [user updateCurrentUserPasswordWithOldPassword:self.txtOldPassword.text newPassword:self.txtNewPassword.text block:^(BOOL isSuccessful, NSError *error) {
-        if (isSuccessful) {
+    [user updateCurrentUserPasswordWithOldPassword:self.txtOldPassword.text newPassword:self.txtNewPassword.text block:^(BOOL isSuccessful, NSError *error)
+     {
+        if (isSuccessful)
+        {
             //用新密码登录
-            [BmobUser loginInbackgroundWithAccount:user.username andPassword:self.txtNewPassword.text block:^(BmobUser *user, NSError *error) {
+            [BmobUser loginInbackgroundWithAccount:user.username andPassword:self.txtNewPassword.text block:^(BmobUser *user, NSError *error)
+            {
                 [weakSelf hideHUD];
-                if (error) {
+                if (error)
+                {
                     [weakSelf alertToastMessage:STRViewTips104];
                     NSLog(@"login error:%@",error);
-                } else {
+                }
+                else
+                {
                     [weakSelf alertToastMessage:STRViewTips102];
                 }
                 [NotificationCenter postNotificationName:NTFLogIn object:nil];
                 [weakSelf.navigationController popViewControllerAnimated:YES];
             }];
-        } else {
+        }
+        else
+        {
             [weakSelf hideHUD];
-            if ([error.description containsString:@"error=old password incorrect."]) {
+            if ([error.description containsString:@"error=old password incorrect."])
+            {
                 [weakSelf alertButtonMessage:STRViewTips105];
-            } else {
+            }
+            else
+            {
                 [weakSelf alertButtonMessage:STRViewTips103];
             }
             NSLog(@"change password error:%@",error);

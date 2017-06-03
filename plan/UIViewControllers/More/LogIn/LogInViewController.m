@@ -49,7 +49,8 @@
         [self.txtPassword becomeFirstResponder];
     }
     
-    self.btnLogIn.layer.cornerRadius = 5;
+    self.btnLogIn.layer.cornerRadius = 2;
+    self.btnLogIn.backgroundColor = color_Blue;
     [self.btnLogIn setAllTitle:STRViewTitle25];
     [self.btnRegister setAllTitle:STRCommonTip24];
     [self.btnForgotPwd setAllTitle:STRCommonTip26];

@@ -37,7 +37,8 @@
     [self.txtEmail becomeFirstResponder];
     self.txtPassword.placeholder = STRViewTips92;
     self.txtPassword.inputAccessoryView = [self getInputAccessoryView];
-    self.btnRegister.layer.cornerRadius = 5;
+    self.btnRegister.layer.cornerRadius = 2;
+    self.btnRegister.backgroundColor = color_Blue;
     [self.btnRegister setAllTitle:STRCommonTip24];
     [self.btnforgotPwd setAllTitle:STRCommonTip26];
     self.labelTips.text = STRViewTips93;

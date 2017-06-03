@@ -33,7 +33,8 @@
     self.txtEmail.placeholder = STRViewTips86;
     self.txtEmail.inputAccessoryView = [self getInputAccessoryView];
     [self.txtEmail becomeFirstResponder];
-    self.btnSubmit.layer.cornerRadius = 5;
+    self.btnSubmit.layer.cornerRadius = 2;
+    self.btnSubmit.backgroundColor = color_Blue;
     [self.btnSubmit setAllTitle:STRViewTips96];
 }
 
@@ -43,7 +44,8 @@
     [self submit];
 }
 
-- (BOOL)checkInput {
+- (BOOL)checkInput
+{
     if (self.txtEmail.text.length == 0)
     {
         [self alertToastMessage:STRViewTips87];
