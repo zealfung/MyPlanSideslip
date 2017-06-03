@@ -14,6 +14,7 @@
 @interface PlanDetailNewViewController ()
 
 @property (strong, nonatomic) NSArray *arrayDone;
+@property (strong, nonatomic) NSArray *arrayPlanLevel;
 @property (strong, nonatomic) UIDatePicker *datePicker;
 @property (assign, nonatomic) BOOL isSelectBeginDate;
 
@@ -55,6 +56,17 @@
     itemUndo.itemName = @"未完成";
     itemUndo.itemValue = @"0";
     self.arrayDone = [NSArray arrayWithObjects:itemDone, itemUndo, nil];
+    
+    SelectItem *itemLevel0 = [[SelectItem alloc] init];
+    itemLevel0.itemName = @"不紧急";
+    itemLevel0.itemValue = @"0";
+    SelectItem *itemLevel1 = [[SelectItem alloc] init];
+    itemLevel1.itemName = @"一般急";
+    itemLevel1.itemValue = @"1";
+    SelectItem *itemLevel2 = [[SelectItem alloc] init];
+    itemLevel2.itemName = @"很紧急";
+    itemLevel2.itemValue = @"2";
+    self.arrayPlanLevel = [NSArray arrayWithObjects:itemLevel0, itemLevel1, itemLevel2, nil];
 }
 
 - (void)showDatePicker
@@ -146,6 +158,11 @@
 
     self.plan.isdeleted = @"0";
     
+    if (!self.plan.planLevel)
+    {
+        self.plan.planLevel = @"0";
+    }
+    
     if (![self.plan.isnotify isEqualToString:@"1"])
     {
         self.plan.isnotify = @"0";
@@ -182,6 +199,7 @@
              if (object)
              {
                  [object setObject:weakSelf.plan.content forKey:@"content"];
+                 [object setObject:weakSelf.plan.planLevel forKey:@"planLevel"];
                  [object setObject:weakSelf.plan.notifytime forKey:@"notifyTime"];
                  [object setObject:weakSelf.plan.isnotify forKey:@"isNotify"];
                  [object setObject:weakSelf.plan.beginDate forKey:@"beginDate"];
@@ -234,7 +252,7 @@
 {
     if (section == 0)
     {
-        return 4;
+        return 5;
     }
     else
     {
@@ -244,10 +262,10 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ((indexPath.section == 0 && indexPath.row == 3)
+    if ((indexPath.section == 0 && indexPath.row == 4)
         || (indexPath.section == 1 && indexPath.row == 0))
     {
-        return 150.f;
+        return 300.f;
     }
     else
     {
@@ -313,6 +331,13 @@
             case 2:
             {
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+                cell.textLabel.text = @"紧急等级";
+                cell.detailTextLabel.text = [CommonFunction getPlanLevelStringForShow:self.plan.planLevel];
+            }
+                break;
+            case 3:
+            {
+                cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.textLabel.text = @"完成状态";
                 if ([self.plan.iscompleted isEqualToString:@"1"])
                 {
@@ -324,7 +349,7 @@
                 }
             }
                 break;
-            case 3:
+            case 4:
             {
                 __weak typeof(self) weakSelf = self;
                 PlanAddCell *cell1 = [PlanAddCell cellView];
@@ -384,11 +409,29 @@
         }
             break;
         case 2:
+            [self toSetPlanLevel];
+            break;
+        case 3:
             [self toSetPlanDoneOrUndo];
             break;
         default:
             break;
     }
+}
+
+- (void)toSetPlanLevel
+{
+    __weak typeof(self) weakSelf = self;
+    SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
+    controller.viewTitle = @"紧急等级";
+    controller.arrayData = self.arrayPlanLevel;
+    controller.selectedValue = self.plan.planLevel;
+    controller.SelectedDelegate = ^(NSString *selectedValue)
+    {
+        weakSelf.plan.planLevel = selectedValue;
+        [weakSelf.tableView reloadData];
+    };
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)toSetPlanDoneOrUndo

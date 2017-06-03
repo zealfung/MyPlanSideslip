@@ -81,6 +81,9 @@
 /** 计划提醒时间显示格式：今天，明天，或日期 */
 + (NSString *)getNotifyTimeStringForShow:(NSString *)time;
 
+/** 计划紧急等级显示格式：很紧急，一般急，或不紧急 */
++ (NSString *)getPlanLevelStringForShow:(NSString *)level;
+
 /** 计算剩余天数，toDay格式：2016-03-18 */
 + (NSInteger)howManyDaysLeft:(NSString*)toDay;
 

@@ -8,10 +8,12 @@
 
 #import "PlanAddCell.h"
 #import "PlanAddNewViewController.h"
+#import "SingleSelectedViewController.h"
 
 @interface PlanAddNewViewController ()
 
 @property (strong, nonatomic) Plan *plan;
+@property (strong, nonatomic) NSArray *arrayPlanLevel;
 @property (strong, nonatomic) UIDatePicker *datePicker;
 @property (assign, nonatomic) BOOL isSelectBeginDate;
 
@@ -31,6 +33,7 @@
      }];
     
     [self initView];
+    [self initSelectItem];
 }
 
 - (void)didReceiveMemoryWarning
@@ -41,8 +44,23 @@
 - (void)initView
 {
     self.plan = [Plan new];
+    self.plan.planLevel = @"0";
     self.plan.beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     self.tableView.tableFooterView = [[UIView alloc] init];
+}
+
+- (void)initSelectItem
+{
+    SelectItem *itemLevel0 = [[SelectItem alloc] init];
+    itemLevel0.itemName = @"不紧急";
+    itemLevel0.itemValue = @"0";
+    SelectItem *itemLevel1 = [[SelectItem alloc] init];
+    itemLevel1.itemName = @"一般急";
+    itemLevel1.itemValue = @"1";
+    SelectItem *itemLevel2 = [[SelectItem alloc] init];
+    itemLevel2.itemName = @"很紧急";
+    itemLevel2.itemValue = @"2";
+    self.arrayPlanLevel = [NSArray arrayWithObjects:itemLevel0, itemLevel1, itemLevel2, nil];
 }
 
 - (void)showDatePicker
@@ -145,6 +163,7 @@
     BmobObject *newPlan = [BmobObject objectWithClassName:@"Plan"];
     NSDictionary *dic = @{@"userObjectId":user.objectId,
                           @"content":self.plan.content,
+                          @"planLevel":self.plan.planLevel,
                           @"notifyTime":self.plan.notifytime,
                           @"isCompleted":self.plan.iscompleted,
                           @"isNotify":self.plan.isnotify,
@@ -188,14 +207,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 4;
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 2)
+    if (indexPath.row == 3)
     {
-        return 150.f;
+        return 300.f;
     }
     else
     {
@@ -246,6 +265,13 @@
             break;
         case 2:
         {
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+            cell.textLabel.text = @"紧急等级";
+            cell.detailTextLabel.text = [CommonFunction getPlanLevelStringForShow:self.plan.planLevel];
+        }
+            break;
+        case 3:
+        {
             __weak typeof(self) weakSelf = self;
             PlanAddCell *cell1 = [PlanAddCell cellView];
             cell1.accessoryType = UITableViewCellAccessoryNone;
@@ -289,9 +315,27 @@
             }
         }
             break;
+        case 2:
+            [self toSetPlanLevel];
+            break;
         default:
             break;
     }
+}
+
+- (void)toSetPlanLevel
+{
+    __weak typeof(self) weakSelf = self;
+    SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
+    controller.viewTitle = @"紧急等级";
+    controller.arrayData = self.arrayPlanLevel;
+    controller.selectedValue = self.plan.planLevel;
+    controller.SelectedDelegate = ^(NSString *selectedValue)
+    {
+        weakSelf.plan.planLevel = selectedValue;
+        [weakSelf.tableView reloadData];
+    };
+    [self.navigationController pushViewController:controller animated:YES];
 }
 
 @end

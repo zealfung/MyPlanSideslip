@@ -356,6 +356,23 @@ static NSString * const kKeyMinutes = @"minutes";
     }
 }
 
+// 计划紧急等级显示格式：很紧急，一般急，或不紧急
++ (NSString *)getPlanLevelStringForShow:(NSString *)level
+{
+    if ([level isEqualToString:@"2"])
+    {
+        return @"很紧急";
+    }
+    else if ([level isEqualToString:@"1"])
+    {
+        return @"一般急";
+    }
+    else
+    {
+        return @"不紧急";
+    }
+}
+
 /** toDay格式：2016-03-18 */
 + (NSInteger)howManyDaysLeft:(NSString*)toDay {
     NSCalendar *gregorian = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
