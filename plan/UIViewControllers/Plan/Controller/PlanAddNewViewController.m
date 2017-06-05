@@ -334,6 +334,7 @@
             break;
         case 2:
             [self toSetPlanLevel];
+            break;
         case 3:
             [self toSetPlanRepeat];
             break;
