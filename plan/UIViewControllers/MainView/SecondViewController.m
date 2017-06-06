@@ -99,7 +99,6 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     {
         NSTimeInterval last = [lastUpdatedTime timeIntervalSince1970];
         NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
-        
         if ((now-last)/60 > 5)
         {//大于五分钟，自动重载一次数据
             [self getPlanData];
@@ -107,6 +106,12 @@ NSUInteger const kPlanCellDeleteTag = 9527;
             [UserDefaults setObject:[NSDate date] forKey:STRPlanListFlag];
             [UserDefaults synchronize];
         }
+    }
+    else
+    {
+        //记录刷新时间
+        [UserDefaults setObject:[NSDate date] forKey:STRPlanListFlag];
+        [UserDefaults synchronize];
     }
 }
 
@@ -255,11 +260,12 @@ NSUInteger const kPlanCellDeleteTag = 9527;
      {
          [weakSelf hideHUD];
          weakSelf.isLoadingPlanDay = NO;
-         [weakSelf.tableViewPlan.mj_header endRefreshing];
-         [weakSelf.tableViewPlan.mj_footer endRefreshing];
          
          if (!error && array.count)
          {
+             [weakSelf.tableViewPlan.mj_header endRefreshing];
+             [weakSelf.tableViewPlan.mj_footer endRefreshing];
+             
              for (BmobObject *obj in array)
              {
                  Plan *plan = [[Plan alloc] init];
@@ -294,6 +300,11 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                      [CommonFunction cancelPlanNotification:plan.planid];
                  }
              }
+         }
+         else
+         {
+             [weakSelf.tableViewPlan.mj_header endRefreshing];
+             [weakSelf.tableViewPlan.mj_footer endRefreshingWithNoMoreData];
          }
          [weakSelf groupPlanDay:weakSelf.arrayPlanDay];
      }];
@@ -385,11 +396,12 @@ NSUInteger const kPlanCellDeleteTag = 9527;
      {
          [weakSelf hideHUD];
          weakSelf.isLoadingPlanFuture = NO;
-         [weakSelf.tableViewPlan.mj_header endRefreshing];
-         [weakSelf.tableViewPlan.mj_footer endRefreshing];
          
          if (!error && array.count)
          {
+             [weakSelf.tableViewPlan.mj_header endRefreshing];
+             [weakSelf.tableViewPlan.mj_footer endRefreshing];
+             
              for (BmobObject *obj in array)
              {
                  Plan *plan = [[Plan alloc] init];
@@ -409,6 +421,11 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                  plan.beginDate = [obj objectForKey:@"beginDate"];
                  [weakSelf.arrayPlanFuture addObject:plan];
              }
+         }
+         else
+         {
+             [weakSelf.tableViewPlan.mj_header endRefreshing];
+             [weakSelf.tableViewPlan.mj_footer endRefreshingWithNoMoreData];
          }
          [weakSelf groupPlanFuture:weakSelf.arrayPlanFuture];
      }];
@@ -514,11 +531,12 @@ NSUInteger const kPlanCellDeleteTag = 9527;
      {
          [weakSelf hideHUD];
          weakSelf.isLoadingPlanDone = NO;
-         [weakSelf.tableViewPlan.mj_header endRefreshing];
-         [weakSelf.tableViewPlan.mj_footer endRefreshing];
          
          if (!error && array.count)
          {
+             [weakSelf.tableViewPlan.mj_header endRefreshing];
+             [weakSelf.tableViewPlan.mj_footer endRefreshing];
+             
              for (BmobObject *obj in array)
              {
                  Plan *plan = [[Plan alloc] init];
@@ -543,6 +561,11 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                      [CommonFunction cancelPlanNotification:plan.planid];
                  }
              }
+         }
+         else
+         {
+             [weakSelf.tableViewPlan.mj_header endRefreshing];
+             [weakSelf.tableViewPlan.mj_footer endRefreshingWithNoMoreData];
          }
          [weakSelf groupPlanDone:weakSelf.arrayPlanDone];
      }];
