@@ -812,7 +812,7 @@ static int photoIndex;
     {
         for (BmobObject *obj in array)
         {
-            NSString *appVersion1 = [[obj objectForKey:@"appVserion"] stringValue];
+            NSString *appVersion1 = [obj objectForKey:@"appVersion"];
             NSString *appVersion2 = [CommonFunction getAppVersion];
             if ([appVersion1 isEqualToString:appVersion2])
             {
