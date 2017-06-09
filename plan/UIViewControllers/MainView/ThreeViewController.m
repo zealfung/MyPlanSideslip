@@ -79,7 +79,7 @@
     if (!flag)
     {
         self.isTableEditing = YES;
-        NSString *timenow = [CommonFunction getTimeNowString];
+        NSString *timenow = [Utils getTimeNowString];
         for (NSInteger i = 0; i < self.taskArray.count; i++)
         {
             Task *task = self.taskArray[i];

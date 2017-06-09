@@ -93,11 +93,11 @@
     self.bgImageView = imageView;
  
     {
-        NSString *version = [NSString stringWithFormat:@"%@%@", STRCommonTip47, [CommonFunction getAppVersion]];
+        NSString *version = [NSString stringWithFormat:@"%@%@", STRCommonTip47, [Utils getAppVersion]];
         UILabel *label = [[UILabel alloc] initWithFrame:CGRectMake(0,0,0,0)];
         [label setNumberOfLines:0];
         label.lineBreakMode = NSLineBreakByWordWrapping;
-        [label setTextColor:[CommonFunction getGenderColor]];
+        [label setTextColor:[Utils getGenderColor]];
         UIFont *font = font_Normal_16;
         [label setFont:font];
         [label setText:version];

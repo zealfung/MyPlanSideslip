@@ -1,5 +1,5 @@
 //
-//  CommonFunction.h
+//  Utils.h
 //  plan
 //
 //  Created by Fengzy on 15/9/2.
@@ -9,7 +9,7 @@
 #import "Plan.h"
 #import <Foundation/Foundation.h>
 
-@interface CommonFunction : NSObject
+@interface Utils : NSObject
 
 /** 获取设备型号 iPhone4、iPhone6 Plus */
 + (NSString *)getDeviceType;

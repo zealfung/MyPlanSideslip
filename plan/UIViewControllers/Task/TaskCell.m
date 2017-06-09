@@ -38,7 +38,7 @@
 
     [cellView.imgViewTomato setVisibility:UIViewVisibilityGone affectedMarginDirections:UIViewMarginDirectionAll];
     
-    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    NSString *date = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     if ([task.completionDate isEqualToString:date])
     {
         cellView.labelTask.textColor = color_0BA32A;
@@ -68,7 +68,7 @@
 
 - (IBAction)doneAction:(id)sender
 {
-    NSString *date = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    NSString *date = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     self.task.completionDate = date;
     NSString *count = self.task.totalCount;
     NSInteger totalCount = 0;
@@ -81,7 +81,7 @@
         totalCount ++;
     }
     self.task.totalCount = [NSString stringWithFormat:@"%ld", (long)totalCount];
-    NSString *time = [CommonFunction getTimeNowString];
+    NSString *time = [Utils getTimeNowString];
     self.task.updateTime = time;
     
     TaskRecord *taskRecord = [[TaskRecord alloc] init];

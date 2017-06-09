@@ -325,7 +325,7 @@ static NSMutableDictionary *__contactsOnlineState;
         {
             settings.syntime = @"2015-09-01 09:09:09";
         }
-        NSString *timeNow = [CommonFunction getTimeNowString];
+        NSString *timeNow = [Utils getTimeNowString];
         if (!settings.createtime || settings.createtime.length == 0)
         {
             settings.createtime = timeNow;
@@ -964,7 +964,7 @@ static NSMutableDictionary *__contactsOnlineState;
         }
         if (!message.createTime)
         {
-            message.createTime = [CommonFunction getTimeNowString];
+            message.createTime = [Utils getTimeNowString];
         }
         
         NSData *imgURLArrayData = [NSKeyedArchiver archivedDataWithRootObject:message.imgURLArray];
@@ -1050,7 +1050,7 @@ static NSMutableDictionary *__contactsOnlineState;
         {
             plan.account = @"";
         }
-        plan.updatetime = [CommonFunction getTimeNowString];
+        plan.updatetime = [Utils getTimeNowString];
         
         BOOL hasRec = NO;
         NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE planid=? AND account=?", STRTableName2];
@@ -1070,7 +1070,7 @@ static NSMutableDictionary *__contactsOnlineState;
             //取消提醒
             if (b && [plan.isnotify isEqualToString:@"1"])
             {
-                [CommonFunction cancelPlanNotification:plan.planid];
+                [Utils cancelPlanNotification:plan.planid];
             }
         }
         if (b)
@@ -1117,7 +1117,7 @@ static NSMutableDictionary *__contactsOnlineState;
             //取消提醒
             if (b && [plan.isnotify isEqualToString:@"1"])
             {
-                [CommonFunction cancelPlanNotification:plan.planid];
+                [Utils cancelPlanNotification:plan.planid];
             }
             
             if (b)
@@ -1151,7 +1151,7 @@ static NSMutableDictionary *__contactsOnlineState;
         {
             photo.account = @"";
         }
-        photo.updatetime = [CommonFunction getTimeNowString];
+        photo.updatetime = [Utils getTimeNowString];
         
         BOOL hasRec = NO;
         NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE photoid=? AND account=?", STRTableName3];
@@ -1240,7 +1240,7 @@ static NSMutableDictionary *__contactsOnlineState;
         {
             task.account = @"";
         }
-        task.updateTime = [CommonFunction getTimeNowString];
+        task.updateTime = [Utils getTimeNowString];
         
         BOOL hasRec = NO;
         NSString *sqlString = [NSString stringWithFormat:@"SELECT * FROM %@ WHERE taskId=? AND account=?", STRTableName5];
@@ -1521,12 +1521,12 @@ static NSMutableDictionary *__contactsOnlineState;
         NSString *order = @"";
         if (isEverydayPlan)
         {
-            condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
+            condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
             order = @"DESC";
         }
         else
         {
-            condition = [NSString stringWithFormat:@"datetime(beginDate)>datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
+            condition = [NSString stringWithFormat:@"datetime(beginDate)>datetime('%@')", [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
             order = @"ASC";
         }
         
@@ -1555,8 +1555,8 @@ static NSMutableDictionary *__contactsOnlineState;
             if (!plan.beginDate
                 || plan.beginDate.length == 0)
             {
-                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
-                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
+                NSDate *date = [Utils NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
+                plan.beginDate = [Utils NSDateToNSString:date formatter:STRDateFormatterType4];
             }
             
             [array addObject:plan];
@@ -1610,8 +1610,8 @@ static NSMutableDictionary *__contactsOnlineState;
             
             if (!plan.beginDate || plan.beginDate.length == 0)
             {
-                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
-                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
+                NSDate *date = [Utils NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
+                plan.beginDate = [Utils NSDateToNSString:date formatter:STRDateFormatterType4];
             }
             
             [array addObject:plan];
@@ -1642,7 +1642,7 @@ static NSMutableDictionary *__contactsOnlineState;
         NSString *condition = @"";
         NSString *order = @"";
 
-        condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
+        condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
         order = @"DESC";
 
         NSMutableArray *array = [NSMutableArray array];
@@ -1671,8 +1671,8 @@ static NSMutableDictionary *__contactsOnlineState;
             
             if (!plan.beginDate || plan.beginDate.length == 0)
             {
-                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
-                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
+                NSDate *date = [Utils NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
+                plan.beginDate = [Utils NSDateToNSString:date formatter:STRDateFormatterType4];
             }
             
             if (beginDate.length == 0)
@@ -1706,7 +1706,7 @@ static NSMutableDictionary *__contactsOnlineState;
 
 + (void)addRepeatPlan:(Plan *)plan
 {
-    NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    NSString *today = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
     [dateFormatter setDateFormat:STRDateFormatterType4];
     
@@ -1715,12 +1715,12 @@ static NSMutableDictionary *__contactsOnlineState;
         NSDate *inputDate = [dateFormatter dateFromString:plan.beginDate];
         NSDate *nextDate = [NSDate dateWithTimeInterval:24*60*60 sinceDate:inputDate];
         
-        NSString *timeNow = [CommonFunction getTimeNowString];
-        NSString *planid = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType5];
+        NSString *timeNow = [Utils getTimeNowString];
+        NSString *planid = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType5];
         
         Plan *planRepeat = [[Plan alloc]init];
         planRepeat.planid = planid;
-        planRepeat.beginDate = [CommonFunction NSDateToNSString:nextDate formatter:STRDateFormatterType4];
+        planRepeat.beginDate = [Utils NSDateToNSString:nextDate formatter:STRDateFormatterType4];
         planRepeat.createtime = timeNow;
         planRepeat.updatetime = timeNow;
         planRepeat.iscompleted = @"0";
@@ -1789,8 +1789,8 @@ static NSMutableDictionary *__contactsOnlineState;
             if (!plan.beginDate
                 || plan.beginDate.length == 0)
             {
-                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
-                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
+                NSDate *date = [Utils NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
+                plan.beginDate = [Utils NSDateToNSString:date formatter:STRDateFormatterType4];
             }
             
             [array addObject:plan];
@@ -2198,13 +2198,13 @@ static NSMutableDictionary *__contactsOnlineState;
         NSString *sqlString = @"";
         if ([type isEqualToString:@"DAY"])
         {
-            NSString *condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
+            NSString *condition = [NSString stringWithFormat:@"datetime(beginDate)<=datetime('%@')", [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
             sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE %@ AND account=? AND isdeleted=0", STRTableName2, condition];
             
         }
         else if ([type isEqualToString:@"FUTURE"])
         {
-            NSString *condition = [NSString stringWithFormat:@"datetime(beginDate)>datetime('%@')", [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
+            NSString *condition = [NSString stringWithFormat:@"datetime(beginDate)>datetime('%@')", [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4]];
             sqlString = [NSString stringWithFormat:@"SELECT COUNT(*) as total FROM %@ WHERE %@ AND account=? AND isdeleted=0", STRTableName2, condition];
 
         }
@@ -2408,11 +2408,11 @@ static NSMutableDictionary *__contactsOnlineState;
     
     if (hasFiveDayNotification)
     {//更新提醒时间
-        [CommonFunction updatePlanNotification:fiveDayPlan];
+        [Utils updatePlanNotification:fiveDayPlan];
     }
     else
     {//新建提醒
-        [CommonFunction addPlanNotification:fiveDayPlan];
+        [Utils addPlanNotification:fiveDayPlan];
     }
 }
 
@@ -2546,8 +2546,8 @@ static NSMutableDictionary *__contactsOnlineState;
             if (!plan.beginDate
                 || plan.beginDate.length == 0)
             {
-                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
-                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
+                NSDate *date = [Utils NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
+                plan.beginDate = [Utils NSDateToNSString:date formatter:STRDateFormatterType4];
             }
             
             [array addObject:plan];
@@ -2590,8 +2590,8 @@ static NSMutableDictionary *__contactsOnlineState;
             if (!plan.beginDate
                 || plan.beginDate.length == 0)
             {
-                NSDate *date = [CommonFunction NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
-                plan.beginDate = [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType4];
+                NSDate *date = [Utils NSStringDateToNSDate:plan.createtime formatter:STRDateFormatterType1];
+                plan.beginDate = [Utils NSDateToNSString:date formatter:STRDateFormatterType4];
             }
         }
         [rs close];

@@ -239,7 +239,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
     [bquery whereKey:@"isCompleted" notEqualTo:@"1"];
-    NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    NSString *today = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     //查询beginDate列中值早于今天的数据
     NSArray *array =  @[@{@"beginDate":@{@"$lte":today}}];
     [bquery addTheConstraintByOrOperationWithArray:array];
@@ -282,13 +282,13 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                      if ([plan.isRepeat isEqualToString:@"1"])
                      {
                          //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
-                         plan.notifytime = [CommonFunction updateNotifyTime:plan.notifytime];
+                         plan.notifytime = [Utils updateNotifyTime:plan.notifytime];
                      }
-                     [CommonFunction updatePlanNotification:plan];
+                     [Utils updatePlanNotification:plan];
                  }
                  else
                  {
-                     [CommonFunction cancelPlanNotification:plan.planid];
+                     [Utils cancelPlanNotification:plan.planid];
                  }
              }
          }
@@ -374,7 +374,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Plan"];
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
-    NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    NSString *today = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     //查询beginDate列中值晚于今天的数据
     NSArray *array =  @[@{@"beginDate":@{@"$gt":today}}];
     [bquery addTheConstraintByOrOperationWithArray:array];
@@ -436,8 +436,8 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     {
         Plan *plan = array[i];
         
-        NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
-        NSInteger days = [CommonFunction calculateDayFromDate:[NSDate date] toDate:beginDate];
+        NSDate *beginDate = [Utils NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
+        NSInteger days = [Utils calculateDayFromDate:[NSDate date] toDate:beginDate];
         
         if (days >= 0 && days < 1)
         {//
@@ -509,7 +509,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     [bquery whereKey:@"userObjectId" equalTo:user.objectId];
     [bquery whereKey:@"isDeleted" notEqualTo:@"1"];
     [bquery whereKey:@"isCompleted" equalTo:@"1"];
-    NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    NSString *today = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     //查询beginDate列中值早于今天的数据
     NSArray *array =  @[@{@"beginDate":@{@"$lte":today}}];
     [bquery addTheConstraintByOrOperationWithArray:array];
@@ -549,7 +549,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                  
                  if ([plan.isnotify isEqualToString:@"1"])
                  {
-                     [CommonFunction cancelPlanNotification:plan.planid];
+                     [Utils cancelPlanNotification:plan.planid];
                  }
              }
          }
@@ -587,7 +587,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     }
     [self.arrayDoneDateKey addObjectsFromArray:arrayDoneDateKeyTmp];
     //日期降序排列
-    self.arrayDoneDateKey = [NSMutableArray arrayWithArray:[CommonFunction arraySort:self.arrayDoneDateKey ascending:NO]];
+    self.arrayDoneDateKey = [NSMutableArray arrayWithArray:[Utils arraySort:self.arrayDoneDateKey ascending:NO]];
     
     NSUInteger sections = self.arrayDoneDateKey.count;
     self.doneSectionFlag = (BOOL *)malloc(sections * sizeof(BOOL));
@@ -820,9 +820,9 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                         if (plan.completetime.length)
                         {
                             NSDate *today = [NSDate date];
-                            NSString *todayString = [CommonFunction NSDateToNSString:today formatter:STRDateFormatterType4];
-                            NSDate *completeDate = [CommonFunction NSStringDateToNSDate:plan.completetime formatter:STRDateFormatterType1];
-                            NSString *completeDateString = [CommonFunction NSDateToNSString:completeDate formatter:STRDateFormatterType4];
+                            NSString *todayString = [Utils NSDateToNSString:today formatter:STRDateFormatterType4];
+                            NSDate *completeDate = [Utils NSStringDateToNSDate:plan.completetime formatter:STRDateFormatterType1];
+                            NSString *completeDateString = [Utils NSDateToNSString:completeDate formatter:STRDateFormatterType4];
                             if ([todayString isEqualToString:completeDateString])
                             {
                                 cell.moveContentView.backgroundColor = color_Green_Mint;
@@ -1033,9 +1033,9 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     NSDate *today = [NSDate date];
     NSDate *yesterday = [today dateByAddingTimeInterval:-24 * 3600];
     NSDate *tomorrow = [today dateByAddingTimeInterval:24 * 3600];
-    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:STRDateFormatterType4];
-    NSString *yesterdayString = [CommonFunction NSDateToNSString:yesterday formatter:STRDateFormatterType4];
-    NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:STRDateFormatterType4];
+    NSString *todayString = [Utils NSDateToNSString:today formatter:STRDateFormatterType4];
+    NSString *yesterdayString = [Utils NSDateToNSString:yesterday formatter:STRDateFormatterType4];
+    NSString *tomorrowString = [Utils NSDateToNSString:tomorrow formatter:STRDateFormatterType4];
     if ([date isEqualToString:todayString])
     {
         return [NSString stringWithFormat:@"%@ • %@", date, STRCommonTime2];
@@ -1057,7 +1057,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 - (BOOL)isToday:(NSString *)date
 {
     NSDate *today = [NSDate date];
-    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:STRDateFormatterType4];
+    NSString *todayString = [Utils NSDateToNSString:today formatter:STRDateFormatterType4];
     if ([date isEqualToString:todayString])
     {
         return YES;
@@ -1181,7 +1181,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 //修改计划完成状态
 - (void)changePlanCompleteStatus:(Plan *)plan
 {
-    NSString *timeNow = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType1];
+    NSString *timeNow = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType1];
     plan.updatetime = timeNow;
     //1完成 0未完成
     if ([plan.iscompleted isEqualToString:@"0"])
@@ -1196,11 +1196,11 @@ NSUInteger const kPlanCellDeleteTag = 9527;
         }
         plan.completetime = timeNow;
         //如果预计开始时间是在今天之后的，属于提前完成，把预计开始时间设成今天
-        NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
-        NSInteger days = [CommonFunction calculateDayFromDate:[NSDate date] toDate:beginDate];
+        NSDate *beginDate = [Utils NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
+        NSInteger days = [Utils calculateDayFromDate:[NSDate date] toDate:beginDate];
         if (days > 0)
         {
-            plan.beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+            plan.beginDate = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
         }
         
         __weak typeof(self) weakSelf = self;
@@ -1266,8 +1266,8 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 - (void)addDonePlan:(Plan *)plan
 {
     plan.iscompleted = @"1";
-    plan.beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
-    NSString *timeNow = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType1];
+    plan.beginDate = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    NSString *timeNow = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType1];
     plan.updatetime = timeNow;
     plan.completetime = timeNow;
 
@@ -1322,7 +1322,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                     {
                         if ([plan.isnotify isEqualToString:@"1"])
                         {
-                            [CommonFunction cancelPlanNotification:object.objectId];
+                            [Utils cancelPlanNotification:object.objectId];
                         }
                         [NotificationCenter postNotificationName:NTFPlanSave object:nil];
                         [weakSelf alertToastMessage:STRCommonTip16];

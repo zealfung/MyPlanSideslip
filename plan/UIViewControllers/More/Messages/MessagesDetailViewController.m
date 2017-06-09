@@ -124,7 +124,7 @@
         button.backgroundColor = [UIColor clearColor];
         button.titleLabel.font = font_Normal_16;
         [button setAllTitle:STRViewTips114];
-        [button setAllTitleColor:[CommonFunction getGenderColor]];
+        [button setAllTitleColor:[Utils getGenderColor]];
         [button addTarget:self action:@selector(detailAction:) forControlEvents:UIControlEventTouchUpInside];
         [scrollView addSubview:button];
     }

@@ -249,14 +249,14 @@
                                   && [isCompleted isEqualToString:@"0"])
                               {
                                   //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
-                                  weakSelf.plan.notifytime = [CommonFunction updateNotifyTime:weakSelf.plan.notifytime];
+                                  weakSelf.plan.notifytime = [Utils updateNotifyTime:weakSelf.plan.notifytime];
                               }
                               
-                              [CommonFunction updatePlanNotification:weakSelf.plan];
+                              [Utils updatePlanNotification:weakSelf.plan];
                           }
                           else
                           {
-                              [CommonFunction cancelPlanNotification:weakSelf.plan.planid];
+                              [Utils cancelPlanNotification:weakSelf.plan.planid];
                           }
                           [NotificationCenter postNotificationName:NTFPlanSave object:nil];
                           [weakSelf.tableView reloadData];
@@ -279,8 +279,8 @@
 - (void)addDonePlan:(Plan *)plan
 {
     plan.iscompleted = @"1";
-    plan.beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
-    NSString *timeNow = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType1];
+    plan.beginDate = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    NSString *timeNow = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType1];
     plan.updatetime = timeNow;
     plan.completetime = timeNow;
     
@@ -380,7 +380,7 @@
             {
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.textLabel.text = @"开始时间";
-                cell.detailTextLabel.text = [CommonFunction getBeginDateStringForShow:self.plan.beginDate];
+                cell.detailTextLabel.text = [Utils getBeginDateStringForShow:self.plan.beginDate];
             }
                 break;
             case 1:
@@ -389,7 +389,7 @@
                 cell.textLabel.text = @"设置提醒";
                 if ([self.plan.isnotify isEqualToString:@"1"])
                 {
-                    cell.detailTextLabel.text = [CommonFunction getBeginDateStringForShow:self.plan.notifytime];
+                    cell.detailTextLabel.text = [Utils getBeginDateStringForShow:self.plan.notifytime];
                 }
                 else
                 {
@@ -401,7 +401,7 @@
             {
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.textLabel.text = @"紧急等级";
-                cell.detailTextLabel.text = [CommonFunction getPlanLevelStringForShow:self.plan.planLevel];
+                cell.detailTextLabel.text = [Utils getPlanLevelStringForShow:self.plan.planLevel];
             }
                 break;
             case 3:
@@ -422,7 +422,7 @@
             {
                 cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 cell.textLabel.text = @"每天重复";
-                cell.detailTextLabel.text = [CommonFunction getRepeatStringForShow:self.plan.isRepeat];
+                cell.detailTextLabel.text = [Utils getRepeatStringForShow:self.plan.isRepeat];
             }
                 break;
             case 5:

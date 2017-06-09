@@ -9,8 +9,8 @@
 #ifndef plan_Function_h
 #define plan_Function_h
 
+#import "Utils.h"
 #import "Config.h"
 #import "CommonEnum.h"
-#import "CommonFunction.h"
 
 #endif

@@ -95,7 +95,7 @@ NSInteger const kDeleteTag = 20160110;
         NSString *reportIcon = isAuthor ? png_Btn_Delete66 : png_Btn_Report;
         DOPNavbarMenuItem *itemReport = [DOPNavbarMenuItem ItemWithTitle:reportTitle icon:[UIImage imageNamed:reportIcon]];
         menu = [[DOPNavbarMenu alloc] initWithItems:@[itemRefresh,itemShare,itemReport] width:self.view.dop_width maximumNumberInRow:numberOfItemsInRow];
-        menu.backgroundColor = [CommonFunction getGenderColor];
+        menu.backgroundColor = [Utils getGenderColor];
         menu.separatarColor = [UIColor whiteColor];
         menu.delegate = self;
     }
@@ -284,7 +284,7 @@ NSInteger const kDeleteTag = 20160110;
     tsViewNickname.leftButton.titleLabel.textAlignment = NSTextAlignmentLeft;
     if (level) {
         tsViewNickname.centerButton.adjustsImageWhenDisabled = NO;
-        [tsViewNickname.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+        [tsViewNickname.centerButton setImage:[Utils getUserLevelIcon:level] forState:UIControlStateNormal];
     }
     
     tsViewNickname.fixCenterWidth = 18;
@@ -294,7 +294,7 @@ NSInteger const kDeleteTag = 20160110;
     UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(53, 23, WIDTH_FULL_SCREEN / 2, 20)];
     labelDate.textColor = color_666666;
     labelDate.font = font_Normal_13;
-    labelDate.text = [CommonFunction intervalSinceNow:self.posts.createdAt];
+    labelDate.text = [Utils intervalSinceNow:self.posts.createdAt];
     [self.headerView addSubview:labelDate];
     //精华帖
     if ([isHighlight isEqualToString:@"1"]) {
@@ -356,7 +356,7 @@ NSInteger const kDeleteTag = 20160110;
     if (level) {
         tsViewNickname.centerButton.enabled = NO;
         tsViewNickname.centerButton.adjustsImageWhenDisabled = NO;
-        [tsViewNickname.centerButton setImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+        [tsViewNickname.centerButton setImage:[Utils getUserLevelIcon:level] forState:UIControlStateNormal];
         tsViewNickname.fixCenterWidth = 15;
     } else {
         tsViewNickname.fixCenterWidth = 0;
@@ -407,7 +407,7 @@ NSInteger const kDeleteTag = 20160110;
     [tsViewLikes.rightButton.titleLabel setFont:font_Normal_11];
     [tsViewLikes.rightButton setAllTitle:STRCommonTip39];
     if (likesCount > 0) {
-        [tsViewLikes.rightButton setAllTitle:[NSString stringWithFormat:@"%@%@", [CommonFunction checkNumberForThousand:likesCount], STRCommonTip39]];
+        [tsViewLikes.rightButton setAllTitle:[NSString stringWithFormat:@"%@%@", [Utils checkNumberForThousand:likesCount], STRCommonTip39]];
     } else {
         [tsViewLikes.rightButton setAllTitle:STRCommonTip39];
     }
@@ -429,7 +429,7 @@ NSInteger const kDeleteTag = 20160110;
     UILabel *labelDate = [[UILabel alloc] initWithFrame:CGRectMake(40, 15, WIDTH_FULL_SCREEN / 2, 15)];
     labelDate.textColor = color_666666;
     labelDate.font = font_Normal_11;
-    labelDate.text = [CommonFunction intervalSinceNow:comment.createdAt];
+    labelDate.text = [Utils intervalSinceNow:comment.createdAt];
     [view addSubview:labelDate];
 
     CGFloat yOffset = 35;
@@ -503,7 +503,7 @@ NSInteger const kDeleteTag = 20160110;
         [self.bottomBtnView.leftButton setAllTitleColor:color_Red];
     }
     NSInteger likesCount = [[self.posts objectForKey:@"likesCount"] integerValue];
-    [self.bottomBtnView.leftButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
+    [self.bottomBtnView.leftButton setAllTitle:[Utils checkNumberForThousand:likesCount]];
 }
 
 - (void)getThreeSubViewForLeftBlock:(ButtonSelectBlock)leftBlock centerBlock:(ButtonSelectBlock)centerBlock rightBlock:(ButtonSelectBlock)rightBlock {
@@ -654,13 +654,13 @@ NSInteger const kDeleteTag = 20160110;
             [self likePosts:self.posts];
             NSInteger likesCount = [[self.posts objectForKey:@"likesCount"] integerValue];
             likesCount += 1;
-            [self.bottomBtnView.leftButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
+            [self.bottomBtnView.leftButton setAllTitle:[Utils checkNumberForThousand:likesCount]];
             [self.bottomBtnView.leftButton setAllTitleColor:color_Red];
         } else {
             [self unlikePosts:self.posts];
             NSInteger likesCount = [[self.posts objectForKey:@"likesCount"] integerValue];
             likesCount -= 1;
-            [self.bottomBtnView.leftButton setAllTitle:[CommonFunction checkNumberForThousand:likesCount]];
+            [self.bottomBtnView.leftButton setAllTitle:[Utils checkNumberForThousand:likesCount]];
             [self.bottomBtnView.leftButton setAllTitleColor:color_8f8f8f];
         }
     } else {

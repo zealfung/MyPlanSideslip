@@ -942,8 +942,8 @@ NSString *const kEdgeWhiteSpace = @"  ";
         picker.locale = [NSLocale currentLocale];
         picker.datePickerMode = UIDatePickerModeDate;
         picker.maximumDate = [NSDate date];
-        NSDateComponents *defaultComponents = [CommonFunction getDateTime:[NSDate date]];
-        NSDate *minDate = [CommonFunction NSStringDateToNSDate:[NSString stringWithFormat:@"%zd-%zd-%zd",
+        NSDateComponents *defaultComponents = [Utils getDateTime:[NSDate date]];
+        NSDate *minDate = [Utils NSStringDateToNSDate:[NSString stringWithFormat:@"%zd-%zd-%zd",
                                                                 defaultComponents.year - 100,
                                                                 defaultComponents.month,
                                                                 defaultComponents.day]
@@ -957,7 +957,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
         
         if (birthday)
         {
-            NSDate *date = [CommonFunction NSStringDateToNSDate:birthday formatter:STRDateFormatterType4];
+            NSDate *date = [Utils NSStringDateToNSDate:birthday formatter:STRDateFormatterType4];
             if (date)
             {
                 [self.datePicker setDate:date animated:YES];
@@ -965,7 +965,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
         }
         else
         {
-            NSDate *defaultDate = [CommonFunction NSStringDateToNSDate:[NSString stringWithFormat:@"%zd-%zd-%zd",
+            NSDate *defaultDate = [Utils NSStringDateToNSDate:[NSString stringWithFormat:@"%zd-%zd-%zd",
                                                                         defaultComponents.year - 20,
                                                                         defaultComponents.month,
                                                                         defaultComponents.day]
@@ -1094,7 +1094,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
 {
     [picker dismissViewControllerAnimated:YES completion:nil];
     
-    [self saveAvatar:[CommonFunction compressImage:image]];
+    [self saveAvatar:[Utils compressImage:image]];
 }
 
 #pragma mark - UIActionSheetDelegate

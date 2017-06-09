@@ -318,11 +318,11 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
         plan.iscompleted = @"1";
         plan.completetime = timeNow;
         //如果预计开始时间是在今天之后的，属于提前完成，把预计开始时间设成今天
-        NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
-        NSInteger days = [CommonFunction calculateDayFromDate:[NSDate date] toDate:beginDate];
+        NSDate *beginDate = [Utils NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
+        NSInteger days = [Utils calculateDayFromDate:[NSDate date] toDate:beginDate];
         if (days > 0)
         {
-            plan.beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+            plan.beginDate = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
         }
         
         __weak typeof(self) weakSelf = self;
@@ -404,7 +404,7 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
                       {
                           if ([plan.isnotify isEqualToString:@"1"])
                           {
-                              [CommonFunction cancelPlanNotification:object.objectId];
+                              [Utils cancelPlanNotification:object.objectId];
                           }
                           [NotificationCenter postNotificationName:NTFPlanSave object:nil];
                           [weakSelf alertToastMessage:STRCommonTip16];

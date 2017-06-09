@@ -19,9 +19,9 @@ static BOOL isCheckingIn;
 + (BOOL)isCheckInToday {
     Statistics *statistics = [PlanCache getStatistics];
     if (statistics.updatetime && statistics.updatetime.length > 0) {
-        NSDate *lastCheckInDate = [CommonFunction NSStringDateToNSDate:statistics.updatetime formatter:STRDateFormatterType1];
+        NSDate *lastCheckInDate = [Utils NSStringDateToNSDate:statistics.updatetime formatter:STRDateFormatterType1];
         //已签到
-        return [CommonFunction isSameDay:[NSDate date] date2:lastCheckInDate];
+        return [Utils isSameDay:[NSDate date] date2:lastCheckInDate];
     }
     return NO;
 }
@@ -33,9 +33,9 @@ static BOOL isCheckingIn;
     
     Statistics *statistics = [PlanCache getStatistics];
     if (statistics.updatetime && statistics.updatetime.length > 0) {
-        NSDate *lastCheckInDate = [CommonFunction NSStringDateToNSDate:statistics.updatetime formatter:STRDateFormatterType1];
+        NSDate *lastCheckInDate = [Utils NSStringDateToNSDate:statistics.updatetime formatter:STRDateFormatterType1];
         //已签到
-        if ([CommonFunction isSameDay:[NSDate date] date2:lastCheckInDate]) return;
+        if ([Utils isSameDay:[NSDate date] date2:lastCheckInDate]) return;
     }
     __weak typeof(self) weakSelf = self;
     BmobUser *user = [BmobUser currentUser];
@@ -115,7 +115,7 @@ static BOOL isCheckingIn;
             statistics.recordMax = [checkIn objectForKey:@"maxDates"];
             statistics.recordMaxBeginDate = [checkIn objectForKey:@"maxBegin"];
             statistics.recordMaxEndDate = [checkIn objectForKey:@"maxEnd"];
-            statistics.updatetime = [CommonFunction getTimeNowString];
+            statistics.updatetime = [Utils getTimeNowString];
             [PlanCache storeStatistics:statistics];
             isCheckingIn = NO;
             NSLog(@"签到成功objectid :%@",checkIn.objectId);
@@ -163,7 +163,7 @@ static BOOL isCheckingIn;
             statistics.recordMax = [obj objectForKey:@"maxDates"];
             statistics.recordMaxBeginDate = [obj objectForKey:@"maxBegin"];
             statistics.recordMaxEndDate = [obj objectForKey:@"maxEnd"];
-            statistics.updatetime = [CommonFunction getTimeNowString];
+            statistics.updatetime = [Utils getTimeNowString];
             [PlanCache storeStatistics:statistics];
             isCheckingIn = NO;
             NSLog(@"更新签到成功objectid :%@", obj.objectId);

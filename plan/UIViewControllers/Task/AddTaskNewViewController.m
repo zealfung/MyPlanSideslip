@@ -139,8 +139,8 @@
         return;
     }
     
-    NSString *timeNow = [CommonFunction getTimeNowString];
-    NSString *taskId = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType5];
+    NSString *timeNow = [Utils getTimeNowString];
+    NSString *taskId = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType5];
     if (self.operationType == Add)
     {
         self.task.taskId = taskId;
@@ -151,7 +151,7 @@
     if (self.isAlarm)
     {
         NSTimeInterval iNow = [[NSDate date] timeIntervalSince1970];
-        NSDate *notifyDate = [CommonFunction NSStringDateToNSDate:self.task.notifyTime formatter:STRDateFormatterType3];
+        NSDate *notifyDate = [Utils NSStringDateToNSDate:self.task.notifyTime formatter:STRDateFormatterType3];
         NSTimeInterval iNotify = [notifyDate timeIntervalSince1970];
         if (iNotify - iNow <= 10)
         {//提醒时间已经过期了
@@ -260,7 +260,7 @@
     self.isRepeat = isButtonOn;
     if (isButtonOn)
     {
-        NSDate *notifyTime = [CommonFunction NSStringDateToNSDate:self.task.notifyTime formatter:STRDateFormatterType3];
+        NSDate *notifyTime = [Utils NSStringDateToNSDate:self.task.notifyTime formatter:STRDateFormatterType3];
         if ([notifyTime compare:[NSDate date]] == NSOrderedAscending)
         {
             [self.switchRepeat setOn:NO];

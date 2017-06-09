@@ -37,34 +37,34 @@ CGFloat kPhotoCellHeight;
     CGFloat dateHeight = 30;
     CGFloat btnAgeSize = 45;
     
-    NSDate *photoDate = [CommonFunction NSStringDateToNSDate:photo.phototime formatter:STRDateFormatterType4];
+    NSDate *photoDate = [Utils NSStringDateToNSDate:photo.phototime formatter:STRDateFormatterType4];
     
     UILabel *labelYear = [[UILabel alloc] initWithFrame:CGRectMake(xOffset, yOffset, dateWidth, dateHeight)];
     labelYear.textAlignment = NSTextAlignmentCenter;
     labelYear.font = font_Normal_16;
-    labelYear.textColor = [CommonFunction getGenderColor];
-    labelYear.text = [CommonFunction NSDateToNSString:photoDate formatter:@"yyyy"];
+    labelYear.textColor = [Utils getGenderColor];
+    labelYear.text = [Utils NSDateToNSString:photoDate formatter:@"yyyy"];
     [cell addSubview:labelYear];
     
     UILabel *labelMonthAndDay = [[UILabel alloc] initWithFrame:CGRectMake(xOffset, yOffset + dateHeight / 2, dateWidth, dateHeight)];
     labelMonthAndDay.textAlignment = NSTextAlignmentCenter;
     labelMonthAndDay.font = font_Normal_13;
-    labelMonthAndDay.textColor = [CommonFunction getGenderColor];
-    labelMonthAndDay.text = [CommonFunction NSDateToNSString:photoDate formatter:@"MM/dd"];
+    labelMonthAndDay.textColor = [Utils getGenderColor];
+    labelMonthAndDay.text = [Utils NSDateToNSString:photoDate formatter:@"MM/dd"];
     [cell addSubview:labelMonthAndDay];
     
     xOffset += dateWidth;
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(xOffset + btnAgeSize / 2 - 1, 0, 2, yOffset)];
-    lineView.backgroundColor = [CommonFunction getGenderColor];
+    lineView.backgroundColor = [Utils getGenderColor];
     [cell addSubview:lineView];
     
     UIView *lineView1 = [[UIView alloc] initWithFrame:CGRectMake(xOffset + btnAgeSize / 2 - 1, yOffset + btnAgeSize, 2, kPhotoCellHeight - yOffset -btnAgeSize)];
-    lineView1.backgroundColor = [CommonFunction getGenderColor];
+    lineView1.backgroundColor = [Utils getGenderColor];
     [cell addSubview:lineView1];
     
     UIButton *btnAge = [[UIButton alloc] initWithFrame:CGRectMake(xOffset, yOffset, btnAgeSize, btnAgeSize)];
-    btnAge.backgroundColor = [CommonFunction getGenderColor];
+    btnAge.backgroundColor = [Utils getGenderColor];
     btnAge.layer.cornerRadius = btnAgeSize / 2;
     btnAge.titleLabel.font = font_Bold_18;
     btnAge.tintColor = [UIColor whiteColor];
@@ -77,7 +77,7 @@ CGFloat kPhotoCellHeight;
         UILabel *labelLocation = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(btnAge.frame), yOffset, locationWidth, dateHeight * 3 / 2)];
         labelLocation.textAlignment = NSTextAlignmentRight;
         labelLocation.font = font_Normal_16;
-        labelLocation.textColor = [CommonFunction getGenderColor];
+        labelLocation.textColor = [Utils getGenderColor];
         labelLocation.text = [NSString stringWithFormat:@"%@%@", STRViewTips33, photo.location];
         [cell addSubview:labelLocation];
     }
@@ -199,7 +199,7 @@ CGFloat kPhotoCellHeight;
     {
         return unknow;
     }
-    NSDate *birthday = [CommonFunction NSStringDateToNSDate:[Config shareInstance].settings.birthday formatter:STRDateFormatterType4];
+    NSDate *birthday = [Utils NSStringDateToNSDate:[Config shareInstance].settings.birthday formatter:STRDateFormatterType4];
     NSTimeInterval secondsBetweenDates= [photoDate timeIntervalSinceDate:birthday];
     if(secondsBetweenDates < 0)
     {

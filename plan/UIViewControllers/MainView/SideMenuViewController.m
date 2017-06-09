@@ -87,7 +87,7 @@
     UILabel *nameLabel = [UILabel new];
     nameLabel.text = nickname;
     nameLabel.font = font_Bold_20;
-    nameLabel.textColor = [CommonFunction getGenderColor];
+    nameLabel.textColor = [Utils getGenderColor];
     nameLabel.translatesAutoresizingMaskIntoConstraints = NO;
     [headerView addSubview:nameLabel];
     
@@ -124,7 +124,7 @@
     }
     
     UIView *selectedBackground = [UIView new];
-    selectedBackground.backgroundColor = [CommonFunction getGenderColor];
+    selectedBackground.backgroundColor = [Utils getGenderColor];
     [cell setSelectedBackgroundView:selectedBackground];
     cell.imageView.image = [UIImage imageNamed:self.menuImgArray[indexPath.row]];
     cell.textLabel.text = self.menuArray[indexPath.row];
@@ -236,8 +236,8 @@
     mailPicker.mailComposeDelegate = self;
     
     //设置主题
-    NSString *device = [NSString stringWithFormat:@"（%@，iOS%@）", [CommonFunction getDeviceType], [CommonFunction getiOSVersion]];
-    NSString *subject = [NSString stringWithFormat:@"%@ V%@%@", STRViewTips69, [CommonFunction getAppVersion], device];
+    NSString *device = [NSString stringWithFormat:@"（%@，iOS%@）", [Utils getDeviceType], [Utils getiOSVersion]];
+    NSString *subject = [NSString stringWithFormat:@"%@ V%@%@", STRViewTips69, [Utils getAppVersion], device];
     [mailPicker setSubject:subject];
     //添加收件人
     NSArray *toRecipients = [NSArray arrayWithObject:STRFeedbackEmail];

@@ -180,8 +180,8 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 }
 
 - (void)saveForPhoto {
-    NSString *timeNow = [CommonFunction getTimeNowString];
-    NSString *photoid = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType5];
+    NSString *timeNow = [Utils getTimeNowString];
+    NSString *photoid = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType5];
     
     Photo *photo = [[Photo alloc] init];
     photo.photoid = photoid;
@@ -195,7 +195,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
         photo.photoURLArray[i] = uploadPhotoArray[i];
     }
     photo.content = self.textViewContent.text;
-    photo.phototime = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    photo.phototime = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     photo.location = @"";
 
     photo.photoArray = photoArray;
@@ -411,7 +411,7 @@ NSUInteger const kAddPostsViewPhotoStartTag = 20151227;
 }
 
 - (void)addImageToPhotoArray:(UIImage *)image {
-    NSData *imgData = [CommonFunction compressImage:image];
+    NSData *imgData = [Utils compressImage:image];
     
     if (!imgData) return;
     

@@ -351,14 +351,14 @@
                     if (level)
                     {
                         cell.btnUserLevel.enabled = YES;
-                        [cell.btnUserLevel setBackgroundImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+                        [cell.btnUserLevel setBackgroundImage:[Utils getUserLevelIcon:level] forState:UIControlStateNormal];
                     }
                     else
                     {
                         cell.btnUserLevel.enabled = NO;
                     }
                     
-                    cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
+                    cell.labelPostTime.text = [Utils intervalSinceNow:[obj objectForKey:@"updatedTime"]];
                     cell.labelContent.text = content;
                     if ([isTop isEqualToString:@"1"])
                     {
@@ -375,9 +375,9 @@
                         cell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Selected];
                         cell.labelLike.textColor = color_Red;
                     }
-                    cell.labelEye.text = [CommonFunction checkNumberForThousand:readTimes];
-                    cell.labelComment.text = [CommonFunction checkNumberForThousand:commentsCount];
-                    cell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
+                    cell.labelEye.text = [Utils checkNumberForThousand:readTimes];
+                    cell.labelComment.text = [Utils checkNumberForThousand:commentsCount];
+                    cell.labelLike.text = [Utils checkNumberForThousand:likesCount];
                     __weak typeof(PostsOneImageCell) *weakCell = cell;
                     cell.postsCellLevelBlock = ^() {
                         [weakSelf mAction:nil];
@@ -400,7 +400,7 @@
                                 likesCount += 1;
                                 weakCell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Selected];
                                 weakCell.labelLike.textColor = color_Red;
-                                weakCell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
+                                weakCell.labelLike.text = [Utils checkNumberForThousand:likesCount];
                             }
                             else
                             {
@@ -409,7 +409,7 @@
                                 likesCount -= 1;
                                 weakCell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Normal];
                                 weakCell.labelLike.textColor = color_8f8f8f;
-                                weakCell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
+                                weakCell.labelLike.text = [Utils checkNumberForThousand:likesCount];
                             }
                         }
                         else
@@ -437,14 +437,14 @@
                     if (level)
                     {
                         cell.btnUserLevel.enabled = YES;
-                        [cell.btnUserLevel setBackgroundImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+                        [cell.btnUserLevel setBackgroundImage:[Utils getUserLevelIcon:level] forState:UIControlStateNormal];
                     }
                     else
                     {
                         cell.btnUserLevel.enabled = NO;
                     }
                     
-                    cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
+                    cell.labelPostTime.text = [Utils intervalSinceNow:[obj objectForKey:@"updatedTime"]];
                     cell.labelContent.text = content;
                     if ([isTop isEqualToString:@"1"])
                     {
@@ -462,9 +462,9 @@
                         cell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Selected];
                         cell.labelLike.textColor = color_Red;
                     }
-                    cell.labelEye.text = [CommonFunction checkNumberForThousand:readTimes];
-                    cell.labelComment.text = [CommonFunction checkNumberForThousand:commentsCount];
-                    cell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
+                    cell.labelEye.text = [Utils checkNumberForThousand:readTimes];
+                    cell.labelComment.text = [Utils checkNumberForThousand:commentsCount];
+                    cell.labelLike.text = [Utils checkNumberForThousand:likesCount];
                     __weak typeof(PostsTwoImageCell) *weakCell = cell;
                     cell.postsCellLevelBlock = ^() {
                         [weakSelf mAction:nil];
@@ -486,7 +486,7 @@
                                 likesCount += 1;
                                 weakCell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Selected];
                                 weakCell.labelLike.textColor = color_Red;
-                                weakCell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
+                                weakCell.labelLike.text = [Utils checkNumberForThousand:likesCount];
                             }
                             else
                             {
@@ -495,7 +495,7 @@
                                 likesCount -= 1;
                                 weakCell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Normal];
                                 weakCell.labelLike.textColor = color_8f8f8f;
-                                weakCell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
+                                weakCell.labelLike.text = [Utils checkNumberForThousand:likesCount];
                             }
                         }
                         else
@@ -524,14 +524,14 @@
                 if (level)
                 {
                     cell.btnUserLevel.enabled = YES;
-                    [cell.btnUserLevel setBackgroundImage:[CommonFunction getUserLevelIcon:level] forState:UIControlStateNormal];
+                    [cell.btnUserLevel setBackgroundImage:[Utils getUserLevelIcon:level] forState:UIControlStateNormal];
                 }
                 else
                 {
                     cell.btnUserLevel.enabled = NO;
                 }
                 
-                cell.labelPostTime.text = [CommonFunction intervalSinceNow:[obj objectForKey:@"updatedTime"]];
+                cell.labelPostTime.text = [Utils intervalSinceNow:[obj objectForKey:@"updatedTime"]];
                 cell.labelContent.text = content;
                 if ([isTop isEqualToString:@"1"])
                 {
@@ -547,9 +547,9 @@
                     cell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Selected];
                     cell.labelLike.textColor = color_Red;
                 }
-                cell.labelEye.text = [CommonFunction checkNumberForThousand:readTimes];
-                cell.labelComment.text = [CommonFunction checkNumberForThousand:commentsCount];
-                cell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
+                cell.labelEye.text = [Utils checkNumberForThousand:readTimes];
+                cell.labelComment.text = [Utils checkNumberForThousand:commentsCount];
+                cell.labelLike.text = [Utils checkNumberForThousand:likesCount];
                 __weak typeof(PostsNoImageCell) *weakCell = cell;
                 cell.postsCellLevelBlock = ^() {
                     [weakSelf mAction:nil];
@@ -572,7 +572,7 @@
                             likesCount += 1;
                             weakCell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Selected];
                             weakCell.labelLike.textColor = color_Red;
-                            weakCell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
+                            weakCell.labelLike.text = [Utils checkNumberForThousand:likesCount];
                         }
                         else
                         {
@@ -581,7 +581,7 @@
                             likesCount -= 1;
                             weakCell.imgLike.image = [UIImage imageNamed:png_Icon_Posts_Praise_Normal];
                             weakCell.labelLike.textColor = color_8f8f8f;
-                            weakCell.labelLike.text = [CommonFunction checkNumberForThousand:likesCount];
+                            weakCell.labelLike.text = [Utils checkNumberForThousand:likesCount];
                         }
                     }
                     else
@@ -993,10 +993,7 @@
 - (void)toPostsDetail:(BmobObject *)posts
 {
     [self incrementPostsReadTimes:posts];
-    NSInteger readTimes = [[posts objectForKey:@"readTimes"] integerValue];
-    readTimes += 1;
-    [posts setObject:@(readTimes) forKey:@"readTimes"];
-    
+
     PostsDetailViewController *controller = [[PostsDetailViewController alloc] init];
     controller.posts = posts;
     controller.userTagsArray = [NSArray arrayWithArray:self.userTagsArray];

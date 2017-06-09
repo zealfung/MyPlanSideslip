@@ -138,7 +138,7 @@ static PopupNewAppVersionView *instance = nil;
 
 - (void)closeAction:(UIButton *)sender
 {
-    NSString *showDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:@"yyyy-MM-dd"];
+    NSString *showDate = [Utils NSDateToNSString:[NSDate date] formatter:@"yyyy-MM-dd"];
     [UserDefaults setObject:showDate forKey:STRCheckNewVersion];
     [UserDefaults synchronize];
     [self hide];

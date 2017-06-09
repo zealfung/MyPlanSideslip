@@ -127,8 +127,8 @@
     mailPicker.mailComposeDelegate = self;
     
     //设置主题
-    NSString *device = [NSString stringWithFormat:@"（%@，iOS%@）", [CommonFunction getDeviceType], [CommonFunction getiOSVersion]];
-    NSString *subject = [NSString stringWithFormat:@"%@ V%@%@", STRViewTips69, [CommonFunction getAppVersion], device];
+    NSString *device = [NSString stringWithFormat:@"（%@，iOS%@）", [Utils getDeviceType], [Utils getiOSVersion]];
+    NSString *subject = [NSString stringWithFormat:@"%@ V%@%@", STRViewTips69, [Utils getAppVersion], device];
     [mailPicker setSubject:subject];
     //添加收件人
     NSArray *toRecipients = [NSArray arrayWithObject:STRFeedbackEmail];

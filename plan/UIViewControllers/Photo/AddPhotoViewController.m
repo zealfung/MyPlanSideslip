@@ -92,7 +92,7 @@ NSUInteger const pageWidth = 110;
     }
     else
     {
-        self.textFieldTime.text = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+        self.textFieldTime.text = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     }
     [self.textFieldTime addTarget:self action:@selector(setPhotoTime) forControlEvents:UIControlEventTouchDown];
     self.textFieldTime.inputView = [[UIView alloc] initWithFrame:CGRectZero];
@@ -177,8 +177,8 @@ NSUInteger const pageWidth = 110;
         picker.locale = [NSLocale currentLocale];
         picker.datePickerMode = UIDatePickerModeDate;
         picker.maximumDate = [NSDate date];
-        NSDateComponents *defaultComponents = [CommonFunction getDateTime:[NSDate date]];
-        NSDate *minDate = [CommonFunction NSStringDateToNSDate:[NSString stringWithFormat:@"%zd-%zd-%zd",
+        NSDateComponents *defaultComponents = [Utils getDateTime:[NSDate date]];
+        NSDate *minDate = [Utils NSStringDateToNSDate:[NSString stringWithFormat:@"%zd-%zd-%zd",
                                                                 defaultComponents.year - 100,
                                                                 defaultComponents.month,
                                                                 defaultComponents.day]
@@ -192,7 +192,7 @@ NSUInteger const pageWidth = 110;
         
         if (photoDate)
         {
-            NSDate *date = [CommonFunction NSStringDateToNSDate:photoDate formatter:STRDateFormatterType4];
+            NSDate *date = [Utils NSStringDateToNSDate:photoDate formatter:STRDateFormatterType4];
             if (date)
             {
                 [self.datePicker setDate:date animated:YES];
@@ -200,7 +200,7 @@ NSUInteger const pageWidth = 110;
         }
         else
         {
-            NSDate *defaultDate = [CommonFunction NSStringDateToNSDate:[NSString stringWithFormat:@"%zd-%zd-%zd",
+            NSDate *defaultDate = [Utils NSStringDateToNSDate:[NSString stringWithFormat:@"%zd-%zd-%zd",
                                                                         defaultComponents.year,
                                                                         defaultComponents.month,
                                                                         defaultComponents.day]
@@ -239,8 +239,8 @@ NSUInteger const pageWidth = 110;
     [self.view endEditing:YES];
     [self showHUD];
     
-    NSString *timeNow = [CommonFunction getTimeNowString];
-    NSString *photoid = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType5];
+    NSString *timeNow = [Utils getTimeNowString];
+    NSString *photoid = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType5];
     
     if (self.operationType == Add)
     {
@@ -511,7 +511,7 @@ NSUInteger const pageWidth = 110;
 
 - (void)addImageToPhotoArray:(UIImage *)image
 {
-    NSData *imgData = [CommonFunction compressImage:image];
+    NSData *imgData = [Utils compressImage:image];
 
     if (!imgData) return;
     

@@ -204,7 +204,7 @@
         [dateFormatter setDateFormat:STRDateFormatterType3];
         NSString *fiveDayTomorrow = [dateFormatter stringFromDate:tomorrow];
         plan.notifytime = fiveDayTomorrow;
-        [CommonFunction updatePlanNotification:plan];
+        [Utils updatePlanNotification:plan];
     }
     else
     {

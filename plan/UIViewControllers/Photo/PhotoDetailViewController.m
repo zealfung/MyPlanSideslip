@@ -80,7 +80,7 @@ NSUInteger const kPhotoDeleteTag = 20151011;
         contentView.font = font_Normal_16;
         contentView.showsHorizontalScrollIndicator = NO;
         contentView.showsVerticalScrollIndicator = NO;
-        contentView.textColor = [CommonFunction getGenderColor];
+        contentView.textColor = [Utils getGenderColor];
         contentView.text = self.photo.content;
         contentView.editable = NO;
         if (contentHeight < 30)
@@ -117,7 +117,7 @@ NSUInteger const kPhotoDeleteTag = 20151011;
     self.yOffset -= 30;
     UILabel *labelPage = [[UILabel alloc] initWithFrame:CGRectMake(self.xMargins, self.yOffset, WIDTH_FULL_SCREEN - self.xMargins * 2, 30)];
     labelPage.font = font_Bold_18;
-    labelPage.textColor = [CommonFunction getGenderColor];
+    labelPage.textColor = [Utils getGenderColor];
     labelPage.textAlignment = NSTextAlignmentCenter;
     labelPage.text = [NSString stringWithFormat:@"1 / %ld", (long)self.photo.photoURLArray.count];
     self.labelCurrentPage = labelPage;

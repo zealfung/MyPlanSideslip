@@ -1,13 +1,13 @@
 //
-//  CommonFunction.m
+//  Utils.m
 //  plan
 //
 //  Created by Fengzy on 15/9/2.
 //  Copyright (c) 2015年 Fengzy. All rights reserved.
 //
 
+#import "Utils.h"
 #import "UIDevice+Util.h"
-#import "CommonFunction.h"
 #import <CommonCrypto/CommonDigest.h>
 #import "LocalNotificationManager.h"
 
@@ -17,7 +17,7 @@ static NSString * const kKeyDays = @"days";
 static NSString * const kKeyHours = @"hours";
 static NSString * const kKeyMinutes = @"minutes";
 
-@implementation CommonFunction
+@implementation Utils
 
 //获取设备型号 iPhone4、iPhone6 Plus
 + (NSString *)getDeviceType {
@@ -144,7 +144,7 @@ static NSString * const kKeyMinutes = @"minutes";
 
 //时间间隔显示：刚刚，N分钟前，N天前...
 + (NSString *)intervalSinceNow:(NSDate *)date {
-    NSDictionary *dic = [CommonFunction timeIntervalArrayFromString:date];
+    NSDictionary *dic = [Utils timeIntervalArrayFromString:date];
     NSInteger minutes = [[dic objectForKey:kKeyMinutes] integerValue];
     
     if (minutes < 1) {
@@ -162,7 +162,7 @@ static NSString * const kKeyMinutes = @"minutes";
     } else if (minutes < 12 * 30 * 24 * 60) {
         return [NSString stringWithFormat:STRCommonTime8, (long)minutes / (60 * 24 * 30)];
     } else {
-        return [CommonFunction NSDateToNSString:date formatter:STRDateFormatterType1];
+        return [Utils NSDateToNSString:date formatter:STRDateFormatterType1];
     }
 }
 
@@ -323,8 +323,8 @@ static NSString * const kKeyMinutes = @"minutes";
 + (NSString *)getBeginDateStringForShow:(NSString *)date {
     NSDate *today = [NSDate date];
     NSDate *tomorrow = [today dateByAddingTimeInterval:24 * 3600];
-    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:STRDateFormatterType4];
-    NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:STRDateFormatterType4];
+    NSString *todayString = [Utils NSDateToNSString:today formatter:STRDateFormatterType4];
+    NSString *tomorrowString = [Utils NSDateToNSString:tomorrow formatter:STRDateFormatterType4];
     if ([date isEqualToString:todayString]) {
         return STRCommonTime2;
     } else if ([date isEqualToString:tomorrowString]) {
@@ -345,8 +345,8 @@ static NSString * const kKeyMinutes = @"minutes";
     }
     NSDate *today = [NSDate date];
     NSDate *tomorrow = [today dateByAddingTimeInterval:24 * 3600];
-    NSString *todayString = [CommonFunction NSDateToNSString:today formatter:STRDateFormatterType4];
-    NSString *tomorrowString = [CommonFunction NSDateToNSString:tomorrow formatter:STRDateFormatterType4];
+    NSString *todayString = [Utils NSDateToNSString:today formatter:STRDateFormatterType4];
+    NSString *tomorrowString = [Utils NSDateToNSString:tomorrow formatter:STRDateFormatterType4];
     if ([notifyDate isEqualToString:todayString]) {
         return [NSString stringWithFormat:@"%@ %@", STRCommonTime2, notifyTime];
     } else if ([notifyDate isEqualToString:tomorrowString]) {
@@ -410,7 +410,7 @@ static NSString * const kKeyMinutes = @"minutes";
 /** 更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效 */
 + (NSString *)updateNotifyTime:(NSString *)notifyTime
 {
-    NSDate *oldNotifyTime = [CommonFunction NSStringDateToNSDate:notifyTime formatter:STRDateFormatterType3];
+    NSDate *oldNotifyTime = [Utils NSStringDateToNSDate:notifyTime formatter:STRDateFormatterType3];
     
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     unsigned units  = NSCalendarUnitMonth|NSCalendarUnitDay|NSCalendarUnitYear|NSCalendarUnitHour|NSCalendarUnitMinute;
@@ -427,7 +427,7 @@ static NSString * const kKeyMinutes = @"minutes";
         newNotifyTime = [calendar dateFromComponents:compToday];
     }
     
-    return [CommonFunction NSDateToNSString:newNotifyTime formatter:STRDateFormatterType3];
+    return [Utils NSDateToNSString:newNotifyTime formatter:STRDateFormatterType3];
 }
 
 /** 获取随机数 */
@@ -460,7 +460,7 @@ static NSString * const kKeyMinutes = @"minutes";
 + (void)addPlanNotification:(Plan *)plan
 {
     //时间格式：yyyy-MM-dd HH:mm
-    NSDate *date = [CommonFunction NSStringDateToNSDate:plan.notifytime formatter:STRDateFormatterType3];
+    NSDate *date = [Utils NSStringDateToNSDate:plan.notifytime formatter:STRDateFormatterType3];
     
     if (!date) return;
     

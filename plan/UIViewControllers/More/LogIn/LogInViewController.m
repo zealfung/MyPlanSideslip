@@ -65,7 +65,7 @@
         [self.txtEmail becomeFirstResponder];
         return;
     }
-    if (![CommonFunction validateEmail:self.txtEmail.text])
+    if (![Utils validateEmail:self.txtEmail.text])
     {
         [self alertToastMessage:STRViewTips88];
         [self.txtEmail becomeFirstResponder];

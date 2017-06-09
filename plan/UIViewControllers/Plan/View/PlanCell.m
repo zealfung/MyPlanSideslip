@@ -291,13 +291,13 @@ NSUInteger const kBounceSpace = 20;
 {
     _plan = plan;
     self.labelContent.text = plan.content;
-    NSDate *beginDate = [CommonFunction NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
+    NSDate *beginDate = [Utils NSStringDateToNSDate:plan.beginDate formatter:STRDateFormatterType4];
     if (![plan.iscompleted isEqualToString:@"1"])
     {
-        self.labelBeginDate.text = [CommonFunction getBeginDateStringForShow:plan.beginDate];
+        self.labelBeginDate.text = [Utils getBeginDateStringForShow:plan.beginDate];
         if ([beginDate compare:[NSDate date]] == NSOrderedDescending)
         {
-            self.labelDateLeft.text = [NSString stringWithFormat:STRCommonTime10,[CommonFunction howManyDaysLeft:plan.beginDate]];
+            self.labelDateLeft.text = [NSString stringWithFormat:STRCommonTime10,[Utils howManyDaysLeft:plan.beginDate]];
             self.labelDateLeft.hidden = NO;
         }
         else

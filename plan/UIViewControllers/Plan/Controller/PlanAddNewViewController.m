@@ -47,7 +47,7 @@
     self.plan = [Plan new];
     self.plan.planLevel = @"0";
     self.plan.isRepeat = @"0";
-    self.plan.beginDate = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    self.plan.beginDate = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     self.tableView.tableFooterView = [[UIView alloc] init];
 }
 
@@ -195,7 +195,7 @@
              if ([weakSelf.plan.isnotify isEqualToString:@"1"])
              {
                  weakSelf.plan.planid = newPlan.objectId;
-                 [CommonFunction addPlanNotification:weakSelf.plan];
+                 [Utils addPlanNotification:weakSelf.plan];
              }
              
              [weakSelf alertToastMessage:STRCommonTip13];
@@ -256,7 +256,7 @@
         {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = @"开始时间";
-            cell.detailTextLabel.text = [CommonFunction getBeginDateStringForShow:self.plan.beginDate];
+            cell.detailTextLabel.text = [Utils getBeginDateStringForShow:self.plan.beginDate];
         }
             break;
         case 1:
@@ -265,7 +265,7 @@
             cell.textLabel.text = @"设置提醒";
             if ([self.plan.isnotify isEqualToString:@"1"])
             {
-                cell.detailTextLabel.text = [CommonFunction getBeginDateStringForShow:self.plan.notifytime];
+                cell.detailTextLabel.text = [Utils getBeginDateStringForShow:self.plan.notifytime];
             }
             else
             {
@@ -277,14 +277,14 @@
         {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = @"紧急等级";
-            cell.detailTextLabel.text = [CommonFunction getPlanLevelStringForShow:self.plan.planLevel];
+            cell.detailTextLabel.text = [Utils getPlanLevelStringForShow:self.plan.planLevel];
         }
             break;
         case 3:
         {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.textLabel.text = @"每天重复";
-            cell.detailTextLabel.text = [CommonFunction getRepeatStringForShow:self.plan.isRepeat];
+            cell.detailTextLabel.text = [Utils getRepeatStringForShow:self.plan.isRepeat];
         }
             break;
         case 4:

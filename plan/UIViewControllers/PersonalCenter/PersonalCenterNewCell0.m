@@ -37,15 +37,15 @@
     cellView.imgViewAvatar.layer.cornerRadius = cellView.imgViewAvatar.frame.size.height / 2;
     //昵称
     NSString *nickname = STRCommonTip12;
-    if (![CommonFunction isEmptyString:[Config shareInstance].settings.nickname])
+    if (![Utils isEmptyString:[Config shareInstance].settings.nickname])
     {
         nickname = [Config shareInstance].settings.nickname;
     }
     cellView.labelNickname.text = nickname;
-    cellView.labelNickname.textColor = [CommonFunction getGenderColor];
+    cellView.labelNickname.textColor = [Utils getGenderColor];
     //个性签名
     NSString *signature = STRViewTips61;
-    if (![CommonFunction isEmptyString:[Config shareInstance].settings.signature])
+    if (![Utils isEmptyString:[Config shareInstance].settings.signature])
     {
         signature = [Config shareInstance].settings.signature;
     }

@@ -230,7 +230,7 @@ NSUInteger const kHoursPerDay = 24;
     queryPlan = [BmobQuery queryWithClassName:@"Plan"];
     [queryPlan whereKey:@"userObjectId" equalTo:user.objectId];
     [queryPlan whereKey:@"isDeleted" notEqualTo:@"1"];
-    NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
+    NSString *today = [Utils NSDateToNSString:[NSDate date] formatter:STRDateFormatterType4];
     [queryPlan whereKey:@"beginDate" equalTo:today];
     [queryPlan countObjectsInBackgroundWithBlock:^(int number,NSError  *error)
      {
@@ -324,11 +324,11 @@ NSUInteger const kHoursPerDay = 24;
     CGFloat labelHeight = HEIGHT_FULL_SCREEN / 62;
     CGFloat labelWidth = WIDTH_FULL_SCREEN / 3 > 125 ? WIDTH_FULL_SCREEN / 3 : 125;
 
-    if (![CommonFunction isEmptyString:[Config shareInstance].settings.nickname])
+    if (![Utils isEmptyString:[Config shareInstance].settings.nickname])
     {
         nickname = [Config shareInstance].settings.nickname;
     }
-    if (![CommonFunction isEmptyString:[Config shareInstance].settings.lifespan])
+    if (![Utils isEmptyString:[Config shareInstance].settings.lifespan])
     {
         NSString *life = [Config shareInstance].settings.lifespan;
         lifetime = [life integerValue];
@@ -342,7 +342,7 @@ NSUInteger const kHoursPerDay = 24;
     } rightButtonSelectBlock:nil];
     
     [nickNameSubView.centerButton.titleLabel setFont:font_Bold_32];
-    [nickNameSubView.centerButton setAllTitleColor:[CommonFunction getGenderColor]];
+    [nickNameSubView.centerButton setAllTitleColor:[Utils getGenderColor]];
     [nickNameSubView.centerButton setAllTitle:nickname];
     [nickNameSubView autoLayout];
     
@@ -385,12 +385,12 @@ NSUInteger const kHoursPerDay = 24;
     self.yOffset += self.liftetimeView.frame.size.height + self.ySpace;
     
     NSString *birthdayFormat = @"1987-03-05 00:00:00";
-    if (![CommonFunction isEmptyString:[Config shareInstance].settings.birthday])
+    if (![Utils isEmptyString:[Config shareInstance].settings.birthday])
     {
         birthdayFormat = [NSString stringWithFormat:@"%@ 00:00:00", [Config shareInstance].settings.birthday];
     }
     
-    NSDate *birthday = [CommonFunction NSStringDateToNSDate:birthdayFormat formatter:STRDateFormatterType1];
+    NSDate *birthday = [Utils NSStringDateToNSDate:birthdayFormat formatter:STRDateFormatterType1];
 
     NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
     unsigned units  = NSCalendarUnitYear | NSCalendarUnitMonth | NSCalendarUnitDay;
@@ -422,9 +422,9 @@ NSUInteger const kHoursPerDay = 24;
     [daysLeftSubView.leftButton setAllTitle:STRViewTips3];
     [daysLeftSubView.centerButton.titleLabel setFont:font_Normal_24];
     [daysLeftSubView.centerButton setAllTitleColor:color_Red];
-    if (![CommonFunction isEmptyString:[Config shareInstance].settings.birthday])
+    if (![Utils isEmptyString:[Config shareInstance].settings.birthday])
     {
-        [daysLeftSubView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:self.daysLeft]];
+        [daysLeftSubView.centerButton setAllTitle:[Utils integerToDecimalStyle:self.daysLeft]];
     }
     else
     {
@@ -462,7 +462,7 @@ NSUInteger const kHoursPerDay = 24;
         [secondsLeftSubView.leftButton setAllTitle:STRViewTips4];
         [secondsLeftSubView.centerButton.titleLabel setFont:font_Normal_24];
         [secondsLeftSubView.centerButton setAllTitleColor:color_Red];
-        [secondsLeftSubView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:kSecondsPerDay]];
+        [secondsLeftSubView.centerButton setAllTitle:[Utils integerToDecimalStyle:kSecondsPerDay]];
         [secondsLeftSubView.rightButton.titleLabel setFont:font_Normal_16];
         [secondsLeftSubView.rightButton setAllTitleColor:color_Black];
         [secondsLeftSubView.rightButton setAllTitle:STRCommonTime11];
@@ -489,7 +489,7 @@ NSUInteger const kHoursPerDay = 24;
         [minuteLeftSubView.leftButton setAllTitle:STRViewTips4];
         [minuteLeftSubView.centerButton.titleLabel setFont:font_Normal_24];
         [minuteLeftSubView.centerButton setAllTitleColor:color_Red];
-        [minuteLeftSubView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:kMinutesPerDay]];
+        [minuteLeftSubView.centerButton setAllTitle:[Utils integerToDecimalStyle:kMinutesPerDay]];
         [minuteLeftSubView.rightButton.titleLabel setFont:font_Normal_16];
         [minuteLeftSubView.rightButton setAllTitleColor:color_Black];
         [minuteLeftSubView.rightButton setAllTitle:STRCommonTime12];
@@ -516,7 +516,7 @@ NSUInteger const kHoursPerDay = 24;
         [hourLeftSubView.leftButton setAllTitle:STRViewTips4];
         [hourLeftSubView.centerButton.titleLabel setFont:font_Normal_24];
         [hourLeftSubView.centerButton setAllTitleColor:color_Red];
-        [hourLeftSubView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:kHoursPerDay]];
+        [hourLeftSubView.centerButton setAllTitle:[Utils integerToDecimalStyle:kHoursPerDay]];
         [hourLeftSubView.rightButton.titleLabel setFont:font_Normal_16];
         [hourLeftSubView.rightButton setAllTitleColor:color_Black];
         [hourLeftSubView.rightButton setAllTitle:STRCommonTime13];
@@ -663,7 +663,7 @@ NSUInteger const kHoursPerDay = 24;
     UILabel *labelName = [[UILabel alloc] initWithFrame:CGRectMake(viewHeight + 2, 0, viewWidth - viewHeight - 2, viewHeight)];
     labelName.text = STRViewTips110;
     labelName.font = font_Normal_10;
-    labelName.textColor = [CommonFunction getGenderColor];
+    labelName.textColor = [Utils getGenderColor];
     [view addSubview:labelName];
     view.hidden = YES;
     self.shareLogoView = view;
@@ -726,7 +726,7 @@ NSUInteger const kHoursPerDay = 24;
     NSInteger secondsLeft = kSecondsPerDay - hour*3600 - minute*60 - second;
     if ([self showSeconds])
     {
-        [self.secondsLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:secondsLeft]];
+        [self.secondsLeftView.centerButton setAllTitle:[Utils integerToDecimalStyle:secondsLeft]];
         [self.secondsLeftView autoLayout];
         CGRect frame = self.secondsLeftView.frame;
         frame.origin.x = WIDTH_FULL_SCREEN / 2 - self.secondsLeftView.frame.size.width / 2;
@@ -736,7 +736,7 @@ NSUInteger const kHoursPerDay = 24;
     if ([self showMinutes])
     {
         NSInteger minutesLeft = kMinutesPerDay - hour*60 - minute;
-        [self.minuteLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:minutesLeft]];
+        [self.minuteLeftView.centerButton setAllTitle:[Utils integerToDecimalStyle:minutesLeft]];
         [self.minuteLeftView autoLayout];
         CGRect frame = self.minuteLeftView.frame;
         frame.origin.x = WIDTH_FULL_SCREEN / 2 - self.minuteLeftView.frame.size.width / 2;
@@ -746,7 +746,7 @@ NSUInteger const kHoursPerDay = 24;
     if ([self showHours])
     {
         NSInteger hoursLeft = kHoursPerDay - hour;
-        [self.hourLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:hoursLeft]];
+        [self.hourLeftView.centerButton setAllTitle:[Utils integerToDecimalStyle:hoursLeft]];
         [self.hourLeftView autoLayout];
         CGRect frame = self.hourLeftView.frame;
         frame.origin.x = WIDTH_FULL_SCREEN / 2 - self.hourLeftView.frame.size.width / 2;
@@ -768,7 +768,7 @@ NSUInteger const kHoursPerDay = 24;
         {
             self.daysLeft = self.daysLeft / kDaysPerMonth;
         }
-        [self.daysLeftView.centerButton setAllTitle:[CommonFunction integerToDecimalStyle:self.daysLeft]];
+        [self.daysLeftView.centerButton setAllTitle:[Utils integerToDecimalStyle:self.daysLeft]];
         [self.daysLeftView autoLayout];
         CGRect frame = self.daysLeftView.frame;
         frame.origin.x = WIDTH_FULL_SCREEN / 2 - self.daysLeftView.frame.size.width / 2;

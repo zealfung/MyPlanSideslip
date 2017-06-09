@@ -15,17 +15,17 @@
 
 #define iOS8_LATER [[UIDevice currentDevice].systemVersion doubleValue] >= 8.0
 
-#define iPhone4 [[CommonFunction getDeviceType] rangeOfString:@"4"].location != NSNotFound
+#define iPhone4 [[Utils getDeviceType] rangeOfString:@"4"].location != NSNotFound
 
-#define iPhone5 [[CommonFunction getDeviceType] rangeOfString:@"5"].location != NSNotFound
+#define iPhone5 [[Utils getDeviceType] rangeOfString:@"5"].location != NSNotFound
 
-#define iPhone6 [[CommonFunction getDeviceType] rangeOfString:@"6"].location != NSNotFound && [[CommonFunction getDeviceType] rangeOfString:@"iPhone 6Plus"].location == NSNotFound
+#define iPhone6 [[Utils getDeviceType] rangeOfString:@"6"].location != NSNotFound && [[Utils getDeviceType] rangeOfString:@"iPhone 6Plus"].location == NSNotFound
 
-#define iPhone6Plus [[CommonFunction getDeviceType] rangeOfString:@"iPhone 6Plus"].location != NSNotFound
+#define iPhone6Plus [[Utils getDeviceType] rangeOfString:@"iPhone 6Plus"].location != NSNotFound
 
-#define iPhone6S [[CommonFunction getDeviceType] rangeOfString:@"6S"].location != NSNotFound && [[CommonFunction getDeviceType] rangeOfString:@"iPhone 6SPlus"].location == NSNotFound
+#define iPhone6S [[Utils getDeviceType] rangeOfString:@"6S"].location != NSNotFound && [[Utils getDeviceType] rangeOfString:@"iPhone 6SPlus"].location == NSNotFound
 
-#define iPhone6SPlus [[CommonFunction getDeviceType] rangeOfString:@"iPhone 6SPlus"].location != NSNotFound
+#define iPhone6SPlus [[Utils getDeviceType] rangeOfString:@"iPhone 6SPlus"].location != NSNotFound
 
 #define WIDTH_FULL_SCREEN    ([UIScreen mainScreen].bounds.size.width)
 

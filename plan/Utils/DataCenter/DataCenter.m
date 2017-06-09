@@ -154,12 +154,12 @@ static int photoIndex;
              NSString *isForced = [obj objectForKey:@"isForced"];
              NSString *availableVersion = [obj objectForKey:@"availableVersion"];
              NSString *description = [obj objectForKey:@"description"];
-             NSString *appVersion = [CommonFunction getAppVersion];
+             NSString *appVersion = [Utils getAppVersion];
              
              if ([availableVersion containsString:@"ALL"]
                  || [availableVersion containsString:appVersion])
              {
-                 NSString *today = [CommonFunction NSDateToNSString:[NSDate date] formatter:@"yyyy-MM-dd"];
+                 NSString *today = [Utils NSDateToNSString:[NSDate date] formatter:@"yyyy-MM-dd"];
                  NSString *showDate = [UserDefaults objectForKey:STRCheckNewVersion];
                  if (![today isEqualToString:showDate])
                  {
@@ -189,9 +189,9 @@ static int photoIndex;
 
 + (void)updateVersionForSettings:(BmobObject *)obj
 {
-    [obj setObject:[CommonFunction getAppVersion] forKey:@"appVersion"];
-    [obj setObject:[CommonFunction getDeviceType] forKey:@"deviceType"];
-    [obj setObject:[CommonFunction getiOSVersion] forKey:@"iOSVersion"];
+    [obj setObject:[Utils getAppVersion] forKey:@"appVersion"];
+    [obj setObject:[Utils getDeviceType] forKey:@"deviceType"];
+    [obj setObject:[Utils getiOSVersion] forKey:@"iOSVersion"];
 
     BmobACL *acl = [BmobACL ACL];
     [acl setPublicReadAccess];//设置所有人可读
@@ -622,8 +622,8 @@ static int photoIndex;
              {
                  BmobObject *obj = array[0];
                  NSString *serverUpdatedTime = [obj objectForKey:@"updatedTime"];
-                 NSDate *localDate = [CommonFunction NSStringDateToNSDate:task.updateTime formatter:STRDateFormatterType1];
-                 NSDate *serverDate = [CommonFunction NSStringDateToNSDate:serverUpdatedTime formatter:STRDateFormatterType1];
+                 NSDate *localDate = [Utils NSStringDateToNSDate:task.updateTime formatter:STRDateFormatterType1];
+                 NSDate *serverDate = [Utils NSStringDateToNSDate:serverUpdatedTime formatter:STRDateFormatterType1];
                  
                  if ([localDate compare:serverDate] == NSOrderedDescending)
                  {
@@ -813,7 +813,7 @@ static int photoIndex;
         for (BmobObject *obj in array)
         {
             NSString *appVersion1 = [obj objectForKey:@"appVersion"];
-            NSString *appVersion2 = [CommonFunction getAppVersion];
+            NSString *appVersion2 = [Utils getAppVersion];
             if ([appVersion1 isEqualToString:appVersion2])
             {
                 //过滤同级版本的版本升级提醒
@@ -828,7 +828,7 @@ static int photoIndex;
             message.imgURLArray = [obj objectForKey:@"imgURLArray"];
             message.canShare = [obj objectForKey:@"canShare"];
             message.messageType = @"1";
-            message.createTime = [CommonFunction NSDateToNSString:obj.createdAt formatter:STRDateFormatterType1];
+            message.createTime = [Utils NSDateToNSString:obj.createdAt formatter:STRDateFormatterType1];
             
             [PlanCache storeMessages:message];
         }
@@ -875,7 +875,7 @@ static int photoIndex;
                 message.detailURL = [obj objectForKey:@"postsObjectId"];
                 message.canShare = @"0";
                 message.messageType = @"2";
-                message.createTime = [CommonFunction NSDateToNSString:obj.createdAt formatter:STRDateFormatterType1];
+                message.createTime = [Utils NSDateToNSString:obj.createdAt formatter:STRDateFormatterType1];
                 
                 [PlanCache storeMessages:message];
             }

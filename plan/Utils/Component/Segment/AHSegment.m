@@ -37,7 +37,7 @@
         [_scrollView addSubview:_divideLineView];
         
         _divideView  = [[UIView alloc] init];
-        _divideView.backgroundColor = [CommonFunction getGenderColor];
+        _divideView.backgroundColor = [Utils getGenderColor];
         [_scrollView addSubview:_divideView];
         
     }
@@ -74,7 +74,7 @@
             button.tag = 1000 + i;
             [button.titleLabel setFont:self.textFont];
             [button setTitleColor:color_666666 forState:UIControlStateNormal];
-            [button setTitleColor:[CommonFunction getGenderColor] forState:UIControlStateSelected];
+            [button setTitleColor:[Utils getGenderColor] forState:UIControlStateSelected];
             [button setTitle:string forState:UIControlStateNormal];
             [button addTarget:self action:@selector(clickSegmentButton:) forControlEvents:UIControlEventTouchUpInside];
             [self.scrollView addSubview:button];
@@ -102,7 +102,7 @@
             button.tag = 1000 + i;
             [button.titleLabel setFont:self.textFont];
             [button setTitleColor:color_666666 forState:UIControlStateNormal];
-            [button setTitleColor:[CommonFunction getGenderColor] forState:UIControlStateSelected];
+            [button setTitleColor:[Utils getGenderColor] forState:UIControlStateSelected];
             [button setTitle:string forState:UIControlStateNormal];
             [button addTarget:self action:@selector(clickSegmentButton:) forControlEvents:UIControlEventTouchUpInside];
             [self.scrollView addSubview:button];

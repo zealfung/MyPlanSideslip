@@ -62,7 +62,7 @@
             cell.textLabel.font = font_Normal_16;
         }
         BmobObject *obj = self.userTagsArray[indexPath.row];
-        cell.imageView.image = [CommonFunction getUserLevelIcon:[obj objectForKey:@"tagCode"]];
+        cell.imageView.image = [Utils getUserLevelIcon:[obj objectForKey:@"tagCode"]];
         cell.textLabel.text = [obj objectForKey:@"tagRemark"];
         return cell;
     } else {
