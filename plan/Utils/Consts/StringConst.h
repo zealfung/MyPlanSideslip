@@ -120,6 +120,19 @@ UIKIT_EXTERN NSString *const STRCommonTip49;
 UIKIT_EXTERN NSString *const STRCommonTip50;
 /** 备注 */
 UIKIT_EXTERN NSString *const STRCommonTip51;
+/** 搜索 */
+UIKIT_EXTERN NSString *const STRCommonTip52;
+/** 很紧急 */
+UIKIT_EXTERN NSString *const STRCommonTip53;
+/** 一般急 */
+UIKIT_EXTERN NSString *const STRCommonTip54;
+/** 不紧急 */
+UIKIT_EXTERN NSString *const STRCommonTip55;
+
+/** 加载失败，下拉列表重试 */
+UIKIT_EXTERN NSString *const STRErrorTip1;
+/** 操作失败 */
+UIKIT_EXTERN NSString *const STRErrorTip2;
 
 /** 刚刚 */
 UIKIT_EXTERN NSString *const STRCommonTime1;
@@ -451,6 +464,10 @@ UIKIT_EXTERN NSString *const STRViewTips121;
 UIKIT_EXTERN NSString *const STRViewTips122;
 /** 完成 */
 UIKIT_EXTERN NSString *const STRViewTips123;
+/** 进行中 */
+UIKIT_EXTERN NSString *const STRViewTips124;
+/** 待开始 */
+UIKIT_EXTERN NSString *const STRViewTips125;
 
 /** 自动同步 */
 UIKIT_EXTERN NSString *const STRSettingsViewTips1;

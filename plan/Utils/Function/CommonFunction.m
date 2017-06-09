@@ -361,15 +361,15 @@ static NSString * const kKeyMinutes = @"minutes";
 {
     if ([level isEqualToString:@"2"])
     {
-        return @"很紧急";
+        return STRCommonTip53;
     }
     else if ([level isEqualToString:@"1"])
     {
-        return @"一般急";
+        return STRCommonTip54;
     }
     else
     {
-        return @"不紧急";
+        return STRCommonTip55;
     }
 }
 

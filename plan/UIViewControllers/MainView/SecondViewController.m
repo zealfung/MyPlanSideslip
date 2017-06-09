@@ -101,7 +101,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
         NSTimeInterval now = [[NSDate date] timeIntervalSince1970];
         if ((now-last)/60 > 5)
         {//大于五分钟，自动重载一次数据
-            [self getPlanData];
+            [self reloadData];
             //记录刷新时间
             [UserDefaults setObject:[NSDate date] forKey:STRPlanListFlag];
             [UserDefaults synchronize];
@@ -127,13 +127,13 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     
     [self initTableView];
 
-    [self getPlanData];
+    [self reloadData];
 }
 
 - (void)initSegment
 {
     self.segment = [[AHSegment alloc] initWithFrame:CGRectMake(0, 0, WIDTH_FULL_SCREEN, 44)];
-    [self.segment updateChannels:@[@"进行中",@"待开始",@"已完成"]];
+    [self.segment updateChannels:@[STRViewTips124, STRViewTips125, STRViewTips7]];
     self.segment.delegate = self;
     [self.view addSubview:self.segment];
 }
@@ -141,11 +141,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 - (void)initTableView
 {
     self.searchKeyword = @"";
-    self.arrayPlanDay = [NSMutableArray array];
-    self.arrayPlanFuture = [NSMutableArray array];
-    self.arrayPlanDone = [NSMutableArray array];
-    self.arraySearchResult = [NSMutableArray array];
-    
+
     CGRect frame = CGRectZero;
     frame.origin.y = 44;
     frame.size.width = WIDTH_FULL_SCREEN;
@@ -167,7 +163,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
         self.searchBar.barTintColor = color_eeeeee;
         self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
         self.searchBar.inputAccessoryView = [self getInputAccessoryView];
-        self.searchBar.placeholder = @"搜索";
+        self.searchBar.placeholder = STRCommonTip52;
         self.tableViewPlan.tableHeaderView = self.searchBar;
     }
     UIView *footer = [[UIView alloc] init];
@@ -176,11 +172,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
     self.tableViewPlan.mj_header = [MJRefreshHeader headerWithRefreshingBlock:^{
         if (self.searchKeyword.length == 0)
         {
-            weakSelf.arrayPlanDay = [NSMutableArray array];
-            weakSelf.arrayPlanFuture = [NSMutableArray array];
-            weakSelf.arrayPlanDone = [NSMutableArray array];
-            weakSelf.arraySearchResult = [NSMutableArray array];
-            [weakSelf getPlanData];
+            [weakSelf reloadData];
         }
         else
         {
@@ -292,7 +284,6 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                          //更新提醒时间，防止提醒时间早于当前时间导致的设置提醒无效
                          plan.notifytime = [CommonFunction updateNotifyTime:plan.notifytime];
                      }
-                     
                      [CommonFunction updatePlanNotification:plan];
                  }
                  else
@@ -313,9 +304,9 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 - (void)groupPlanDay:(NSArray *)array
 {
     self.arrayDayDateKey = [NSMutableArray array];
-    [self.arrayDayDateKey addObject:@"很紧急"];
-    [self.arrayDayDateKey addObject:@"一般急"];
-    [self.arrayDayDateKey addObject:@"不紧急"];
+    [self.arrayDayDateKey addObject:STRCommonTip53];
+    [self.arrayDayDateKey addObject:STRCommonTip54];
+    [self.arrayDayDateKey addObject:STRCommonTip55];
     self.dictDayPlan = [NSMutableDictionary dictionary];
     
     NSString *key = @"";
@@ -325,15 +316,15 @@ NSUInteger const kPlanCellDeleteTag = 9527;
 
         if ([plan.planLevel isEqualToString:@"2"])
         {
-            key = @"很紧急";
+            key = STRCommonTip53;
         }
         else if ([plan.planLevel isEqualToString:@"1"])
         {
-            key = @"一般急";
+            key = STRCommonTip54;
         }
         else
         {
-            key = @"不紧急";
+            key = STRCommonTip55;
         }
         NSMutableArray *arrayLevel = [self.dictDayPlan objectForKey:key];
         if (!arrayLevel)
@@ -344,20 +335,20 @@ NSUInteger const kPlanCellDeleteTag = 9527;
         [arrayLevel addObject:plan];
     }
     //----------------去掉没有子项的section-----------------------------------------
-    NSMutableArray *arrayLevel2 = [self.dictDayPlan objectForKey:@"很紧急"];
+    NSMutableArray *arrayLevel2 = [self.dictDayPlan objectForKey:STRCommonTip53];
     if (!arrayLevel2 || arrayLevel2.count == 0)
     {
-        [self.arrayDayDateKey removeObject:@"很紧急"];
+        [self.arrayDayDateKey removeObject:STRCommonTip53];
     }
-    NSMutableArray *arrayLevel1 = [self.dictDayPlan objectForKey:@"一般急"];
+    NSMutableArray *arrayLevel1 = [self.dictDayPlan objectForKey:STRCommonTip54];
     if (!arrayLevel1 || arrayLevel1.count == 0)
     {
-        [self.arrayDayDateKey removeObject:@"一般急"];
+        [self.arrayDayDateKey removeObject:STRCommonTip54];
     }
-    NSMutableArray *arrayLevel0 = [self.dictDayPlan objectForKey:@"不紧急"];
+    NSMutableArray *arrayLevel0 = [self.dictDayPlan objectForKey:STRCommonTip55];
     if (!arrayLevel0 || arrayLevel0.count == 0)
     {
-        [self.arrayDayDateKey removeObject:@"不紧急"];
+        [self.arrayDayDateKey removeObject:STRCommonTip55];
     }
     //----------------------------------------------------------------------------
     NSUInteger sections = self.arrayDayDateKey.count;
@@ -1260,7 +1251,7 @@ NSUInteger const kPlanCellDeleteTag = 9527;
                       }
                       else
                       {
-                          [weakSelf alertButtonMessage:@"操作失败"];
+                          [weakSelf alertButtonMessage:STRErrorTip2];
                       }
                   }];
              }

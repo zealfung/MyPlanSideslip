@@ -155,6 +155,7 @@ static PopupNewAppVersionView *instance = nil;
     if (!self.window)
     {
         self.window = [[UIApplication sharedApplication] keyWindow];
+        [self.window makeKeyAndVisible];
         self.backgroundControl = [[UIControl alloc] initWithFrame:self.window.frame];
         self.backgroundControl.backgroundColor = [UIColor blackColor];
         self.backgroundControl.alpha = 0.5;

@@ -84,7 +84,7 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
         self.searchBar.barTintColor = color_eeeeee;
         self.searchBar.searchBarStyle = UISearchBarStyleMinimal;
         self.searchBar.inputAccessoryView = [self getInputAccessoryView];
-        self.searchBar.placeholder = @"搜索";
+        self.searchBar.placeholder = STRCommonTip52;
         self.tableViewPlan.tableHeaderView = self.searchBar;
     }
     {
@@ -368,7 +368,7 @@ NSUInteger const kUndonePlanCellDeleteTag = 9527;
                       }
                       else
                       {
-                          [weakSelf alertButtonMessage:@"操作失败"];
+                          [weakSelf alertButtonMessage:STRErrorTip2];
                       }
                   }];
              }

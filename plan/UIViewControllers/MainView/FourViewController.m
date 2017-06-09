@@ -128,7 +128,7 @@
     self.tableView.tableHeaderView = [self createTableHeaderView];
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.showsVerticalScrollIndicator = NO;
-    [self.tableView setEmptyWithText:@"加载失败，下拉列表重试"];
+    [self.tableView setEmptyWithText:STRErrorTip1];
     __weak typeof(self) weakSelf = self;
     MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingBlock:^{
         weakSelf.isLoadMore = NO;

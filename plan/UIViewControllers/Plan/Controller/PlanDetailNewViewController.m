@@ -59,13 +59,13 @@
     self.arrayDone = [NSArray arrayWithObjects:itemDone, itemUndo, nil];
     
     SelectItem *itemLevel0 = [[SelectItem alloc] init];
-    itemLevel0.itemName = @"不紧急";
+    itemLevel0.itemName = STRCommonTip55;
     itemLevel0.itemValue = @"0";
     SelectItem *itemLevel1 = [[SelectItem alloc] init];
-    itemLevel1.itemName = @"一般急";
+    itemLevel1.itemName = STRCommonTip54;
     itemLevel1.itemValue = @"1";
     SelectItem *itemLevel2 = [[SelectItem alloc] init];
-    itemLevel2.itemName = @"很紧急";
+    itemLevel2.itemName = STRCommonTip53;
     itemLevel2.itemValue = @"2";
     self.arrayPlanLevel = [NSArray arrayWithObjects:itemLevel0, itemLevel1, itemLevel2, nil];
     
@@ -260,11 +260,11 @@
                           }
                           [NotificationCenter postNotificationName:NTFPlanSave object:nil];
                           [weakSelf.tableView reloadData];
-                          [weakSelf alertToastMessage:@"保存成功"];
+                          [weakSelf alertToastMessage:STRCommonTip13];
                       }
                       else
                       {
-                          [weakSelf alertButtonMessage:@"操作失败"];
+                          [weakSelf alertButtonMessage:STRErrorTip2];
                       }
                   }];
              }

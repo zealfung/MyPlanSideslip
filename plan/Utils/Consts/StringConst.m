@@ -120,6 +120,14 @@ NSString *const STRCommonTip49 = @"MyPlan";
 NSString *const STRCommonTip50 = @"每天重复";
 /** 备注 */
 NSString *const STRCommonTip51 = @"备注";
+/** 搜索 */
+NSString *const STRCommonTip52 = @"搜索";
+/** 很紧急 */
+NSString *const STRCommonTip53 = @"很紧急";
+/** 一般急 */
+NSString *const STRCommonTip54 = @"一般急";
+/** 不紧急 */
+NSString *const STRCommonTip55 = @"不紧急";
 
 
 /** 刚刚 */
@@ -153,6 +161,10 @@ NSString *const STRCommonTime14 = @"天";
 /** 月 */
 NSString *const STRCommonTime15 = @"月";
 
+/** 加载失败，下拉列表重试 */
+NSString *const STRErrorTip1 = @"加载失败，下拉列表重试";
+/** 操作失败 */
+NSString *const STRErrorTip2 = @"操作失败";
 
 /** 我的 */
 NSString *const STRViewTitle1 = @"我的";
@@ -454,6 +466,10 @@ NSString *const STRViewTips121 = @"正在同步数据...";
 NSString *const STRViewTips122 = @"同步数据完成";
 /** 完成 */
 NSString *const STRViewTips123 = @"完成";
+/** 进行中 */
+NSString *const STRViewTips124 = @"进行中";
+/** 待开始 */
+NSString *const STRViewTips125 = @"待开始";
 
 /** 自动同步 */
 NSString *const STRSettingsViewTips1 = @"自动同步";
