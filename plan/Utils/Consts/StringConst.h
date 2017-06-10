@@ -128,11 +128,25 @@ UIKIT_EXTERN NSString *const STRCommonTip53;
 UIKIT_EXTERN NSString *const STRCommonTip54;
 /** 不紧急 */
 UIKIT_EXTERN NSString *const STRCommonTip55;
+/** 隐藏 */
+UIKIT_EXTERN NSString *const STRCommonTip56;
+/** 编号 */
+UIKIT_EXTERN NSString *const STRCommonTip57;
+/** 未设置 */
+UIKIT_EXTERN NSString *const STRCommonTip58;
+/** 已启用 */
+UIKIT_EXTERN NSString *const STRCommonTip59;
+/** 未启用 */
+UIKIT_EXTERN NSString *const STRCommonTip60;
+/** 设置性别 */
+UIKIT_EXTERN NSString *const STRCommonTip61;
 
 /** 加载失败，下拉列表重试 */
 UIKIT_EXTERN NSString *const STRErrorTip1;
 /** 操作失败 */
 UIKIT_EXTERN NSString *const STRErrorTip2;
+/** 登录超时，请稍后再试 */
+UIKIT_EXTERN NSString *const STRErrorTip3;
 
 /** 刚刚 */
 UIKIT_EXTERN NSString *const STRCommonTime1;
@@ -386,8 +400,6 @@ UIKIT_EXTERN NSString *const STRViewTips82;
 UIKIT_EXTERN NSString *const STRViewTips83;
 /** 注销登录 */
 UIKIT_EXTERN NSString *const STRViewTips84;
-/** 修改密码 */
-UIKIT_EXTERN NSString *const STRViewTips85;
 /** 邮箱地址Email */
 UIKIT_EXTERN NSString *const STRViewTips86;
 /** 请输入邮箱地址 */

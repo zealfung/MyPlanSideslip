@@ -393,7 +393,7 @@
                 }
                 else
                 {
-                    cell.detailTextLabel.text = @"未设置";
+                    cell.detailTextLabel.text = STRCommonTip58;
                 }
             }
                 break;

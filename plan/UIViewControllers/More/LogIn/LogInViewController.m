@@ -98,7 +98,7 @@
             }
             else if ([errorMsg containsString:@"connect failed"])
             {
-                [weakSelf alertButtonMessage:@"登录超时，请稍后再试"];
+                [weakSelf alertButtonMessage:STRErrorTip3];
             }
         }
         else if (user)

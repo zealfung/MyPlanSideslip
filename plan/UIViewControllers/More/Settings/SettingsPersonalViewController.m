@@ -65,10 +65,10 @@ NSString *const kEdgeWhiteSpace = @"  ";
 - (void)initSelectItem
 {
     SelectItem *itemMale = [[SelectItem alloc] init];
-    itemMale.itemName = @"男";
+    itemMale.itemName = STRViewTips76;
     itemMale.itemValue = @"1";
     SelectItem *itemFemale = [[SelectItem alloc] init];
-    itemFemale.itemName = @"女";
+    itemFemale.itemName = STRViewTips77;
     itemFemale.itemValue = @"0";
     self.arrayGender = [NSArray arrayWithObjects:itemMale, itemFemale, nil];
     
@@ -95,10 +95,10 @@ NSString *const kEdgeWhiteSpace = @"  ";
     self.arrayCountdown = [NSArray arrayWithObjects:itemSecond, itemMinute, itemHour, itemAll, nil];
 
     SelectItem *itemNotShow = [[SelectItem alloc] init];
-    itemNotShow.itemName = @"隐藏";
+    itemNotShow.itemName = STRCommonTip56;
     itemNotShow.itemValue = @"0";
     SelectItem *itemShow = [[SelectItem alloc] init];
-    itemShow.itemName = @"显示";
+    itemShow.itemName = STRCommonTip29;
     itemShow.itemValue = @"1";
     self.arrayShowGesture = [NSArray arrayWithObjects:itemNotShow, itemShow, nil];
 }
@@ -180,7 +180,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
             {
                 case 0:
                 {
-                    cell.textLabel.text = @"账号";
+                    cell.textLabel.text = STRViewTips70;
                     BmobUser *user = [BmobUser currentUser];
                     NSString *email = [user objectForKey:@"username"];
                     NSRange range = [email rangeOfString:@"@"];
@@ -196,7 +196,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                     break;
                 case 1:
                 {
-                    cell.textLabel.text = @"编号";
+                    cell.textLabel.text = STRCommonTip57;
                     BmobUser *user = [BmobUser currentUser];
                     cell.detailTextLabel.text = user.objectId;
                 }
@@ -214,7 +214,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                 {
                     cell.accessoryType = UITableViewCellAccessoryNone;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.textLabel.text = @"头像";
+                    cell.textLabel.text = STRViewTips71;
                     
                     UIImage *avatarImage = [UIImage imageNamed:png_AvatarDefault];
                     if ([Config shareInstance].settings.avatar)
@@ -240,7 +240,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                 {
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.textLabel.text = @"昵称";
+                    cell.textLabel.text = STRCommonTip12;
                     NSString *nickName = [Config shareInstance].settings.nickname;
                     if (nickName.length == 0) {
                         nickName = STRViewTips72;
@@ -252,9 +252,9 @@ NSString *const kEdgeWhiteSpace = @"  ";
                 {
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.textLabel.text = @"性别";
+                    cell.textLabel.text = STRViewTips75;
                     NSString *genderType = [Config shareInstance].settings.gender;
-                    NSString *genderString = @"未设置";
+                    NSString *genderString = STRCommonTip58;
                     if (genderType)
                     {
                         for (SelectItem *item in self.arrayGender)
@@ -272,7 +272,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                 {
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.textLabel.text = @"生日";
+                    cell.textLabel.text = STRViewTips78;
                     NSString *birthday = [Config shareInstance].settings.birthday;
                     if (birthday.length == 0)
                     {
@@ -285,7 +285,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                 {
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.textLabel.text = @"岁数";
+                    cell.textLabel.text = STRViewTips80;
                     NSString *lifespan = [Config shareInstance].settings.lifespan;
                     if (lifespan.length == 0)
                     {
@@ -298,7 +298,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                 {
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.textLabel.text = @"签名";
+                    cell.textLabel.text = STRViewTips73;
                     NSString *signature = [Config shareInstance].settings.signature;
                     if (signature.length == 0)
                     {
@@ -320,7 +320,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                 {
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.textLabel.text = @"日月样式";
+                    cell.textLabel.text = STRSettingsViewTips12;
                     
                     NSString *dayOrMonth = [Config shareInstance].settings.dayOrMonth;
                     NSString *showText = @"";
@@ -343,7 +343,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                 {
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.textLabel.text = @"倒计样式";
+                    cell.textLabel.text = STRSettingsViewTips2;
                     
                     NSString *countdownType = [Config shareInstance].settings.countdownType;
                     NSString *showText = @"";
@@ -372,17 +372,17 @@ NSString *const kEdgeWhiteSpace = @"  ";
                 {
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.textLabel.text = @"手势解锁";
+                    cell.textLabel.text = STRSettingsViewTips3;
                     
                     NSString *isUseGestureLock = [Config shareInstance].settings.isUseGestureLock;
                     NSString *showText = @"";
                     if ([isUseGestureLock intValue] == 1)
                     {
-                        showText = @"已启用";
+                        showText = STRCommonTip59;
                     }
                     else
                     {
-                        showText = @"未启用";
+                        showText = STRCommonTip60;
                     }
                     cell.detailTextLabel.text = showText;
                 }
@@ -397,11 +397,11 @@ NSString *const kEdgeWhiteSpace = @"  ";
                     NSString *showText = @"";
                     if ([isShowGestureTrack intValue] == 1)
                     {
-                        showText = @"显示";
+                        showText = STRCommonTip29;
                     }
                     else
                     {
-                        showText = @"隐藏";
+                        showText = STRCommonTip56;
                     }
                     cell.detailTextLabel.text = showText;
                 }
@@ -410,7 +410,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
                 {
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                     cell.selectionStyle = UITableViewCellSelectionStyleNone;
-                    cell.textLabel.text = @"修改手势";
+                    cell.textLabel.text = STRSettingsViewTips5;
                 }
                     break;
                 default:
@@ -422,7 +422,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
         {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
             cell.selectionStyle = UITableViewCellSelectionStyleBlue;
-            cell.textLabel.text = @"修改密码";
+            cell.textLabel.text = STRViewTitle15;
         }
             break;
         case 4:
@@ -625,7 +625,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
 {
     __weak typeof(self) weakSelf = self;
     SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
-    controller.viewTitle = @"设置性别";
+    controller.viewTitle = STRCommonTip61;
     controller.arrayData = self.arrayGender;
     controller.selectedValue = [Config shareInstance].settings.gender;
     controller.SelectedDelegate = ^(NSString *selectedValue)
@@ -769,7 +769,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
 {
     __weak typeof(self) weakSelf = self;
     SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
-    controller.viewTitle = @"日月样式";
+    controller.viewTitle = STRSettingsViewTips12;
     controller.arrayData = self.arrayDayOrMonth;
     controller.selectedValue = [Config shareInstance].settings.dayOrMonth;
     controller.SelectedDelegate = ^(NSString *selectedValue)
@@ -808,7 +808,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
 {
     __weak typeof(self) weakSelf = self;
     SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
-    controller.viewTitle = @"倒计样式";
+    controller.viewTitle = STRSettingsViewTips2;
     controller.arrayData = self.arrayCountdown;
     controller.selectedValue = [Config shareInstance].settings.countdownType;
     controller.SelectedDelegate = ^(NSString *selectedValue)

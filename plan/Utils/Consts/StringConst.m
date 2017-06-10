@@ -128,6 +128,18 @@ NSString *const STRCommonTip53 = @"很紧急";
 NSString *const STRCommonTip54 = @"一般急";
 /** 不紧急 */
 NSString *const STRCommonTip55 = @"不紧急";
+/** 隐藏 */
+NSString *const STRCommonTip56 = @"隐藏";
+/** 编号 */
+NSString *const STRCommonTip57 = @"编号";
+/** 未设置 */
+NSString *const STRCommonTip58 = @"未设置";
+/** 已启用 */
+NSString *const STRCommonTip59 = @"已启用";
+/** 未启用 */
+NSString *const STRCommonTip60 = @"未启用";
+/** 设置性别 */
+NSString *const STRCommonTip61 = @"设置性别";
 
 
 /** 刚刚 */
@@ -165,6 +177,8 @@ NSString *const STRCommonTime15 = @"月";
 NSString *const STRErrorTip1 = @"加载失败，下拉列表重试";
 /** 操作失败 */
 NSString *const STRErrorTip2 = @"操作失败";
+/** 登录超时，请稍后再试 */
+NSString *const STRErrorTip3 = @"登录超时，请稍后再试";
 
 /** 我的 */
 NSString *const STRViewTitle1 = @"我的";
@@ -388,8 +402,6 @@ NSString *const STRViewTips82 = @"亲，请选择更新头像的方式！";
 NSString *const STRViewTips83 = @"亲，请选择头像！";
 /** 注销登录 */
 NSString *const STRViewTips84 = @"注销登录";
-/** 修改密码 */
-NSString *const STRViewTips85 = @"修改密码";
 /** 邮箱地址Email */
 NSString *const STRViewTips86 = @"邮箱地址Email";
 /** 请输入邮箱地址 */

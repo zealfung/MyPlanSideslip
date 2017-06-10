@@ -297,7 +297,7 @@
     
     CLLockVC *lockVC = [self lockVC:vc];
     
-    lockVC.title = @"手势解锁";
+    lockVC.title = STRSettingsViewTips3;
     
     if (isLogIn) {
         //登录类型
@@ -321,7 +321,7 @@
     
     CLLockVC *lockVC = [self lockVC:vc];
     
-    lockVC.title = @"修改密码";
+    lockVC.title = STRViewTitle15;
     
     //设置类型
     lockVC.type = CoreLockTypeModifyPwd;
@@ -405,7 +405,7 @@
     
     CLLockVC *lockVC = [[CLLockVC alloc] init];
     
-    lockVC.title = @"修改密码";
+    lockVC.title = STRViewTitle15;
     
     lockVC.isDirectModify = YES;
     
