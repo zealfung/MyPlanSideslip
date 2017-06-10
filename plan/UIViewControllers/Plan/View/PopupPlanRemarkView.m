@@ -80,7 +80,8 @@
 }
 
 //显示菜单界面
-- (void)show {
+- (void)show
+{
     UIWindow *window = [[UIApplication sharedApplication] keyWindow];
     self.backgroundControl = [[UIControl alloc] initWithFrame:window.frame];
     self.backgroundControl.backgroundColor = [UIColor blackColor];
@@ -93,13 +94,15 @@
 }
 
 //隐藏菜单界面
-- (void)hide {
+- (void)hide
+{
     [self hideAnimation];
     [self.backgroundControl removeFromSuperview];
 }
 
 //显示时的动画效果
-- (void)showAnimation {
+- (void)showAnimation
+{
     CAKeyframeAnimation *popAnimation = [CAKeyframeAnimation animationWithKeyPath:@"transform"];
     popAnimation.duration = 0.4;
     popAnimation.values = @[[NSValue valueWithCATransform3D:CATransform3DMakeScale(0.01f, 0.01f, 1.0f)],
@@ -114,7 +117,8 @@
 }
 
 //注销时的动画效果
-- (void)hideAnimation {
+- (void)hideAnimation
+{
     [UIView animateWithDuration:0.4 animations:^{
         
     } completion:^(BOOL finished) {

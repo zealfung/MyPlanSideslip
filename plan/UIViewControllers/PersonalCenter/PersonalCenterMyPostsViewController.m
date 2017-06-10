@@ -36,7 +36,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"我的帖子";
+    self.title = STRViewTitle27;
     
     self.postsArray = [NSMutableArray array];
 

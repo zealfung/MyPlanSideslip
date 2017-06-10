@@ -140,6 +140,10 @@ NSString *const STRCommonTip59 = @"已启用";
 NSString *const STRCommonTip60 = @"未启用";
 /** 设置性别 */
 NSString *const STRCommonTip61 = @"设置性别";
+/** 是 */
+NSString *const STRCommonTip62 = @"是";
+/** 否 */
+NSString *const STRCommonTip63 = @"否";
 
 
 /** 刚刚 */
@@ -232,6 +236,10 @@ NSString *const STRViewTitle24 = @"更多";
 NSString *const STRViewTitle25 = @"登录";
 /** 计划详情 */
 NSString *const STRViewTitle26 = @"计划详情";
+/** 我的帖子 */
+NSString *const STRViewTitle27 = @"我的帖子";
+/** 我的任务 */
+NSString *const STRViewTitle28 = @"我的任务";
 
 
 /** 假如你可以活到 */
@@ -250,14 +258,14 @@ NSString *const STRViewTips6 = @"今日计划";
 NSString *const STRViewTips7 = @"已完成";
 /** 完成率 */
 NSString *const STRViewTips8 = @"完成率";
-/** 每日计划 */
-NSString *const STRViewTips9 = @"每日计划";
-/** 未来计划 */
-NSString *const STRViewTips10 = @"未来计划";
+/** 未完成 */
+NSString *const STRViewTips9 = @"未完成";
+/** 完成状态 */
+NSString *const STRViewTips10 = @"完成状态";
 /** 删除该计划 */
 NSString *const STRViewTips11 = @"删除该计划";
-/** 暂无每日计划 */
-NSString *const STRViewTips12 = @"暂无每日计划";
+/** 计划状态 */
+NSString *const STRViewTips12 = @"计划状态";
 /** 暂无未来计划 */
 NSString *const STRViewTips13 = @"暂无未来计划";
 /** 新增计划 */
@@ -482,6 +490,14 @@ NSString *const STRViewTips123 = @"完成";
 NSString *const STRViewTips124 = @"进行中";
 /** 待开始 */
 NSString *const STRViewTips125 = @"待开始";
+/** 开始时间 */
+NSString *const STRViewTips126 = @"开始时间";
+/** 设置提醒 */
+NSString *const STRViewTips127 = @"设置提醒";
+/** 紧急等级 */
+NSString *const STRViewTips128 = @"紧急等级";
+/** 请输入计划内容 */
+NSString *const STRViewTips129 = @"请输入计划内容";
 
 /** 自动同步 */
 NSString *const STRSettingsViewTips1 = @"自动同步";

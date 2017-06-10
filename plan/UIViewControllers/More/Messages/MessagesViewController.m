@@ -16,78 +16,87 @@
 #import "PostsDetailViewController.h"
 #import "MessagesDetailViewController.h"
 
-@interface MessagesViewController () <UITableViewDataSource, UITableViewDelegate> {
+@interface MessagesViewController () <UITableViewDataSource, UITableViewDelegate>
 
-    NSArray *messagesArray;
-}
+@property (nonatomic, strong) NSArray *arrayMsg;
 
 @end
 
 @implementation MessagesViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = STRViewTitle12;
-    [self createNavBarButton];
+
+    __weak typeof(self) weakSelf = self;
+    [self customRightButtonWithImage:[UIImage imageNamed:png_Btn_Clean] action:^(UIButton *sender)
+    {
+        [weakSelf cleanHasRead];
+    }];
+    
+    [self initTableView];
+    
+    [NotificationCenter addObserver:self selector:@selector(reloadData) name:NTFMessagesSave object:nil];
+    
+    [self reloadData];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
+- (void)initTableView
+{
+    self.arrayMsg = [NSArray array];
     
     self.tableView.backgroundColor = [UIColor clearColor];
     self.tableView = [[UITableView alloc] initWithFrame:self.view.frame style:UITableViewStylePlain];
     self.tableView.tableFooterView = [[UIView alloc] init];
     self.tableView.showsHorizontalScrollIndicator = NO;
     self.tableView.showsVerticalScrollIndicator = NO;
-    
-    [NotificationCenter addObserver:self selector:@selector(reloadData) name:NTFMessagesSave object:nil];
-    
-    messagesArray = [NSArray array];
-    [self reloadData];
+    [self.tableView setDefaultEmpty];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
-- (void)dealloc {
-    [NotificationCenter removeObserver:self];
-}
-
-- (void)createNavBarButton {
-    self.rightBarButtonItem = [self createBarButtonItemWithNormalImageName:png_Btn_Clean selectedImageName:png_Btn_Clean selector:@selector(cleanHasRead)];
-}
-
-- (void)reloadData {
-    messagesArray = [PlanCache getMessages];
+- (void)reloadData
+{
+    self.arrayMsg = [PlanCache getMessages];
     [self.tableView reloadData];
 }
 
-- (void)cleanHasRead {
+- (void)cleanHasRead
+{
     [PlanCache cleanHasReadMessages];
     [self alertToastMessage:STRViewTips113];
 }
 
 #pragma mark - Table view data source
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (messagesArray.count > 0) {
-        return messagesArray.count;
-    } else {
-        return 5;
-    }
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.arrayMsg.count;
 }
 
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     return 44.f;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-    if (indexPath.row < messagesArray.count) {
-        Messages *message = messagesArray[indexPath.row];
+    if (indexPath.row < self.arrayMsg.count)
+    {
+        Messages *message = self.arrayMsg[indexPath.row];
         static NSString *messageCellIdentifier = @"messageCellIdentifier";
         UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:messageCellIdentifier];
-        if (cell == nil) {
+        if (cell == nil)
+        {
             cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:messageCellIdentifier];
         }
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -97,59 +106,51 @@
         cell.detailTextLabel.font = font_Normal_11;
         cell.detailTextLabel.textColor = color_8f8f8f;
         cell.detailTextLabel.text = message.content;
-        if ([message.hasRead isEqualToString:@"0"]) {
+        if ([message.hasRead isEqualToString:@"0"])
+        {
             cell.textLabel.textColor = color_333333;
             cell.detailTextLabel.textColor = color_333333;
             [cell.detailTextLabel showBadgeWithStyle:WBadgeStyleNew value:0 animationType:WBadgeAnimTypeScale];
-        } else {
+        }
+        else
+        {
             [cell.detailTextLabel clearBadge];
         }
         return cell;
-    } else {
-        tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        static NSString *noMessageCellIdentifier = @"noMessageCellIdentifier";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:noMessageCellIdentifier];
-        if (!cell) {
-            cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:noMessageCellIdentifier];
-            cell.backgroundColor = [UIColor clearColor];
-            cell.contentView.backgroundColor = [UIColor clearColor];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            cell.textLabel.text = @"";
-            cell.textLabel.frame = cell.contentView.bounds;
-            cell.textLabel.textAlignment = NSTextAlignmentCenter;
-            cell.textLabel.textColor = [UIColor lightGrayColor];
-            cell.textLabel.font = font_Bold_16;
-        }
-        if (indexPath.row == 4) {
-            cell.textLabel.text = STRViewTips112;
-        }
-        return cell;
     }
+    return [UITableViewCell new];
 }
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
     [tableView deselectRowAtIndexPath:indexPath animated:NO];
-    if (messagesArray.count > 0) {
+    if (self.arrayMsg.count > 0)
+    {
+        Messages *message = self.arrayMsg[indexPath.row];
         
-        Messages *message = messagesArray[indexPath.row];
-        
-        if ([message.messageType isEqualToString:@"2"]) {
+        if ([message.messageType isEqualToString:@"2"])
+        {
             [self readNotice:message];
-        } else {
+        }
+        else
+        {
             [self readSystemMessage:message];
         }
     }
 }
 
-- (void)readSystemMessage:(Messages *)message {
-    if ([message.hasRead isEqualToString:@"0"]) {
+- (void)readSystemMessage:(Messages *)message
+{
+    if ([message.hasRead isEqualToString:@"0"])
+    {
         //本地标识已读
         [PlanCache setMessagesRead:message];
         //网络登记已读
         BmobObject *messages = [BmobObject objectWithoutDataWithClassName:@"Messages" objectId:message.messageId];
         //查看数加1
         [messages incrementKey:@"readTimes"];
-        if ([LogIn isLogin]) {
+        if ([LogIn isLogin])
+        {
             //新建relation对象
             BmobRelation *relation = [[BmobRelation alloc] init];
             BmobUser *user = [BmobUser currentUser];
@@ -165,8 +166,10 @@
     [self.navigationController pushViewController:controller animated:YES];
 }
 
-- (void)readNotice:(Messages *)notice {
-    if ([notice.hasRead isEqualToString:@"0"]) {
+- (void)readNotice:(Messages *)notice
+{
+    if ([notice.hasRead isEqualToString:@"0"])
+    {
         //本地标识已读
         [PlanCache setMessagesRead:notice];
         //网络登记已读
@@ -178,23 +181,31 @@
     __weak typeof(self) weakSelf = self;
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
     [bquery includeKey:@"author"];//声明该次查询需要将author关联对象信息一并查询出来
-    [bquery getObjectInBackgroundWithId:notice.detailURL block:^(BmobObject *object,NSError *error){
-        
-        if (error){
+    [bquery getObjectInBackgroundWithId:notice.detailURL block:^(BmobObject *object,NSError *error)
+    {
+        if (error)
+        {
             [weakSelf hideHUD];
             [weakSelf alertToastMessage:STRViewTips115];
-        } else {
-            if (object) {
+        }
+        else
+        {
+            if (object)
+            {
                 [weakSelf isLikedPost:object];
                 [weakSelf incrementPostsReadTimes:object];
                 NSArray *imgURLArray = [NSArray arrayWithArray:[object objectForKey:@"imgURLArray"]];
-                if (imgURLArray && imgURLArray > 0) {
-                    for (NSString *imgURL in imgURLArray) {
+                if (imgURLArray && imgURLArray > 0)
+                {
+                    for (NSString *imgURL in imgURLArray)
+                    {
                         UIImageView *tmpImgView = [[UIImageView alloc] init];
                         [tmpImgView sd_setImageWithURL:[NSURL URLWithString:imgURL] placeholderImage:[UIImage imageNamed: png_AvatarDefault1]];
                     }
                 }
-            } else {
+            }
+            else
+            {
                 [weakSelf hideHUD];
                 [weakSelf alertToastMessage:STRViewTips115];
             }
@@ -202,7 +213,8 @@
     }];
 }
 
-- (void)isLikedPost:(BmobObject *)posts {
+- (void)isLikedPost:(BmobObject *)posts
+{
     BmobQuery *bquery = [BmobQuery queryWithClassName:@"Posts"];
     BmobQuery *inQuery = [BmobQuery queryWithClassName:@"UserSettings"];
     BmobUser *user = [BmobUser currentUser];
@@ -211,11 +223,15 @@
     [bquery whereKey:@"likes" matchesQuery:inQuery];//（查询所有有关联的数据）
     [bquery whereKey:@"objectId" equalTo:posts.objectId];
     __weak typeof(self) weakSelf = self;
-    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error) {
+    [bquery findObjectsInBackgroundWithBlock:^(NSArray *array, NSError *error)
+    {
         [weakSelf hideHUD];
-        if (!error && array.count > 0) {
+        if (!error && array.count > 0)
+        {
             [posts setObject:@(YES) forKey:@"isLike"];
-        } else {
+        }
+        else
+        {
             [posts setObject:@(NO) forKey:@"isLike"];
         }
         PostsDetailViewController *controller = [[PostsDetailViewController alloc] init];
@@ -224,7 +240,8 @@
     }];
 }
 
-- (void)incrementPostsReadTimes:(BmobObject *)posts {
+- (void)incrementPostsReadTimes:(BmobObject *)posts
+{
     BmobObject *obj = [BmobObject objectWithoutDataWithClassName:@"Posts" objectId:posts.objectId];
     //查看数加1
     [obj incrementKey:@"readTimes"];

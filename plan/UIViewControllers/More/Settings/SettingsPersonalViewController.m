@@ -614,7 +614,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
              }
              else
              {
-                 [AlertCenter alertToastMessage:@"更新昵称失败"];
+                 [AlertCenter alertToastMessage:STRErrorTip2];
              }
          }];
     };
@@ -653,7 +653,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
              }
              else
              {
-                 [AlertCenter alertToastMessage:@"更新性别失败"];
+                 [AlertCenter alertToastMessage:STRErrorTip2];
              }
          }];
     };
@@ -703,7 +703,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
              }
              else
              {
-                 [AlertCenter alertToastMessage:@"更新签名失败"];
+                 [AlertCenter alertToastMessage:STRErrorTip2];
              }
          }];
     };
@@ -758,7 +758,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
              }
              else
              {
-                 [AlertCenter alertToastMessage:@"更新岁数失败"];
+                 [AlertCenter alertToastMessage:STRErrorTip2];
              }
          }];
     };
@@ -797,7 +797,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
              }
              else
              {
-                 [AlertCenter alertToastMessage:@"更新日月样式失败"];
+                 [AlertCenter alertToastMessage:STRErrorTip2];
              }
          }];
     };
@@ -836,7 +836,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
              }
              else
              {
-                 [AlertCenter alertToastMessage:@"更新倒计样式失败"];
+                 [AlertCenter alertToastMessage:STRErrorTip2];
              }
          }];
     };
@@ -1011,7 +1011,7 @@ NSString *const kEdgeWhiteSpace = @"  ";
         }
         else
         {
-            [AlertCenter alertToastMessage:@"更新生日失败"];
+            [AlertCenter alertToastMessage:STRErrorTip2];
         }
     }];
 }
@@ -1058,13 +1058,13 @@ NSString *const kEdgeWhiteSpace = @"  ";
                  }
                  else
                  {
-                     [AlertCenter alertToastMessage:@"更新头像失败"];
+                     [AlertCenter alertToastMessage:STRErrorTip2];
                  }
              }];
          }
          else
          {
-             [AlertCenter alertButtonMessage:@"上传头像失败"];
+             [AlertCenter alertButtonMessage:STRErrorTip2];
          }
      }
      withProgressBlock:^(CGFloat progress)

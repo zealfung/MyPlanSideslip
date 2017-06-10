@@ -65,10 +65,10 @@
     self.arrayPlanLevel = [NSArray arrayWithObjects:itemLevel0, itemLevel1, itemLevel2, nil];
     
     SelectItem *itemRepeat0 = [[SelectItem alloc] init];
-    itemRepeat0.itemName = @"否";
+    itemRepeat0.itemName = STRCommonTip63;
     itemRepeat0.itemValue = @"0";
     SelectItem *itemRepeat1 = [[SelectItem alloc] init];
-    itemRepeat1.itemName = @"是";
+    itemRepeat1.itemName = STRCommonTip62;
     itemRepeat1.itemValue = @"1";
     self.arrayRepeat = [NSArray arrayWithObjects:itemRepeat0, itemRepeat1, nil];
 }
@@ -204,7 +204,7 @@
          }
          else
          {
-             [weakSelf alertButtonMessage:@"新建计划失败"];
+             [weakSelf alertButtonMessage:STRErrorTip2];
          }
      }];
 }
@@ -255,14 +255,14 @@
         case 0:
         {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text = @"开始时间";
+            cell.textLabel.text = STRViewTips126;
             cell.detailTextLabel.text = [Utils getBeginDateStringForShow:self.plan.beginDate];
         }
             break;
         case 1:
         {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text = @"设置提醒";
+            cell.textLabel.text = STRViewTips127;
             if ([self.plan.isnotify isEqualToString:@"1"])
             {
                 cell.detailTextLabel.text = [Utils getBeginDateStringForShow:self.plan.notifytime];
@@ -276,14 +276,14 @@
         case 2:
         {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text = @"紧急等级";
+            cell.textLabel.text = STRViewTips128;
             cell.detailTextLabel.text = [Utils getPlanLevelStringForShow:self.plan.planLevel];
         }
             break;
         case 3:
         {
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-            cell.textLabel.text = @"每天重复";
+            cell.textLabel.text = STRCommonTip50;
             cell.detailTextLabel.text = [Utils getRepeatStringForShow:self.plan.isRepeat];
         }
             break;
@@ -294,7 +294,7 @@
             cell1.accessoryType = UITableViewCellAccessoryNone;
             cell1.textView.text = self.plan.content;
             cell1.textView.inputAccessoryView = [self getInputAccessoryView];
-            cell1.textView.placeHolder = @"请输入计划内容";
+            cell1.textView.placeHolder = STRViewTips129;
             cell1.textView.textChange = ^(NSString *text) {
                 weakSelf.plan.content = text;
             };
@@ -347,7 +347,7 @@
 {
     __weak typeof(self) weakSelf = self;
     SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
-    controller.viewTitle = @"紧急等级";
+    controller.viewTitle = STRViewTips128;
     controller.arrayData = self.arrayPlanLevel;
     controller.selectedValue = self.plan.planLevel;
     controller.SelectedDelegate = ^(NSString *selectedValue)
@@ -362,7 +362,7 @@
 {
     __weak typeof(self) weakSelf = self;
     SingleSelectedViewController *controller = [[SingleSelectedViewController alloc] init];
-    controller.viewTitle = @"每天重复";
+    controller.viewTitle = STRCommonTip50;
     controller.arrayData = self.arrayRepeat;
     controller.selectedValue = self.plan.isRepeat;
     controller.SelectedDelegate = ^(NSString *selectedValue)

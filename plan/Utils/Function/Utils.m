@@ -378,11 +378,11 @@ static NSString * const kKeyMinutes = @"minutes";
 {
     if ([isRepeat isEqualToString:@"1"])
     {
-        return @"是";
+        return STRCommonTip62;
     }
     else
     {
-        return @"否";
+        return STRCommonTip63;
     }
 }
 

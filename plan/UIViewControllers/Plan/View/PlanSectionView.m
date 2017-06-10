@@ -57,11 +57,15 @@
     return self;
 }
 
-- (void)toggleArrow {
+- (void)toggleArrow
+{
     CGFloat fl = (M_PI / 180) * 180;
-    if (_toggle) {
+    if (_toggle)
+    {
         imgViewToggle.transform = CGAffineTransformMakeRotation(fl * 4);
-    } else {
+    }
+    else
+    {
         imgViewToggle.transform = CGAffineTransformMakeRotation(fl);
     }
     _toggle = !_toggle;

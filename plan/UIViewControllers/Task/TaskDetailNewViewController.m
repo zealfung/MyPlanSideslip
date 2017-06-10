@@ -7,7 +7,7 @@
 //
 
 #import "KxMenu.h"
-#import "AddTaskNewViewController.h"
+//#import "AddTaskNewViewController.h"
 #import "TaskDetailNewViewController.h"
 
 NSUInteger const kTaskDeleteNewTag = 20151201;
@@ -170,10 +170,10 @@ NSUInteger const kTaskDeleteNewTag = 20151201;
 
 - (void)editAction:(UIButton *)sender
 {
-    AddTaskNewViewController *controller = [[AddTaskNewViewController alloc]init];
-    controller.operationType = Edit;
-    controller.task = self.task;
-    [self.navigationController pushViewController:controller animated:YES];
+//    AddTaskNewViewController *controller = [[AddTaskNewViewController alloc]init];
+//    controller.operationType = Edit;
+//    controller.task = self.task;
+//    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)deleteAction:(UIButton *)sender

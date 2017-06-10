@@ -20,22 +20,24 @@
 
 @implementation AboutViewController
 
-
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.title = STRViewTitle9;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     
-    if (!self.bgImageView) {
-        
+    if (!self.bgImageView)
+    {
         [self loadCustomView];
     }
 }
 
-- (void)loadCustomView {
+- (void)loadCustomView
+{
     [self showLogo];
     
     {
@@ -74,11 +76,10 @@
         
         self.yOffset += labelsize.height + 10;
     }
-
 }
 
-- (void)showLogo {
-    
+- (void)showLogo
+{
     self.xMiddle = WIDTH_FULL_SCREEN / 2;
     
     UIImage *image = [UIImage imageNamed:png_Bg_LaunchImage];

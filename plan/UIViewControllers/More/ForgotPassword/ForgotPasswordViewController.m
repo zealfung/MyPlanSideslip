@@ -75,7 +75,7 @@
         }
         else
         {
-            [weakSelf alertButtonMessage:@"请求失败"];
+            [weakSelf alertButtonMessage:STRErrorTip2];
         }
     }];
 }

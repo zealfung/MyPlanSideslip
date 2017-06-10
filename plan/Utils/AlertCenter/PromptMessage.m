@@ -12,10 +12,11 @@
 
 @synthesize second;
 
-- (id)initWithFrame:(CGRect)frame {
+- (id)initWithFrame:(CGRect)frame
+{
     self = [super initWithFrame:frame];
-    if (self) {
-        
+    if (self)
+    {
         self.layer.cornerRadius = 5;
         self.backgroundColor =[UIColor blackColor];
         self.alpha = 0.8;
@@ -24,7 +25,8 @@
     return self;
 }
 
-- (void)showMessage:(NSString *)msg {
+- (void)showMessage:(NSString *)msg
+{
     keyWindow =[UIApplication sharedApplication].keyWindow;
     
     UIView * background = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -58,7 +60,8 @@
     }];
 }
 
-- (void)showMessage1:(NSAttributedString *)msg {
+- (void)showMessage1:(NSAttributedString *)msg
+{
     keyWindow =[UIApplication sharedApplication].keyWindow;
     
     UIView * background = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -92,7 +95,8 @@
 }
 
 
-- (void)showRewardMessage:(NSString *)msg {
+- (void)showRewardMessage:(NSString *)msg
+{
     keyWindow =[UIApplication sharedApplication].keyWindow;
     
     UIView * background = [[UIView alloc] initWithFrame:[UIScreen mainScreen].bounds];

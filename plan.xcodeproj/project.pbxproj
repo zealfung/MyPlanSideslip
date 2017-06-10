@@ -88,11 +88,7 @@
 		136DF2201D5DDEA300CFB8FF /* SZCalendarPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 136DF2191D5DDEA300CFB8FF /* SZCalendarPicker.m */; };
 		136DF2211D5DDEA300CFB8FF /* SZCalendarPicker.xib in Resources */ = {isa = PBXBuildFile; fileRef = 136DF21A1D5DDEA300CFB8FF /* SZCalendarPicker.xib */; };
 		136DF2221D5DDEA300CFB8FF /* UIColor+ZXLazy.m in Sources */ = {isa = PBXBuildFile; fileRef = 136DF21C1D5DDEA300CFB8FF /* UIColor+ZXLazy.m */; };
-		136DF2261D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 136DF2241D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.m */; };
-		136DF2271D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 136DF2251D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.xib */; };
 		136DF22E1D5EBF2D00CFB8FF /* TaskStatistics.m in Sources */ = {isa = PBXBuildFile; fileRef = 136DF22D1D5EBF2D00CFB8FF /* TaskStatistics.m */; };
-		136DF2321D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 136DF2301D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.m */; };
-		136DF2331D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 136DF2311D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.xib */; };
 		136DF57E1BEC2F7D001D6496 /* ImageBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 136DF57D1BEC2F7D001D6496 /* ImageBrowser.m */; };
 		136E6FC71D4894BB00E0E9B5 /* PostsNoImageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 136E6FB81D4894BB00E0E9B5 /* PostsNoImageCell.m */; };
 		136E6FC81D4894BB00E0E9B5 /* PostsNoImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 136E6FB91D4894BB00E0E9B5 /* PostsNoImageCell.xib */; };
@@ -123,8 +119,6 @@
 		137470971C07E66B00B7822A /* CLLockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 1374708D1C07E66B00B7822A /* CLLockView.m */; };
 		137470A31C0815F100B7822A /* NSString+File.m in Sources */ = {isa = PBXBuildFile; fileRef = 1374709E1C0815F100B7822A /* NSString+File.m */; };
 		137470A41C0815F100B7822A /* CoreArchive.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470A01C0815F100B7822A /* CoreArchive.m */; };
-		137470C41C0AE72A00B7822A /* TaskCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470C21C0AE72A00B7822A /* TaskCell.m */; };
-		137470C51C0AE72A00B7822A /* TaskCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 137470C31C0AE72A00B7822A /* TaskCell.xib */; };
 		137470C81C0AE75900B7822A /* Task.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470C71C0AE75900B7822A /* Task.m */; };
 		137470CB1C0AEB0300B7822A /* TaskRecord.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470CA1C0AEB0300B7822A /* TaskRecord.m */; };
 		137470D21C0BD50400B7822A /* LogInViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 137470D01C0BD50400B7822A /* LogInViewController.m */; };
@@ -134,7 +128,6 @@
 		1374713D1C1920DB00B7822A /* UITabBar+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 1374713C1C1920DB00B7822A /* UITabBar+Util.m */; };
 		137700BB1B93E56A008C83FD /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 135B21931B900394005CE84A /* Main.storyboard */; };
 		137700BC1B93E56A008C83FD /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 135B21981B900394005CE84A /* LaunchScreen.xib */; };
-		137700DB1B952EE5008C83FD /* MoreViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 137700DA1B952EE5008C83FD /* MoreViewController.m */; };
 		137700E11B95335E008C83FD /* UIImage+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 137700E01B95335E008C83FD /* UIImage+Util.m */; };
 		137700E91B953521008C83FD /* AboutViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 137700E81B953521008C83FD /* AboutViewController.m */; };
 		1377010C1B967F31008C83FD /* SettingsSetTextViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1377010B1B967F31008C83FD /* SettingsSetTextViewController.m */; };
@@ -160,7 +153,6 @@
 		13AF648B1C19C071008E8A9E /* MessagesDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF648A1C19C071008E8A9E /* MessagesDetailViewController.m */; };
 		13AF64BE1C22E64E008E8A9E /* WebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF64BD1C22E64E008E8A9E /* WebViewController.m */; };
 		13AF64C11C255BB7008E8A9E /* FourViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13AF64C01C255BB7008E8A9E /* FourViewController.m */; };
-		13C725F01D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13C725EF1D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.m */; };
 		13D12E4E1CD0BF4100889A9E /* IDStringConst.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D12E4D1CD0BF4100889A9E /* IDStringConst.m */; };
 		13D135CE1C577D9200E97D5F /* KxMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D135CD1C577D9200E97D5F /* KxMenu.m */; };
 		13D1AD771C3F411F007734F6 /* GrowingTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D1AD741C3F411F007734F6 /* GrowingTextView.m */; };
@@ -169,8 +161,6 @@
 		13D1AD911C41FAC2007734F6 /* SDPhotoBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D1AD8C1C41FAC2007734F6 /* SDPhotoBrowser.m */; };
 		13D1AD921C41FAC2007734F6 /* SDWaitingView.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D1AD8F1C41FAC2007734F6 /* SDWaitingView.m */; };
 		13D4069A1C3D00310089D702 /* DOPNavbarMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D406991C3D00310089D702 /* DOPNavbarMenu.m */; };
-		13D9165B1CDD7607001F34EA /* AddTaskNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D916591CDD7607001F34EA /* AddTaskNewViewController.m */; };
-		13D9165C1CDD7607001F34EA /* AddTaskNewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D9165A1CDD7607001F34EA /* AddTaskNewViewController.xib */; };
 		13D916601CDDC4D7001F34EA /* TaskDetailNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13D9165E1CDDC4D7001F34EA /* TaskDetailNewViewController.m */; };
 		13D916611CDDC4D7001F34EA /* TaskDetailNewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13D9165F1CDDC4D7001F34EA /* TaskDetailNewViewController.xib */; };
 		13F670871CC07BD3009D2BA9 /* PersonalCenterNewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 13F670861CC07BD3009D2BA9 /* PersonalCenterNewViewController.m */; };
@@ -342,14 +332,8 @@
 		136DF21A1D5DDEA300CFB8FF /* SZCalendarPicker.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SZCalendarPicker.xib; sourceTree = "<group>"; };
 		136DF21B1D5DDEA300CFB8FF /* UIColor+ZXLazy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+ZXLazy.h"; sourceTree = "<group>"; };
 		136DF21C1D5DDEA300CFB8FF /* UIColor+ZXLazy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+ZXLazy.m"; sourceTree = "<group>"; };
-		136DF2231D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterTaskStatisticsViewController.h; sourceTree = "<group>"; };
-		136DF2241D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterTaskStatisticsViewController.m; sourceTree = "<group>"; };
-		136DF2251D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonalCenterTaskStatisticsViewController.xib; sourceTree = "<group>"; };
 		136DF22C1D5EBF2D00CFB8FF /* TaskStatistics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskStatistics.h; sourceTree = "<group>"; };
 		136DF22D1D5EBF2D00CFB8FF /* TaskStatistics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskStatistics.m; sourceTree = "<group>"; };
-		136DF22F1D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterTaskStatisticsCell.h; sourceTree = "<group>"; };
-		136DF2301D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterTaskStatisticsCell.m; sourceTree = "<group>"; };
-		136DF2311D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PersonalCenterTaskStatisticsCell.xib; sourceTree = "<group>"; };
 		136DF57C1BEC2F7D001D6496 /* ImageBrowser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageBrowser.h; sourceTree = "<group>"; };
 		136DF57D1BEC2F7D001D6496 /* ImageBrowser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageBrowser.m; sourceTree = "<group>"; };
 		136E6FB71D4894BB00E0E9B5 /* PostsNoImageCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PostsNoImageCell.h; sourceTree = "<group>"; };
@@ -402,9 +386,6 @@
 		1374709F1C0815F100B7822A /* CoreArchive.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreArchive.h; sourceTree = "<group>"; };
 		137470A01C0815F100B7822A /* CoreArchive.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CoreArchive.m; sourceTree = "<group>"; };
 		137470A21C0815F100B7822A /* CoreConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CoreConst.h; sourceTree = "<group>"; };
-		137470C11C0AE72A00B7822A /* TaskCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskCell.h; sourceTree = "<group>"; };
-		137470C21C0AE72A00B7822A /* TaskCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskCell.m; sourceTree = "<group>"; };
-		137470C31C0AE72A00B7822A /* TaskCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskCell.xib; sourceTree = "<group>"; };
 		137470C61C0AE75900B7822A /* Task.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Task.h; sourceTree = "<group>"; };
 		137470C71C0AE75900B7822A /* Task.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Task.m; sourceTree = "<group>"; };
 		137470C91C0AEB0300B7822A /* TaskRecord.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskRecord.h; sourceTree = "<group>"; };
@@ -418,8 +399,6 @@
 		137471391C1909C400B7822A /* Messages.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Messages.m; sourceTree = "<group>"; };
 		1374713B1C1920DB00B7822A /* UITabBar+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UITabBar+Util.h"; sourceTree = "<group>"; };
 		1374713C1C1920DB00B7822A /* UITabBar+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UITabBar+Util.m"; sourceTree = "<group>"; };
-		137700D91B952EE5008C83FD /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
-		137700DA1B952EE5008C83FD /* MoreViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreViewController.m; sourceTree = "<group>"; };
 		137700DF1B95335E008C83FD /* UIImage+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Util.h"; sourceTree = "<group>"; };
 		137700E01B95335E008C83FD /* UIImage+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Util.m"; sourceTree = "<group>"; };
 		137700E71B953521008C83FD /* AboutViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AboutViewController.h; sourceTree = "<group>"; };
@@ -465,8 +444,6 @@
 		13AF64BD1C22E64E008E8A9E /* WebViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewController.m; sourceTree = "<group>"; };
 		13AF64BF1C255BB7008E8A9E /* FourViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FourViewController.h; sourceTree = "<group>"; };
 		13AF64C01C255BB7008E8A9E /* FourViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FourViewController.m; sourceTree = "<group>"; };
-		13C725EE1D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PersonalCenterUndonePlanViewController.h; sourceTree = "<group>"; };
-		13C725EF1D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PersonalCenterUndonePlanViewController.m; sourceTree = "<group>"; };
 		13D12E4C1CD0BF4100889A9E /* IDStringConst.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDStringConst.h; sourceTree = "<group>"; };
 		13D12E4D1CD0BF4100889A9E /* IDStringConst.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IDStringConst.m; sourceTree = "<group>"; };
 		13D135CC1C577D9200E97D5F /* KxMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KxMenu.h; sourceTree = "<group>"; };
@@ -484,9 +461,6 @@
 		13D1AD8F1C41FAC2007734F6 /* SDWaitingView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SDWaitingView.m; sourceTree = "<group>"; };
 		13D406981C3D00310089D702 /* DOPNavbarMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DOPNavbarMenu.h; sourceTree = "<group>"; };
 		13D406991C3D00310089D702 /* DOPNavbarMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DOPNavbarMenu.m; sourceTree = "<group>"; };
-		13D916581CDD7607001F34EA /* AddTaskNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddTaskNewViewController.h; sourceTree = "<group>"; };
-		13D916591CDD7607001F34EA /* AddTaskNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddTaskNewViewController.m; sourceTree = "<group>"; };
-		13D9165A1CDD7607001F34EA /* AddTaskNewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddTaskNewViewController.xib; sourceTree = "<group>"; };
 		13D9165D1CDDC4D7001F34EA /* TaskDetailNewViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TaskDetailNewViewController.h; sourceTree = "<group>"; };
 		13D9165E1CDDC4D7001F34EA /* TaskDetailNewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TaskDetailNewViewController.m; sourceTree = "<group>"; };
 		13D9165F1CDDC4D7001F34EA /* TaskDetailNewViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TaskDetailNewViewController.xib; sourceTree = "<group>"; };
@@ -594,16 +568,8 @@
 				13F6708A1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib */,
 				13F670851CC07BD3009D2BA9 /* PersonalCenterNewViewController.h */,
 				13F670861CC07BD3009D2BA9 /* PersonalCenterNewViewController.m */,
-				136DF22F1D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.h */,
-				136DF2301D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.m */,
-				136DF2311D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.xib */,
-				136DF2231D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.h */,
-				136DF2241D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.m */,
-				136DF2251D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.xib */,
 				131912661EB1F032005AE10C /* PersonalCenterTaskViewController.h */,
 				131912671EB1F032005AE10C /* PersonalCenterTaskViewController.m */,
-				13C725EE1D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.h */,
-				13C725EF1D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.m */,
 			);
 			path = PersonalCenter;
 			sourceTree = "<group>";
@@ -611,12 +577,6 @@
 		131D6A701BFB68A8009FDD72 /* Task */ = {
 			isa = PBXGroup;
 			children = (
-				13D916581CDD7607001F34EA /* AddTaskNewViewController.h */,
-				13D916591CDD7607001F34EA /* AddTaskNewViewController.m */,
-				13D9165A1CDD7607001F34EA /* AddTaskNewViewController.xib */,
-				137470C11C0AE72A00B7822A /* TaskCell.h */,
-				137470C21C0AE72A00B7822A /* TaskCell.m */,
-				137470C31C0AE72A00B7822A /* TaskCell.xib */,
 				13D9165D1CDDC4D7001F34EA /* TaskDetailNewViewController.h */,
 				13D9165E1CDDC4D7001F34EA /* TaskDetailNewViewController.m */,
 				13D9165F1CDDC4D7001F34EA /* TaskDetailNewViewController.xib */,
@@ -1158,11 +1118,8 @@
 				133B079B1B9FBC620015E752 /* Help */,
 				137470CE1C0BD4E200B7822A /* LogIn */,
 				137470F71C166A1200B7822A /* Messages */,
-				137700D91B952EE5008C83FD /* MoreViewController.h */,
-				137700DA1B952EE5008C83FD /* MoreViewController.m */,
 				1374704B1C03ECF100B7822A /* Register */,
 				137700E21B953490008C83FD /* Settings */,
-				13BB1C721BE63F0200412D6D /* Share */,
 			);
 			path = More;
 			sourceTree = "<group>";
@@ -1259,13 +1216,6 @@
 				136E6FC01D4894BB00E0E9B5 /* ViewController */,
 			);
 			path = Community;
-			sourceTree = "<group>";
-		};
-		13BB1C721BE63F0200412D6D /* Share */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Share;
 			sourceTree = "<group>";
 		};
 		13D135CB1C577D9200E97D5F /* KxMenu */ = {
@@ -1433,13 +1383,9 @@
 				136E6FCC1D4894BB00E0E9B5 /* PostsTwoImageCell.xib in Resources */,
 				1361AFC51BCBA5E700DD5FFB /* DoAlbumCell.xib in Resources */,
 				1374705A1C04202700B7822A /* ForgotPasswordViewController.xib in Resources */,
-				13D9165C1CDD7607001F34EA /* AddTaskNewViewController.xib in Resources */,
 				1361AFC91BCBA5E700DD5FFB /* DoPhotoCell.xib in Resources */,
 				1374708F1C07E66B00B7822A /* CLLockVC.xib in Resources */,
-				136DF2271D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.xib in Resources */,
-				137470C51C0AE72A00B7822A /* TaskCell.xib in Resources */,
 				136E6FC81D4894BB00E0E9B5 /* PostsNoImageCell.xib in Resources */,
-				136DF2331D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.xib in Resources */,
 				13A6ACA21BC3AAA3005A02F9 /* AddPhotoViewController.xib in Resources */,
 				136E6FCE1D4894BB00E0E9B5 /* AddPostsViewController.xib in Resources */,
 				13F6708C1CC07E7B009D2BA9 /* PersonalCenterNewCell0.xib in Resources */,
@@ -1547,12 +1493,10 @@
 				13D4069A1C3D00310089D702 /* DOPNavbarMenu.m in Sources */,
 				1361AFC81BCBA5E700DD5FFB /* DoPhotoCell.m in Sources */,
 				13D12E4E1CD0BF4100889A9E /* IDStringConst.m in Sources */,
-				13C725F01D23D131007C9DB0 /* PersonalCenterUndonePlanViewController.m in Sources */,
 				131D6AC01C00769A009FDD72 /* FullScreenImageArrayViewController.m in Sources */,
 				137470A31C0815F100B7822A /* NSString+File.m in Sources */,
 				1361AFC31BCBA5E700DD5FFB /* AssetHelper.m in Sources */,
 				136E6FC71D4894BB00E0E9B5 /* PostsNoImageCell.m in Sources */,
-				136DF2261D5DDF7400CFB8FF /* PersonalCenterTaskStatisticsViewController.m in Sources */,
 				136DF2201D5DDEA300CFB8FF /* SZCalendarPicker.m in Sources */,
 				135B21EA1B913F77005CE84A /* NSString+Util.m in Sources */,
 				131D6AC41C007BF3009FDD72 /* ImageScrollView.m in Sources */,
@@ -1563,7 +1507,6 @@
 				13A6ACA51BC3E282005A02F9 /* PageScrollView.m in Sources */,
 				136DF22E1D5EBF2D00CFB8FF /* TaskStatistics.m in Sources */,
 				131D6A8E1BFD9660009FDD72 /* ShareCenter.m in Sources */,
-				137470C41C0AE72A00B7822A /* TaskCell.m in Sources */,
 				137470931C07E66B00B7822A /* CLLockInfoView.m in Sources */,
 				131912651EB0708A005AE10C /* UIScrollView+Util.m in Sources */,
 				137470591C04202700B7822A /* ForgotPasswordViewController.m in Sources */,
@@ -1572,7 +1515,6 @@
 				13A6ACCD1BC6A82C005A02F9 /* FullScreenImageViewController.m in Sources */,
 				135B218C1B900394005CE84A /* AppDelegate.m in Sources */,
 				137470921C07E66B00B7822A /* CLLockNavVC.m in Sources */,
-				136DF2321D5EC76D00CFB8FF /* PersonalCenterTaskStatisticsCell.m in Sources */,
 				131D6A1E1BF478D1009FDD72 /* SideMenuViewController.m in Sources */,
 				1374708E1C07E66B00B7822A /* CLLockVC.m in Sources */,
 				1377010C1B967F31008C83FD /* SettingsSetTextViewController.m in Sources */,
@@ -1582,7 +1524,6 @@
 				13AF64C11C255BB7008E8A9E /* FourViewController.m in Sources */,
 				135B21DC1B90A145005CE84A /* UIButton+Util.m in Sources */,
 				13A6ACA81BC3FBF1005A02F9 /* PagedFlowView.m in Sources */,
-				13D9165B1CDD7607001F34EA /* AddTaskNewViewController.m in Sources */,
 				135B221C1B92E72A005CE84A /* AlertCenter.m in Sources */,
 				131D6A261BF4D95F009FDD72 /* RootViewController.m in Sources */,
 				13A6AC9A1BC347D6005A02F9 /* PhotoCell.m in Sources */,
@@ -1616,7 +1557,6 @@
 				137470961C07E66B00B7822A /* CLLockMainView.m in Sources */,
 				136E6FC91D4894BB00E0E9B5 /* PostsOneImageCell.m in Sources */,
 				131912561EADAB1F005AE10C /* PlanAddCell.m in Sources */,
-				137700DB1B952EE5008C83FD /* MoreViewController.m in Sources */,
 				130BA99A1E73A8DE009939A3 /* SingleSelectedViewController.m in Sources */,
 				1374704F1C03ED1200B7822A /* RegisterViewController.m in Sources */,
 				13D1AD771C3F411F007734F6 /* GrowingTextView.m in Sources */,

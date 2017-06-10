@@ -50,12 +50,7 @@
         signature = [Config shareInstance].settings.signature;
     }
     cellView.labelSignature.text = signature;
-//    
-//    NSString *planCount = [PlanCache getPlanTotalCount:@"ALL"];
-//    NSString *photoCount = [PlanCache getPhotoTotalCount];
-//    cellView.labelPlanCount.text = [NSString stringWithFormat: @"%@ 计划", planCount];
-//    cellView.labelPhotoCount.text = [NSString stringWithFormat: @"%@ 影像", photoCount];
-    
+
     return cellView;
 }
 

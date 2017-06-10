@@ -7,11 +7,11 @@
 //
 
 #import "Task.h"
-#import "TaskCell.h"
+//#import "TaskCell.h"
 #import <BmobSDK/BmobUser.h>
 #import "ThreeViewController.h"
-#import "AddTaskNewViewController.h"
-#import "TaskDetailNewViewController.h"
+//#import "AddTaskNewViewController.h"
+//#import "TaskDetailNewViewController.h"
 
 @interface ThreeViewController () <UIGestureRecognizerDelegate>
 
@@ -60,11 +60,11 @@
     Task *newTask = [[Task alloc] init];
     newTask.taskOrder = [NSString stringWithFormat:@"%ld", self.taskArray.count + 1];
     
-    AddTaskNewViewController *controller = [[AddTaskNewViewController alloc] init];
-    controller.operationType = Add;
-    controller.task = newTask;
-    controller.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:controller animated:YES];
+//    AddTaskNewViewController *controller = [[AddTaskNewViewController alloc] init];
+//    controller.operationType = Add;
+//    controller.task = newTask;
+//    controller.hidesBottomBarWhenPushed = YES;
+//    [self.navigationController pushViewController:controller animated:YES];
 }
 
 - (void)orderAction
@@ -152,10 +152,10 @@
         task.taskOrder = [dict objectForKey:@"taskOrder"];
         task.isDeleted = @"0";
         
-        TaskDetailNewViewController *controller = [[TaskDetailNewViewController alloc]init];
-        controller.task = task;
-        controller.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:controller animated:YES];
+//        TaskDetailNewViewController *controller = [[TaskDetailNewViewController alloc]init];
+//        controller.task = task;
+//        controller.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 
@@ -229,10 +229,11 @@
     if (indexPath.row < self.taskArray.count)
     {
         tableView.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
-        Task *task = self.taskArray[indexPath.row];
-        TaskCell *cell = [TaskCell cellView:task];
-        cell.selectionStyle = UITableViewCellSelectionStyleNone;
-        return cell;
+//        Task *task = self.taskArray[indexPath.row];
+//        TaskCell *cell = [TaskCell cellView:task];
+//        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//        return cell;
+        return [UITableViewCell new];
     }
     else
     {
@@ -264,10 +265,10 @@
 {
     if (indexPath.row < self.taskArray.count)
     {
-        TaskDetailNewViewController *controller = [[TaskDetailNewViewController alloc]init];
-        controller.task = self.taskArray[indexPath.row];
-        controller.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:controller animated:YES];
+//        TaskDetailNewViewController *controller = [[TaskDetailNewViewController alloc]init];
+//        controller.task = self.taskArray[indexPath.row];
+//        controller.hidesBottomBarWhenPushed = YES;
+//        [self.navigationController pushViewController:controller animated:YES];
     }
 }
 

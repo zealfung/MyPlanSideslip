@@ -140,6 +140,10 @@ UIKIT_EXTERN NSString *const STRCommonTip59;
 UIKIT_EXTERN NSString *const STRCommonTip60;
 /** 设置性别 */
 UIKIT_EXTERN NSString *const STRCommonTip61;
+/** 是 */
+UIKIT_EXTERN NSString *const STRCommonTip62;
+/** 否 */
+UIKIT_EXTERN NSString *const STRCommonTip63;
 
 /** 加载失败，下拉列表重试 */
 UIKIT_EXTERN NSString *const STRErrorTip1;
@@ -231,6 +235,10 @@ UIKIT_EXTERN NSString *const STRViewTitle24;
 UIKIT_EXTERN NSString *const STRViewTitle25;
 /** 计划详情 */
 UIKIT_EXTERN NSString *const STRViewTitle26;
+/** 我的帖子 */
+UIKIT_EXTERN NSString *const STRViewTitle27;
+/** 我的任务 */
+UIKIT_EXTERN NSString *const STRViewTitle28;
 
 /** 假如你可以活到 */
 UIKIT_EXTERN NSString *const STRViewTips1;
@@ -248,13 +256,13 @@ UIKIT_EXTERN NSString *const STRViewTips6;
 UIKIT_EXTERN NSString *const STRViewTips7;
 /** 完成率 */
 UIKIT_EXTERN NSString *const STRViewTips8;
-/** 每日计划 */
+/** 未完成 */
 UIKIT_EXTERN NSString *const STRViewTips9;
-/** 未来计划 */
+/** 完成状态 */
 UIKIT_EXTERN NSString *const STRViewTips10;
 /** 删除该计划 */
 UIKIT_EXTERN NSString *const STRViewTips11;
-/** 暂无每日计划 */
+/** 计划状态 */
 UIKIT_EXTERN NSString *const STRViewTips12;
 /** 暂无未来计划 */
 UIKIT_EXTERN NSString *const STRViewTips13;
@@ -480,6 +488,14 @@ UIKIT_EXTERN NSString *const STRViewTips123;
 UIKIT_EXTERN NSString *const STRViewTips124;
 /** 待开始 */
 UIKIT_EXTERN NSString *const STRViewTips125;
+/** 开始时间 */
+UIKIT_EXTERN NSString *const STRViewTips126;
+/** 设置提醒 */
+UIKIT_EXTERN NSString *const STRViewTips127;
+/** 紧急等级 */
+UIKIT_EXTERN NSString *const STRViewTips128;
+/** 请输入计划内容 */
+UIKIT_EXTERN NSString *const STRViewTips129;
 
 /** 自动同步 */
 UIKIT_EXTERN NSString *const STRSettingsViewTips1;

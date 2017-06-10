@@ -27,7 +27,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.title = @"我的任务";
+    self.title = STRViewTitle28;
     
     [self initTableView];
     

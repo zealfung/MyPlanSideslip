@@ -12,25 +12,30 @@
 
 @implementation AlertCenter
 
-+ (void)alertButtonMessage:(NSString *)message {
++ (void)alertButtonMessage:(NSString *)message
+{
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:nil message:message delegate:nil cancelButtonTitle:STRCommonTip27 otherButtonTitles:nil];
     [alertView show];
 }
 
-+ (void)alertToastMessage:(NSString *)message {
++ (void)alertToastMessage:(NSString *)message
+{
     PromptMessage *pbMessage = [[PromptMessage alloc] init];
     [pbMessage  showMessage:message];
 }
 
-+ (void)alertNavBarGreenMessage:(NSString *)message {
++ (void)alertNavBarGreenMessage:(NSString *)message
+{
     [AlertCenter alertNavBarMessage:message color:color_0BA32A];
 }
 
-+ (void)alertNavBarYellowMessage:(NSString *)message {
++ (void)alertNavBarYellowMessage:(NSString *)message
+{
     [AlertCenter alertNavBarMessage:message color:color_ff9900];
 }
 
-+ (void)alertNavBarMessage:(NSString *)message color:(UIColor *)color {
++ (void)alertNavBarMessage:(NSString *)message color:(UIColor *)color
+{
     NSDictionary *options = @{
                               kCRToastNotificationTypeKey : @(CRToastTypeNavigationBar),
                               kCRToastNotificationPresentationTypeKey : @(CRToastPresentationTypeCover),
@@ -48,4 +53,5 @@
                                     NSLog(@"AlertNavBarMessage completed");
                                 }];
 }
+
 @end

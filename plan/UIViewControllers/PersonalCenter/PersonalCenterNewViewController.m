@@ -13,8 +13,6 @@
 #import "PersonalCenterNewViewController.h"
 #import "PersonalCenterTaskViewController.h"
 #import "PersonalCenterMyPostsViewController.h"
-#import "PersonalCenterUndonePlanViewController.h"
-#import "PersonalCenterTaskStatisticsViewController.h"
 
 @interface PersonalCenterNewViewController ()
 
@@ -37,7 +35,7 @@
     
     if ([LogIn isLogin])
     {
-        self.titleArray = [NSMutableArray arrayWithObjects:@"我的帖子", @"未完计划", @"我的任务", nil];
+        self.titleArray = [NSMutableArray arrayWithObjects:STRViewTitle27, STRViewTitle28, nil];
     }
     else
     {
@@ -208,11 +206,6 @@
                     
                 }
                 else if (indexPath.row == 1)
-                {
-                    PersonalCenterUndonePlanViewController *controller = [[PersonalCenterUndonePlanViewController alloc] init];
-                    [self.navigationController pushViewController:controller animated:YES];
-                }
-                else if (indexPath.row == 2)
                 {
                     PersonalCenterTaskViewController *controller = [[PersonalCenterTaskViewController alloc] init];
                     [self.navigationController pushViewController:controller animated:YES];
