@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>AFNetworking.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>CRToast.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -67,7 +72,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>0FA2ECEEACBD46DF632D4256D375A25E</key>
+		<key>094DE87E3C4117F0BAAF4A6B013C2CD0</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>343369F43F2233BCD0A1BF44633F017A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>3D8A47A3504C4A8FFBF1EAF00BFD1760</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -87,7 +102,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>6F31E58FF2324901C59F38A700E86881</key>
+		<key>6CFF3277CE90828A8ED3B408B1466ADA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -97,22 +112,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A810702870A8F6B7E7BCACCC39B66514</key>
+		<key>9E033EDB5EC0819481B0546434FA577B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>BE00FD7764FFA815DFDC2553C0CC3561</key>
+		<key>A469849021E77CAEA1042D371DD6249A</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D20BAEDBDD5E004B053CC453F58F9B0D</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>EA24CFC0BDD7151EA1CE5B084123AB56</key>
+		<key>CBE5B179FE04E9C455D38C4565B9DB06</key>
 		<dict>
 			<key>primary</key>
 			<true/>

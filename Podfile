@@ -11,6 +11,7 @@ target 'plan' do
   pod 'MJRefresh'
   pod 'SDWebImage'
   pod 'RESideMenu'
+  pod 'AFNetworking'
   pod 'MBProgressHUD'
   pod 'DZNEmptyDataSet'
   pod 'SDCycleScrollView'
